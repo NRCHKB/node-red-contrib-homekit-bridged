@@ -1,0 +1,72 @@
+<script type="text/x-red" data-template-name="homekit-service">
+
+    <div class="form-row">
+        <label for="node-input-name">
+            <i class="fa fa-tag"></i>
+            Name</label>
+        <input type="text" id="node-input-name" placeholder="e.g. Switch">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-servicetype">
+            <i class="fa fa-tag"></i>
+            Service</label>
+        <select id="node-input-servicetype" style="width:240px !important">
+        </select>
+    </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="homekit-service">
+    <h3 id="toc_2">HomeKit</h3>
+    <p>Provides the configuration frontend to define <em>Services</em> according to the HAP protocol. Choose the desired <em>Service</em> in the configuration dialog and deploy the flow. The pinCode, which is needed in the pairing process is being displayed
+        beneath until pairing succeeds.</p>
+    <p>Input messages can be used to update any <em>Characteristic</em>. Simply pass the new values as <code>msg.payload</code> object. Example: to signal that an <em>Outlet</em> is turned on and in use, use the following format</p>
+    <div><pre><code class="language-javascript">{
+&quot;On&quot;: 1,
+&quot;OutletInUse&quot;: 1
+}</code></pre></div>
+    <p>Output messages in the same format are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
+</script>
+
+<script type="text/javascript">
+    var serviceTypes
+
+    //HomeKitServiceTypes
+    $.getJSON('homekit/service/types', function(data) {
+        serviceTypes = data
+    });
+
+    RED.nodes.registerType('homekit-service', {
+        category: 'advanced',
+        paletteLabel: 'homekit',
+        defaults: {
+            name: {
+                value: "",
+                required: true
+            },
+            servicetype: {
+                value: "Switch",
+                required: true
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "homekit.png",
+        color: "#fcc127",
+        label: function() {
+            return this.name || this.servicetype;
+        },
+        oneditprepare: function() {
+            var node = this;
+            var selectField = $("#node-input-servicetype")
+            for (var key in serviceTypes) {
+                selectField.append($("<option></option>").val(key).text(key));
+            }
+            selectField.find("option").filter(function() {
+                return $(this).val() == node.servicetype;
+            }).attr('selected', true);
+            selectField.change();
+        }
+    });
+</script>
