@@ -69,7 +69,8 @@ module.exports = function (RED) {
     // which characteristics are supported?
     var supported = { read: [], write: []}
     var srv = accessory.getService(service)
-    srv.characteristics.map(function (characteristic, index) {
+    var allCharacteristics = srv.characteristics.concat(srv.optionalCharacteristics)
+    allCharacteristics.map(function (characteristic, index) {
       var cKey = characteristic.displayName.replace(/ /g, '')
       if (characteristic.props.perms.indexOf('pw') > -1) {
         supported.read.push(cKey)
@@ -94,13 +95,7 @@ module.exports = function (RED) {
           node.warn('Characteristic ' + key + ' cannot be written.\nTry one of these: ' + supported.write.join(', '))
         } else {
           srv
-            .getCharacteristic(Characteristic[key])
-            .setValue(msg.payload[key], function (err) {
-                // error occured?
-              if (err) {
-                node.warn(err)
-              }
-            })
+            .setCharacteristic(Characteristic[key], (msg.payload[key]))
         }
       })
     })
