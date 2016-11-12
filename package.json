@@ -1,33 +1,33 @@
 {
-    "name": "node-red-contrib-homekit",
-    "version": "0.0.1",
-    "description": "Apple HomeKit for Node-RED",
-    "main": "homekit.js",
-    "scripts": {
-        "test": "test"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/mschm/node-red-contrib-homekit.git"
-    },
-    "keywords": [
-        "homekit",
-        "hap-nodejs",
-        "node-red",
-        "iot"
-    ],
-    "node-red": {
-        "nodes": {
-            "homekit": "homekit.js"
-        }
-    },
-    "author": "Marius Schmeding",
-    "license": "Apache-2.0",
-    "bugs": {
-        "url": "https://github.com/mschm/node-red-contrib-homekit/issues"
-    },
-    "homepage": "https://github.com/mschm/node-red-contrib-homekit#readme",
-    "dependencies": {
-        "hap-nodejs": "^0.4.13"
+  "name": "node-red-contrib-homekit",
+  "version": "0.0.2",
+  "description": "Apple HomeKit for Node-RED",
+  "main": "homekit.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mschm/node-red-contrib-homekit.git"
+  },
+  "keywords": [
+    "homekit",
+    "hap-nodejs",
+    "node-red",
+    "iot"
+  ],
+  "node-red": {
+    "nodes": {
+      "homekit": "homekit.js"
     }
+  },
+  "author": "Marius Schmeding",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/mschm/node-red-contrib-homekit/issues"
+  },
+  "homepage": "https://github.com/mschm/node-red-contrib-homekit#readme",
+  "dependencies": {
+    "hap-nodejs": "^0.4.13"
+  }
 }
