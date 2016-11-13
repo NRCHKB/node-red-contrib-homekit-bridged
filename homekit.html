@@ -1,20 +1,53 @@
 <script type="text/x-red" data-template-name="homekit-service">
+    <div class="form-row">
+        <label for="node-input-accessory">
+        <i class="fa fa-rocket"></i>
+        Accessory</label>
+        <input id="node-input-accessory">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-serviceName">
+            <i class="fa fa-cog"></i>
+            Service</label>
+        <select id="node-input-serviceName">
+            <option value="">Choose...</option>
+        </select>
+    </div>
 
     <div class="form-row">
         <label for="node-input-name">
             <i class="fa fa-tag"></i>
             Name</label>
-        <input type="text" id="node-input-name" placeholder="e.g. Switch">
+        <input type="text" id="node-input-name" placeholder="Name">
     </div>
+</script>
 
+<script type="text/x-red" data-template-name="homekit-accessory">
     <div class="form-row">
-        <label for="node-input-servicetype">
-            <i class="fa fa-tag"></i>
-            Service</label>
-        <select id="node-input-servicetype" style="width:240px !important">
-        </select>
+        <label for="node-config-input-pinCode"><i class="fa fa-lock"></i> Pin Code</label>
+        <input type="text" id="node-config-input-pinCode" placeholder="xxx-xx-xxx">
     </div>
-
+    <div class="form-row">
+        <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
+        <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
+        <input type="text" id="node-config-input-manufacturer" placeholder="Manufacturer">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
+        <input type="text" id="node-config-input-serialNo" placeholder="Serial Number">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-model"><i class="fa fa-wrench"></i> Model</label>
+        <input type="text" id="node-config-input-model" placeholder="Model">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-accessoryName"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-accessoryName" placeholder="Name">
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="homekit-service">
@@ -41,12 +74,16 @@
         category: 'advanced',
         paletteLabel: 'homekit',
         defaults: {
-            name: {
+            accessory: {
                 value: "",
+                type: "homekit-accessory",
                 required: true
             },
-            servicetype: {
-                value: "Switch",
+            name: {
+                value: ""
+            },
+            serviceName: {
+                value: "",
                 required: true
             }
         },
@@ -55,18 +92,62 @@
         icon: "homekit.png",
         color: "#fcc127",
         label: function() {
-            return this.name || this.servicetype;
+            return this.name || this.serviceName || "Service";
+        },
+        labelStyle: function() {
+            return this.name ? "node_label_italic" : "";
         },
         oneditprepare: function() {
             var node = this;
-            var selectField = $("#node-input-servicetype")
+            var selectField = $("#node-input-serviceName")
             for (var key in serviceTypes) {
                 selectField.append($("<option></option>").val(key).text(key));
             }
             selectField.find("option").filter(function() {
-                return $(this).val() == node.servicetype;
+                return $(this).val() == node.serviceName;
             }).attr('selected', true);
             selectField.change();
+        },
+        oneditsave: function() {
+            this.serviceName = $("node-input-serviceName option:selected").val();
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('homekit-accessory', {
+        category: 'config',
+        defaults: {
+            accessoryName: {
+                value: "",
+                required: true
+            },
+            pinCode: {
+                value: "111-11-111",
+                required: true,
+                validate: RED.validators.regex(/[0-9]{3}-[0-9]{2}-[0-9]{3}/)
+            },
+            port: {
+                //validate:RED.validators.number()
+            },
+            manufacturer: {
+                value: "Default Manufacturer",
+                required: true
+            },
+            model: {
+                value: "Default Model",
+                required: true
+            },
+            serialNo: {
+                value: "Default Serial Number",
+                required: true
+            }
+        },
+        label: function() {
+            return this.accessoryName || "Accessory";
+        },
+        labelStyle: function() {
+            return this.accessoryName ? "node_label_italic" : "";
         }
     });
 </script>

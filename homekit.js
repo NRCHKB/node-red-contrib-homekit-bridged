@@ -18,46 +18,63 @@ module.exports = function (RED) {
       // Initialize API
   API.init()
 
+  function HAPAccessoryNode (n) {
+    RED.nodes.createNode(this, n)
+
+    // config node properties
+    this.name = n.accessoryName
+    this.pinCode = n.pinCode
+    this.port = n.port
+    this.manufacturer = n.manufacturer
+    this.serialNo = n.serialNo
+    this.model = n.model
+
+    // generate UUID and username (MAC-address) from node id
+    var accessoryUUID = uuid.generate(this.id)
+    var accessoryUsername = macify(this.id)
+
+    // create accessory object
+    var accessory = new Accessory(this.name, accessoryUUID)
+    accessory.getService(Service.AccessoryInformation)
+      .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
+      .setCharacteristic(Characteristic.SerialNumber, this.serialNo)
+      .setCharacteristic(Characteristic.Model, this.model)
+
+    // publish accessory
+    accessory.publish({
+      username: accessoryUsername,
+      pincode: this.pinCode,
+      port: this.port || 0
+    }, true)
+
+    this.accessory = accessory
+  }
+  RED.nodes.registerType('homekit-accessory', HAPAccessoryNode)
+
   function HAPServiceNode (n) {
     RED.nodes.createNode(this, n)
+
+    // service node properties
+    this.name = n.name
+    this.serviceName = n.serviceName
+    this.configNode = RED.nodes.getNode(n.accessory)
+
+    // generate UUID from node id
+    var subtypeUUID = uuid.generate(this.id)
+
+    // add service
+    var accessory = this.configNode.accessory
+    var service = accessory.addService(Service[this.serviceName], this.name, subtypeUUID)
+
+    this.service = service
     var node = this
-
-// accessory id, name and service type stick to node instance
-    node.accessoryUUID = uuid.generate(node.id)
-    node.accessoryName = n.name || node.id
-    node.serviceType = n.servicetype
-
-    // transform the node id (e.g. fc03c1f9.60d73) into something like a
-    // MAC-Address (00:0f:c0:3c:1f:96:0d:73)
-    var macAddress = macify(node.id)
 
     // the pinCode should be shown to the user until interaction with
     // iOS client starts
-    // TODO randomize pinCode
-    var pinCode = '111-11-111'
-    node.status({fill: 'yellow', shape: 'ring', text: pinCode})
-
-    // create single-service-accessory
-    // TODO introduce config node for accessory
-    var accessory = new Accessory(node.accessoryName, node.accessoryUUID)
-    var service = Service[node.serviceType]
-    accessory.addService(service, node.accessoryName)
-
-    // publish accessory to become reality
-    accessory.publish({
-      username: macAddress,
-      pincode: pinCode
-    }, true)
-
-    // visualize the "identify" event
-    accessory.on('identify', function (paired, callback) {
-      node.status({fill: 'yellow', shape: 'dot', text: 'identify'})
-      setTimeout(function () { node.status({}) }, 3000)
-      callback() // success
-    })
+    node.status({fill: 'yellow', shape: 'ring', text: node.configNode.pinCode})
 
     // emit message when value changes
-    accessory.on('service-characteristic-change', function (info) {
+    service.on('characteristic-change', function (info) {
       var msg = { payload: {}, hap: info}
       var key = info.characteristic.displayName.replace(/ /g, '')
       msg.payload[key] = info.newValue
@@ -68,8 +85,8 @@ module.exports = function (RED) {
 
     // which characteristics are supported?
     var supported = { read: [], write: []}
-    var srv = accessory.getService(service)
-    var allCharacteristics = srv.characteristics.concat(srv.optionalCharacteristics)
+
+    var allCharacteristics = service.characteristics.concat(service.optionalCharacteristics)
     allCharacteristics.map(function (characteristic, index) {
       var cKey = characteristic.displayName.replace(/ /g, '')
       if (characteristic.props.perms.indexOf('pw') > -1) {
@@ -82,7 +99,7 @@ module.exports = function (RED) {
 
     // respond to inputs
     this.on('input', function (msg) {
-        // payload must be an object
+      // payload must be an object
       if (!(msg.payload instanceof Object)) {
         node.warn('Invalid property.\nTry one of these: ' + supported.write.join(', '))
         return
@@ -91,13 +108,16 @@ module.exports = function (RED) {
       // iterate over characteristics to be written
       Object.keys(msg.payload).map(function (key, index) {
         if (supported.write.indexOf(key) < 0) {
-            // characteristic is not supported
+          // characteristic is not supported
           node.warn('Characteristic ' + key + ' cannot be written.\nTry one of these: ' + supported.write.join(', '))
         } else {
-          srv
-            .setCharacteristic(Characteristic[key], (msg.payload[key]))
+          service.setCharacteristic(Characteristic[key], (msg.payload[key]))
         }
       })
+    })
+
+    this.on('close', function () {
+      accessory.removeService(service)
     })
   }
   RED.nodes.registerType('homekit-service', HAPServiceNode)
