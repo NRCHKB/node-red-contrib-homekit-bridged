@@ -18,6 +18,12 @@ Then run the following command in your Node-RED user directory - typically `~/.n
 
         npm install node-red-contrib-homekit
 
+## Docker
+
+If you have a beautiful solution to run this in Docker, please share :) 
+
+Related Issue: #4
+
 ## Nodes
 
 ### Accessory
