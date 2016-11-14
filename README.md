@@ -22,7 +22,7 @@ Then run the following command in your Node-RED user directory - typically `~/.n
 
 If you have a beautiful solution to run this in Docker, please share :) 
 
-Related Issue: #4
+Related Issue: [#8](https://github.com/mschm/node-red-contrib-homekit/issues/8)
 
 ## Nodes
 
