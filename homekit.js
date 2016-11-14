@@ -99,9 +99,15 @@ module.exports = function (RED) {
 
     // respond to inputs
     this.on('input', function (msg) {
-      // payload must be an object
-      if (!(msg.payload instanceof Object)) {
-        node.warn('Invalid property.\nTry one of these: ' + supported.write.join(', '))
+      if (msg.hasOwnProperty('payload')) {
+        // payload must be an object
+        var type = typeof msg.payload
+        if (type != 'object') {
+          node.warn('Invalid payload type: ' + type)
+          return
+        }
+      } else {
+        node.warn('Invalid message (payload missing)')
         return
       }
 
