@@ -3,21 +3,41 @@ node-red-contrib-homekit
 
 Node-RED Node to simulate Apple HomeKit Accessories.
 
-Based on [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS).
+## Prerequisites
 
-# Usage
+These nodes are based on the *extremely* **awesome** [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) -Project which uses an implementation of mdns to provide Bonjour / Avahi capability.
+Please refer to the HAP-NodeJS [Wiki](https://github.com/KhaosT/HAP-NodeJS/wiki) and to [mdns](https://www.npmjs.com/package/mdns) for install instructions, if you get stuck on the following.
 
-The HomeKit Node is used to create and configure virtual devices (*Accessories*) according to the HomeKit specification. 
+## Install
 
-Currently, *Accessories* can only consist of **one** *Service* (Fan, Outlet, Thermostat etc) each. You can of course create as many *Accessories* as you want.
+For Debian / Ubuntu you need to install the following in order to support Bonjour / Avahi
 
-*Bridged Accessories* are not supported at this time.
+        sudo apt-get install libavahi-compat-libdnssd-dev
 
-![Select a HomeKit Service](http://g.recordit.co/SDWNoaQaXo.gif)
+Then run the following command in your Node-RED user directory - typically `~/.node-red`
 
-## Creating Accessories
+        npm install node-red-contrib-homekit
 
-Choose the desired *Service* in the configuration dialog and deploy the flow. The *pinCode*, which will be needed during pairing, is being displayed underneath the Node.
+## Nodes
+
+### Accessory
+
+The Accessory node is a configuration node, specifying the *device* that iOS sees. 
+
+* **Pin Code**: Specify the Pin for the pairing process.
+* **Port**: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.
+* **Manufacturer, Model, Serial Number**: Can be anything you want.
+* **Name**: If you intend to simulate a rocket, then why don't you call it *Rocket*.
+
+*Bridged Accessories* are not supported at the moment.
+
+### Service
+
+The Service nodes add functionality to your Accessories. You can assign multiple Services to one Accessory. 
+
+* **Accessory**: What Accessory this Service is for.
+* **Service**: Choose the type of Service from the list.
+* **Name**: *optional*
 
 ## Input Messages
 
