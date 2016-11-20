@@ -3,7 +3,7 @@ node-red-contrib-homekit
 
 Node-RED nodes to simulate Apple HomeKit devices.
 
-![Intro](http://recordit.co/zDBJUdAO04)
+![Intro](http://g.recordit.co/zDBJUdAO04.gif)
 
 ## Prerequisites
 
