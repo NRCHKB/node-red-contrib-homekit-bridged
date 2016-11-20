@@ -23,6 +23,26 @@
     </div>
 </script>
 
+<script type="text/x-red" data-help-name="homekit-service">
+<h3 id="toc_5">Service</h3>
+<p>The Service nodes add functionality to your Accessories. You can assign multiple Services to one Accessory. </p>
+<ul>
+<li><strong>Accessory</strong>: What Accessory this Service is for.</li>
+<li><strong>Service</strong>: Choose the type of Service from the list.</li>
+<li><strong>Name</strong>: <em>optional</em></li>
+</ul>
+<h2 id="toc_6">Input Messages</h2>
+<p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
+<p><strong>Example</strong>: to signal that an <em>Outlet</em> is turned on and in use, send the following payload</p>
+<div><pre><code class="language-javascript">{
+    &quot;On&quot;: 1,
+    &quot;OutletInUse&quot;: 1
+}</code></pre></div>
+<p><strong>Hint</strong>: to find out what <em>Characteristics</em> you can address, just send a non-object-payload (e.g. a Timestamp) and watch the debug tab ;)</p>
+<h2 id="toc_7">Output Messages</h2>
+<p>Output messages are in the same format as input messages. They are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
+</script>
+
 <script type="text/x-red" data-template-name="homekit-accessory">
     <div class="form-row">
         <label for="node-config-input-pinCode"><i class="fa fa-lock"></i> Pin Code</label>
@@ -50,16 +70,16 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="homekit-service">
-    <h3 id="toc_2">HomeKit</h3>
-    <p>Provides the configuration frontend to define <em>Services</em> according to the HAP protocol. Choose the desired <em>Service</em> in the configuration dialog and deploy the flow. The pinCode, which is needed in the pairing process is being displayed
-        beneath until pairing succeeds.</p>
-    <p>Input messages can be used to update any <em>Characteristic</em>. Simply pass the new values as <code>msg.payload</code> object. Example: to signal that an <em>Outlet</em> is turned on and in use, use the following format</p>
-    <div><pre><code class="language-javascript">{
-&quot;On&quot;: 1,
-&quot;OutletInUse&quot;: 1
-}</code></pre></div>
-    <p>Output messages in the same format are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
+<script type="text/x-red" data-help-name="homekit-accessory">
+<h3 id="toc_4">Accessory</h3>
+<p>The Accessory node is a configuration node, specifying the <em>device</em> that iOS sees. </p>
+<ul>
+<li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
+<li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.</li>
+<li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
+<li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>.</li>
+</ul>
+<p><em>Bridged Accessories</em> are not supported at the moment.</p>
 </script>
 
 <script type="text/javascript">
