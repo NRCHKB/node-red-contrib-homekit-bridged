@@ -59,7 +59,7 @@ Input messages can be used to update any *Characteristic* that the selected *Ser
     "OutletInUse": 1
 }
 ```
-**Hint**: to find out what *Characteristics* you can address, just send a non-object-payload (e.g. a Timestamp) and watch the debug tab ;)
+**Hint**: to find out what *Characteristics* you can address, just send `{"foo":"bar"}` and watch the debug tab ;)
 
 ## Output Messages
 
