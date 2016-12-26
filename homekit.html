@@ -24,23 +24,23 @@
 </script>
 
 <script type="text/x-red" data-help-name="homekit-service">
-<h3 id="toc_5">Service</h3>
-<p>The Service nodes add functionality to your Accessories. You can assign multiple Services to one Accessory. </p>
-<ul>
-<li><strong>Accessory</strong>: What Accessory this Service is for.</li>
-<li><strong>Service</strong>: Choose the type of Service from the list.</li>
-<li><strong>Name</strong>: <em>optional</em></li>
-</ul>
-<h2 id="toc_6">Input Messages</h2>
-<p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
-<p><strong>Example</strong>: to signal that an <em>Outlet</em> is turned on and in use, send the following payload</p>
-<div><pre><code class="language-javascript">{
+    <h3 id="toc_5">Service</h3>
+    <p>The Service nodes add functionality to your Accessories. You can assign multiple Services to one Accessory. </p>
+    <ul>
+        <li><strong>Accessory</strong>: What Accessory this Service is for.</li>
+        <li><strong>Service</strong>: Choose the type of Service from the list.</li>
+        <li><strong>Name</strong>: <em>optional</em></li>
+    </ul>
+    <h2 id="toc_6">Input Messages</h2>
+    <p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
+    <p><strong>Example</strong>: to signal that an <em>Outlet</em> is turned on and in use, send the following payload</p>
+    <div><pre><code class="language-javascript">{
     &quot;On&quot;: 1,
     &quot;OutletInUse&quot;: 1
 }</code></pre></div>
-<p><strong>Hint</strong>: to find out what <em>Characteristics</em> you can address, just send a non-object-payload (e.g. a Timestamp) and watch the debug tab ;)</p>
-<h2 id="toc_7">Output Messages</h2>
-<p>Output messages are in the same format as input messages. They are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
+    <p><strong>Hint</strong>: to find out what <em>Characteristics</em> you can address, just send a non-object-payload (e.g. a Timestamp) and watch the debug tab ;)</p>
+    <h2 id="toc_7">Output Messages</h2>
+    <p>Output messages are in the same format as input messages. They are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
 </script>
 
 <script type="text/x-red" data-template-name="homekit-accessory">
@@ -65,21 +65,29 @@
         <input type="text" id="node-config-input-model" placeholder="Model">
     </div>
     <div class="form-row">
+        <label for="node-config-input-accessoryType">
+            <i class="fa fa-cog"></i>
+            Type</label>
+        <select id="node-config-input-accessoryType">
+        </select>
+    </div>
+    <div class="form-row">
         <label for="node-config-input-accessoryName"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-config-input-accessoryName" placeholder="Name">
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="homekit-accessory">
-<h3 id="toc_4">Accessory</h3>
-<p>The Accessory node is a configuration node, specifying the <em>device</em> that iOS sees. </p>
-<ul>
-<li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
-<li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.</li>
-<li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
-<li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>.</li>
-</ul>
-<p><em>Bridged Accessories</em> are not supported at the moment.</p>
+    <h3 id="toc_4">Accessory</h3>
+    <p>The Accessory node is a configuration node, specifying the <em>device</em> that iOS sees. </p>
+    <ul>
+        <li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
+        <li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.</li>
+        <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
+        <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>.</li>
+        <li><strong>Type</strong>: A hint to iOS clients, so that for instance an appropriate icon can be drawn.</li>
+    </ul>
+    <p><em>Bridged Accessories</em> are not supported at the moment.</p>
 </script>
 
 <script type="text/javascript">
@@ -135,6 +143,13 @@
 </script>
 
 <script type="text/javascript">
+    var accessoryTypes
+
+    //HomeKitAccessoryTypes
+    $.getJSON('homekit/accessory/types', function(data) {
+        accessoryTypes = data
+    });
+
     RED.nodes.registerType('homekit-accessory', {
         category: 'config',
         defaults: {
@@ -161,13 +176,31 @@
             serialNo: {
                 value: "Default Serial Number",
                 required: true
+            },
+            accessoryType: {
+                value: 1, // Default Category "OTHER"
+                required: false
             }
         },
         label: function() {
-            return this.accessoryName || "Accessory";
+            return this.accessoryName || this.accessoryType || "Accessory";
         },
         labelStyle: function() {
             return this.accessoryName ? "node_label_italic" : "";
+        },
+        oneditprepare: function() {
+            var node = this;
+            var selectField = $("#node-config-input-accessoryType")
+            for (var key in accessoryTypes) {
+                selectField.append($("<option></option>").val(accessoryTypes[key]).text(key));
+            }
+            selectField.find("option").filter(function() {
+                return $(this).val() == node.accessoryType;
+            }).attr('selected', true);
+            selectField.change();
+        },
+        oneditsave: function() {
+            this.accessoryType = $("node-config-input-accessoryType option:selected").val();
         }
     });
 </script>

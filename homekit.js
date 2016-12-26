@@ -28,6 +28,7 @@ module.exports = function (RED) {
     this.manufacturer = n.manufacturer
     this.serialNo = n.serialNo
     this.model = n.model
+    this.accessoryType = n.accessoryType
 
     // generate UUID and username (MAC-address) from node id
     var accessoryUUID = uuid.generate(this.id)
@@ -44,7 +45,8 @@ module.exports = function (RED) {
     accessory.publish({
       username: accessoryUsername,
       pincode: this.pinCode,
-      port: this.port || 0
+      port: this.port || 0,
+      category: this.accessoryType
     }, true)
 
     this.accessory = accessory
