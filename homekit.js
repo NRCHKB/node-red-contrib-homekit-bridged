@@ -49,6 +49,10 @@ module.exports = function (RED) {
       category: this.accessoryType
     }, true)
 
+    this.on('close', function () {
+      accessory.destroy()
+    })
+
     this.accessory = accessory
   }
   RED.nodes.registerType('homekit-accessory', HAPAccessoryNode)
