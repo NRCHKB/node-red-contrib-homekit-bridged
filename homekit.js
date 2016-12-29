@@ -32,7 +32,8 @@ module.exports = function (RED) {
 
     // generate UUID and username (MAC-address) from node id
     var accessoryUUID = uuid.generate(this.id)
-    var accessoryUsername = macify(this.id)
+    // keep accessoryUsername in interface for later publishing
+    this.accessoryUsername = macify(this.id)
 
     // create accessory object
     var accessory = new Accessory(this.name, accessoryUUID)
@@ -41,13 +42,8 @@ module.exports = function (RED) {
       .setCharacteristic(Characteristic.SerialNumber, this.serialNo)
       .setCharacteristic(Characteristic.Model, this.model)
 
-    // publish accessory
-    accessory.publish({
-      username: accessoryUsername,
-      pincode: this.pinCode,
-      port: this.port || 0,
-      category: this.accessoryType
-    }, true)
+    // set initial published state to false
+    this.published = false;
 
     this.on('close', function () {
       accessory.destroy()
@@ -71,6 +67,17 @@ module.exports = function (RED) {
     // add service
     var accessory = this.configNode.accessory
     var service = accessory.addService(Service[this.serviceName], this.name, subtypeUUID)
+
+    // publish accessory after the service has been added
+    if (!this.configNode.published) {
+      accessory.publish({
+        username: this.configNode.accessoryUsername,
+        pincode: this.configNode.pinCode,
+        port: this.configNode.port || 0,
+        category: this.configNode.accessoryType
+      }, true);
+      this.configNode.published = true;
+    }
 
     this.service = service
     var node = this
