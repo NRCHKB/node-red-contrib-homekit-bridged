@@ -102,3 +102,17 @@ The following is a list of *Services* that are currently supported. If you encou
 *   Time Information
 *   Window
 *   Window Covering
+
+
+## Context
+
+Context info can be provided as part of the input message and will be available in the output message as `hap.context`.
+
+**Example**:
+
+```json
+{
+    "On": 1,
+    "Context": "set_from_mqtt_topic"
+}
+```
