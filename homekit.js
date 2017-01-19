@@ -116,14 +116,23 @@ module.exports = function (RED) {
         node.warn('Invalid message (payload missing)')
         return
       }
-
+      var updates = []
+      if (msg.payload.hasOwnProperty('Updates')) {
+        updates = msg.payload.Updates.slice(0)
+        delete msg.payload.Updates
+      }
+      
       // iterate over characteristics to be written
       Object.keys(msg.payload).map(function (key, index) {
         if (supported.write.indexOf(key) < 0) {
           // characteristic is not supported
           node.warn('Characteristic ' + key + ' cannot be written.\nTry one of these: ' + supported.write.join(', '))
         } else {
-          service.setCharacteristic(Characteristic[key], (msg.payload[key]))
+          if (updates.indexOf(key) != -1) {
+            service.updateCharacteristic(Characteristic[key], (msg.payload[key]))
+          } else {
+            service.setCharacteristic(Characteristic[key], (msg.payload[key]))
+          }
         }
       })
     })
