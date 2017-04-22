@@ -86,7 +86,7 @@ module.exports = function (RED) {
 
     // emit message when value changes
     service.on('characteristic-change', function (info) {
-      var msg = { payload: {}, hap: info, name: this.name }
+      var msg = { payload: {}, hap: info, name: node.name }
       var key = info.characteristic.displayName.replace(/ /g, '')
       msg.payload[key] = info.newValue
       node.status({fill: 'yellow', shape: 'dot', text: key + ': ' + info.newValue})
