@@ -22,7 +22,7 @@ Then run the following command in your Node-RED user directory - typically `~/.n
 
 ## Docker
 
-If you have a beautiful solution to run this in Docker, please share :) 
+If you have a beautiful solution to run this in Docker, please share :)
 
 Related Issue: [#8](https://github.com/mschm/node-red-contrib-homekit/issues/8)
 
@@ -30,7 +30,7 @@ Related Issue: [#8](https://github.com/mschm/node-red-contrib-homekit/issues/8)
 
 ### Accessory
 
-The Accessory node is a configuration node, specifying the *device* that iOS sees. 
+The Accessory node is a configuration node, specifying the *device* that iOS sees.
 
 * **Pin Code**: Specify the Pin for the pairing process.
 * **Port**: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.
@@ -41,7 +41,7 @@ The Accessory node is a configuration node, specifying the *device* that iOS see
 
 ### Service
 
-The Service nodes add functionality to your Accessories. You can assign multiple Services to one Accessory. 
+The Service nodes add functionality to your Accessories. You can assign multiple Services to one Accessory.
 
 * **Accessory**: What Accessory this Service is for.
 * **Service**: Choose the type of Service from the list.
@@ -49,7 +49,7 @@ The Service nodes add functionality to your Accessories. You can assign multiple
 
 ## Input Messages
 
-Input messages can be used to update any *Characteristic* that the selected *Service* provides. Simply pass the values-to-update as `msg.payload` object. 
+Input messages can be used to update any *Characteristic* that the selected *Service* provides. Simply pass the values-to-update as `msg.payload` object.
 
 **Example**: to signal that an *Outlet* is turned on and in use, send the following payload
 
@@ -64,41 +64,3 @@ Input messages can be used to update any *Characteristic* that the selected *Ser
 ## Output Messages
 
 Output messages are in the same format as input messages. They are emitted from the node when it receives *Characteristics* updates from a paired iOS device.
-
-## Supported Types
-
-The following is a list of *Services* that are currently supported. If you encounter problems with any of them please file an Issue.
-
-*   Air Quality Sensor
-*   Battery Service
-*   Camera Control
-*   Camera RTP Stream Management
-*   Carbon Dioxide Sensor
-*   Carbon Monoxide Sensor
-*   Contact Sensor
-*   Door
-*   Doorbell
-*   Fan
-*   Garage Door Opener
-*   Humidity Sensor
-*   Leak Sensor
-*   Light Sensor
-*   Lightbulb
-*   Lock Management
-*   Lock Mechanism
-*   Microphone
-*   Motion Sensor
-*   Occupancy Sensor
-*   Outlet
-*   Relay
-*   Security System
-*   Smoke Sensor
-*   Speaker
-*   Stateful Programmable Switch
-*   Stateless Programmable Switch
-*   Switch
-*   Temperature Sensor
-*   Thermostat
-*   Time Information
-*   Window
-*   Window Covering
