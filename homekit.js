@@ -43,10 +43,16 @@ module.exports = function (RED) {
       .setCharacteristic(Characteristic.Model, this.model)
 
     // set initial published state to false
-    this.published = false;
+    this.published = false
 
-    this.on('close', function () {
-      accessory.destroy()
+    this.on('close', function (removed, done) {
+      if (removed) {
+        // This node has been deleted
+        accessory.destroy()
+      } else {
+        // This node is being restarted
+      }
+      done()
     })
 
     this.accessory = accessory
@@ -75,8 +81,8 @@ module.exports = function (RED) {
         pincode: this.configNode.pinCode,
         port: this.configNode.port || 0,
         category: this.configNode.accessoryType
-      }, true);
-      this.configNode.published = true;
+      }, true)
+      this.configNode.published = true
     }
 
     this.service = service
@@ -135,8 +141,14 @@ module.exports = function (RED) {
       })
     })
 
-    this.on('close', function () {
-      accessory.removeService(service)
+    this.on('close', function (removed, done) {
+      if (removed) {
+        // This node has been deleted
+        accessory.removeService(service)
+      } else {
+        // This node is being restarted
+      }
+      done()
     })
   }
   RED.nodes.registerType('homekit-service', HAPServiceNode)
