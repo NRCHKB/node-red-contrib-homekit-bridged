@@ -72,7 +72,19 @@ module.exports = function (RED) {
 
     // add service
     var accessory = this.configNode.accessory
-    var service = accessory.addService(Service[this.serviceName], this.name, subtypeUUID)
+    var service = null;
+    var newService = new Service[this.serviceName](this.name, subtypeUUID);
+    for (var i in accessory.services) {
+      var existingService = accessory.services[i];
+      if (newService.UUID == existingService.UUID && newService.subtype == existingService.subtype) {
+        service = existingService;
+        service.getCharacteristic(Characteristic.Name).setValue(this.name);
+        break;
+      }
+    }
+    if (!service) {
+      service = accessory.addService(newService);
+    }
 
     // publish accessory after the service has been added
     if (!this.configNode.published) {
