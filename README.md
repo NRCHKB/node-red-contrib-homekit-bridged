@@ -46,6 +46,7 @@ The Service nodes add functionality to your Accessories. You can assign multiple
 * **Accessory**: What Accessory this Service is for.
 * **Service**: Choose the type of Service from the list.
 * **Name**: *optional*
+* **Characteristic Properties**: Customise the properties of characteristics.
 
 ## Input Messages
 

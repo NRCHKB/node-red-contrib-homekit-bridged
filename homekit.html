@@ -21,6 +21,16 @@
             Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
+
+    <div class="form-row" style="margin-bottom: 0px;">
+        <label for="node-input-characteristicProperties" style="width: 100% !important;">
+            <i class="fa fa-wrench"></i>
+            Characteristic Properties</label>
+        <input type="hidden" id="node-input-characteristicProperties">
+    </div>
+    <div class="form-row node-text-editor-row">
+        <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-characteristicProperties-editor" ></div>
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="homekit-service">
@@ -30,6 +40,7 @@
         <li><strong>Accessory</strong>: What Accessory this Service is for.</li>
         <li><strong>Service</strong>: Choose the type of Service from the list.</li>
         <li><strong>Name</strong>: <em>optional</em></li>
+        <li><strong>Characteristic Properties</strong>: Customise the properties of characteristics.</li>
     </ul>
     <h2 id="toc_6">Input Messages</h2>
     <p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
@@ -41,6 +52,18 @@
     <p><strong>Hint</strong>: to find out what <em>Characteristics</em> you can address, just send <code>{&quot;foo&quot;:&quot;bar&quot;}</code> and watch the debug tab ;)</p>
     <h2 id="toc_7">Output Messages</h2>
     <p>Output messages are in the same format as input messages. They are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
+    <h2 id="toc_8">Characteristic Properties</h2>
+    <p><strong>Example</strong>: allow temperatures below 0&deg;C</p>
+    <div><pre><code class="language-json">{
+    &quot;CurrentTemperature&quot;: {
+        &quot;minValue&quot;: -100
+    }
+    <p><strong>Example</strong>: limit fan speed multiples of 25%</p>
+    <div><pre><code class="language-json">{
+    &quot;RotationSpeed&quot;: {
+        &quot;minStep&quot;: 25
+    }
+}</code></pre></div>
 </script>
 
 <script type="text/x-red" data-template-name="homekit-accessory">
@@ -113,6 +136,22 @@
             serviceName: {
                 value: "",
                 required: true
+            },
+            characteristicProperties: {
+                value: "{}",
+                validate: function(value) {
+                    if (value.length == 0) {
+                        return true;
+                    }
+
+                    try {
+                        JSON.parse(value)
+                    } catch (e) {
+                        return false;
+                    }
+
+                    return value[0] == '{';
+                }
             }
         },
         inputs: 1,
@@ -135,9 +174,33 @@
                 return $(this).val() == node.serviceName;
             }).attr('selected', true);
             selectField.change();
+
+            this.editor = RED.editor.createEditor({
+                id: 'node-input-characteristicProperties-editor',
+                mode: 'ace/mode/json',
+                value: $("#node-input-characteristicProperties").val()
+            });
         },
         oneditsave: function() {
             this.serviceName = $("node-input-serviceName option:selected").val();
+            $("#node-input-characteristicProperties").val(this.editor.getValue());
+            this.editor.destroy();
+            delete this.editor;
+        },
+        oneditcancel: function() {
+            this.editor.destroy();
+            delete this.editor;
+        },
+        oneditresize: function(size) {
+            var rows = $("#dialog-form>div:not(.node-text-editor-row)");
+            var height = $("#dialog-form").height();
+            for (var i=0; i<rows.size(); i++) {
+                height -= $(rows[i]).outerHeight(true);
+            }
+            var editorRow = $("#dialog-form>div.node-text-editor-row");
+            height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
+            $(".node-text-editor").css("height",height+"px");
+            this.editor.resize();
         }
     });
 </script>
