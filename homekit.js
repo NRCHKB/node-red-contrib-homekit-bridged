@@ -139,6 +139,11 @@ module.exports = function (RED) {
       if ((characteristic.props.perms.indexOf('pr') + characteristic.props.perms.indexOf('ev')) > -2) {
         supported.write.push(cKey)
       }
+
+      //Allow for negative temperatures
+      if (characteristic.displayName == 'Current Temperature') {
+        characteristic.props.minValue = -100;
+      }
     })
 
     // respond to inputs
