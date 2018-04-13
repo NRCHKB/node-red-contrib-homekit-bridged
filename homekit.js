@@ -66,13 +66,38 @@ module.exports = function (RED) {
     this.name = n.name
     this.serviceName = n.serviceName
     this.configNode = RED.nodes.getNode(n.accessory)
+    if (n.characteristicProperties && n.characteristicProperties.length > 0) {
+      this.characteristicProperties = JSON.parse(n.characteristicProperties);
+    } else {
+      this.characteristicProperties = {};
+    }
 
     // generate UUID from node id
     var subtypeUUID = uuid.generate(this.id)
 
     // add service
     var accessory = this.configNode.accessory
-    var service = accessory.addService(Service[this.serviceName], this.name, subtypeUUID)
+    var service = null;
+    var newService = new Service[this.serviceName](this.name, subtypeUUID);
+    for (var i in accessory.services) {
+      var existingService = accessory.services[i];
+      if (newService.UUID == existingService.UUID && newService.subtype == existingService.subtype) {
+        service = existingService;
+        service.getCharacteristic(Characteristic.Name).setValue(this.name);
+        break;
+      }
+    }
+    if (!service) {
+      service = accessory.addService(newService);
+    }
+
+    // configure custom characteristic properties
+    for (var key in this.characteristicProperties) {
+      var characteristic = service.getCharacteristic(Characteristic[key]);
+      if (characteristic && this.characteristicProperties[key]) {
+        characteristic.setProps(this.characteristicProperties[key]);
+      }
+    }
 
     // publish accessory after the service has been added
     if (!this.configNode.published) {
