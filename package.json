@@ -1,6 +1,6 @@
 {
     "name": "@oliverrahner/node-red-contrib-homekit",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "description": "Node-RED nodes to simulate Apple HomeKit devices",
     "main": "homekit.js",
     "scripts": {
@@ -21,7 +21,7 @@
             "homekit": "homekit.js"
         }
     },
-    "author": "Marius Schmeding",
+    "author": "Marius Schmeding, Oliver Rahner",
     "license": "Apache-2.0",
     "bugs": {
         "url": "https://github.com/oliverrahner/node-red-contrib-homekit/issues"

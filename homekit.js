@@ -2,6 +2,7 @@ module.exports = function (RED) {
   'use strict'
   var API = require('./lib/api.js')(RED)
   var HapNodeJS = require('hap-nodejs')
+  var Bridge = HapNodeJS.Bridge
   var Accessory = HapNodeJS.Accessory
   var Service = HapNodeJS.Service
   var Characteristic = HapNodeJS.Characteristic
@@ -23,10 +24,60 @@ module.exports = function (RED) {
       // Initialize API
   API.init()
 
+  function HAPBridgeNode (n) {
+    RED.nodes.createNode(this, n)
+
+    var self = this
+
+    this.name = n.bridgeName
+    this.debug("Setting name to " + n.bridgeName)
+    this.pinCode = n.pinCode
+    this.port = n.port
+    this.manufacturer = n.manufacturer
+    this.serialNo = n.serialNo
+    this.model = n.model
+    this.accessoryType = Accessory.Categories.BRIDGE
+
+    var bridgeUUID = uuid.generate(this.id)
+    this.bridgeUsername = macify(this.id)
+
+    this.debug("Creating Bridge with name '" + this.name + "' and UUID '" + bridgeUUID + "'")
+    var bridge = new Bridge(this.name, bridgeUUID)
+
+    this.publish = function() {
+	    bridge.publish({
+        username: this.bridgeUsername,
+        port: this.port,
+        pincode: this.pinCode,
+        category: this.accessoryType
+    	})
+    }
+
+    bridge.getService(Service.AccessoryInformation)
+      .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
+      .setCharacteristic(Characteristic.SerialNumber, this.serialNo)
+      .setCharacteristic(Characteristic.Model, this.model)
+
+    this.published = false
+    this.on('close', function (removed, done) {
+      if (removed) {
+        // This node has been deleted
+        bridge.destroy()
+      } else {
+        // This node is being restarted
+        bridge = null
+      }
+      done()
+    })
+    this.bridge = bridge
+  }
+  RED.nodes.registerType('homekit-bridge', HAPBridgeNode)
+
   function HAPAccessoryNode (n) {
     RED.nodes.createNode(this, n)
 
     // config node properties
+    this.bridgeNode = RED.nodes.getNode(n.bridge)
     this.name = n.accessoryName
     this.pinCode = n.pinCode
     this.port = n.port
@@ -35,11 +86,11 @@ module.exports = function (RED) {
     this.model = n.model
     this.accessoryType = n.accessoryType
 
-    // generate UUID and username (MAC-address) from node id
-    var accessoryUUID = uuid.generate(this.id)
-    // keep accessoryUsername in interface for later publishing
-    this.accessoryUsername = macify(this.id)
+    var bridge = this.bridgeNode.bridge
 
+    // generate UUID from node id
+    var accessoryUUID = uuid.generate(this.id)
+    
     // create accessory object
     var accessory = new Accessory(this.name, accessoryUUID)
     accessory.getService(Service.AccessoryInformation)
@@ -47,8 +98,8 @@ module.exports = function (RED) {
       .setCharacteristic(Characteristic.SerialNumber, this.serialNo)
       .setCharacteristic(Characteristic.Model, this.model)
 
-    // set initial published state to false
-    this.published = false
+    bridge.addBridgedAccessory(accessory)
+    this.debug("Bridge now has " + bridge.bridgedAccessories.length + " accessories.")
 
     this.on('close', function (removed, done) {
       if (removed) {
@@ -105,14 +156,8 @@ module.exports = function (RED) {
     }
 
     // publish accessory after the service has been added
-    if (!this.configNode.published) {
-      accessory.publish({
-        username: this.configNode.accessoryUsername,
-        pincode: this.configNode.pinCode,
-        port: this.configNode.port || 0,
-        category: this.configNode.accessoryType
-      }, true)
-      this.configNode.published = true
+    if (!this.configNode.bridgeNode.published) {
+      this.configNode.bridgeNode.publish()
     }
 
     this.service = service

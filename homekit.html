@@ -68,12 +68,10 @@
 
 <script type="text/x-red" data-template-name="homekit-accessory">
     <div class="form-row">
-        <label for="node-config-input-pinCode"><i class="fa fa-lock"></i> Pin Code</label>
-        <input type="text" id="node-config-input-pinCode" placeholder="xxx-xx-xxx">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
-        <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign">
+        <label for="node-config-input-bridge">
+        <i class="fa fa-rocket"></i>
+        Bridge</label>
+        <input id="node-config-input-bridge">
     </div>
     <div class="form-row">
         <label for="node-config-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
@@ -104,13 +102,51 @@
     <h3 id="toc_4">Accessory</h3>
     <p>The Accessory node is a configuration node, specifying the <em>device</em> that iOS sees. </p>
     <ul>
-        <li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
-        <li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.</li>
+        <li><strong>Bridge</strong>: The Bridge to host this Accessory behind.</li>
         <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
         <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>.</li>
         <li><strong>Type</strong>: A hint to iOS clients, so that for instance an appropriate icon can be drawn.</li>
     </ul>
-    <p><em>Bridged Accessories</em> are not supported at the moment.</p>
+    <p>All accessories are published as <em>Bridged Accessories</em>.</p>
+</script>
+<script type="text/x-red" data-template-name="homekit-bridge">
+    <div class="form-row">
+        <label for="node-config-input-pinCode"><i class="fa fa-lock"></i> Pin Code</label>
+        <input type="text" id="node-config-input-pinCode" placeholder="xxx-xx-xxx">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
+        <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
+        <input type="text" id="node-config-input-manufacturer" placeholder="Manufacturer">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
+        <input type="text" id="node-config-input-serialNo" placeholder="Serial Number">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-model"><i class="fa fa-wrench"></i> Model</label>
+        <input type="text" id="node-config-input-model" placeholder="Model">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-bridgeName"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-bridgeName" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="homekit-bridge">
+    <h3 id="toc_4">Bridge</h3>
+    <p>The Bridge node is a configuration node, specifying the <em>bridge</em> that iOS sees, i.e. the device that is manually being added by the user. 
+    All accessories behind a bridge noded are then automatically added by iOS.
+    </p>
+    <ul>
+        <li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
+        <li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.</li>
+        <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
+        <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>.</li>
+    </ul>
 </script>
 
 <script type="text/javascript">
@@ -216,17 +252,14 @@
     RED.nodes.registerType('homekit-accessory', {
         category: 'config',
         defaults: {
+            bridge: {
+                value: "",
+                type: "homekit-bridge",
+                required: true
+            },
             accessoryName: {
                 value: "",
                 required: true
-            },
-            pinCode: {
-                value: "111-11-111",
-                required: true,
-                validate: RED.validators.regex(/[0-9]{3}-[0-9]{2}-[0-9]{3}/)
-            },
-            port: {
-                //validate:RED.validators.number()
             },
             manufacturer: {
                 value: "Default Manufacturer",
@@ -264,6 +297,44 @@
         },
         oneditsave: function() {
             this.accessoryType = $("node-config-input-accessoryType option:selected").val();
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('homekit-bridge', {
+        category: 'config',
+        defaults: {
+            bridgeName: {
+                value: "",
+                required: true
+            },
+            pinCode: {
+                value: "111-11-111",
+                required: true,
+                validate: RED.validators.regex(/[0-9]{3}-[0-9]{2}-[0-9]{3}/)
+            },
+            port: {
+                //validate:RED.validators.number()
+            },
+            manufacturer: {
+                value: "Default Manufacturer",
+                required: true
+            },
+            model: {
+                value: "Default Model",
+                required: true
+            },
+            serialNo: {
+                value: "Default Serial Number",
+                required: true
+            }
+        },
+        label: function() {
+            return this.bridgeName || "Bridge";
+        },
+        labelStyle: function() {
+            return this.bridgeName ? "node_label_italic" : "";
         }
     });
 </script>
