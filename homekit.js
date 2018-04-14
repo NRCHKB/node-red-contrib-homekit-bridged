@@ -73,48 +73,6 @@ module.exports = function (RED) {
   }
   RED.nodes.registerType('homekit-bridge', HAPBridgeNode)
 
-  function HAPAccessoryNode (n) {
-    RED.nodes.createNode(this, n)
-
-    // config node properties
-    this.bridgeNode = RED.nodes.getNode(n.bridge)
-    this.name = n.accessoryName
-    this.pinCode = n.pinCode
-    this.port = n.port
-    this.manufacturer = n.manufacturer
-    this.serialNo = n.serialNo
-    this.model = n.model
-    this.accessoryType = n.accessoryType
-
-    var bridge = this.bridgeNode.bridge
-
-    // generate UUID from node id
-    var accessoryUUID = uuid.generate(this.id)
-    
-    // create accessory object
-    var accessory = new Accessory(this.name, accessoryUUID)
-    accessory.getService(Service.AccessoryInformation)
-      .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
-      .setCharacteristic(Characteristic.SerialNumber, this.serialNo)
-      .setCharacteristic(Characteristic.Model, this.model)
-
-    bridge.addBridgedAccessory(accessory)
-    this.debug("Bridge now has " + bridge.bridgedAccessories.length + " accessories.")
-
-    this.on('close', function (removed, done) {
-      if (removed) {
-        // This node has been deleted
-        accessory.destroy()
-      } else {
-        // This node is being restarted
-      }
-      done()
-    })
-
-    this.accessory = accessory
-  }
-  RED.nodes.registerType('homekit-accessory', HAPAccessoryNode)
-
   function HAPServiceNode (n) {
     RED.nodes.createNode(this, n)
 
