@@ -65,3 +65,55 @@ Input messages can be used to update any *Characteristic* that the selected *Ser
 ## Output Messages
 
 Output messages are in the same format as input messages. They are emitted from the node when it receives *Characteristics* updates from a paired iOS device.
+
+## Supported Types
+
+The following is a list of *Services* that are currently supported. If you encounter problems with any of them please file an Issue.
+
+*   Air Quality Sensor
+*   Battery Service
+*   Camera Control
+*   Camera RTP Stream Management
+*   Carbon Dioxide Sensor
+*   Carbon Monoxide Sensor
+*   Contact Sensor
+*   Door
+*   Doorbell
+*   Fan
+*   Garage Door Opener
+*   Humidity Sensor
+*   Leak Sensor
+*   Light Sensor
+*   Lightbulb
+*   Lock Management
+*   Lock Mechanism
+*   Microphone
+*   Motion Sensor
+*   Occupancy Sensor
+*   Outlet
+*   Relay
+*   Security System
+*   Smoke Sensor
+*   Speaker
+*   Stateful Programmable Switch
+*   Stateless Programmable Switch
+*   Switch
+*   Temperature Sensor
+*   Thermostat
+*   Time Information
+*   Window
+*   Window Covering
+
+
+## Context
+
+Context info can be provided as part of the input message and will be available in the output message as `hap.context`.
+
+**Example**:
+
+```json
+{
+    "On": 1,
+    "Context": "set_from_mqtt_topic"
+}
+```

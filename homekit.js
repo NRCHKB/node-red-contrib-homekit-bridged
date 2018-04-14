@@ -7,7 +7,12 @@ module.exports = function (RED) {
   var Characteristic = HapNodeJS.Characteristic
   var uuid = HapNodeJS.uuid
 
-    // Initialize our storage system
+  Service.prototype.setCharacteristicWithContext = function(name, value, context) {
+    this.getCharacteristic(name).setValue(value, null, context);
+    return this; // for chaining
+  }
+  
+  // Initialize our storage system
   if (RED.settings.available()) {
     var userDir = RED.settings.userDir
     HapNodeJS.init(userDir + '/homekit-persist')
@@ -119,7 +124,7 @@ module.exports = function (RED) {
 
     // emit message when value changes
     service.on('characteristic-change', function (info) {
-      var msg = { payload: {}, hap: info}
+      var msg = { payload: {}, hap: info, name: node.name }
       var key = info.characteristic.displayName.replace(/ /g, '')
       msg.payload[key] = info.newValue
       node.status({fill: 'yellow', shape: 'dot', text: key + ': ' + info.newValue})
@@ -159,14 +164,24 @@ module.exports = function (RED) {
         node.warn('Invalid message (payload missing)')
         return
       }
-
+      
+      var context = null;
+      if (msg.payload.hasOwnProperty('Context')) {
+        context = msg.payload.Context;
+        delete msg.payload.Context;
+      }
+      
       // iterate over characteristics to be written
       Object.keys(msg.payload).map(function (key, index) {
         if (supported.write.indexOf(key) < 0) {
           // characteristic is not supported
           node.warn('Characteristic ' + key + ' cannot be written.\nTry one of these: ' + supported.write.join(', '))
         } else {
-          service.setCharacteristic(Characteristic[key], (msg.payload[key]))
+          if (context !== null) {
+            service.setCharacteristicWithContext(Characteristic[key], (msg.payload[key]), context)
+          } else {
+            service.setCharacteristic(Characteristic[key], (msg.payload[key]))
+          }
         }
       })
     })
