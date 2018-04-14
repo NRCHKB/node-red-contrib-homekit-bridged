@@ -1,9 +1,9 @@
 <script type="text/x-red" data-template-name="homekit-service">
     <div class="form-row">
-        <label for="node-input-accessory">
+        <label for="node-input-bridge">
         <i class="fa fa-rocket"></i>
-        Accessory</label>
-        <input id="node-input-accessory">
+        Bridge</label>
+        <input id="node-input-bridge">
     </div>
 
     <div class="form-row">
@@ -13,6 +13,19 @@
         <select id="node-input-serviceName">
             <option value="">Choose...</option>
         </select>
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
+        <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
+    </div>
+    <div class="form-row">
+        <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
+        <input type="text" id="node-input-serialNo" placeholder="Serial Number">
+    </div>
+    <div class="form-row">
+        <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
+        <input type="text" id="node-input-model" placeholder="Model">
     </div>
 
     <div class="form-row">
@@ -35,9 +48,10 @@
 
 <script type="text/x-red" data-help-name="homekit-service">
     <h3 id="toc_5">Service</h3>
-    <p>The Service nodes add functionality to your Accessories. You can assign multiple Services to one Accessory. </p>
+    <p>The Service nodes already contain the linked Accessory.</p>
     <ul>
-        <li><strong>Accessory</strong>: What Accessory this Service is for.</li>
+        <li><strong>Bridge</strong>: On what bridge to host this Service and its Accessory.</li>
+        <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
         <li><strong>Service</strong>: Choose the type of Service from the list.</li>
         <li><strong>Name</strong>: <em>optional</em></li>
         <li><strong>Characteristic Properties</strong>: Customise the properties of characteristics.</li>
@@ -66,49 +80,6 @@
 }</code></pre></div>
 </script>
 
-<script type="text/x-red" data-template-name="homekit-accessory">
-    <div class="form-row">
-        <label for="node-config-input-bridge">
-        <i class="fa fa-rocket"></i>
-        Bridge</label>
-        <input id="node-config-input-bridge">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
-        <input type="text" id="node-config-input-manufacturer" placeholder="Manufacturer">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
-        <input type="text" id="node-config-input-serialNo" placeholder="Serial Number">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-model"><i class="fa fa-wrench"></i> Model</label>
-        <input type="text" id="node-config-input-model" placeholder="Model">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-accessoryType">
-            <i class="fa fa-cog"></i>
-            Type</label>
-        <select id="node-config-input-accessoryType">
-        </select>
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-accessoryName"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-config-input-accessoryName" placeholder="Name">
-    </div>
-</script>
-
-<script type="text/x-red" data-help-name="homekit-accessory">
-    <h3 id="toc_4">Accessory</h3>
-    <p>The Accessory node is a configuration node, specifying the <em>device</em> that iOS sees. </p>
-    <ul>
-        <li><strong>Bridge</strong>: The Bridge to host this Accessory behind.</li>
-        <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
-        <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>.</li>
-        <li><strong>Type</strong>: A hint to iOS clients, so that for instance an appropriate icon can be drawn.</li>
-    </ul>
-    <p>All accessories are published as <em>Bridged Accessories</em>.</p>
-</script>
 <script type="text/x-red" data-template-name="homekit-bridge">
     <div class="form-row">
         <label for="node-config-input-pinCode"><i class="fa fa-lock"></i> Pin Code</label>
@@ -161,9 +132,9 @@
         category: 'advanced',
         paletteLabel: 'homekit',
         defaults: {
-            accessory: {
+            bridge: {
                 value: "",
-                type: "homekit-accessory",
+                type: "homekit-bridge",
                 required: true
             },
             name: {
@@ -171,6 +142,18 @@
             },
             serviceName: {
                 value: "",
+                required: true
+            },
+            manufacturer: {
+                value: "Default Manufacturer",
+                required: true
+            },
+            model: {
+                value: "Default Model",
+                required: true
+            },
+            serialNo: {
+                value: "Default Serial Number",
                 required: true
             },
             characteristicProperties: {
@@ -241,65 +224,6 @@
     });
 </script>
 
-<script type="text/javascript">
-    var accessoryTypes
-
-    //HomeKitAccessoryTypes
-    $.getJSON('homekit/accessory/types', function(data) {
-        accessoryTypes = data
-    });
-
-    RED.nodes.registerType('homekit-accessory', {
-        category: 'config',
-        defaults: {
-            bridge: {
-                value: "",
-                type: "homekit-bridge",
-                required: true
-            },
-            accessoryName: {
-                value: "",
-                required: true
-            },
-            manufacturer: {
-                value: "Default Manufacturer",
-                required: true
-            },
-            model: {
-                value: "Default Model",
-                required: true
-            },
-            serialNo: {
-                value: "Default Serial Number",
-                required: true
-            },
-            accessoryType: {
-                value: 1, // Default Category "OTHER"
-                required: false
-            }
-        },
-        label: function() {
-            return this.accessoryName || this.accessoryType || "Accessory";
-        },
-        labelStyle: function() {
-            return this.accessoryName ? "node_label_italic" : "";
-        },
-        oneditprepare: function() {
-            var node = this;
-            var selectField = $("#node-config-input-accessoryType")
-            for (var key in accessoryTypes) {
-                selectField.append($("<option></option>").val(accessoryTypes[key]).text(key));
-            }
-            selectField.find("option").filter(function() {
-                return $(this).val() == node.accessoryType;
-            }).attr('selected', true);
-            selectField.change();
-        },
-        oneditsave: function() {
-            this.accessoryType = $("node-config-input-accessoryType option:selected").val();
-        }
-    });
-</script>
 
 <script type="text/javascript">
     RED.nodes.registerType('homekit-bridge', {

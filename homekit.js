@@ -119,20 +119,36 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, n)
 
     // service node properties
+    this.bridgeNode = RED.nodes.getNode(n.bridge)
     this.name = n.name
     this.serviceName = n.serviceName
-    this.configNode = RED.nodes.getNode(n.accessory)
+    this.manufacturer = n.manufacturer
+    this.serialNo = n.serialNo
+    this.model = n.model
+    this.accessoryType = n.accessoryType
+
     if (n.characteristicProperties && n.characteristicProperties.length > 0) {
       this.characteristicProperties = JSON.parse(n.characteristicProperties);
     } else {
       this.characteristicProperties = {};
     }
 
+    var bridge = this.bridgeNode.bridge
+
     // generate UUID from node id
     var subtypeUUID = uuid.generate(this.id)
 
+    // create accessory object
+    var accessory = new Accessory(this.name, accessoryUUID)
+    accessory.getService(Service.AccessoryInformation)
+      .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
+      .setCharacteristic(Characteristic.SerialNumber, this.serialNo)
+      .setCharacteristic(Characteristic.Model, this.model)
+
+    bridge.addBridgedAccessory(accessory)
+    this.debug("Bridge now has " + bridge.bridgedAccessories.length + " accessories.")
+
     // add service
-    var accessory = this.configNode.accessory
     var service = null;
     var newService = new Service[this.serviceName](this.name, subtypeUUID);
     for (var i in accessory.services) {
@@ -143,6 +159,7 @@ module.exports = function (RED) {
         break;
       }
     }
+
     if (!service) {
       service = accessory.addService(newService);
     }
@@ -156,8 +173,8 @@ module.exports = function (RED) {
     }
 
     // publish accessory after the service has been added
-    if (!this.configNode.bridgeNode.published) {
-      this.configNode.bridgeNode.publish()
+    if (!this.bridgeNode.published) {
+      this.bridgeNode.publish()
     }
 
     this.service = service
@@ -235,11 +252,15 @@ module.exports = function (RED) {
       if (removed) {
         // This node has been deleted
         accessory.removeService(service)
+        accessory.destroy()
       } else {
+        accessory = null
         // This node is being restarted
       }
       done()
     })
+
+    this.accessory = accessory
   }
   RED.nodes.registerType('homekit-service', HAPServiceNode)
 }
