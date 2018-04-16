@@ -67,7 +67,14 @@ module.exports = function (RED) {
         bridge.destroy()
       } else {
         // This node is being restarted
+        // no-so-nice workaround until there is another way
+        // see https://github.com/KhaosT/HAP-NodeJS/issues/579
+        bridge._server.stop()
+        bridge._server = undefined
+        bridge._advertiser.stopAdvertising()
+        bridge._advertiser = undefined
         bridge = null
+        this.published = false
       }
       done()
     })
@@ -100,6 +107,7 @@ module.exports = function (RED) {
     var accessoryUUID = uuid.generate('A'+this.id)
 
     // create accessory object
+    this.debug("Adding new acessory with name '" + this.name + "' and UUID '" + accessoryUUID + "'")
     var accessory = new Accessory(this.name, accessoryUUID)
     accessory.getService(Service.AccessoryInformation)
       .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
@@ -112,10 +120,12 @@ module.exports = function (RED) {
     // add service
     var service = null;
     var newService = new Service[this.serviceName](this.name, subtypeUUID);
-    
+
+    this.debug("Looking for service with UUID '" + subtypeUUID + "'...")
     for (var i in accessory.services) {
       var existingService = accessory.services[i];
       if (newService.UUID == existingService.UUID && newService.subtype == existingService.subtype) {
+        this.debug("... found it! Existing name: '" + service.getCharacteristic(Characteristic.Name).getValue())
         service = existingService;
         service.getCharacteristic(Characteristic.Name).setValue(this.name);
         break;
@@ -123,6 +133,7 @@ module.exports = function (RED) {
     }
 
     if (!service) {
+      this.debug("... didn't find it. Adding new service.")
       service = accessory.addService(newService);
     }
 
@@ -214,6 +225,7 @@ module.exports = function (RED) {
       if (removed) {
         // This node has been deleted
         accessory.removeService(service)
+        bridge.removeBridgedAccessory(accessory)
         accessory.destroy()
       } else {
         accessory = null
