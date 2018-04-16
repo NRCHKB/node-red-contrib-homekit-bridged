@@ -7,6 +7,7 @@ module.exports = function (RED) {
   var Service = HapNodeJS.Service
   var Characteristic = HapNodeJS.Characteristic
   var uuid = HapNodeJS.uuid
+  var publishTimer
 
   Service.prototype.setCharacteristicWithContext = function(name, value, context) {
     this.getCharacteristic(name).setValue(value, null, context);
@@ -45,14 +46,14 @@ module.exports = function (RED) {
     var bridge = new Bridge(this.name, bridgeUUID)
 
     this.publish = function() {
-      this.debug("publishing bridge with name '" + this.name + "' and pin code '" + this.pinCode + "'")
+      self.debug("publishing bridge with name '" + self.name + "' and pin code '" + self.pinCode + "'")
 	    bridge.publish({
-        username: this.bridgeUsername,
-        port: this.port,
-        pincode: this.pinCode,
-        category: this.accessoryType
+        username: self.bridgeUsername,
+        port: self.port,
+        pincode: self.pinCode,
+        category: self.accessoryType
       })
-      this.published = true
+      self.published = true
     }
 
     bridge.getService(Service.AccessoryInformation)
@@ -146,8 +147,16 @@ module.exports = function (RED) {
     }
 
     // publish accessory after the service has been added
+    // BUT ONLY after 5 seconds with no new service have passed
+    // otherwise, our bridge would get published too early during startup and
+    // services being added after that point would be seen as "new" in iOS,
+    // removing all parameters set (Rooms, Groups, Scenes...)
     if (!this.bridgeNode.published) {
-      this.bridgeNode.publish()
+      if (publishTimer !== undefined)
+      {
+        clearTimeout(publishTimer)
+      }
+      publishTimer = setTimeout(this.bridgeNode.publish, 5000)
     }
 
     this.service = service
