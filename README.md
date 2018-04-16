@@ -3,7 +3,20 @@ node-red-contrib-homekit
 
 Node-RED nodes to simulate Apple HomeKit devices.
 
-![Intro](http://g.recordit.co/zDBJUdAO04.gif)
+## Why this fork?
+
+As Marius Schmeding seems to have abandoned his greats [work](https://github.com/mschm/node-red-contrib-homekit), I decided to fork his repo and to introduce some major rework.
+
+The biggest change is the use of HAP-NodeJS in **bridged mode**: only add one bridge in the iOS home app to access all your devices!
+
+Unfortunately, I had to introduce a new node type `homekit-bridge` and remove the old `homekit-accessory`. This means you either have to start over with a new flow or edit it manually.
+
+If you go for the manual way:
+
+* export your flow
+* remove the node of type `homekit-accessory`
+* remove the parameter `accessory` on all of your `homekit-service`s
+
 
 ## Prerequisites
 
