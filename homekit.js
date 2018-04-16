@@ -45,12 +45,14 @@ module.exports = function (RED) {
     var bridge = new Bridge(this.name, bridgeUUID)
 
     this.publish = function() {
+      this.debug("publishing bridge with name '" + this.name + "' and pin code '" + this.pinCode + "'")
 	    bridge.publish({
         username: this.bridgeUsername,
         port: this.port,
         pincode: this.pinCode,
         category: this.accessoryType
-    	})
+      })
+      this.published = true
     }
 
     bridge.getService(Service.AccessoryInformation)
@@ -95,6 +97,7 @@ module.exports = function (RED) {
 
     // generate UUID from node id
     var subtypeUUID = uuid.generate(this.id)
+    var accessoryUUID = uuid.generate('A'+this.id)
 
     // create accessory object
     var accessory = new Accessory(this.name, accessoryUUID)
@@ -109,6 +112,7 @@ module.exports = function (RED) {
     // add service
     var service = null;
     var newService = new Service[this.serviceName](this.name, subtypeUUID);
+    
     for (var i in accessory.services) {
       var existingService = accessory.services[i];
       if (newService.UUID == existingService.UUID && newService.subtype == existingService.subtype) {
@@ -140,7 +144,7 @@ module.exports = function (RED) {
 
     // the pinCode should be shown to the user until interaction with
     // iOS client starts
-    node.status({fill: 'yellow', shape: 'ring', text: node.configNode.pinCode})
+    node.status({fill: 'yellow', shape: 'ring', text: node.bridgeNode.pinCode})
 
     // emit message when value changes
     service.on('characteristic-change', function (info) {
