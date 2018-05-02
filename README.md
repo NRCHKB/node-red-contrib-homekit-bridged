@@ -1,7 +1,7 @@
 node-red-contrib-homekit-bridged
 ================================
 
-Node-RED nodes to simulate Apple HomeKit devices.
+Node-RED nodes to simulate Apple HomeKit devices. Based on node-red-contrib-homekit, but with support for bridged devices. 
 
 ## Why this fork?
 
