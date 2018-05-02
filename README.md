@@ -12,7 +12,7 @@ Also, I (believe I) fixed some issues:
 * devices don't show as unreachable after redeploying
 * having more than one device per accessory (in the "old" world) or bridge doesn't lead to iOS losing the parameters for this device anymore
 
-Unfortunately, I had to introduce a new node type `homekit-bridge` and remove the old `homekit-accessory`. This means you either have to start over with a new flow or edit it manually.
+Unfortunately, I had to introduce a new node type `homekit-bridge` and remove the old `homekit-accessory`. This means you either have to start over with a new flow or edit it manually. Thankfully, [Fredrik Furtenbach](https://github.com/flic) published a [command line script](https://github.com/flic/Convert-Flows) to aid in the conversion.
 
 If you go for the manual way:
 
