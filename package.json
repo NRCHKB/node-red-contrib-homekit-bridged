@@ -1,7 +1,7 @@
 {
-    "name": "@oliverrahner/node-red-contrib-homekit-bridged",
+    "name": "node-red-contrib-homekit-bridged",
     "version": "0.3.2",
-    "description": "Node-RED nodes to simulate Apple HomeKit devices",
+    "description": "Node-RED nodes to simulate Apple HomeKit devices. Based on node-red-contrib-homekit, but with support for bridged devices.",
     "main": "homekit.js",
     "scripts": {
         "test": "test"
