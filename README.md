@@ -35,32 +35,27 @@ For Debian / Ubuntu you need to install the following in order to support Bonjou
 
 Then run the following command in your Node-RED user directory - typically `~/.node-red`
 
-        npm install node-red-contrib-homekit
-
-## Docker
-
-If you have a beautiful solution to run this in Docker, please share :)
-
-Related Issue: [#8](https://github.com/mschm/node-red-contrib-homekit/issues/8)
+        npm install node-red-contrib-homekit-bridged
 
 ## Nodes
 
-### Accessory
+### Bridge
 
-The Accessory node is a configuration node, specifying the *device* that iOS sees.
+The Bridge node is a configuration node, specifying the *bridge* that iOS sees, i.e. the device that is manually being added by the user. 
+All accessories behind a bridge noded are then automatically added by iOS.
 
 * **Pin Code**: Specify the Pin for the pairing process.
 * **Port**: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.
 * **Manufacturer, Model, Serial Number**: Can be anything you want.
 * **Name**: If you intend to simulate a rocket, then why don't you call it *Rocket*.
 
-*Bridged Accessories* are not supported at the moment.
-
 ### Service
 
-The Service nodes add functionality to your Accessories. You can assign multiple Services to one Accessory.
+The Service node represents the single device you want to control or query.
+Every service node creates its own HAP accessory to keep things simple
 
-* **Accessory**: What Accessory this Service is for.
+* **Bridge**: On what bridge to host this Service and its Accessory.
+* **Manufacturer, Model, Serial Number**: Can be anything you want.
 * **Service**: Choose the type of Service from the list.
 * **Name**: *optional*
 * **Characteristic Properties**: Customise the properties of characteristics.
