@@ -7,7 +7,7 @@ module.exports = function (RED) {
   var Service = HapNodeJS.Service
   var Characteristic = HapNodeJS.Characteristic
   var uuid = HapNodeJS.uuid
-  var publishTimer
+  var publishTimers = {}
 
   Service.prototype.setCharacteristicWithContext = function(name, value, context) {
     this.getCharacteristic(name).setValue(value, null, context);
@@ -152,11 +152,11 @@ module.exports = function (RED) {
     // services being added after that point would be seen as "new" in iOS,
     // removing all parameters set (Rooms, Groups, Scenes...)
     if (!this.bridgeNode.published) {
-      if (publishTimer !== undefined)
+      if (publishTimers[this.bridgeNode.id] !== undefined)
       {
-        clearTimeout(publishTimer)
+        clearTimeout(publishTimers[this.bridgeNode.id])
       }
-      publishTimer = setTimeout(this.bridgeNode.publish, 5000)
+      publishTimers[this.bridgeNode.id] = setTimeout(this.bridgeNode.publish, 5000)
     }
 
     this.service = service
