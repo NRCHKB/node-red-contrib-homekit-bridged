@@ -16,11 +16,14 @@ Unfortunately, I had to introduce a new node type `homekit-bridge` and remove th
 
 If you go for the manual way:
 
-* export your flow
-* remove the node(s) of type `homekit-accessory`
-* remove the parameter `accessory` on all of your `homekit-service`s
-* import your flow
-* add a new bridge and change all your services to use it
+1. Export your flows.
+2. Delete all flows.
+3. Remove node-red-contrib-homekit.
+4. Install node-red-contrib-homekit-bridged.
+5. Open the exported flow in a text editor and remove the nodes of type `homekit-accessory`.
+6. Remove the parameter `accessory` on all of your `homekit-service`s and save the file.
+7. Import the edited flow.
+8. Add a new bridge and change all your services to use it.
 
 ## Prerequisites
 
