@@ -40,6 +40,12 @@ Then run the following command in your Node-RED user directory - typically `~/.n
 
         npm install node-red-contrib-homekit-bridged
 
+### Docker
+
+You can also pull a [docker image](https://hub.docker.com/r/raymondmm/node-red-homekit/) containing everything need to get started, thanks to [raymondmm (Raymond Mouthaan)](https:/https://github.com/RaymondMouthaan).
+
+Please see instructions on Docker Hub.
+
 ## Nodes
 
 ### Bridge
