@@ -225,10 +225,12 @@ module.exports = function (RED) {
         return;
       }
 
-      if(msg.payload.hasOwnProperty('name')) {
-        if(msg.payload.name !== node.name) {
-          node.debug('Skipping message sent to another node ' + msg.payload.name)
+      if(msg.payload.hasOwnProperty('Name')) {
+        if(msg.payload.Name !== node.name) {
+          node.debug('Skipping message sent to another node ' + msg.payload.Name)
+          return;
         }
+        delete msg.payload.Name;
       }
 
       var context = null;
