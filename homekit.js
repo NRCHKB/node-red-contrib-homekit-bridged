@@ -13,7 +13,7 @@ module.exports = function (RED) {
     this.getCharacteristic(name).setValue(value, null, context);
     return this; // for chaining
   }
-  
+
   // Initialize our storage system
   if (RED.settings.available()) {
     var userDir = RED.settings.userDir;
@@ -224,13 +224,19 @@ module.exports = function (RED) {
         node.warn('Invalid message (payload missing)');
         return;
       }
-      
+
+      if(msg.payload.hasOwnProperty('name')) {
+        if(msg.payload.name !== node.name) {
+          node.debug('Skipping message sent to another node ' + msg.payload.name)
+        }
+      }
+
       var context = null;
       if (msg.payload.hasOwnProperty('Context')) {
         context = msg.payload.Context;
         delete msg.payload.Context;
       }
-      
+
       // iterate over characteristics to be written
       Object.keys(msg.payload).map(function (key, index) {
         if (supported.write.indexOf(key) < 0) {
