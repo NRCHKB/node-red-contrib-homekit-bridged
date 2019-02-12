@@ -16,6 +16,13 @@
     </div>
 
     <div class="form-row">
+            <label for="node-input-topic">
+                <i class="fa fa-tasks"></i>
+                 Topic</label>
+            <input type="text" id="node-input-topic" placeholder="Topic">
+        </div>
+    
+    <div class="form-row">
         <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
         <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
     </div>
@@ -51,6 +58,7 @@
     <p>The Service node represents the single device you want to control or query.</p>
     <p>Every service node creates its own HAP accessory to keep things simple.</p>
     <ul>
+        <li><strong>Topic</strong>: An optional property that can be configured in the node or, if left blank, can be set by <code>msg.topic</code>.</li>
         <li><strong>Bridge</strong>: On what bridge to host this Service and its Accessory.</li>
         <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
         <li><strong>Service</strong>: Choose the type of Service from the list.</li>
@@ -144,6 +152,9 @@
             serviceName: {
                 value: "",
                 required: true
+            },
+            topic: {
+                value:""
             },
             manufacturer: {
                 value: "Default Manufacturer",

@@ -89,6 +89,7 @@ module.exports = function (RED) {
     // service node properties
     this.bridgeNode = RED.nodes.getNode(n.bridge);
     this.name = n.name;
+    this.topic = n.topic;
     this.serviceName = n.serviceName;
     this.manufacturer = n.manufacturer;
     this.serialNo = n.serialNo;
@@ -184,7 +185,8 @@ module.exports = function (RED) {
 
     // emit message when value changes
     service.on('characteristic-change', function (info) {
-      var msg = { payload: {}, hap: info, name: node.name };
+      var topic = (node.topic) ? node.topic : node.topic_in;
+      var msg = { payload: {}, hap: info, name: node.name, topic: topic };
       var key = info.characteristic.displayName.replace(/ /g, '');
       msg.payload[key] = info.newValue;
       node.status({fill: 'yellow', shape: 'dot', text: key + ': ' + info.newValue});
@@ -230,7 +232,9 @@ module.exports = function (RED) {
         context = msg.payload.Context;
         delete msg.payload.Context;
       }
-      
+
+      node.topic_in = (msg.topic) ? msg.topic : '';
+
       // iterate over characteristics to be written
       Object.keys(msg.payload).map(function (key, index) {
         if (supported.write.indexOf(key) < 0) {
