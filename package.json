@@ -1,33 +1,35 @@
 {
-    "name": "node-red-contrib-homekit-bridged",
-    "version": "0.3.6",
-    "description": "Node-RED nodes to simulate Apple HomeKit devices. Based on node-red-contrib-homekit, but with support for bridged devices.",
+    "name": "node-red-contrib-homekit-enhanced",
+    "version": "1.0.0",
+    "description": "Node-RED nodes to simulate Apple HomeKit devices. Based on node-red-contrib-homekit-bridged.",
     "main": "homekit.js",
     "scripts": {
         "test": "test"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/oliverrahner/node-red-contrib-homekit-bridged.git"
+        "url": "git+https://github.com/Shaquu/node-red-contrib-homekit-enhanced.git"
     },
     "keywords": [
         "homekit",
         "hap-nodejs",
         "node-red",
-        "iot"
+        "iot",
+        "homebridge",
+        "home"
     ],
     "node-red": {
         "nodes": {
             "homekit": "homekit.js"
         }
     },
-    "author": "Marius Schmeding, Oliver Rahner",
+    "author": "Marius Schmeding, Oliver Rahner, Shaquu",
     "license": "Apache-2.0",
     "bugs": {
-        "url": "https://github.com/oliverrahner/node-red-contrib-homekit-bridged/issues"
+        "url": "https://github.com/Shaquu/node-red-contrib-homekit-enhanced/issues"
     },
-    "homepage": "https://github.com/oliverrahner/node-red-contrib-homekit-bridged#readme",
+    "homepage": "https://github.com/Shaquu/node-red-contrib-homekit-enhanced#readme",
     "dependencies": {
-        "hap-nodejs": "^0.4.27"
+        "hap-nodejs": "^0.4.48"
     }
 }
