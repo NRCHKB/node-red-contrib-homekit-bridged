@@ -1,265 +1,276 @@
 <script type="text/x-red" data-template-name="homekit-service">
-    <div class="form-row">
-        <label for="node-input-bridge">
-        <i class="fa fa-rocket"></i>
-        Bridge</label>
-        <input id="node-input-bridge">
-    </div>
+  <div class="form-row">
+      <label for="node-input-bridge">
+      <i class="fa fa-rocket"></i>
+      Bridge</label>
+      <input id="node-input-bridge">
+  </div>
 
-    <div class="form-row">
-        <label for="node-input-serviceName">
-            <i class="fa fa-cog"></i>
-            Service</label>
-        <select id="node-input-serviceName">
-            <option value="">Choose...</option>
-        </select>
-    </div>
+  <div class="form-row">
+      <label for="node-input-serviceName">
+          <i class="fa fa-cog"></i>
+          Service</label>
+      <select id="node-input-serviceName">
+          <option value="">Choose...</option>
+      </select>
+  </div>
 
-    <div class="form-row">
-        <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
-        <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
-    </div>
-    <div class="form-row">
-        <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
-        <input type="text" id="node-input-serialNo" placeholder="Serial Number">
-    </div>
-    <div class="form-row">
-        <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
-        <input type="text" id="node-input-model" placeholder="Model">
-    </div>
+  <div class="form-row">
+      <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
+      <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
+  </div>
+  <div class="form-row">
+      <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
+      <input type="text" id="node-input-serialNo" placeholder="Serial Number">
+  </div>
+  <div class="form-row">
+      <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
+      <input type="text" id="node-input-model" placeholder="Model">
+  </div>
 
-    <div class="form-row">
-        <label for="node-input-name">
-            <i class="fa fa-tag"></i>
-            Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
-    </div>
+  <div class="form-row">
+      <label for="node-input-name">
+          <i class="fa fa-tag"></i>
+          Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+  </div>
 
-    <div class="form-row" style="margin-bottom: 0px;">
-        <label for="node-input-characteristicProperties" style="width: 100% !important;">
-            <i class="fa fa-wrench"></i>
-            Characteristic Properties</label>
-        <input type="hidden" id="node-input-characteristicProperties">
-    </div>
-    <div class="form-row node-text-editor-row">
-        <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-characteristicProperties-editor" ></div>
-    </div>
+  <div class="form-row" style="margin-bottom: 0px;">
+      <label for="node-input-characteristicProperties" style="width: 100% !important;">
+          <i class="fa fa-wrench"></i>
+          Characteristic Properties</label>
+      <input type="hidden" id="node-input-characteristicProperties">
+  </div>
+  <div class="form-row node-text-editor-row">
+      <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-characteristicProperties-editor" ></div>
+  </div>
 </script>
 
 <script type="text/x-red" data-help-name="homekit-service">
-    <h3 id="toc_5">Service</h3>
-    <p>The Service node represents the single device you want to control or query.</p>
-    <p>Every service node creates its own HAP accessory to keep things simple.</p>
-    <ul>
-        <li><strong>Bridge</strong>: On what bridge to host this Service and its Accessory.</li>
-        <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
-        <li><strong>Service</strong>: Choose the type of Service from the list.</li>
-        <li><strong>Name</strong>: <em>optional</em></li>
-        <li><strong>Characteristic Properties</strong>: Customise the properties of characteristics.</li>
-    </ul>
-    <h2 id="toc_6">Input Messages</h2>
-    <p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
-    <p><strong>Example</strong>: to signal that an <em>Outlet</em> is turned on and in use, send the following payload</p>
-    <div><pre><code class="language-javascript">{
-    &quot;On&quot;: 1,
-    &quot;OutletInUse&quot;: 1
-}</code></pre></div>
-    <p><strong>Hint</strong>: to find out what <em>Characteristics</em> you can address, just send <code>{&quot;foo&quot;:&quot;bar&quot;}</code> and watch the debug tab ;)</p>
-    <h2 id="toc_7">Output Messages</h2>
-    <p>Output messages are in the same format as input messages. They are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
-    <h2 id="toc_8">Characteristic Properties</h2>
-    <p><strong>Example</strong>: allow temperatures below 0&deg;C</p>
-    <div><pre><code class="language-json">{
-    &quot;CurrentTemperature&quot;: {
-        &quot;minValue&quot;: -100
-    }
-    <p><strong>Example</strong>: limit fan speed multiples of 25%</p>
-    <div><pre><code class="language-json">{
-    &quot;RotationSpeed&quot;: {
-        &quot;minStep&quot;: 25
-    }
-}</code></pre></div>
+      <h3 id="toc_5">Service</h3>
+      <p>The Service node represents the single device you want to control or query.</p>
+      <p>Every service node creates its own HAP accessory to keep things simple.</p>
+      <ul>
+          <li><strong>Bridge</strong>: On what bridge to host this Service and its Accessory.</li>
+          <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
+          <li><strong>Service</strong>: Choose the type of Service from the list.</li>
+          <li><strong>Name</strong>: <em>optional</em></li>
+          <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
+      </ul>
+      <h2 id="toc_6">Input Messages</h2>
+      <p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
+      <p><strong>Example</strong>: to signal that an <em>Outlet</em> is turned on and in use, send the following payload</p>
+      <div><pre><code class="language-javascript">{
+      &quot;On&quot;: 1,
+      &quot;OutletInUse&quot;: 1
+  }</code></pre></div>
+      <p><strong>Hint</strong>: to find out what <em>Characteristics</em> you can address, just send <code>{&quot;foo&quot;:&quot;bar&quot;}</code> and watch the debug tab ;)</p>
+      <h2 id="toc_7">Output Messages</h2>
+      <p>Output messages are in the same format as input messages. They are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
+      <h2 id="toc_8">Characteristic Properties</h2>
+      <p><strong>Example</strong>: allow temperatures below 0&deg;C</p>
+      <div><pre><code class="language-json">{
+      &quot;CurrentTemperature&quot;: {
+          &quot;minValue&quot;: -100
+      }
+      <p><strong>Example</strong>: limit fan speed multiples of 25%</p>
+      <div><pre><code class="language-json">{
+      &quot;RotationSpeed&quot;: {
+          &quot;minStep&quot;: 25
+      }
+  }</code></pre></div>
 </script>
 
 <script type="text/x-red" data-template-name="homekit-bridge">
-    <div class="form-row">
-        <label for="node-config-input-pinCode"><i class="fa fa-lock"></i> Pin Code</label>
-        <input type="text" id="node-config-input-pinCode" placeholder="xxx-xx-xxx">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
-        <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
-        <input type="text" id="node-config-input-manufacturer" placeholder="Manufacturer">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
-        <input type="text" id="node-config-input-serialNo" placeholder="Serial Number">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-model"><i class="fa fa-wrench"></i> Model</label>
-        <input type="text" id="node-config-input-model" placeholder="Model">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-bridgeName"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-config-input-bridgeName" placeholder="Name">
-    </div>
+  <div class="form-row">
+      <label for="node-config-input-pinCode"><i class="fa fa-lock"></i> Pin Code</label>
+      <input type="text" id="node-config-input-pinCode" placeholder="xxx-xx-xxx">
+  </div>
+  <div class="form-row">
+      <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
+      <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign">
+  </div>
+  <div class="form-row">
+      <label for="node-config-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
+      <input type="text" id="node-config-input-manufacturer" placeholder="Manufacturer">
+  </div>
+  <div class="form-row">
+      <label for="node-config-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
+      <input type="text" id="node-config-input-serialNo" placeholder="Serial Number">
+  </div>
+  <div class="form-row">
+      <label for="node-config-input-model"><i class="fa fa-wrench"></i> Model</label>
+      <input type="text" id="node-config-input-model" placeholder="Model">
+  </div>
+  <div class="form-row">
+      <label for="node-config-input-bridgeName"><i class="fa fa-tag"></i> Name</label>
+      <input type="text" id="node-config-input-bridgeName" placeholder="Name">
+  </div>
 </script>
 
 <script type="text/x-red" data-help-name="homekit-bridge">
-    <h3 id="toc_4">Bridge</h3>
-    <p>The Bridge node is a configuration node, specifying the <em>bridge</em> that iOS sees, i.e. the device that is manually being added by the user. 
-    All accessories behind a bridge noded are then automatically added by iOS.
-    </p>
-    <ul>
-        <li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
-        <li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.</li>
-        <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
-        <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>.</li>
-    </ul>
+  <h3 id="toc_4">Bridge</h3>
+  <p>The Bridge node is a configuration node, specifying the <em>bridge</em> that iOS sees, i.e. the device that is manually being added by the user.
+  All accessories behind a bridge noded are then automatically added by iOS.
+  </p>
+  <ul>
+      <li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
+      <li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.</li>
+      <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
+      <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>.</li>
+  </ul>
 </script>
 
 <script type="text/javascript">
-    var serviceTypes
+  var serviceTypes;
 
-    //HomeKitServiceTypes
-    $.getJSON('homekit/service/types', function(data) {
-        serviceTypes = data
-    });
+  //HomeKitServiceTypes
+  $.getJSON("homekit/service/types", function(data) {
+    serviceTypes = data;
+  });
 
-    RED.nodes.registerType('homekit-service', {
-        category: 'advanced',
-        paletteLabel: 'homekit',
-        defaults: {
-            bridge: {
-                value: "",
-                type: "homekit-bridge",
-                required: true
-            },
-            name: {
-                value: ""
-            },
-            serviceName: {
-                value: "",
-                required: true
-            },
-            manufacturer: {
-                value: "Default Manufacturer",
-                required: true
-            },
-            model: {
-                value: "Default Model",
-                required: true
-            },
-            serialNo: {
-                value: "Default Serial Number",
-                required: true
-            },
-            characteristicProperties: {
-                value: "{}",
-                validate: function(value) {
-                    if (value.length == 0) {
-                        return true;
-                    }
+  RED.nodes.registerType("homekit-service", {
+    category: "advanced",
+    paletteLabel: "homekit",
+    defaults: {
+      bridge: {
+        value: "",
+        type: "homekit-bridge",
+        required: true
+      },
+      name: {
+        value: ""
+      },
+      serviceName: {
+        value: "",
+        required: true
+      },
+      manufacturer: {
+        value: "Default Manufacturer",
+        required: true
+      },
+      model: {
+        value: "Default Model",
+        required: true
+      },
+      serialNo: {
+        value: "Default Serial Number",
+        required: true
+      },
+      characteristicProperties: {
+        value: "{}",
+        validate: function(value) {
+          if (value.length == 0) {
+            return true;
+          }
 
-                    try {
-                        JSON.parse(value)
-                    } catch (e) {
-                        return false;
-                    }
+          try {
+            JSON.parse(value);
+          } catch (e) {
+            return false;
+          }
 
-                    return value[0] == '{';
-                }
-            }
-        },
-        inputs: 1,
-        outputs: 1,
-        icon: "homekit.png",
-        color: "#fcc127",
-        label: function() {
-            return this.name || this.serviceName || "Service";
-        },
-        labelStyle: function() {
-            return this.name ? "node_label_italic" : "";
-        },
-        oneditprepare: function() {
-            var node = this;
-            var selectField = $("#node-input-serviceName")
-            for (var key in serviceTypes) {
-                selectField.append($("<option></option>").val(key).text(key));
-            }
-            selectField.find("option").filter(function() {
-                return $(this).val() == node.serviceName;
-            }).attr('selected', true);
-            selectField.change();
-
-            this.editor = RED.editor.createEditor({
-                id: 'node-input-characteristicProperties-editor',
-                mode: 'ace/mode/json',
-                value: $("#node-input-characteristicProperties").val()
-            });
-        },
-        oneditsave: function() {
-            this.serviceName = $("node-input-serviceName option:selected").val();
-            $("#node-input-characteristicProperties").val(this.editor.getValue());
-            this.editor.destroy();
-            delete this.editor;
-        },
-        oneditcancel: function() {
-            this.editor.destroy();
-            delete this.editor;
-        },
-        oneditresize: function(size) {
-            var rows = $("#dialog-form>div:not(.node-text-editor-row)");
-            var height = $("#dialog-form").height();
-            for (var i=0; i<rows.size(); i++) {
-                height -= $(rows[i]).outerHeight(true);
-            }
-            var editorRow = $("#dialog-form>div.node-text-editor-row");
-            height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
-            $(".node-text-editor").css("height",height+"px");
-            this.editor.resize();
+          return value[0] == "{";
         }
-    });
+      }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "homekit.png",
+    color: "#fcc127",
+    label: function() {
+      return this.name || this.serviceName || "Service";
+    },
+    labelStyle: function() {
+      return this.name ? "node_label_italic" : "";
+    },
+    oneditprepare: function() {
+      var node = this;
+      var selectField = $("#node-input-serviceName");
+      for (var key in serviceTypes) {
+        selectField.append(
+          $("<option></option>")
+            .val(key)
+            .text(key)
+        );
+      }
+      selectField
+        .find("option")
+        .filter(function() {
+          return $(this).val() == node.serviceName;
+        })
+        .attr("selected", true);
+      selectField.change();
+
+      this.editor = RED.editor.createEditor({
+        id: "node-input-characteristicProperties-editor",
+        mode: "ace/mode/json",
+        value: $("#node-input-characteristicProperties").val()
+      });
+    },
+    oneditsave: function() {
+      this.serviceName = $("node-input-serviceName option:selected").val();
+      $("#node-input-characteristicProperties").val(this.editor.getValue());
+      this.editor.destroy();
+      delete this.editor;
+    },
+    oneditcancel: function() {
+      this.editor.destroy();
+      delete this.editor;
+    },
+    oneditresize: function(size) {
+      var rows = $("#dialog-form>div:not(.node-text-editor-row)");
+      var height = $("#dialog-form").height();
+      for (var i = 0; i < rows.size(); i++) {
+        height -= $(rows[i]).outerHeight(true);
+      }
+      var editorRow = $("#dialog-form>div.node-text-editor-row");
+      height -=
+        parseInt(editorRow.css("marginTop")) +
+        parseInt(editorRow.css("marginBottom"));
+      $(".node-text-editor").css("height", height + "px");
+      this.editor.resize();
+    }
+  });
 </script>
 
-
 <script type="text/javascript">
-    RED.nodes.registerType('homekit-bridge', {
-        category: 'config',
-        defaults: {
-            bridgeName: {
-                value: "",
-                required: true
-            },
-            pinCode: {
-                value: "111-11-111",
-                required: true,
-                validate: RED.validators.regex(/[0-9]{3}-[0-9]{2}-[0-9]{3}/)
-            },
-            port: {
-                //validate:RED.validators.number()
-            },
-            manufacturer: {
-                value: "Default Manufacturer",
-                required: true
-            },
-            model: {
-                value: "Default Model",
-                required: true
-            },
-            serialNo: {
-                value: "Default Serial Number",
-                required: true
-            }
-        },
-        label: function() {
-            return this.bridgeName || "Bridge";
-        },
-        labelStyle: function() {
-            return this.bridgeName ? "node_label_italic" : "";
-        }
-    });
+  RED.nodes.registerType("homekit-bridge", {
+    category: "config",
+    defaults: {
+      bridgeName: {
+        value: "",
+        required: true
+      },
+      pinCode: {
+        value: "111-11-111",
+        required: true,
+        validate: RED.validators.regex(/[0-9]{3}-[0-9]{2}-[0-9]{3}/)
+      },
+      port: {
+        required: false,
+        validate: RED.validators.regex(
+          /([0 - 9]{ 1, 4} | [1 - 5][0 - 9]{ 4} | 6[0 - 4][0 - 9]{ 3} | 65[0 - 4][0 - 9]{ 2} | 655[0 - 2][0 - 9] | 6553[0 - 5])/
+        )
+      },
+      manufacturer: {
+        value: "Default Manufacturer",
+        required: true
+      },
+      model: {
+        value: "Default Model",
+        required: true
+      },
+      serialNo: {
+        value: "Default Serial Number",
+        required: true
+      }
+    },
+    label: function() {
+      return this.bridgeName || "Bridge";
+    },
+    labelStyle: function() {
+      return this.bridgeName ? "node_label_italic" : "";
+    }
+  });
 </script>
