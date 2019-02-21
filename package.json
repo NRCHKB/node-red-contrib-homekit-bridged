@@ -23,7 +23,7 @@
             "homekit": "homekit.js"
         }
     },
-    "author": "Marius Schmeding, Oliver Rahnerm, Shaquu",
+    "author": "Marius Schmeding, Oliver Rahner, Shaquu",
     "license": "Apache-2.0",
     "bugs": {
         "url": "https://github.com/oliverrahner/node-red-contrib-homekit-bridged/issues"
