@@ -4,7 +4,7 @@ Node-RED nodes to simulate Apple HomeKit devices. Based on node-red-contrib-home
 
 ## Why this fork?
 
-As Marius Schmeding seems to have abandoned his great [work](https://github.com/mschm/node-red-contrib-homekit) and which seems same happend to [work](https://github.com/oliverrahner/node-red-contrib-homekit-bridged) of Oliver Rahner, I decided to continue their mission and try to evolve
+As Marius Schmeding seems to have abandoned his great [work](https://github.com/mschm/node-red-contrib-homekit) and which seems same happend to [work](https://github.com/oliverrahner/node-red-contrib-homekit-bridged) of Oliver Rahner, I decided to continue their mission to enhance homekit support on node-red.
 
 If you come from node-red-contrib-homekit-bridged then you should not worry:
 
