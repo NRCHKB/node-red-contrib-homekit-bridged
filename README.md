@@ -55,6 +55,7 @@ All accessories behind a bridge noded are then automatically added by iOS.
 
 * **Pin Code**: Specify the Pin for the pairing process.
 * **Port**: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.
+- **Allow Insecure Request**: Should we allow insecure request? Default false.
 * **Manufacturer, Model, Serial Number**: Can be anything you want.
 * **Name**: If you intend to simulate a rocket, then why don't you call it *Rocket*.
 
