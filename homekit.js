@@ -1,5 +1,6 @@
 module.exports = function(RED) {
-  "use strict";
+  ("use strict");
+
   var HapNodeJS = require("hap-nodejs");
   var Service = HapNodeJS.Service;
   var API = require("./lib/api.js")(RED);
