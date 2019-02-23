@@ -4,7 +4,7 @@
   "description": "Node-RED nodes to simulate Apple HomeKit devices. Based on node-red-contrib-homekit, but with support for bridged devices.",
   "main": "homekit.js",
   "scripts": {
-    "test": "test"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -31,5 +31,9 @@
   "homepage": "https://github.com/oliverrahner/node-red-contrib-homekit-bridged#readme",
   "dependencies": {
     "hap-nodejs": "^0.4.48"
+  },
+  "devDependencies": {
+    "mocha": "^6.0.1",
+    "debug": "^4.1.1"
   }
 }
