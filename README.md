@@ -64,6 +64,7 @@ All accessories behind a bridge noded are then automatically added by iOS.
 The Service node represents the single device you want to control or query.
 Every service node creates its own HAP accessory to keep things simple
 
+* **Topic**: An optional property that can be configured in the node or, if left blank, can be set by ```msg.topic```.
 * **Bridge**: On what bridge to host this Service and its Accessory.
 * **Manufacturer, Model, Serial Number**: Can be anything you want.
 * **Service**: Choose the type of Service from the list.
