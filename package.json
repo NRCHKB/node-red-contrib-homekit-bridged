@@ -1,35 +1,39 @@
 {
-    "name": "node-red-contrib-homekit-bridged",
-    "version": "0.4.0",
-    "description": "Node-RED nodes to simulate Apple HomeKit devices. Based on node-red-contrib-homekit, but with support for bridged devices.",
-    "main": "homekit.js",
-    "scripts": {
-        "test": "test"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/oliverrahner/node-red-contrib-homekit-bridged.git"
-    },
-    "keywords": [
-        "homekit",
-        "hap-nodejs",
-        "node-red",
-        "iot",
-        "homebridge",
-        "home"
-    ],
-    "node-red": {
-        "nodes": {
-            "homekit": "homekit.js"
-        }
-    },
-    "author": "Marius Schmeding, Oliver Rahner, Shaquu",
-    "license": "Apache-2.0",
-    "bugs": {
-        "url": "https://github.com/oliverrahner/node-red-contrib-homekit-bridged/issues"
-    },
-    "homepage": "https://github.com/oliverrahner/node-red-contrib-homekit-bridged#readme",
-    "dependencies": {
-        "hap-nodejs": "^0.4.48"
+  "name": "node-red-contrib-homekit-bridged",
+  "version": "0.5.1",
+  "description": "Node-RED nodes to simulate Apple HomeKit devices. Based on node-red-contrib-homekit, but with support for bridged devices.",
+  "main": "homekit.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oliverrahner/node-red-contrib-homekit-bridged.git"
+  },
+  "keywords": [
+    "homekit",
+    "hap-nodejs",
+    "node-red",
+    "iot",
+    "homebridge",
+    "home"
+  ],
+  "node-red": {
+    "nodes": {
+      "homekit": "homekit.js"
     }
+  },
+  "author": "Marius Schmeding, Oliver Rahner, Shaquu",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/oliverrahner/node-red-contrib-homekit-bridged/issues"
+  },
+  "homepage": "https://github.com/oliverrahner/node-red-contrib-homekit-bridged#readme",
+  "dependencies": {
+    "hap-nodejs": "^0.4.48"
+  },
+  "devDependencies": {
+    "mocha": "^6.0.1",
+    "debug": "^4.1.1"
+  }
 }
