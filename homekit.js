@@ -7,15 +7,6 @@ module.exports = function(RED) {
     const HAPBridgeNode = require("./lib/HAPBridgeNode.js")(RED);
     const HAPServiceNode = require("./lib/HAPServiceNode.js")(RED);
 
-    Service.prototype.setCharacteristicWithContext = function(
-        name,
-        value,
-        context
-    ) {
-        this.getCharacteristic(name).setValue(value, null, context);
-        return this; // for chaining
-    };
-
     // Initialize our storage system
     if (RED.settings.available()) {
         const userDir = RED.settings.userDir;
