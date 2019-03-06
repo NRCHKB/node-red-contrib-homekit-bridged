@@ -8,6 +8,7 @@ CONFIG.serialNo = "serialNo";
 CONFIG.model = "model";
 CONFIG.name = "name";
 CONFIG.serviceName = "Lightbulb";
+CONFIG.masterService = "MasterService";
 
 module.exports = {
     RED: {
@@ -26,20 +27,31 @@ module.exports = {
             registerType: function(name, init) {
                 init(CONFIG);
             },
-            createNode: function(node, config) {
+            createNode: function(node) {
                 node.id = "id";
-                node.debug = function() {};
+                node.log = function() {};
                 node.on = function() {};
                 node.status = function() {};
+                node.debug = function() {};
             },
             getNode: function() {
-                const bridgeNode = {
+                let node = {
                     publish: function () {
                     }
                 };
-                bridgeNode.bridge = { addBridgedAccessories: function() {} };
-                bridgeNode.bridge.bridgedAccessories = { 0: "0" };
-                return bridgeNode;
+                node.bridge = { addBridgedAccessories: function() {} };
+                node.bridge.bridgedAccessories = { 0: "0" };
+                node.service = {
+                    addLinkedService: function() {}
+                };
+                node.accessory = {
+                    addService: function(service) {
+                        return service;
+                    }
+                };
+                node.accessory.services = {};
+                node.bridgeNode = node;
+                return node;
             }
         }
     }
