@@ -1,10 +1,45 @@
+<style>
+    /*! ========================================================================
+     * Bootstrap Toggle: bootstrap-toggle.css v2.2.0
+     * http://www.bootstraptoggle.com
+     * ========================================================================
+     * Copyright 2014 Min Hur, The New York Times Company
+     * Licensed under MIT
+     * ======================================================================== */
+    .checkbox label .toggle,.checkbox-inline .toggle{margin-left:-20px;margin-right:5px}
+    .toggle{position:relative;overflow:hidden}
+    .toggle input[type=checkbox]{display:none}
+    .toggle-group{position:absolute;width:200%;top:0;bottom:0;left:0;transition:left .35s;-webkit-transition:left .35s;-moz-user-select:none;-webkit-user-select:none}
+    .toggle.off .toggle-group{left:-100%}
+    .toggle-handle{position:relative;margin:0 auto;padding-top:0;padding-bottom:0;height:100%;width:0;border-width:0 1px;}
+</style>
+
 <script type="text/x-red" data-template-name="homekit-service">
     <div class="form-row">
-        <label for="node-input-bridge">
-      <i class="fa fa-rocket"></i>
-      Bridge</label>
-        <input id="node-input-bridge">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Service Hierarchy</label>
+        <input type="checkbox" id="node-input-isParent" checked data-width="110" data-height="20" data-onstyle="default">
     </div>
+
+    <div id="isParent">
+        <div class="form-row">
+            <label for="node-input-bridge">
+          <i class="fa fa-rocket"></i>
+          Bridge</label>
+            <input id="node-input-bridge">
+        </div>
+    </div>
+
+    <div id="isLinked" style="display: none;">
+        <div class="form-row">
+            <label for="node-input-parentService">
+              <i class="fa fa-cog"></i>
+              Parent Service</label>
+            <select id="node-input-parentService">
+              <option value="">Choose...</option>
+          </select>
+        </div>
+    </div>
+
 
     <div class="form-row">
         <label for="node-input-serviceName">
@@ -55,14 +90,17 @@
 </script>
 
 <script type="text/x-red" data-help-name="homekit-service">
-
     <h3 id="toc_5">Service</h3>
     <p>The Service node represents the single device you want to control or query.</p>
     <p>Every service node creates its own HAP accessory to keep things simple.</p>
     <ul>
+        <li><strong>Service Hierarchy</strong>: Choose if this Service is Parent or Linked</li>
+        <ul>
+            <li>Parent has <strong>Bridge</strong>: On what Bridge to host this Service and its Accessory.</li>
+            <li>Linked has <strong>Parent Service</strong>: On what Parent Service link this Service.</li>
+        </ul>
         <li><strong>Topic</strong>: An optional property that can be configured in the node or, if left blank, can be set by <code>msg.topic</code>. If <em>Filter on Topic</em> is selected <code>msg.topic</code> of incoming messages must match the configured
             value for the message to be accepted. If <em>Filter on Topic</em> is selected and no <em>Topic</em> is set on the node, then <code>msg.topic</code> must match the nodes <em>Name</em></li>
-        <li><strong>Bridge</strong>: On what bridge to host this Service and its Accessory.</li>
         <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
         <li><strong>Service</strong>: Choose the type of Service from the list.</li>
         <li><strong>Name</strong>: <em>optional</em></li>
@@ -132,7 +170,7 @@
         <input type="checkbox" id="node-config-input-customMdnsConfig" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-config-input-customMdnsConfig" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-filter"></i> Custom MDNS Configuration</label>
     </div>
-    <div id="mdns-configuration"style="display: none;">
+    <div id="mdns-configuration" style="display: none;">
         <div class="form-row">
             <label for="node-config-input-mdnsMulticast"><i class="fa fa-ellipsis-v"></i> Multicast</label>
             <input type="checkbox" id="node-config-input-mdnsMulticast" checked>
@@ -188,104 +226,17 @@
     </ul>
 </script>
 
-<script type="text/x-red" data-template-name="homekit-linked-service">
-    <div class="form-row">
-        <label for="node-input-masterService">
-          <i class="fa fa-cog"></i>
-          Master Service</label>
-        <select id="node-input-masterService">
-          <option value="">Choose...</option>
-      </select>
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-serviceName">
-          <i class="fa fa-cog"></i>
-          Service</label>
-        <select id="node-input-serviceName">
-          <option value="">Choose...</option>
-      </select>
-    </div>
-    <div class="form-row">
-        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
-        <input type="text" id="node-input-topic" placeholder="Topic">
-    </div>
-    <div class="form-row">
-        <label>&nbsp;</label>
-        <input type="checkbox" id="node-input-filter" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-filter" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-filter"></i> Filter on Topic</label>
-    </div>
-    <div class="form-row">
-        <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
-        <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
-    </div>
-    <div class="form-row">
-        <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
-        <input type="text" id="node-input-serialNo" placeholder="Serial Number">
-    </div>
-    <div class="form-row">
-        <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
-        <input type="text" id="node-input-model" placeholder="Model">
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-name">
-          <i class="fa fa-tag"></i>
-          Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
-    </div>
-
-    <div class="form-row" style="margin-bottom: 0px;">
-        <label for="node-input-characteristicProperties" style="width: 100% !important;">
-          <i class="fa fa-wrench"></i>
-          Characteristic Properties</label>
-        <input type="hidden" id="node-input-characteristicProperties">
-    </div>
-    <div class="form-row node-text-editor-row">
-        <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-characteristicProperties-editor"></div>
-    </div>
-</script>
-
-<script type="text/x-red" data-help-name="homekit-linked-service">
-
-    <h3 id="toc_5">Service</h3>
-    <p>The Service node represents the single device you want to control or query.</p>
-    <p>Every service node creates its own HAP accessory to keep things simple.</p>
-    <ul>
-        <li><strong>Topic</strong>: An optional property that can be configured in the node or, if left blank, can be set by <code>msg.topic</code>. If <em>Filter on Topic</em> is selected <code>msg.topic</code> of incoming messages must match the configured
-            value for the message to be accepted. If <em>Filter on Topic</em> is selected and no <em>Topic</em> is set on the node, then <code>msg.topic</code> must match the nodes <em>Name</em></li>
-        <li><strong>Master Service</strong>: On what Master Service link this Service.</li>
-        <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
-        <li><strong>Service</strong>: Choose the type of Service from the list.</li>
-        <li><strong>Name</strong>: <em>optional</em></li>
-        <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
-    </ul>
-    <h2 id="toc_6">Input Messages</h2>
-    <p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
-    <p><strong>Example</strong>: to signal that an <em>Outlet</em> is turned on and in use, send the following payload</p>
-    <div>
-        <pre><code class="language-javascript">{
-      &quot;On&quot;: 1,
-      &quot;OutletInUse&quot;: 1
-  }</code></pre>
-    </div>
-    <p><strong>Hint</strong>: to find out what <em>Characteristics</em> you can address, just send <code>{&quot;foo&quot;:&quot;bar&quot;}</code> and watch the debug tab ;)</p>
-    <h2 id="toc_7">Output Messages</h2>
-    <p>Output messages are in the same format as input messages. They are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
-    <h2 id="toc_8">Characteristic Properties</h2>
-    <p><strong>Example</strong>: allow temperatures below 0&deg;C</p>
-    <div>
-        <pre><code class="language-json">{
-      &quot;CurrentTemperature&quot;: {
-          &quot;minValue&quot;: -100
-      }
-      <p><strong>Example</strong>: limit fan speed multiples of 25%</p>
-      <div><pre><code class="language-json">{
-      &quot;RotationSpeed&quot;: {
-          &quot;minStep&quot;: 25
-      }
-  }</code></pre>
-    </div>
+<!--suppress ES6ConvertVarToLetConst, CommaExpressionJS -->
+<script>
+    /*! ========================================================================
+ * Bootstrap Toggle: bootstrap-toggle.js v2.2.0
+ * http://www.bootstraptoggle.com
+ * ========================================================================
+ * Copyright 2014 Min Hur, The New York Times Company
+ * Licensed under MIT
+ * ======================================================================== */
+    +function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.toggle"),f="object"==typeof b&&b;e||d.data("bs.toggle",e=new c(this,f)),"string"==typeof b&&e[b]&&e[b]()})}var c=function(b,c){this.$element=a(b),this.options=a.extend({},this.defaults(),c),this.render()};c.VERSION="2.2.0",c.DEFAULTS={on:"On",off:"Off",onstyle:"primary",offstyle:"default",size:"normal",style:"",width:null,height:null},c.prototype.defaults=function(){return{on:this.$element.attr("data-on")||c.DEFAULTS.on,off:this.$element.attr("data-off")||c.DEFAULTS.off,onstyle:this.$element.attr("data-onstyle")||c.DEFAULTS.onstyle,offstyle:this.$element.attr("data-offstyle")||c.DEFAULTS.offstyle,size:this.$element.attr("data-size")||c.DEFAULTS.size,style:this.$element.attr("data-style")||c.DEFAULTS.style,width:this.$element.attr("data-width")||c.DEFAULTS.width,height:this.$element.attr("data-height")||c.DEFAULTS.height}},c.prototype.render=function(){this._onstyle="btn-"+this.options.onstyle,this._offstyle="btn-"+this.options.offstyle;var b="large"===this.options.size?"btn-lg":"small"===this.options.size?"btn-sm":"mini"===this.options.size?"btn-xs":"",c=a('<label class="btn">').html(this.options.on).addClass(this._onstyle+" "+b),d=a('<label class="btn">').html(this.options.off).addClass(this._offstyle+" "+b+" active"),e=a('<span class="toggle-handle btn btn-default">').addClass(b),f=a('<div class="toggle-group">').append(c,d,e),g=a('<div class="toggle btn" data-toggle="toggle">').addClass(this.$element.prop("checked")?this._onstyle:this._offstyle+" off").addClass(b).addClass(this.options.style);this.$element.wrap(g),a.extend(this,{$toggle:this.$element.parent(),$toggleOn:c,$toggleOff:d,$toggleGroup:f}),this.$toggle.append(f);var h=this.options.width||Math.max(c.outerWidth(),d.outerWidth())+e.outerWidth()/2,i=this.options.height||Math.max(c.outerHeight(),d.outerHeight());c.addClass("toggle-on"),d.addClass("toggle-off"),this.$toggle.css({width:h,height:i}),this.options.height&&(c.css("line-height",c.height()+"px"),d.css("line-height",d.height()+"px")),this.update(!0),this.trigger(!0)},c.prototype.toggle=function(){this.$element.prop("checked")?this.off():this.on()},c.prototype.on=function(a){return this.$element.prop("disabled")?!1:(this.$toggle.removeClass(this._offstyle+" off").addClass(this._onstyle),this.$element.prop("checked",!0),void(a||this.trigger()))},c.prototype.off=function(a){return this.$element.prop("disabled")?!1:(this.$toggle.removeClass(this._onstyle).addClass(this._offstyle+" off"),this.$element.prop("checked",!1),void(a||this.trigger()))},c.prototype.enable=function(){this.$toggle.removeAttr("disabled"),this.$element.prop("disabled",!1)},c.prototype.disable=function(){this.$toggle.attr("disabled","disabled"),this.$element.prop("disabled",!0)},c.prototype.update=function(a){this.$element.prop("disabled")?this.disable():this.enable(),this.$element.prop("checked")?this.on(a):this.off(a)},c.prototype.trigger=function(b){this.$element.off("change.bs.toggle"),b||this.$element.change(),this.$element.on("change.bs.toggle",a.proxy(function(){this.update()},this))},c.prototype.destroy=function(){this.$element.off("change.bs.toggle"),this.$toggleGroup.remove(),this.$element.removeData("bs.toggle"),this.$element.unwrap()};var d=a.fn.bootstrapToggle;a.fn.bootstrapToggle=b,a.fn.bootstrapToggle.Constructor=c,a.fn.toggle.noConflict=function(){return a.fn.bootstrapToggle=d,this},a(function(){a("input[type=checkbox][data-toggle^=toggle]").bootstrapToggle()}),a(document).on("click.bs.toggle","div[data-toggle^=toggle]",function(b){var c=a(this).find("input[type=checkbox]");c.bootstrapToggle("toggle"),b.preventDefault()})}(jQuery);
+    //# sourceMappingURL=bootstrap-toggle.min.js.map
 </script>
 
 <script type="text/javascript">
@@ -300,10 +251,18 @@
         category: "advanced",
         paletteLabel: "homekit",
         defaults: {
+            isParent: {
+                value: true,
+                required: true
+            },
             bridge: {
                 value: "",
                 type: "homekit-bridge",
-                required: true
+                required: false
+            },
+            parentService: {
+                value: "",
+                required: false
             },
             name: {
                 value: ""
@@ -358,6 +317,33 @@
             return this.name ? "node_label_italic" : "";
         },
         oneditprepare: function() {
+            const isParentToggle = $('#node-input-isParent');
+
+            isParentToggle.bootstrapToggle({
+                on: 'Parent Service',
+                off: 'Linked Service'
+            });
+
+            if (isParentToggle.is(":checked")) {
+                $("#isLinked").fadeOut("fast");
+                $("#isParent").fadeIn("fast");
+            } else {
+                $("#isParent").fadeOut("fast");
+                $("#isLinked").fadeIn("fast");
+            }
+
+            isParentToggle.change(function(){
+                if(this.checked) {
+                    this.isParent = true;
+                    $("#isLinked").fadeOut("fast");
+                    $("#isParent").fadeIn("fast");
+                } else {
+                    this.isParent = false;
+                    $("#isParent").fadeOut("fast");
+                    $("#isLinked").fadeIn("fast");
+                }
+            });
+
             const node = this;
             const selectServiceName = $("#node-input-serviceName");
             for (let key in serviceTypes) {
@@ -382,8 +368,64 @@
                 mode: "ace/mode/json",
                 value: $("#node-input-characteristicProperties").val()
             });
+
+            const selectParentService = $("#node-input-parentService");
+
+            const candidateNodes = RED.nodes.filterNodes({type: "homekit-service"});
+            const inSubflow = !!RED.nodes.subflow(node.z);
+            candidateNodes.forEach(function(n) {
+                if (!n.name || n.name.length < 1 || !n.isParent) {
+                    return;
+                }
+
+                if (n.id === node.id) {
+                    return;
+                }
+
+                if (inSubflow) {
+                    if (n.z !== node.z) {
+                        return;
+                    }
+                } else {
+                    if (!!RED.nodes.subflow(n.z)) {
+                        return;
+                    }
+                }
+
+                let sublabel;
+                let tab = RED.nodes.workspace(n.z);
+                if (tab) {
+                    sublabel = tab.label || tab.id;
+                } else {
+                    tab = RED.nodes.subflow(n.z);
+                    sublabel = "subflow : " + tab.name;
+                }
+
+                const value = n.id;
+                const text = n.name + " (" + sublabel + ")";
+
+                selectParentService.append(
+                    $("<option></option>")
+                        .val(value)
+                        .text(text)
+                );
+            });
+
+            selectParentService
+                .find("option")
+                .filter(function() {
+                    return $(this).val() === node.parentService;
+                })
+                .attr("selected", true);
+            selectParentService.change();
         },
         oneditsave: function() {
+            this.isParent = $('#node-input-isParent').is(":checked");
+
+            if (!this.isParent) {
+                this.parentService = $("node-input-parentService option:selected").val();
+            }
+
             this.serviceName = $("node-input-serviceName option:selected").val();
             $("#node-input-characteristicProperties").val(this.editor.getValue());
             this.editor.destroy();
@@ -489,169 +531,6 @@
                 else
                     $("#mdns-configuration").fadeOut("slow");
             });
-        }
-    });
-</script>
-
-<script type="text/javascript">
-    let serviceTypes;
-
-    //HomeKitServiceTypes
-    $.getJSON("homekit/service/types", function(data) {
-        serviceTypes = data;
-    });
-
-    RED.nodes.registerType("homekit-linked-service", {
-        category: "advanced",
-        paletteLabel: "homekit-linked",
-        defaults: {
-            masterService: {
-                value: "",
-                required: true
-            },
-            name: {
-                value: ""
-            },
-            serviceName: {
-                value: "",
-                required: true
-            },
-            topic: {
-                value:""
-            },
-            filter: {
-                value:false
-            },
-            manufacturer: {
-                value: "Default Manufacturer",
-                required: true
-            },
-            model: {
-                value: "Default Model",
-                required: true
-            },
-            serialNo: {
-                value: "Default Serial Number",
-                required: true
-            },
-            characteristicProperties: {
-                value: "{}",
-                validate: function(value) {
-                    if (value.length === 0) {
-                        return true;
-                    }
-
-                    try {
-                        JSON.parse(value);
-                    } catch (e) {
-                        return false;
-                    }
-
-                    return value[0] === "{";
-                }
-            }
-        },
-        inputs: 1,
-        outputs: 1,
-        icon: "homekit.png",
-        color: "#fcc127",
-        label: function() {
-            return this.name || this.serviceName || "Service";
-        },
-        labelStyle: function() {
-            return this.name ? "node_label_italic" : "";
-        },
-        oneditprepare: function() {
-            const node = this;
-            const selectServiceName = $("#node-input-serviceName");
-            for (let key in serviceTypes) {
-                if (!serviceTypes.hasOwnProperty(key)) continue;
-
-                selectServiceName.append(
-                    $("<option></option>")
-                        .val(key)
-                        .text(key)
-                );
-            }
-            selectServiceName
-                .find("option")
-                .filter(function() {
-                    return $(this).val() === node.serviceName;
-                })
-                .attr("selected", true);
-            selectServiceName.change();
-
-            this.editor = RED.editor.createEditor({
-                id: "node-input-characteristicProperties-editor",
-                mode: "ace/mode/json",
-                value: $("#node-input-characteristicProperties").val()
-            });
-
-            const selectMasterService = $("#node-input-masterService");
-
-            const candidateNodes = RED.nodes.filterNodes({type: "homekit-service"});
-            const inSubflow = !!RED.nodes.subflow(node.z);
-            candidateNodes.forEach(function(n) {
-                if (inSubflow) {
-                    if (n.z !== node.z) {
-                        return;
-                    }
-                } else {
-                    if (!!RED.nodes.subflow(n.z)) {
-                        return;
-                    }
-                }
-
-                let sublabel;
-                let tab = RED.nodes.workspace(n.z);
-                if (tab) {
-                    sublabel = tab.label || tab.id;
-                } else {
-                    tab = RED.nodes.subflow(n.z);
-                    sublabel = "subflow : " + tab.name;
-                }
-
-                const value = n.id;
-                const text = n.name + " " + sublabel;
-
-                selectMasterService.append(
-                    $("<option></option>")
-                        .val(value)
-                        .text(text)
-                );
-            });
-
-            selectMasterService
-                .find("option")
-                .filter(function() {
-                    return $(this).val() === node.masterService;
-                })
-                .attr("selected", true);
-            selectMasterService.change();
-        },
-        oneditsave: function() {
-            this.masterService = $("node-input-masterService option:selected").val();
-            this.serviceName = $("node-input-serviceName option:selected").val();
-            $("#node-input-characteristicProperties").val(this.editor.getValue());
-            this.editor.destroy();
-            delete this.editor;
-        },
-        oneditcancel: function() {
-            this.editor.destroy();
-            delete this.editor;
-        },
-        oneditresize: function(size) {
-            const rows = $("#dialog-form>div:not(.node-text-editor-row)");
-            let height = $("#dialog-form").height();
-            for (let i = 0; i < rows.size(); i++) {
-                height -= $(rows[i]).outerHeight(true);
-            }
-            const editorRow = $("#dialog-form>div.node-text-editor-row");
-            height -=
-                parseInt(editorRow.css("marginTop")) +
-                parseInt(editorRow.css("marginBottom"));
-            $(".node-text-editor").css("height", height + "px");
-            this.editor.resize();
         }
     });
 </script>

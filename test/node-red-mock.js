@@ -8,7 +8,7 @@ CONFIG.serialNo = "serialNo";
 CONFIG.model = "model";
 CONFIG.name = "name";
 CONFIG.serviceName = "Lightbulb";
-CONFIG.masterService = "MasterService";
+CONFIG.parentService = "ParentService";
 
 module.exports = {
     RED: {
