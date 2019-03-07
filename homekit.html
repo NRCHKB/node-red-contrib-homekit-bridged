@@ -265,7 +265,11 @@
                 required: false
             },
             name: {
-                value: ""
+                value: "",
+                required: true,
+                validate: function(value) {
+                    return value.length > 0;
+                }
             },
             serviceName: {
                 value: "",
@@ -275,7 +279,7 @@
                 value:""
             },
             filter: {
-                value:false
+                value: false
             },
             manufacturer: {
                 value: "Default Manufacturer",
