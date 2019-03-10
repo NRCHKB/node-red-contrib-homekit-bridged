@@ -225,7 +225,6 @@
         paletteLabel: "homekit",
         defaults: {
             isParent: {
-                value: true,
                 required: true
             },
             bridge: {
@@ -297,10 +296,10 @@
             let node = this;
             let isParentToggle = $("#node-config-input-isParent");
 
-            if (node.isParent) {
-                isParentToggle.val("true");
-            } else {
+            if (node.isParent === false) {
                 isParentToggle.val("false");
+            } else {
+                isParentToggle.val("true");
             }
 
             let isLinkedDiv = $("#isLinked");
