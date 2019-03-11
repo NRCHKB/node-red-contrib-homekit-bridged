@@ -145,6 +145,21 @@ Context info can be provided as part of the input message and will be available 
 }
 ```
 
+## No Response
+
+You can set accessory "No Response" status by sending "NO_RESPONSE" as a value for any available characteristic.
+
+**Example**:
+
+```json
+{
+  "On": "NO_RESPONSE"
+}
+```
+
+After "No Response" status was triggered, the accessory is marked accordingly when you try to control it or reopen Home.app.
+Any subsequent update of any characteristic value will reset this status.
+
 ## FAQ
 
 #### How can I generate Debug logs?
