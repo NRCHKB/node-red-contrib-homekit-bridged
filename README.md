@@ -4,6 +4,10 @@ master [![Build Status](https://travis-ci.org/Shaquu/node-red-contrib-homekit-br
 
 Node-RED nodes to simulate Apple HomeKit devices. Based on node-red-contrib-homekit, but with support for bridged devices.
 
+## Intro
+
+These nodes allow the creation of fully customizable accessories for use in Apple's Home app on iOS and Mac OS. If you can get it in Node-RED, you can get it in HomeKit. The goal of the project is to create a platform where official HomeKit hardware can be emulated as closely as possible through node red.
+
 ## Prerequisites
 
 These nodes are based on the _extremely_ **awesome** [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) -Project which uses an implementation of mdns to provide Bonjour / Avahi capability.
@@ -41,7 +45,7 @@ All accessories behind a bridge noded are then automatically added by iOS.
 ### Service
 
 The Service node represents the single device you want to control or query.
-Every service node can be _Parent_ or _Linked_. each Parent service creates an individual accessory in the Home app. Linked services create sub-accessories. See examples in the [wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki) for details.
+Every service node can be _Parent_ or _Linked_. each Parent service creates an individual accessory in the Home app. Linked services add additional features to their Parent service - for example adding battery status to a motion detector. See examples in the [wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki) for details.
 
 - **Topic**: An optional property that can be configured in the node or, if left blank, can be set by `msg.topic`.
 - **Service Hierarchy**: Whether the service is _Parent_ or _Linked_.
@@ -144,6 +148,10 @@ Any subsequent update of any characteristic value will reset this status.
 
 Our [wiki page](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki) has a growing list of examples and explanations of how to use many features of these nodes. After you've gone through the wiki page and you are still having questions, please open an issue.
 
+#### How can I upgrade from the non-bridged node-red-contrib-homekit?
+
+[How to upgrade from node-red-homekit](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki/Upgrade-Information)
+
 #### How can I generate Debug logs?
 
 Stop your node-red instance and start it again using the following command:
@@ -163,14 +171,15 @@ Insert this node right after your homekit node:
 
 This will filter out all messages with their payload property hap.context not set, which means they are events that have been sent to homekit via node-red, not via the Home app.
 
-## Why this fork?
 
-As Marius Schmeding seems to have abandoned his great [work](https://github.com/mschm/node-red-contrib-homekit), I decided to fork his repo and to introduce some major rework.
+## Contributors
 
-The biggest change is the use of HAP-NodeJS in **bridged mode**: only add one bridge in the iOS home app to access all your devices!
-Also, I (believe I) fixed some issues:
+#### Big thanks to [all who have contributed to the project](https://github.com/node-red-contrib-homekit/node-red-contrib-homekit-bridged/graphs/contributors). 
 
-- devices don't show as unreachable after redeploying
-- having more than one device per accessory (in the "old" world) or bridge doesn't lead to iOS losing the parameters for this device anymore
+[Shaq](https://github.com/Shaquu) - leading the current efforts to fix bugs and add features
 
-[How to upgrade from node-red-homekit](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki/Upgrade-Information)
+[Oliver Rahner](https://github.com/oliverrahner) - reworked the code to add bridged mode - [read his story](https://github.com/node-red-contrib-homekit/node-red-contrib-homekit-bridged/wiki/Credits#oliver-rahner-explains-his-work)
+
+[Marius Schmeding](https://github.com/mschm/node-red-contrib-homekit) - original creator of node-red-contrib-homekit
+
+[HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) - essential NodeJS implementation of Apple's HomeKit Accessory Server
