@@ -162,7 +162,7 @@
             <input type="checkbox" id="node-config-input-mdnsMulticast" checked>
         </div>
         <div class="form-row">
-            <label for="node-config-input-mdnsInterface"><i class="fa fa-location-arrow"></i> Interface</label>
+            <label for="node-config-input-mdnsInterface"><i class="fa fa-location-arrow"></i> Multicast Interface IP</label>
             <input type="text" id="node-config-input-mdnsInterface" placeholder="">
         </div>
         <div class="form-row">
@@ -170,7 +170,7 @@
             <input type="text" id="node-config-input-mdnsPort" placeholder="">
         </div>
         <div class="form-row">
-            <label for="node-config-input-mdnsIp"><i class="fa fa-location-arrow"></i> IP</label>
+            <label for="node-config-input-mdnsIp"><i class="fa fa-location-arrow"></i> Multicast Address IP</label>
             <input type="text" id="node-config-input-mdnsIp" placeholder="">
         </div>
         <div class="form-row">
@@ -202,9 +202,9 @@
         <li><strong>Custom MDNS Configuration</strong>: Check if you would like to use custom mdns configuration.</li>
         <ul>
             <li><strong>Multicast</strong>: Use udp multicasting. Optional. Default true.</li>
-            <li><strong>Interface:</strong>: Explicitly specify a network interface. Optional. Defaults to all.</li>
+            <li><strong>Multicast Interface IP:</strong>: Explicitly specify a network interface. Optional. Defaults to all.</li>
             <li><strong>Port</strong>: Set the udp port. Optional. Default 5353.</li>
-            <li><strong>IP</strong>: Set the udp ip. Optional. </li>
+            <li><strong>Multicast Address IP</strong>: Set the udp ip. Optional. </li>
             <li><strong>TTL</strong>: Set the multicast ttl. Optional. </li>
             <li><strong>Loopback</strong>: Receive your own packets. Optional. Default true.</li>
             <li><strong>Reuse Address</strong>: Set the reuseAddr option when creating the socket. Optional. Default true.</li>
