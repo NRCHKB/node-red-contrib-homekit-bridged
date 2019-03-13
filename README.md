@@ -2,11 +2,11 @@
 
 master [![Build Status](https://travis-ci.org/Shaquu/node-red-contrib-homekit-bridged.svg?branch=master)](https://travis-ci.org/Shaquu/node-red-contrib-homekit-bridged) / dev [![Build Status](https://travis-ci.org/Shaquu/node-red-contrib-homekit-bridged.svg?branch=dev)](https://travis-ci.org/Shaquu/node-red-contrib-homekit-bridged)
 
-Node-RED nodes to simulate Apple HomeKit devices. Based on node-red-contrib-homekit, but with support for bridged devices.
+Node-RED nodes to simulate Apple HomeKit devices. The goal is to emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README for the basics then head over to the [wiki page](https://github.com/node-red-contrib-homekit/node-red-contrib-homekit-bridged/wiki) for details and examples. If you're still stuck please open an issue, we are glad to help.
 
 ## Intro
 
-These nodes allow the creation of fully customizable accessories for use in Apple's Home app on iOS and Mac OS. If you can get it in Node-RED, you can get it in HomeKit. The goal of the project is to create a platform where official HomeKit hardware can be emulated as closely as possible through node red.
+These nodes allow the creation of fully customizable accessories for use in Apple's Home app on iOS, Watch OS, and Mac OS. If you can get it in Node-RED, you can get it in HomeKit. The goal of the project is to create a platform where official HomeKit hardware can be emulated as closely as possible through node red.
 
 ## Prerequisites
 
@@ -52,7 +52,7 @@ Every service node can be _Parent_ or _Linked_. each Parent service creates an i
 - **Bridge**: On what bridge to host this Service and its Accessory.
 - **Parent Service**: Which Parent service the Linked service will be connected to.
 - **Service**: Choose the type of Service from the list. [Services wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki/Services)
-- **Topic**: 
+- **Topic**: An optional property that can be configured in the node or, if left blank, can be set by msg.topic.
 - **Manufacturer, Model, Serial Number**: Can be anything you want.
 - **Name**: If you intend to simulate a rocket, then why don't you call it _Rocket_.
 - **Characteristic Properties**: Customise the properties of characteristics. [Characteristics wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki/Characteristics)
@@ -78,7 +78,7 @@ Output messages are in the same format as input messages. They are emitted from 
 
 ## Supported Types
 
-The following is a list of _Services_ that are currently supported. If you encounter problems with any of them please file an Issue.
+The following is a list of _Services_ that are currently supported. Check for more details on [the wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki/Services).If you encounter problems with any of them please file an Issue.
 
 - Air Quality Sensor
 - Battery Service
@@ -142,6 +142,14 @@ You can set accessory "No Response" status by sending "NO_RESPONSE" as a value f
 After "No Response" status was triggered, the accessory is marked accordingly when you try to control it or reopen Home.app.
 Any subsequent update of any characteristic value will reset this status.
 
+## Topic
+
+An optional property that can be configured in the node or, if left blank, can be set by `msg.topic`.
+
+If Filter on Topic is selected `msg.topic` of incoming messages must match the configured value for the message to be accepted. If Filter on Topic is selected and no Topic is set on the node, then `msg.topic` must match the node's Name.
+
+The Topic parameter can be used to filter incoming messages, making it possible to connect multiple Homekit services to, for example, one MQTT-in node and filter directly on the MQTT Topic. It can also be used to add additional metadata to the outgoing msg, making it possible to connect multiple Homekit services directly to an MQTT-out node or filter the flow in another way.
+
 ## FAQ
 
 #### How can I get started?
@@ -160,6 +168,8 @@ Stop your node-red instance and start it again using the following command:
 This should output detailed information regarding everything in the homekit context.
 
 #### The same command gets sent over and over. How do I stop that?
+
+The built in `rbe` node may be placed as needed to only pass on messages if they are different from previous messages. 
 
 #### I only want to get messages when something has been changed in the Home app, but also all messages I send into the homekit node get forwarded, too. How do I stop that?
 
@@ -180,6 +190,6 @@ This will filter out all messages with their payload property hap.context not se
 
 [Oliver Rahner](https://github.com/oliverrahner) - reworked the code to add bridged mode - [read his story](https://github.com/node-red-contrib-homekit/node-red-contrib-homekit-bridged/wiki/Credits#oliver-rahner-explains-his-work)
 
-[Marius Schmeding](https://github.com/mschm/node-red-contrib-homekit) - original creator of node-red-contrib-homekit
+[Marius Schmeding](https://github.com/mschm/node-red-contrib-homekit) - original implementation of HAP-NodeJS into Node-RED
 
 [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) - essential NodeJS implementation of Apple's HomeKit Accessory Server
