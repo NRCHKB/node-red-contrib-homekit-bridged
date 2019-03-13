@@ -47,7 +47,6 @@ All accessories behind a bridge noded are then automatically added by iOS.
 The Service node represents the single device you want to control or query.
 Every service node can be _Parent_ or _Linked_. each Parent service creates an individual accessory in the Home app. Linked services add additional features to their Parent service - for example adding battery status to a motion detector. See examples in the [wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki) for details.
 
-- **Topic**: An optional property that can be configured in the node or, if left blank, can be set by `msg.topic`.
 - **Service Hierarchy**: Whether the service is _Parent_ or _Linked_.
 - **Bridge**: On what bridge to host this Service and its Accessory.
 - **Parent Service**: Which Parent service the Linked service will be connected to.
