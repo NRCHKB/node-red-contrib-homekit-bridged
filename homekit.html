@@ -1,81 +1,114 @@
 <script type="text/x-red" data-template-name="homekit-service">
-  <div class="form-row">
-      <label for="node-input-bridge">
-      <i class="fa fa-rocket"></i>
-      Bridge</label>
-      <input id="node-input-bridge">
-  </div>
+    <div class="form-row">
+        <label for="node-config-input-isParent"><i class="fa fa-tasks"></i> Service Hierarchy</label>
+        <select id="node-config-input-isParent">
+            <option value="true" selected="selected">Parent</option>
+            <option value="false">Linked</option>
+        </select>
+    </div>
 
-  <div class="form-row">
-      <label for="node-input-serviceName">
+    <div id="isParent">
+        <div class="form-row">
+            <label for="node-input-bridge">
+          <i class="fa fa-rocket"></i>
+          Bridge</label>
+            <input id="node-input-bridge">
+        </div>
+    </div>
+
+    <div id="isLinked" style="display: none;">
+        <div class="form-row">
+            <label for="node-input-parentService">
+              <i class="fa fa-cog"></i>
+              Parent Service</label>
+            <select id="node-input-parentService">
+              <option value="">Choose...</option>
+          </select>
+        </div>
+    </div>
+
+
+    <div class="form-row">
+        <label for="node-input-serviceName">
           <i class="fa fa-cog"></i>
           Service</label>
-      <select id="node-input-serviceName">
+        <select id="node-input-serviceName">
           <option value="">Choose...</option>
       </select>
-  </div>
+    </div>
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+        <input type="text" id="node-input-topic" placeholder="Topic">
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-filter" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-filter" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-filter"></i> Filter on Topic</label>
+    </div>
+    <div class="form-row">
+        <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
+        <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
+    </div>
+    <div class="form-row">
+        <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
+        <input type="text" id="node-input-serialNo" placeholder="Serial Number">
+    </div>
+    <div class="form-row">
+        <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
+        <input type="text" id="node-input-model" placeholder="Model">
+    </div>
 
-  <div class="form-row">
-      <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
-      <input type="text" id="node-input-topic" placeholder="Topic">
-  </div>
-  <div class="form-row">
-      <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
-      <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
-  </div>
-  <div class="form-row">
-      <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
-      <input type="text" id="node-input-serialNo" placeholder="Serial Number">
-  </div>
-  <div class="form-row">
-      <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
-      <input type="text" id="node-input-model" placeholder="Model">
-  </div>
-
-  <div class="form-row">
-      <label for="node-input-name">
+    <div class="form-row">
+        <label for="node-input-name">
           <i class="fa fa-tag"></i>
           Name</label>
-      <input type="text" id="node-input-name" placeholder="Name">
-  </div>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
 
-  <div class="form-row" style="margin-bottom: 0px;">
-      <label for="node-input-characteristicProperties" style="width: 100% !important;">
+    <div class="form-row" style="margin-bottom: 0px;">
+        <label for="node-input-characteristicProperties" style="width: 100% !important;">
           <i class="fa fa-wrench"></i>
           Characteristic Properties</label>
-      <input type="hidden" id="node-input-characteristicProperties">
-  </div>
-  <div class="form-row node-text-editor-row">
-      <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-characteristicProperties-editor" ></div>
-  </div>
+        <input type="hidden" id="node-input-characteristicProperties">
+    </div>
+    <div class="form-row node-text-editor-row">
+        <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-characteristicProperties-editor"></div>
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="homekit-service">
-
-      <h3 id="toc_5">Service</h3>
-      <p>The Service node represents the single device you want to control or query.</p>
-      <p>Every service node creates its own HAP accessory to keep things simple.</p>
-      <ul>
-          <li><strong>Topic</strong>: An optional property that can be configured in the node or, if left blank, can be set by <code>msg.topic</code>.</li>
-          <li><strong>Bridge</strong>: On what bridge to host this Service and its Accessory.</li>
-          <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
-          <li><strong>Service</strong>: Choose the type of Service from the list.</li>
-          <li><strong>Name</strong>: <em>optional</em></li>
-          <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
-      </ul>
-      <h2 id="toc_6">Input Messages</h2>
-      <p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
-      <p><strong>Example</strong>: to signal that an <em>Outlet</em> is turned on and in use, send the following payload</p>
-      <div><pre><code class="language-javascript">{
+    <h3 id="toc_5">Service</h3>
+    <p>The Service node represents the single device you want to control or query.</p>
+    <p>Every service node creates its own HAP accessory to keep things simple.</p>
+    <ul>
+        <li><strong>Service Hierarchy</strong>: Choose if this Service is Parent or Linked</li>
+        <ul>
+            <li>Parent has <strong>Bridge</strong>: On what Bridge to host this Service and its Accessory.</li>
+            <li>Linked has <strong>Parent Service</strong>: On what Parent Service link this Service.</li>
+        </ul>
+        <li><strong>Topic</strong>: An optional property that can be configured in the node or, if left blank, can be set by <code>msg.topic</code>. If <em>Filter on Topic</em> is selected <code>msg.topic</code> of incoming messages must match the configured
+            value for the message to be accepted. If <em>Filter on Topic</em> is selected and no <em>Topic</em> is set on the node, then <code>msg.topic</code> must match the nodes <em>Name</em></li>
+        <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
+        <li><strong>Service</strong>: Choose the type of Service from the list.</li>
+        <li><strong>Name</strong>: <em>optional</em></li>
+        <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
+    </ul>
+    <h2 id="toc_6">Input Messages</h2>
+    <p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
+    <p><strong>Example</strong>: to signal that an <em>Outlet</em> is turned on and in use, send the following payload</p>
+    <div>
+        <pre><code class="language-javascript">{
       &quot;On&quot;: 1,
       &quot;OutletInUse&quot;: 1
-  }</code></pre></div>
-      <p><strong>Hint</strong>: to find out what <em>Characteristics</em> you can address, just send <code>{&quot;foo&quot;:&quot;bar&quot;}</code> and watch the debug tab ;)</p>
-      <h2 id="toc_7">Output Messages</h2>
-      <p>Output messages are in the same format as input messages. They are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
-      <h2 id="toc_8">Characteristic Properties</h2>
-      <p><strong>Example</strong>: allow temperatures below 0&deg;C</p>
-      <div><pre><code class="language-json">{
+  }</code></pre>
+    </div>
+    <p><strong>Hint</strong>: to find out what <em>Characteristics</em> you can address, just send <code>{&quot;foo&quot;:&quot;bar&quot;}</code> and watch the debug tab ;)</p>
+    <h2 id="toc_7">Output Messages</h2>
+    <p>Output messages are in the same format as input messages. They are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
+    <h2 id="toc_8">Characteristic Properties</h2>
+    <p><strong>Example</strong>: allow temperatures below 0&deg;C</p>
+    <div>
+        <pre><code class="language-json">{
       &quot;CurrentTemperature&quot;: {
           &quot;minValue&quot;: -100
       }
@@ -84,209 +117,396 @@
       &quot;RotationSpeed&quot;: {
           &quot;minStep&quot;: 25
       }
-  }</code></pre></div>
+  }</code></pre>
+    </div>
 </script>
 
 <script type="text/x-red" data-template-name="homekit-bridge">
-  <div class="form-row">
-      <label for="node-config-input-pinCode"><i class="fa fa-lock"></i> Pin Code</label>
-      <input type="text" id="node-config-input-pinCode" placeholder="xxx-xx-xxx">
-  </div>
-  <div class="form-row">
-      <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
-      <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign">
-  </div>
-  <div class="form-row">
-      <label for="node-config-input-allowInsecureRequest"><i class="fa fa-shield-alt"></i> Allow Insecure Request</label>
-      <input type="checkbox" id="node-config-input-allowInsecureRequest">
-  </div>
-  <div class="form-row">
-      <label for="node-config-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
-      <input type="text" id="node-config-input-manufacturer" placeholder="Manufacturer">
-  </div>
-  <div class="form-row">
-      <label for="node-config-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
-      <input type="text" id="node-config-input-serialNo" placeholder="Serial Number">
-  </div>
-  <div class="form-row">
-      <label for="node-config-input-model"><i class="fa fa-wrench"></i> Model</label>
-      <input type="text" id="node-config-input-model" placeholder="Model">
-  </div>
-  <div class="form-row">
-      <label for="node-config-input-bridgeName"><i class="fa fa-tag"></i> Name</label>
-      <input type="text" id="node-config-input-bridgeName" placeholder="Name">
-  </div>
+    <div class="form-row">
+        <label for="node-config-input-pinCode"><i class="fa fa-lock"></i> Pin Code</label>
+        <input type="text" id="node-config-input-pinCode" placeholder="xxx-xx-xxx">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
+        <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign">
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-config-input-allowInsecureRequest" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-config-input-allowInsecureRequest" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-shield"></i> Allow Insecure Request</label>
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
+        <input type="text" id="node-config-input-manufacturer" placeholder="Manufacturer">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
+        <input type="text" id="node-config-input-serialNo" placeholder="Serial Number">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-model"><i class="fa fa-wrench"></i> Model</label>
+        <input type="text" id="node-config-input-model" placeholder="Model">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-bridgeName"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-bridgeName" placeholder="Name">
+    </div>
+    <hr>
+    <div class="form-row">
+        <input type="checkbox" id="node-config-input-customMdnsConfig" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-config-input-customMdnsConfig" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-filter"></i> Custom MDNS Configuration</label>
+    </div>
+    <div id="mdns-configuration" style="display: none;">
+        <div class="form-row">
+            <label for="node-config-input-mdnsMulticast"><i class="fa fa-ellipsis-v"></i> Multicast</label>
+            <input type="checkbox" id="node-config-input-mdnsMulticast" checked>
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-mdnsInterface"><i class="fa fa-location-arrow"></i> Multicast Interface IP</label>
+            <input type="text" id="node-config-input-mdnsInterface" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-mdnsPort"><i class="fa fa-location-arrow"></i> Port</label>
+            <input type="text" id="node-config-input-mdnsPort" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-mdnsIp"><i class="fa fa-location-arrow"></i> Multicast Address IP</label>
+            <input type="text" id="node-config-input-mdnsIp" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-mdnsTtl"><i class="fa fa-repeat"></i> TTL</label>
+            <input type="text" id="node-config-input-mdnsTtl" placeholder="255">
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-mdnsLoopback"><i class="fa fa-undo"></i> Loopback</label>
+            <input type="checkbox" id="node-config-input-mdnsLoopback" checked>
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-mdnsReuseAddr"><i class="fa fa-location-arrow"></i> Reuse Address</label>
+            <input type="checkbox" id="node-config-input-mdnsReuseAddr" checked>
+        </div>
+    </div>
+    <hr>
 </script>
 
 <script type="text/x-red" data-help-name="homekit-bridge">
-  <h3 id="toc_4">Bridge</h3>
-  <p>The Bridge node is a configuration node, specifying the <em>bridge</em> that iOS sees, i.e. the device that is manually being added by the user.
-  All accessories behind a bridge noded are then automatically added by iOS.
-  </p>
-  <ul>
-      <li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
-      <li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.</li>
-      <li><strong>Allow Insecure Request</strong>: Should we allow insecure request? Default false.</li>
-      <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
-      <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>.</li>
-  </ul>
+    <h3 id="toc_4">Bridge</h3>
+    <p>The Bridge node is a configuration node, specifying the <em>bridge</em> that iOS sees, i.e. the device that is manually being added by the user. All accessories behind a bridge noded are then automatically added by iOS.
+    </p>
+    <ul>
+        <li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
+        <li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.</li>
+        <li><strong>Allow Insecure Request</strong>: Should we allow insecure request? Default false.</li>
+        <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
+        <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>.</li>
+        <li><strong>Custom MDNS Configuration</strong>: Check if you would like to use custom mdns configuration.</li>
+        <ul>
+            <li><strong>Multicast</strong>: Use udp multicasting. Optional. Default true.</li>
+            <li><strong>Multicast Interface IP:</strong>: Explicitly specify a network interface. Optional. Defaults to all.</li>
+            <li><strong>Port</strong>: Set the udp port. Optional. Default 5353.</li>
+            <li><strong>Multicast Address IP</strong>: Set the udp ip. Optional. </li>
+            <li><strong>TTL</strong>: Set the multicast ttl. Optional. </li>
+            <li><strong>Loopback</strong>: Receive your own packets. Optional. Default true.</li>
+            <li><strong>Reuse Address</strong>: Set the reuseAddr option when creating the socket. Optional. Default true.</li>
+        </ul>
+    </ul>
 </script>
 
 <script type="text/javascript">
-  var serviceTypes;
+    let serviceTypes;
 
-  //HomeKitServiceTypes
-  $.getJSON("homekit/service/types", function(data) {
-    serviceTypes = data;
-  });
+    //HomeKitServiceTypes
+    $.getJSON("homekit/service/types", function(data) {
+        serviceTypes = data;
+    });
 
-  RED.nodes.registerType("homekit-service", {
-    category: "advanced",
-    paletteLabel: "homekit",
-    defaults: {
-      bridge: {
-        value: "",
-        type: "homekit-bridge",
-        required: true
-      },
-      name: {
-        value: ""
-      },
-      serviceName: {
-        value: "",
-        required: true
-      },
-      topic: {
-        value:""
-      },
-      manufacturer: {
-        value: "Default Manufacturer",
-        required: true
-      },
-      model: {
-        value: "Default Model",
-        required: true
-      },
-      serialNo: {
-        value: "Default Serial Number",
-        required: true
-      },
-      characteristicProperties: {
-        value: "{}",
-        validate: function(value) {
-          if (value.length == 0) {
-            return true;
-          }
+    RED.nodes.registerType("homekit-service", {
+        category: "advanced",
+        paletteLabel: "homekit",
+        defaults: {
+            isParent: {
+                required: true
+            },
+            bridge: {
+                value: "",
+                type: "homekit-bridge",
+                required: false
+            },
+            parentService: {
+                value: "",
+                required: false
+            },
+            name: {
+                value: "",
+                required: true,
+                validate: function(value) {
+                    return value.length > 0;
+                }
+            },
+            serviceName: {
+                value: "",
+                required: true
+            },
+            topic: {
+                value:""
+            },
+            filter: {
+                value: false
+            },
+            manufacturer: {
+                value: "Default Manufacturer",
+                required: true
+            },
+            model: {
+                value: "Default Model",
+                required: true
+            },
+            serialNo: {
+                value: "Default Serial Number",
+                required: true
+            },
+            characteristicProperties: {
+                value: "{}",
+                validate: function(value) {
+                    if (value.length === 0) {
+                        return true;
+                    }
 
-          try {
-            JSON.parse(value);
-          } catch (e) {
-            return false;
-          }
+                    try {
+                        JSON.parse(value);
+                    } catch (e) {
+                        return false;
+                    }
 
-          return value[0] == "{";
+                    return value[0] === "{";
+                }
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "homekit.png",
+        color: "#fcc127",
+        label: function() {
+            return this.name || this.serviceName || "Service";
+        },
+        labelStyle: function() {
+            return this.name ? "node_label_italic" : "";
+        },
+        oneditprepare: function() {
+            let node = this;
+            let isParentToggle = $("#node-config-input-isParent");
+
+            if (node.isParent === false) {
+                isParentToggle.val("false");
+            } else {
+                isParentToggle.val("true");
+            }
+
+            let isLinkedDiv = $("#isLinked");
+            let isParentDiv = $("#isParent");
+
+            isParentToggle.change(function(){
+                if(isParentToggle.val() === "true") {
+                    isLinkedDiv.fadeOut("fast");
+                    isParentDiv.fadeIn("fast");
+                } else {
+                    isParentDiv.fadeOut("fast");
+                    isLinkedDiv.fadeIn("fast");
+                }
+            }).change();
+
+            const selectServiceName = $("#node-input-serviceName");
+            for (let key in serviceTypes) {
+                if (!serviceTypes.hasOwnProperty(key)) continue;
+
+                selectServiceName.append(
+                    $("<option></option>")
+                        .val(key)
+                        .text(key)
+                );
+            }
+            selectServiceName
+                .find("option")
+                .filter(function() {
+                    return $(this).val() === node.serviceName;
+                })
+                .attr("selected", true);
+            selectServiceName.change();
+
+            node.editor = RED.editor.createEditor({
+                id: "node-input-characteristicProperties-editor",
+                mode: "ace/mode/json",
+                value: $("#node-input-characteristicProperties").val()
+            });
+
+            const selectParentService = $("#node-input-parentService");
+
+            const candidateNodes = RED.nodes.filterNodes({type: "homekit-service"});
+            const inSubflow = !!RED.nodes.subflow(node.z);
+            candidateNodes.forEach(function(n) {
+                if (!n.name || n.name.length < 1 || !n.isParent) {
+                    return;
+                }
+
+                if (n.id === node.id) {
+                    return;
+                }
+
+                if (inSubflow) {
+                    if (n.z !== node.z) {
+                        return;
+                    }
+                } else {
+                    if (!!RED.nodes.subflow(n.z)) {
+                        return;
+                    }
+                }
+
+                let sublabel;
+                let tab = RED.nodes.workspace(n.z);
+                if (tab) {
+                    sublabel = tab.label || tab.id;
+                } else {
+                    tab = RED.nodes.subflow(n.z);
+                    sublabel = "subflow : " + tab.name;
+                }
+
+                const value = n.id;
+                const text = n.name + " (" + sublabel + ")";
+
+                selectParentService.append(
+                    $("<option></option>")
+                        .val(value)
+                        .text(text)
+                );
+            });
+
+            selectParentService
+                .find("option")
+                .filter(function() {
+                    return $(this).val() === node.parentService;
+                })
+                .attr("selected", true);
+            selectParentService.change();
+        },
+        oneditsave: function() {
+            let node = this;
+
+            node.isParent = $("#node-config-input-isParent").val() === "true";
+
+            if (!node.isParent) {
+                node.parentService = $("node-input-parentService option:selected").val();
+            }
+
+            node.serviceName = $("node-input-serviceName option:selected").val();
+            $("#node-input-characteristicProperties").val(node.editor.getValue());
+            node.editor.destroy();
+            delete node.editor;
+        },
+        oneditcancel: function() {
+            this.editor.destroy();
+            delete this.editor;
+        },
+        oneditresize: function(size) {
+            const rows = $("#dialog-form>div:not(.node-text-editor-row)");
+            const height = $("#dialog-form").height();
+            for (const i = 0; i < rows.size(); i++) {
+                height -= $(rows[i]).outerHeight(true);
+            }
+            const editorRow = $("#dialog-form>div.node-text-editor-row");
+            height -=
+                parseInt(editorRow.css("marginTop")) +
+                parseInt(editorRow.css("marginBottom"));
+            $(".node-text-editor").css("height", height + "px");
+            this.editor.resize();
         }
-      }
-    },
-    inputs: 1,
-    outputs: 1,
-    icon: "homekit.png",
-    color: "#fcc127",
-    label: function() {
-      return this.name || this.serviceName || "Service";
-    },
-    labelStyle: function() {
-      return this.name ? "node_label_italic" : "";
-    },
-    oneditprepare: function() {
-      var node = this;
-      var selectField = $("#node-input-serviceName");
-      for (var key in serviceTypes) {
-        selectField.append(
-          $("<option></option>")
-            .val(key)
-            .text(key)
-        );
-      }
-      selectField
-        .find("option")
-        .filter(function() {
-          return $(this).val() == node.serviceName;
-        })
-        .attr("selected", true);
-      selectField.change();
-
-      this.editor = RED.editor.createEditor({
-        id: "node-input-characteristicProperties-editor",
-        mode: "ace/mode/json",
-        value: $("#node-input-characteristicProperties").val()
-      });
-    },
-    oneditsave: function() {
-      this.serviceName = $("node-input-serviceName option:selected").val();
-      $("#node-input-characteristicProperties").val(this.editor.getValue());
-      this.editor.destroy();
-      delete this.editor;
-    },
-    oneditcancel: function() {
-      this.editor.destroy();
-      delete this.editor;
-    },
-    oneditresize: function(size) {
-      var rows = $("#dialog-form>div:not(.node-text-editor-row)");
-      var height = $("#dialog-form").height();
-      for (var i = 0; i < rows.size(); i++) {
-        height -= $(rows[i]).outerHeight(true);
-      }
-      var editorRow = $("#dialog-form>div.node-text-editor-row");
-      height -=
-        parseInt(editorRow.css("marginTop")) +
-        parseInt(editorRow.css("marginBottom"));
-      $(".node-text-editor").css("height", height + "px");
-      this.editor.resize();
-    }
-  });
+    });
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType("homekit-bridge", {
-    category: "config",
-    defaults: {
-      bridgeName: {
-        value: "",
-        required: true
-      },
-      pinCode: {
-        value: "111-11-111",
-        required: true,
-        validate: RED.validators.regex(/[0-9]{3}-[0-9]{2}-[0-9]{3}/)
-      },
-      port: {
-        required: false,
-        validate: RED.validators.port
-      },
-      allowInsecureRequest: {
-        value: false,
-        required: true
-      },
-      manufacturer: {
-        value: "Default Manufacturer",
-        required: true
-      },
-      model: {
-        value: "Default Model",
-        required: true
-      },
-      serialNo: {
-        value: "Default Serial Number",
-        required: true
-      }
-    },
-    label: function() {
-      return this.bridgeName || "Bridge";
-    },
-    labelStyle: function() {
-      return this.bridgeName ? "node_label_italic" : "";
-    }
-  });
+    RED.nodes.registerType("homekit-bridge", {
+        category: "config",
+        defaults: {
+            bridgeName: {
+                value: "",
+                required: true
+            },
+            pinCode: {
+                value: "111-11-111",
+                required: true,
+                validate: RED.validators.regex(/[0-9]{3}-[0-9]{2}-[0-9]{3}/)
+            },
+            port: {
+                required: false,
+                validate: RED.validators.port
+            },
+            allowInsecureRequest: {
+                value: false,
+                required: true
+            },
+            manufacturer: {
+                value: "Default Manufacturer",
+                required: true
+            },
+            model: {
+                value: "Default Model",
+                required: true
+            },
+            serialNo: {
+                value: "Default Serial Number",
+                required: true
+            },
+            customMdnsConfig: {
+                value: false,
+                required: false
+            },
+            mdnsMulticast: {
+                value: true,
+                required: false
+            },
+            mdnsInterface: {
+                value: undefined,
+                required: false
+            },
+            mdnsPort: {
+                value: undefined,
+                required: false,
+                validate: RED.validators.port
+            },
+            mdnsIp: {
+                value: undefined,
+                required: false
+            },
+            mdnsTtl: {
+                value: undefined,
+                required: false
+            },
+            mdnsLoopback: {
+                value: true,
+                required: false
+            },
+            mdnsReuseAddr: {
+                value: true,
+                required: false
+            }
+        },
+        label: function() {
+            return this.bridgeName || "Bridge";
+        },
+        labelStyle: function() {
+            return this.bridgeName ? "node_label_italic" : "";
+        },
+        oneditprepare: function () {
+            let customMdnsConfigCheckbox = $("#node-config-input-customMdnsConfig");
+            let mdnsConfiguration = $("#mdns-configuration");
+
+            customMdnsConfigCheckbox.change(function(){
+                if(this.checked) {
+                    mdnsConfiguration.fadeIn("fast");
+                } else {
+                    mdnsConfiguration.fadeOut("fast");
+                }
+            }).change();
+        }
+    });
 </script>

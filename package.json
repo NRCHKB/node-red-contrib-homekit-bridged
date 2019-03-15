@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-homekit-bridged",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Node-RED nodes to simulate Apple HomeKit devices. Based on node-red-contrib-homekit, but with support for bridged devices.",
   "main": "homekit.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oliverrahner/node-red-contrib-homekit-bridged.git"
+    "url": "git+https://github.com/NRCHKB/node-red-contrib-homekit-bridged.git"
   },
   "keywords": [
     "homekit",
@@ -26,14 +26,50 @@
   "author": "Marius Schmeding, Oliver Rahner, Shaquu",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/oliverrahner/node-red-contrib-homekit-bridged/issues"
+    "url": "https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues"
   },
-  "homepage": "https://github.com/oliverrahner/node-red-contrib-homekit-bridged#readme",
+  "homepage": "https://github.com/NRCHKB/node-red-contrib-homekit-bridged#readme",
   "dependencies": {
     "hap-nodejs": "^0.4.48"
   },
   "devDependencies": {
-    "mocha": "^6.0.1",
+    "node-red": "^0.20.0",
+    "eslint": "^5.15.1",
+    "mocha": "^6.0.2",
     "debug": "^4.1.1"
+  },
+  "eslintConfig": {
+    "env": {
+      "commonjs": true,
+      "es6": true,
+      "node": true
+    },
+    "extends": "eslint:recommended",
+    "globals": {
+      "Atomics": "readonly",
+      "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+      "ecmaVersion": 2018
+    },
+    "rules": {
+      "indent": [
+        "error",
+        4
+      ],
+      "linebreak-style": [
+        "error",
+        "unix"
+      ],
+      "quotes": [
+        "error",
+        "double"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "no-unused-vars": "off"
+    }
   }
 }

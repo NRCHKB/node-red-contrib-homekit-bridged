@@ -1,32 +1,23 @@
 module.exports = function(RED) {
-  ("use strict");
+    ("use strict");
 
-  var HapNodeJS = require("hap-nodejs");
-  var Service = HapNodeJS.Service;
-  var API = require("./lib/api.js")(RED);
-  var HAPBridgeNode = require("./lib/HAPBridgeNode.js")(RED);
-  var HAPServiceNode = require("./lib/HAPServiceNode.js")(RED);
+    const HapNodeJS = require("hap-nodejs");
+    const Service = HapNodeJS.Service;
+    const API = require("./lib/api.js")(RED);
+    const HAPBridgeNode = require("./lib/HAPBridgeNode.js")(RED);
+    const HAPServiceNode = require("./lib/HAPServiceNode.js")(RED);
 
-  Service.prototype.setCharacteristicWithContext = function(
-    name,
-    value,
-    context
-  ) {
-    this.getCharacteristic(name).setValue(value, null, context);
-    return this; // for chaining
-  };
+    // Initialize our storage system
+    if (RED.settings.available()) {
+        const userDir = RED.settings.userDir;
+        HapNodeJS.init(userDir + "/homekit-persist");
+    } else {
+        HapNodeJS.init();
+    }
 
-  // Initialize our storage system
-  if (RED.settings.available()) {
-    var userDir = RED.settings.userDir;
-    HapNodeJS.init(userDir + "/homekit-persist");
-  } else {
-    HapNodeJS.init();
-  }
+    // Initialize API
+    API.init();
 
-  // Initialize API
-  API.init();
-
-  RED.nodes.registerType("homekit-bridge", HAPBridgeNode.init);
-  RED.nodes.registerType("homekit-service", HAPServiceNode.init);
+    RED.nodes.registerType("homekit-bridge", HAPBridgeNode.init);
+    RED.nodes.registerType("homekit-service", HAPServiceNode.init);
 };

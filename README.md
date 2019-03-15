@@ -1,36 +1,13 @@
 # node-red-contrib-homekit-bridged
 
-master [![Build Status](https://travis-ci.org/Shaquu/node-red-contrib-homekit-bridged.svg?branch=master)](https://travis-ci.org/Shaquu/node-red-contrib-homekit-bridged) / dev [![Build Status](https://travis-ci.org/Shaquu/node-red-contrib-homekit-bridged.svg?branch=dev)](https://travis-ci.org/Shaquu/node-red-contrib-homekit-bridged)
+|master [![Build Status](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged.svg?branch=master)](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged) [![codebeat badge](https://codebeat.co/badges/3bbdea35-c2ab-4273-b5d7-de6c4c9c1971)](https://codebeat.co/projects/github-com-nrchkb-node-red-contrib-homekit-bridged-master) [![Known Vulnerabilities](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged/badge.svg?targetFile=package.json)](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged?targetFile=package.json)|dev [![Build Status](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged.svg?branch=dev)](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged) [![codebeat badge](https://codebeat.co/badges/e483faf0-923d-4916-9412-f2117206bdcf)](https://codebeat.co/projects/github-com-nrchkb-node-red-contrib-homekit-bridged-dev)|
+|-|-|
 
-Node-RED nodes to simulate Apple HomeKit devices. Based on node-red-contrib-homekit, but with support for bridged devices.
+## Intro
 
-## Why this fork?
+Node-RED nodes to simulate Apple HomeKit devices. The goal is to emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README for the basics then head over to the [wiki page](https://github.com/node-red-contrib-homekit/node-red-contrib-homekit-bridged/wiki) for details and examples. If you're still stuck please open an issue, we are glad to help.
 
-As Marius Schmeding seems to have abandoned his great [work](https://github.com/mschm/node-red-contrib-homekit), I decided to fork his repo and to introduce some major rework.
-
-The biggest change is the use of HAP-NodeJS in **bridged mode**: only add one bridge in the iOS home app to access all your devices!
-Also, I (believe I) fixed some issues:
-
-- devices don't show as unreachable after redeploying
-- having more than one device per accessory (in the "old" world) or bridge doesn't lead to iOS losing the parameters for this device anymore
-
-Unfortunately, I had to introduce a new node type `homekit-bridge` and remove the old `homekit-accessory`. This means you either have to start over with a new flow or edit it manually. Thankfully, [Fredrik Furtenbach](https://github.com/flic) published a [command line script](https://github.com/flic/Convert-Flows) to aid in the conversion.
-
-If you go for the manual way:
-
-1. Export your flows.
-2. Delete all flows.
-3. Remove node-red-contrib-homekit.
-4. Install node-red-contrib-homekit-bridged.
-5. Open the exported flow in a text editor and remove the nodes of type `homekit-accessory`.
-6. Remove the parameter `accessory` on all of your `homekit-service`s and save the file.
-7. Import the edited flow.
-8. Add a new bridge and change all your services to use it.
-
-## Prerequisites
-
-These nodes are based on the _extremely_ **awesome** [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) -Project which uses an implementation of mdns to provide Bonjour / Avahi capability.
-Please refer to the HAP-NodeJS [Wiki](https://github.com/KhaosT/HAP-NodeJS/wiki) and to [mdns](https://www.npmjs.com/package/mdns) for install instructions, if you get stuck on the following.
+These nodes allow the creation of fully customizable accessories for use in Apple's Home app on iOS, Watch OS, and Mac OS. If you can get it in Node-RED, you can get it in HomeKit. The goal of the project is to create a platform where official HomeKit hardware can be emulated as closely as possible through node red.
 
 ## Install
 
@@ -44,7 +21,7 @@ Then run the following command in your Node-RED user directory - typically `~/.n
 
 ### Docker
 
-You can also pull a [docker image](https://hub.docker.com/r/raymondmm/node-red-homekit/) containing everything needed to get started, thanks to [raymondmm (Raymond Mouthaan)](https:/https://github.com/RaymondMouthaan).
+You can also pull a [docker image](https://hub.docker.com/r/raymondmm/node-red-homekit/) containing everything needed to get started, thanks to [Raymond Mouthaan](https://github.com/RaymondMouthaan).
 
 Please see instructions on Docker Hub.
 
@@ -52,28 +29,36 @@ Please see instructions on Docker Hub.
 
 ### Bridge
 
-The Bridge node is a configuration node, specifying the _bridge_ that iOS sees, i.e. the device that is manually being added by the user.
+The Bridge node is a configuration node which will be added from within the service node. It creates the _bridge_ that iOS sees, i.e. the device that is added to the Apple Home app by the user.
 All accessories behind a bridge noded are then automatically added by iOS.
 
 - **Pin Code**: Specify the Pin for the pairing process.
 - **Port**: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.
-
-* **Allow Insecure Request**: Should we allow insecure request? Default false.
-
+- **Allow Insecure Request**: Should we allow insecure request? Default false.
 - **Manufacturer, Model, Serial Number**: Can be anything you want.
-- **Name**: If you intend to simulate a rocket, then why don't you call it _Rocket_.
+- **Name**: Can be anything you want.
+- **Custom MDNS Configuration**: Check if you would like to use custom MDNS configuration.
+  - **Multicast**: Use udp multicasting. Optional. Default true.
+  - **Multicast Interface IP**: Explicitly specify a network interface. Optional. Defaults to all.
+  - **Port**: Set the udp port. Optional. Default 5353.
+  - **Multicast Address IP**: Set the udp ip. Optional.
+  - **TTL**: Set the multicast ttl. Optional.
+  - **Loopback**: Receive your own packets. Optional. Default true.
+  - **Reuse Address**: Set the reuseAddr option when creating the socket. Optional. Default true.
 
 ### Service
 
 The Service node represents the single device you want to control or query.
-Every service node creates its own HAP accessory to keep things simple
+Every service node can be _Parent_ or _Linked_. Each Parent service creates an individual accessory in the Home app. Linked services add additional features to their Parent service - for example adding battery status to a motion detector. See examples in the [wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki) for details.
 
-- **Topic**: An optional property that can be configured in the node or, if left blank, can be set by `msg.topic`.
-- **Bridge**: On what bridge to host this Service and its Accessory.
+- **Service Hierarchy**: Whether the service is _Parent_ or _Linked_.
+   - **Bridge**: On what bridge to host this Service and its Accessory.
+   - **Parent Service**: Which Parent service the Linked service will be connected to.
+- **Service**: Choose the type of Service from the list. [Services wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki/Services)
+- **Topic**: An optional property that can be configured in the node or, if left blank, can be set by msg.topic.
 - **Manufacturer, Model, Serial Number**: Can be anything you want.
-- **Service**: Choose the type of Service from the list.
-- **Name**: _optional_
-- **Characteristic Properties**: Customise the properties of characteristics.
+- **Name**: If you intend to simulate a rocket, then why don't you call it _Rocket_.
+- **Characteristic Properties**: Customise the properties of characteristics. [Characteristics wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki/Characteristics)
 
 ## Input Messages
 
@@ -96,7 +81,7 @@ Output messages are in the same format as input messages. They are emitted from 
 
 ## Supported Types
 
-The following is a list of _Services_ that are currently supported. If you encounter problems with any of them please file an Issue.
+The following is a list of _Services_ that are currently supported. Check for more details on [the wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki/Services). If you encounter problems with any of them please file an Issue.
 
 - Air Quality Sensor
 - Battery Service
@@ -145,7 +130,38 @@ Context info can be provided as part of the input message and will be available 
 }
 ```
 
+## No Response
+
+You can set accessory "No Response" status by sending "NO_RESPONSE" as a value for any available characteristic.
+
+**Example**:
+
+```json
+{
+  "On": "NO_RESPONSE"
+}
+```
+
+After "No Response" status was triggered, the accessory is marked accordingly when you try to control it or reopen Home.app.
+Any subsequent update of any characteristic value will reset this status.
+
+## Topic
+
+An optional property that can be configured in the node or, if left blank, can be set by `msg.topic`.
+
+If Filter on Topic is selected `msg.topic` of incoming messages must match the configured value for the message to be accepted. If Filter on Topic is selected and no Topic is set on the node, then `msg.topic` must match the node's Name.
+
+The Topic parameter can be used to filter incoming messages, making it possible to connect multiple Homekit services to, for example, one MQTT-in node and filter directly on the MQTT Topic. It can also be used to add additional metadata to the outgoing msg, making it possible to connect multiple Homekit services directly to an MQTT-out node or filter the flow in another way.
+
 ## FAQ
+
+#### How can I get started?
+
+Our [wiki page](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki) has a growing list of examples and explanations of how to use many features of these nodes. After you've gone through the wiki page and you are still having questions, please open an issue.
+
+#### How can I upgrade from the non-bridged node-red-contrib-homekit?
+
+[How to upgrade from node-red-homekit](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki/Upgrade-Information)
 
 #### How can I generate Debug logs?
 
@@ -156,6 +172,8 @@ This should output detailed information regarding everything in the homekit cont
 
 #### The same command gets sent over and over. How do I stop that?
 
+The built in `rbe` node may be placed as needed to only pass on messages if they are different from previous messages. 
+
 #### I only want to get messages when something has been changed in the Home app, but also all messages I send into the homekit node get forwarded, too. How do I stop that?
 
 Insert this node right after your homekit node:
@@ -165,3 +183,16 @@ Insert this node right after your homekit node:
 ```
 
 This will filter out all messages with their payload property hap.context not set, which means they are events that have been sent to homekit via node-red, not via the Home app.
+
+
+## Contributors
+
+#### Big thanks to [all who have contributed to the project](https://github.com/node-red-contrib-homekit/node-red-contrib-homekit-bridged/graphs/contributors). 
+
+[Shaq](https://github.com/Shaquu) - leading the current efforts to fix bugs and add features
+
+[Oliver Rahner](https://github.com/oliverrahner) - reworked the code to add bridged mode - [read his story](https://github.com/node-red-contrib-homekit/node-red-contrib-homekit-bridged/wiki/Credits#oliver-rahner-explains-his-work)
+
+[Marius Schmeding](https://github.com/mschm/node-red-contrib-homekit) - original implementation of HAP-NodeJS into Node-RED
+
+[HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) - NodeJS implementation of Apple's HomeKit Accessory Server
