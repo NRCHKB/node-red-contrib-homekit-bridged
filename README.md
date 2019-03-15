@@ -1,6 +1,7 @@
 # node-red-contrib-homekit-bridged
 
-master [![Build Status](https://travis-ci.org/Shaquu/node-red-contrib-homekit-bridged.svg?branch=master)](https://travis-ci.org/Shaquu/node-red-contrib-homekit-bridged) / dev [![Build Status](https://travis-ci.org/Shaquu/node-red-contrib-homekit-bridged.svg?branch=dev)](https://travis-ci.org/Shaquu/node-red-contrib-homekit-bridged)
+|master [![Build Status](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged.svg?branch=master)](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged) [![codebeat badge](https://codebeat.co/badges/3bbdea35-c2ab-4273-b5d7-de6c4c9c1971)](https://codebeat.co/projects/github-com-nrchkb-node-red-contrib-homekit-bridged-master)|dev [![Build Status](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged.svg?branch=dev)](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged) [![codebeat badge](https://codebeat.co/badges/e483faf0-923d-4916-9412-f2117206bdcf)](https://codebeat.co/projects/github-com-nrchkb-node-red-contrib-homekit-bridged-dev)|
+|-|-|
 
 ## Intro
 
