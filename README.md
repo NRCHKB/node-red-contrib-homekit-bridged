@@ -5,7 +5,7 @@
 
 ## Intro
 
-Node-RED nodes to simulate Apple HomeKit devices. The goal is to emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README for the basics then head over to the [wiki page](https://github.com/node-red-contrib-homekit/node-red-contrib-homekit-bridged/wiki) for details and examples. If you're still stuck please open an issue, we are glad to help.
+Node-RED nodes to simulate Apple HomeKit devices. The goal is to emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README for the basics then head over to the [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for details and examples. If you're still stuck please open an issue, we are glad to help.
 
 These nodes allow the creation of fully customizable accessories for use in Apple's Home app on iOS, Watch OS, and Mac OS. If you can get it in Node-RED, you can get it in HomeKit. The goal of the project is to create a platform where official HomeKit hardware can be emulated as closely as possible through node red.
 
@@ -49,16 +49,16 @@ All accessories behind a bridge noded are then automatically added by iOS.
 ### Service
 
 The Service node represents the single device you want to control or query.
-Every service node can be _Parent_ or _Linked_. Each Parent service creates an individual accessory in the Home app. Linked services add additional features to their Parent service - for example adding battery status to a motion detector. See examples in the [wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki) for details.
+Every service node can be _Parent_ or _Linked_. Each Parent service creates an individual accessory in the Home app. Linked services add additional features to their Parent service - for example adding battery status to a motion detector. See examples in the [wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for details.
 
 - **Service Hierarchy**: Whether the service is _Parent_ or _Linked_.
    - **Bridge**: On what bridge to host this Service and its Accessory.
    - **Parent Service**: Which Parent service the Linked service will be connected to.
-- **Service**: Choose the type of Service from the list. [Services wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki/Services)
+- **Service**: Choose the type of Service from the list. [Services wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Services)
 - **Topic**: An optional property that can be configured in the node or, if left blank, can be set by msg.topic.
 - **Manufacturer, Model, Serial Number**: Can be anything you want.
 - **Name**: If you intend to simulate a rocket, then why don't you call it _Rocket_.
-- **Characteristic Properties**: Customise the properties of characteristics. [Characteristics wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki/Characteristics)
+- **Characteristic Properties**: Customise the properties of characteristics. [Characteristics wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Characteristics)
 
 ## Input Messages
 
@@ -81,7 +81,7 @@ Output messages are in the same format as input messages. They are emitted from 
 
 ## Supported Types
 
-The following is a list of _Services_ that are currently supported. Check for more details on [the wiki](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki/Services). If you encounter problems with any of them please file an Issue.
+The following is a list of _Services_ that are currently supported. Check for more details on [the wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Services). If you encounter problems with any of them please file an Issue.
 
 - Air Quality Sensor
 - Battery Service
@@ -157,16 +157,16 @@ The Topic parameter can be used to filter incoming messages, making it possible 
 
 #### How can I get started?
 
-Our [wiki page](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki) has a growing list of examples and explanations of how to use many features of these nodes. After you've gone through the wiki page and you are still having questions, please open an issue.
+Our [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) has a growing list of examples and explanations of how to use many features of these nodes. After you've gone through the wiki page and you are still having questions, please open an issue.
 
 #### How can I upgrade from the non-bridged node-red-contrib-homekit?
 
-[How to upgrade from node-red-homekit](https://github.com/oliverrahner/node-red-contrib-homekit-bridged/wiki/Upgrade-Information)
+[How to upgrade from node-red-homekit](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Upgrade-Information)
 
 #### How can I generate Debug logs?
 
 Stop your node-red instance and start it again using the following command:
-`DEBUG=Accessory,HAPServer,EventedHTTPServer node-red`
+`DEBUG=NRCHKB,Accessory,HAPServer,EventedHTTPServer node-red`
 
 This should output detailed information regarding everything in the homekit context.
 
@@ -187,11 +187,11 @@ This will filter out all messages with their payload property hap.context not se
 
 ## Contributors
 
-#### Big thanks to [all who have contributed to the project](https://github.com/node-red-contrib-homekit/node-red-contrib-homekit-bridged/graphs/contributors). 
+#### Big thanks to [all who have contributed to the project](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/graphs/contributors). 
 
 [Shaq](https://github.com/Shaquu) - leading the current efforts to fix bugs and add features
 
-[Oliver Rahner](https://github.com/oliverrahner) - reworked the code to add bridged mode - [read his story](https://github.com/node-red-contrib-homekit/node-red-contrib-homekit-bridged/wiki/Credits#oliver-rahner-explains-his-work)
+[Oliver Rahner](https://github.com/oliverrahner) - reworked the code to add bridged mode - [read his story](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Credits#oliver-rahner-explains-his-work)
 
 [Marius Schmeding](https://github.com/mschm/node-red-contrib-homekit) - original implementation of HAP-NodeJS into Node-RED
 
