@@ -30,13 +30,13 @@
   },
   "homepage": "https://github.com/NRCHKB/node-red-contrib-homekit-bridged#readme",
   "dependencies": {
-    "hap-nodejs": "^0.4.48",
-    "node-red": "^0.20.3",
-    "debug": "^4.1.1"
+    "hap-nodejs": "^0.4.48"
   },
   "devDependencies": {
     "eslint": "^5.15.3",
-    "mocha": "^6.0.2"
+    "mocha": "^6.0.2",
+    "node-red": "^0.20.2",
+    "debug": "^4.1.1"
   },
   "eslintConfig": {
     "env": {
