@@ -226,9 +226,7 @@
             const checkAndWait = () => {
                 $.getJSON("/qrcode?nodeId=" + nodeId, function(data, textStatus, xhr) {
                     try {
-                        if (xhr.status !== 200){
-                            setTimeout(checkAndWait, 4000);
-                        } else {
+                        if (xhr.status === 200){
                             const body = data;
 
                             const draw = SVG(nodeId).size(74, 104);
@@ -272,6 +270,10 @@
                                 }
                             );
                             resolve();
+                        } else if (xhr.status === 300){
+                            resolve();
+                        } else {
+                            setTimeout(checkAndWait, 6000);
                         }
                     } catch (e) {
                         setTimeout(checkAndWait, 2000);
