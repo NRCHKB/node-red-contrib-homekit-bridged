@@ -1,3 +1,7 @@
+<style>
+    @import url("https://fonts.googleapis.com/css?family=Varela+Round");
+</style>
+
 <script type="text/x-red" data-template-name="homekit-service">
     <div class="form-row">
         <label for="node-config-input-isParent"><i class="fa fa-tasks"></i> Service Hierarchy</label>
@@ -212,7 +216,74 @@
     </ul>
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.7.1/svg.min.js"></script>
+
 <script type="text/javascript">
+    function waitForPublish (node) {
+        const nodeId = node.id;
+
+        return new Promise((resolve, reject) => {
+            const checkAndWait = () => {
+                $.getJSON("/qrcode?nodeId=" + nodeId, function(data, textStatus, xhr) {
+                    try {
+                        if (xhr.status !== 200){
+                            setTimeout(checkAndWait, 4000);
+                        } else {
+                            const body = data;
+
+                            const draw = SVG(nodeId).size(74, 104);
+                            draw.move(0, 50);
+                            draw.hide();
+
+                            const border = draw.rect(74, 104);
+                            border.fill("#000");
+                            border.radius(10);
+
+                            const background = draw.rect(70, 100);
+                            background.move(2, 2);
+                            background.fill("#fff");
+                            background.radius(7);
+
+                            const homekitGlyph = draw.image("data:image/png;base64,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", 25, 25);
+                            homekitGlyph.move(7, 8);
+
+                            const pincodeTop = draw.text(body.pincode.top);
+                            pincodeTop.move(35, 4);
+                            pincodeTop.font({size: 11, family: 'Varela Round'});
+                            pincodeTop.attr("letter-spacing", 1.5);
+
+                            const pincodeBottom = draw.text(body.pincode.bottom);
+                            pincodeBottom.move(35, 18);
+                            pincodeBottom.font({size: 11, family: 'Varela Round'});
+                            pincodeBottom.attr("letter-spacing", 1.5);
+
+                            const qrcode = draw.image(body.qrcode, 60, 60);
+                            qrcode.move(7, 37);
+
+                            $("rect").hover(
+                                function() {
+                                    if ($(this).parent().attr("id") === nodeId) {
+                                        draw.show();
+                                    }
+                                }, function() {
+                                    if ($(this).parent().attr("id") === nodeId) {
+                                        draw.hide();
+                                    }
+                                }
+                            );
+                            resolve();
+                        }
+                    } catch (e) {
+                        setTimeout(checkAndWait, 2000);
+                    }
+                }).fail(function() {
+                    setTimeout(checkAndWait, 2000);
+                });
+            };
+            checkAndWait();
+        });
+    }
+
     let serviceTypes;
 
     //HomeKitServiceTypes
@@ -402,6 +473,8 @@
             $("#node-input-characteristicProperties").val(node.editor.getValue());
             node.editor.destroy();
             delete node.editor;
+
+            waitForPublish(this);
         },
         oneditcancel: function() {
             this.editor.destroy();
@@ -421,6 +494,12 @@
             this.editor.resize();
         }
     });
+
+    setTimeout(function () {
+        RED.nodes.filterNodes({type: "homekit-service"}).forEach(function(n) {
+            waitForPublish(n);
+        });
+    }, 1500);
 </script>
 
 <script type="text/javascript">
