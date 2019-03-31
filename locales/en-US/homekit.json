@@ -1,0 +1,43 @@
+{
+    "homekit" : {
+        "bridge": {
+            "setting_name_to": "Setting name to '%s'",
+            "creating": "Creating Bridge with name '%s' and UUID '%s'",
+            "publishing": "Publishing bridge with name '%s', pin code '%s' and %s accessories.",
+            "published": "Bridge '%s' published",
+            "publish_failed": "Bridge '%s' publish failed due to: %s",
+            "publish_error": "Error while publishing Bridge",
+            "identify_called_on_paired": "Identify called on paired Bridge '%s'",
+            "identify_called_on_unpaired": "Identify called on unpaired Bridge '%s'",
+            "now_has_x_accessories": "Bridge now has %s accessories.",
+            "invalid_payload_type": "Invalid payload type: %s",
+            "invalid_message_payload_missing": "Invalid message (payload missing)",
+            "msg_topic_not_match": "msg.topic doesn't match configured value and filter is enabled. Dropping message."
+        },
+        "service": {
+            "starting_parent": "Starting Parent Service '%s'",
+            "starting_linked": "Starting Linked Service '%s'",
+            "error_while_starting_linked_status": "Error while starting Linked Service",
+            "error_while_starting_linked": "Error while starting Linked Service '%s': %s",
+            "waiting_for_parent": "Waiting for Parent Service",
+            "parent_not_assigned": "Parent Service not assigned",
+            "parent_node_not_assigned": "Parent Node not assigned",
+            "looking_for": "Looking for service with UUID '%s'...",
+            "found": "... found it! Updating it.",
+            "not_find_adding": "... didn't find it. Adding new service.",
+            "linking_to_parent": "... and linking service to parent."
+        },
+        "accessory": {
+            "looking_for": "Looking for accessory with UUID '%s'...",
+            "not_match": "Accessory with UUID '%s' doesn't match '%s'",
+            "not_find_adding": "... didn't find it. Adding new accessory with name '%s' and UUID '%s'",
+            "found": "... found it! Updating it.",
+            "identify_called_on_paired": "Identify called on paired Accessory '%s'",
+            "identify_called_on_unpaired": "Identify called on unpaired Accessory '%s'"
+        },
+        "unpairing_with_client": "[%s] Unpairing with client %s",
+        "characteristic": {
+            "cannot_be_written": "Characteristic %s cannot be written.\nTry one of these: %s"
+        }
+    }
+}

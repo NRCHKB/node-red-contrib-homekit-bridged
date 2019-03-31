@@ -53,6 +53,7 @@ module.exports = {
                 node.bridgeNode = node;
                 return node;
             }
-        }
+        },
+        _ : function () {}
     }
 };

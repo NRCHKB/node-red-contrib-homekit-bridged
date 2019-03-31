@@ -33,10 +33,11 @@
     "hap-nodejs": "^0.4.48"
   },
   "devDependencies": {
-    "eslint": "^5.15.3",
+    "debug": "^4.1.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-promise": "^4.1.1",
     "mocha": "^6.0.2",
-    "node-red": "^0.20.2",
-    "debug": "^4.1.1"
+    "node-red": "^0.20.3"
   },
   "eslintConfig": {
     "env": {
@@ -44,7 +45,13 @@
       "es6": true,
       "node": true
     },
-    "extends": "eslint:recommended",
+    "plugins": [
+      "promise"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:promise/recommended"
+    ],
     "globals": {
       "Atomics": "readonly",
       "SharedArrayBuffer": "readonly"
