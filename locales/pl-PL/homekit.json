@@ -1,0 +1,43 @@
+{
+    "homekit" : {
+        "bridge": {
+            "setting_name_to": "Nazwa ustawiona na '%s'",
+            "creating": "Tworzenie Mostka o nazwie '%s' i UUID '%s'",
+            "publishing": "Opublikowano Mostek o nazwie '%s', kod pin '%s' oraz %s akcesoriów.",
+            "published": "Mostek '%s' opublikowany",
+            "publish_failed": "Publikacja Mostka '%s' nie udała się z powodu: %s",
+            "publish_error": "Błąd podczas publikowania Mostka",
+            "identify_called_on_paired": "Wywołano Identyfikację dla zparowanego Mostka '%s'",
+            "identify_called_on_unpaired": "Wywołano Identyfikację dla nie zparowanego Mostka '%s'",
+            "now_has_x_accessories": "Mostek ma teraz %s akcesoriów.",
+            "invalid_payload_type": "Niewłaściwy typ payloadu: %s",
+            "invalid_message_payload_missing": "Nie właściwa wiadomość (brak payloadu)",
+            "msg_topic_not_match": "msg.topic nie pasuje do skonfigurowanej wartości lub filtr jest włączony. Anulowanie wiadomości."
+        },
+        "service": {
+            "starting_parent": "Uruchamianie Usługi Głównej '%s'",
+            "starting_linked": "Uruchamianie Usługi Powiązanej '%s'",
+            "error_while_starting_linked_status": "Błąd podczas uruchamiana Usługi Powiązanej",
+            "error_while_starting_linked": "Błąd podczas uruchamiana Usługi Powiązanej '%s': %s",
+            "waiting_for_parent": "Czekam na Główną Usługę",
+            "parent_not_assigned": "Nie ustawiono Usługi Głównej",
+            "parent_node_not_assigned": "Nie ustawiono Głównego Noda",
+            "looking_for": "Szukanie Usługi o UUID '%s'...",
+            "found": "... znaleziono! Aktualizowanie.",
+            "not_find_adding": "... nie znaleziono. Dodawanie nowej Usługi.",
+            "linking_to_parent": "... i powiązano do Usługi Głównej."
+        },
+        "accessory": {
+            "looking_for": "Szukanie Akcesorium o UUID '%s'...",
+            "not_match": "Akcesorium o UUID '%s' nie pasuje do '%s'",
+            "not_find_adding": "... nie znaleziono. Dodawanie nowego Akcesorium o nazwie '%s' i UUID '%s'",
+            "found": "... znaleziono! Aktualizowanie.",
+            "identify_called_on_paired": "Wywołano Identyfikację dla zparowanego Akcesorium '%s'",
+            "identify_called_on_unpaired": "Wywołano Identyfikację dla nie zparowanego Akcesorium '%s'"
+        },
+        "unpairing_with_client": "[%s] Rozparowanie z klientem %s",
+        "characteristic": {
+            "cannot_be_written": "Charakterystyka %s nie może być zapisana.\nSpróbuj jednej z tych: %s"
+        }
+    }
+}
