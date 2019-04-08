@@ -1,0 +1,43 @@
+{
+    "homekit" : {
+        "bridge": {
+            "setting_name_to": "Név beállítása erre: '%s'",
+            "creating": "Központ konfigurálása folyamatban. Név: '%s' UUID: '%s'",
+            "publishing": "Központ indítása. Név: '%s', PIN-kód: '%s' Eszközök: %s.",
+            "published": "Központ '%s' elindítva.",
+            "publish_failed": "Központ '%s' elindítása sikertelen. Hiba: %s",
+            "publish_error": "Hiba lépett fel a Központ indításakor.",
+            "identify_called_on_paired": "Azonosítás elindítva a párosított Központon: '%s'",
+            "identify_called_on_unpaired": "Azonosítás elindítva a párosítatlan Központon: '%s'",
+            "now_has_x_accessories": "A Központ most %s eszközt tartalmaz.",
+            "invalid_payload_type": "Hibás üzenet: %s",
+            "invalid_message_payload_missing": "Hibás üzenet (tartalom hiányzik - payload)",
+            "msg_topic_not_match": "Az msg.topic nem egyezik meg a beállított értékkel. Üzenet eldobása."
+        },
+        "service": {
+            "starting_parent": "Szülő szolgáltatás elindítása '%s'",
+            "starting_linked": "Linkelt szolgáltatás elindítása '%s'",
+            "error_while_starting_linked_status": "Hiba lépett fel a Linkelt szolgáltatás beállításakor",
+            "error_while_starting_linked": "Hiba lépett fel a Linkelt szolgáltatás indításakor. Bővebb infó: '%s': %s",
+            "waiting_for_parent": "Várakozás a Szülő szolgáltatásra...",
+            "parent_not_assigned": "Nincs Szülő párosítva!",
+            "parent_node_not_assigned": "Nincs Szülő node párosítva!",
+            "looking_for": "Eszközök keresése az alábbi UUID-val '%s'...",
+            "found": "... megtalálva! Frissítem.",
+            "not_find_adding": "... nem találom. Új szolgáltatás hozzáadása folyamatban.",
+            "linking_to_parent": "... és hozzáadom a Szülőhöz."
+        },
+        "accessory": {
+            "looking_for": "Eszköz keresése az alábbi UUID-val '%s'...",
+            "not_match": "Az eszköz UUID-ja '%s' nem egyezik '%s'",
+            "not_find_adding": "... nem találom. Új szolgáltatás hozzáadása folyamatban az alábbi névvel: '%s' és UUID-val: '%s'",
+            "found": "... megtalálva! Frissítem.",
+            "identify_called_on_paired": "Azonosítás elindítva a párosított eszközön: '%s'",
+            "identify_called_on_unpaired": "Azonosítás elindítva a párosítatlan eszközön: '%s'"
+        },
+        "unpairing_with_client": "[%s] Kliens párosításának megszüntetése: %s",
+        "characteristic": {
+            "cannot_be_written": "A %s karakterisztikát nem sikerült beállítani.\nPróbálj meg egyet ezek közül: %s"
+        }
+    }
+}
