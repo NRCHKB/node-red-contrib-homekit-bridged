@@ -1,11 +1,12 @@
 module.exports = function(RED) {
     ("use strict");
 
-    const HapNodeJS = require("hap-nodejs");
-    const Service = HapNodeJS.Service;
     const debug = require("debug")("NRCHKB");
+    
+    const HapNodeJS = require("hap-nodejs");
     const HAPBridgeNode = require("./lib/HAPBridgeNode.js")(RED);
     const HAPServiceNode = require("./lib/HAPServiceNode.js")(RED);
+    const Service = HapNodeJS.Service;
 
     // Initialize our storage system
     if (RED.settings.available()) {
