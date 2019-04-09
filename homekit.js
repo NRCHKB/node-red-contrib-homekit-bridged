@@ -8,37 +8,6 @@ module.exports = function(RED) {
     const HAPServiceNode = require("./lib/HAPServiceNode.js")(RED);
     const Service = HapNodeJS.Service;
 
-    // Initialize our storage system
-    if (RED.settings.available()) {
-        const userDir = RED.settings.userDir;
-        HapNodeJS.init(userDir + "/homekit-persist");
-    } else {
-        HapNodeJS.init();
-    };
-    
-    // Add padStart to nodejs 7
-    if (!String.prototype.padStart) {
-        String.prototype.padStart = function padStart(targetLength, padString) {
-            targetLength = targetLength >> 0; //truncate if number, or convert non-number to 0;
-            padString = String(typeof padString !== "undefined" ? padString : " ");
-            if (this.length >= targetLength) {
-                return String(this);
-            } else {
-                targetLength = targetLength - this.length;
-                if (targetLength > padString.length) {
-                    padString += padString.repeat(targetLength / padString.length); //append to original to ensure we are longer than needed
-                }
-                return padString.slice(0, targetLength) + String(this);
-            }
-        };
-    };
-    
-    // Initialize API
-    publishAccessoryList();
-    publishServiceList();
-    RED.nodes.registerType("homekit-bridge", HAPBridgeNode.init);
-    RED.nodes.registerType("homekit-service", HAPServiceNode.init);
-
     // Publish Accessory List
     const publishAccessoryList = function () {
         // Retrieve Accessory Types
@@ -69,4 +38,35 @@ module.exports = function(RED) {
             }
         );
     };
+    
+        // Initialize our storage system
+    if (RED.settings.available()) {
+        const userDir = RED.settings.userDir;
+        HapNodeJS.init(userDir + "/homekit-persist");
+    } else {
+        HapNodeJS.init();
+    };
+    
+    // Add padStart to nodejs 7
+    if (!String.prototype.padStart) {
+        String.prototype.padStart = function padStart(targetLength, padString) {
+            targetLength = targetLength >> 0; //truncate if number, or convert non-number to 0;
+            padString = String(typeof padString !== "undefined" ? padString : " ");
+            if (this.length >= targetLength) {
+                return String(this);
+            } else {
+                targetLength = targetLength - this.length;
+                if (targetLength > padString.length) {
+                    padString += padString.repeat(targetLength / padString.length); //append to original to ensure we are longer than needed
+                }
+                return padString.slice(0, targetLength) + String(this);
+            }
+        };
+    };
+    
+    // Initialize API
+    publishAccessoryList();
+    publishServiceList();
+    RED.nodes.registerType("homekit-bridge", HAPBridgeNode.init);
+    RED.nodes.registerType("homekit-service", HAPServiceNode.init);
 }
