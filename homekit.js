@@ -35,7 +35,6 @@ module.exports = function(RED) {
     // Initialize API
     publishAccessoryList();
     publishServiceList();
-
     RED.nodes.registerType("homekit-bridge", HAPBridgeNode.init);
     RED.nodes.registerType("homekit-service", HAPServiceNode.init);
 
