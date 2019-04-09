@@ -16,7 +16,7 @@ module.exports = function(RED) {
     }
 
     // Publish Accessory List
-    const _publishAccessoryList = function () {
+    const publishAccessoryList = function () {
         // Retrieve Accessory Types
         RED.httpAdmin.get(
             "/homekit/accessory/types",
@@ -28,7 +28,7 @@ module.exports = function(RED) {
     };
 
     // Publish Service List
-    const _publishServiceList = function () {
+    const publishServiceList = function () {
         // Retrieve Service Types
         RED.httpAdmin.get(
             "/homekit/service/types",
