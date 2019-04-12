@@ -39,7 +39,7 @@ module.exports = function(RED) {
         );
     };
     
-        // Initialize our storage system
+    // Initialize our storage system
     if (RED.settings.available()) {
         const userDir = RED.settings.userDir;
         HapNodeJS.init(userDir + "/homekit-persist");
