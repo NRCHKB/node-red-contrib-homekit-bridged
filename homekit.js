@@ -65,7 +65,6 @@ module.exports = function(RED) {
     };
     
     // Initialize API
-    debugger;
     publishAccessoryList();
     publishServiceList();
     RED.nodes.registerType("homekit-bridge", HAPBridgeNode.init);
