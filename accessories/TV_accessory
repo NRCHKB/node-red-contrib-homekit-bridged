@@ -1,0 +1,440 @@
+[
+    {
+        "id": "c0898012.c775b",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "267cb2ce.c44d7e",
+        "type": "homekit-service",
+        "z": "c0898012.c775b",
+        "isParent": true,
+        "bridge": "53f60ecb.d1d33",
+        "parentService": "",
+        "name": "TV (test)",
+        "serviceName": "Television",
+        "topic": "",
+        "filter": false,
+        "manufacturer": "Default Manufacturer",
+        "model": "Default Model",
+        "serialNo": "Default Serial Number",
+        "characteristicProperties": "{\n    \"RemoteKey\":null,\n    \"ConfiguredName\": \"LG TV (test)\",\n    \"SleepDiscoveryMode\": 1,\n    \"ActiveIdentifier\": 1\n}",
+        "x": 460,
+        "y": 100,
+        "wires": [
+            [
+                "8229eab8.037ca8"
+            ],
+            [
+                "75a13803.a48728"
+            ],
+            [
+                "d8455ab7.eb7a48"
+            ]
+        ]
+    },
+    {
+        "id": "8229eab8.037ca8",
+        "type": "debug",
+        "z": "c0898012.c775b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 670,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "75a13803.a48728",
+        "type": "debug",
+        "z": "c0898012.c775b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 670,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "d8455ab7.eb7a48",
+        "type": "debug",
+        "z": "c0898012.c775b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 670,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "58e408ad.8cd718",
+        "type": "inject",
+        "z": "c0898012.c775b",
+        "name": "",
+        "topic": "",
+        "payload": "{\"Active\":0}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 100,
+        "wires": [
+            [
+                "267cb2ce.c44d7e"
+            ]
+        ]
+    },
+    {
+        "id": "cfc9b284.2d21f",
+        "type": "inject",
+        "z": "c0898012.c775b",
+        "name": "",
+        "topic": "",
+        "payload": "{\"Active\":1}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 140,
+        "wires": [
+            [
+                "267cb2ce.c44d7e"
+            ]
+        ]
+    },
+    {
+        "id": "2d4ad874.8e7858",
+        "type": "inject",
+        "z": "c0898012.c775b",
+        "name": "",
+        "topic": "",
+        "payload": "{\"foo\":\"bar\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 250,
+        "y": 60,
+        "wires": [
+            [
+                "267cb2ce.c44d7e"
+            ]
+        ]
+    },
+    {
+        "id": "5e0f0684.a51ae8",
+        "type": "homekit-service",
+        "z": "c0898012.c775b",
+        "isParent": false,
+        "bridge": "",
+        "parentService": "267cb2ce.c44d7e",
+        "name": "TelevisionSpeaker",
+        "serviceName": "TelevisionSpeaker",
+        "topic": "",
+        "filter": false,
+        "manufacturer": "Default Manufacturer",
+        "model": "Default Model",
+        "serialNo": "Default Serial Number",
+        "characteristicProperties": "{\n    \"Active\":1,\n    \"VolumeControlType\":3,\n    \"VolumeSelector\":null\n}",
+        "x": 470,
+        "y": 280,
+        "wires": [
+            [
+                "4ed631d9.0a1cc"
+            ],
+            [
+                "a562819b.a293"
+            ],
+            [
+                "f0edba36.c21148"
+            ]
+        ]
+    },
+    {
+        "id": "4ed631d9.0a1cc",
+        "type": "debug",
+        "z": "c0898012.c775b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "a562819b.a293",
+        "type": "debug",
+        "z": "c0898012.c775b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "f0edba36.c21148",
+        "type": "debug",
+        "z": "c0898012.c775b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "ac76cad7.f8d528",
+        "type": "inject",
+        "z": "c0898012.c775b",
+        "name": "",
+        "topic": "",
+        "payload": "{\"VolumeSelector\":0}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 240,
+        "y": 260,
+        "wires": [
+            [
+                "5e0f0684.a51ae8"
+            ]
+        ]
+    },
+    {
+        "id": "b9b6a8d8.f77d38",
+        "type": "inject",
+        "z": "c0898012.c775b",
+        "name": "",
+        "topic": "",
+        "payload": "{\"VolumeSelector\":1}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 240,
+        "y": 300,
+        "wires": [
+            [
+                "5e0f0684.a51ae8"
+            ]
+        ]
+    },
+    {
+        "id": "9f171d46.c23c8",
+        "type": "homekit-service",
+        "z": "c0898012.c775b",
+        "isParent": false,
+        "bridge": "",
+        "parentService": "267cb2ce.c44d7e",
+        "name": "PS4",
+        "serviceName": "InputSource",
+        "topic": "",
+        "filter": false,
+        "manufacturer": "Default Manufacturer",
+        "model": "Default Model",
+        "serialNo": "Default Serial Number",
+        "characteristicProperties": "{\n    \"Identifier\":1,\n    \"ConfiguredName\":\"PS4\",\n    \"IsConfigured\":1,\n    \"InputSourceType\":3\n}",
+        "x": 470,
+        "y": 420,
+        "wires": [
+            [
+                "c0479ec1.c6bf1"
+            ],
+            [
+                "3cdeb32c.672b7c"
+            ],
+            [
+                "d3369e4.474126"
+            ]
+        ]
+    },
+    {
+        "id": "c0479ec1.c6bf1",
+        "type": "debug",
+        "z": "c0898012.c775b",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "3cdeb32c.672b7c",
+        "type": "debug",
+        "z": "c0898012.c775b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "d3369e4.474126",
+        "type": "debug",
+        "z": "c0898012.c775b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 710,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "f23d0cd5.04dd8",
+        "type": "homekit-service",
+        "z": "c0898012.c775b",
+        "isParent": false,
+        "bridge": "",
+        "parentService": "267cb2ce.c44d7e",
+        "name": "PS3",
+        "serviceName": "InputSource",
+        "topic": "",
+        "filter": false,
+        "manufacturer": "Default Manufacturer",
+        "model": "Default Model",
+        "serialNo": "Default Serial Number",
+        "characteristicProperties": "{\n    \"Identifier\":2,\n    \"ConfiguredName\":\"PS3\",\n    \"IsConfigured\":1,\n    \"InputSourceType\":3\n}",
+        "x": 470,
+        "y": 480,
+        "wires": [
+            [
+                "c0479ec1.c6bf1"
+            ],
+            [
+                "3cdeb32c.672b7c"
+            ],
+            [
+                "d3369e4.474126"
+            ]
+        ]
+    },
+    {
+        "id": "d46f3037.c086e",
+        "type": "homekit-service",
+        "z": "c0898012.c775b",
+        "isParent": false,
+        "bridge": "",
+        "parentService": "267cb2ce.c44d7e",
+        "name": "AppleTV",
+        "serviceName": "InputSource",
+        "topic": "",
+        "filter": false,
+        "manufacturer": "Default Manufacturer",
+        "model": "Default Model",
+        "serialNo": "Default Serial Number",
+        "characteristicProperties": "{\n    \"Identifier\":3,\n    \"ConfiguredName\":\"AppleTV\",\n    \"IsConfigured\":1,\n    \"InputSourceType\":3\n}",
+        "x": 480,
+        "y": 540,
+        "wires": [
+            [
+                "c0479ec1.c6bf1"
+            ],
+            [
+                "3cdeb32c.672b7c"
+            ],
+            [
+                "d3369e4.474126"
+            ]
+        ]
+    },
+    {
+        "id": "e9860737.e209b8",
+        "type": "inject",
+        "z": "c0898012.c775b",
+        "name": "{\"CurrentVisibilityState\":0}",
+        "topic": "",
+        "payload": "{\"CurrentVisibilityState\":0}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 230,
+        "y": 440,
+        "wires": [
+            [
+                "9f171d46.c23c8"
+            ]
+        ]
+    },
+    {
+        "id": "cb5c093.462e4f8",
+        "type": "inject",
+        "z": "c0898012.c775b",
+        "name": "{\"CurrentVisibilityState\":1}",
+        "topic": "",
+        "payload": "{\"CurrentVisibilityState\":1}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 230,
+        "y": 480,
+        "wires": [
+            [
+                "9f171d46.c23c8"
+            ]
+        ]
+    },
+    {
+        "id": "53f60ecb.d1d33",
+        "type": "homekit-bridge",
+        "z": "",
+        "bridgeName": "NodeRED (test)",
+        "pinCode": "111-11-111",
+        "port": "",
+        "allowInsecureRequest": false,
+        "manufacturer": "Default Manufacturer",
+        "model": "Default Model",
+        "serialNo": "Default Serial Number",
+        "customMdnsConfig": false,
+        "mdnsMulticast": true,
+        "mdnsInterface": "",
+        "mdnsPort": "",
+        "mdnsIp": "",
+        "mdnsTtl": "",
+        "mdnsLoopback": true,
+        "mdnsReuseAddr": true
+    }
+]
