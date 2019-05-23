@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
  - CHANGELOG page introduction
  - travis autodeploy to npm on pushed tags
+ - Change from "characteristic-change" to "set" to listen to HAP-NodeJS events
 
 ## [0.6.2] - 2019.03.27
 ### Changed
