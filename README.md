@@ -23,6 +23,13 @@ Next, to install node-red-contrib-homekit-bridged node run the following command
 
         npm install node-red-contrib-homekit-bridged
 
+### Important!
+After you deploy changes in Node-RED with a "Full" Deploy or deploy changes within one of your HomeKit nodes, always restart your Node-RED instance before testing. Unfortunately there is a bug in the current version, which causes this. Sorry for the inconvenience we are working on a fix for this.
+So if something is not working after you apply some changes (eg.: accessory not appearing in Home.app or not working as it should) you should always try first to restart Node-RED. You can do this easily if your system uses systemctl:
+
+`sudo systemctl restart nodered`
+
+
 ### Docker
 
 You can also pull a [docker image](https://hub.docker.com/r/raymondmm/node-red-homekit/) containing everything needed to get started, thanks to [Raymond Mouthaan](https://github.com/RaymondMouthaan).
