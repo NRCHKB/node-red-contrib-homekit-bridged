@@ -3,14 +3,17 @@
 [![Build Status](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged.svg?branch=master)](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged) [![codebeat badge](https://codebeat.co/badges/3bbdea35-c2ab-4273-b5d7-de6c4c9c1971)](https://codebeat.co/projects/github-com-nrchkb-node-red-contrib-homekit-bridged-master) [![Known Vulnerabilities](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged/badge.svg?targetFile=package.json)](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged?targetFile=package.json)
 
 ## Intro
+node-red-contrib-homekit-bridged is a Node-RED nodes pack to simulate Apple HomeKit devices. The goal is to emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README for the basics then head over to the [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for details and examples. If you're still stuck please open an issue, we are glad to help.
 
-Node-RED nodes to simulate Apple HomeKit devices. The goal is to emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README for the basics then head over to the [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for details and examples. If you're still stuck please open an issue, we are glad to help.
-
-These nodes allow the creation of fully customizable accessories for use in Apple's Home app on iOS, Watch OS, and Mac OS. If you can get it in Node-RED, you can get it in HomeKit. The goal of the project is to create a platform where official HomeKit hardware can be emulated as closely as possible through node red.
+These nodes allow the creation of fully customizable accessories for use in Apple's Home.app on iOS, Watch OS, and Mac OS. If you can get it in Node-RED, you can get it in HomeKit. The goal of the project is to create a platform where official HomeKit hardware can be emulated as closely as possible through node red.
 
 ## Install
 
-Then run the following command in your Node-RED user directory - typically `~/.node-red`
+If you have Node-RED alrady installed then you can ommit this step. If not then run following command or go to [Node-RED Installation Guide](https://nodered.org/docs/getting-started/installation).
+
+        npm install -g --unsafe-perm node-red
+
+Next, to install node-red-contrib-homekit-bridged node run the following command in your Node-RED user directory - typically `~/.node-red`
 
         npm install node-red-contrib-homekit-bridged
 
@@ -24,7 +27,7 @@ Please see instructions on Docker Hub.
 
 ### Bridge
 
-The Bridge node is a configuration node which will be added from within the service node. It creates the _bridge_ that iOS sees, i.e. the device that is added to the Apple Home app by the user.
+The Bridge node is a configuration node (means it will be not visible in a flow like other nodes) which will be added from within the service node. It creates the _bridge_ that iOS sees, i.e. the device that is added to the Apple Home app by the user.
 All accessories behind a bridge noded are then automatically added by iOS.
 
 - **Pin Code**: Specify the Pin for the pairing process.
@@ -185,6 +188,8 @@ This will filter out all messages with their payload property hap.context not se
 #### Big thanks to [all who have contributed to the project](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/graphs/contributors). 
 
 [Shaq](https://github.com/Shaquu) - leading the current efforts to fix bugs and add features
+
+[crxporter](https://github.com/crxporter) - a lot of work on documentation and new features design
 
 [Oliver Rahner](https://github.com/oliverrahner) - reworked the code to add bridged mode - [read his story](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Credits#oliver-rahner-explains-his-work)
 
