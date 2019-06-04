@@ -10,10 +10,6 @@ These nodes allow the creation of fully customizable accessories for use in Appl
 
 ## Install
 
-For Debian / Ubuntu you need to install the following in order to support Bonjour / Avahi
-
-        sudo apt-get install libavahi-compat-libdnssd-dev
-
 Then run the following command in your Node-RED user directory - typically `~/.node-red`
 
         npm install node-red-contrib-homekit-bridged
