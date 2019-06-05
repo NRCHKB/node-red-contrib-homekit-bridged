@@ -9,7 +9,13 @@ These nodes allow the creation of fully customizable accessories for use in Appl
 
 ## Install
 
-If you have Node-RED alrady installed then you can ommit this step. If not then run following command or go to [Node-RED Installation Guide](https://nodered.org/docs/getting-started/installation).
+### Easy Install
+
+If you have Node-RED already installed the recommended install method is to use the editor. To do this, select `Manage Pallette` from the Node-RED menu (top right), and then select `install` tab in the pallette. Search for and install this node (`node-red-contrib-homekit-bridged`).
+
+### Using NPM
+
+If you have not yet installed Node-RED then run following command or go to [Node-RED Installation Guide](https://nodered.org/docs/getting-started/installation).
 
         npm install -g --unsafe-perm node-red
 
