@@ -1,6 +1,6 @@
 # node-red-contrib-homekit-bridged
 
-[![Discord](https://img.shields.io/discord/586065987267330068.svg?label=Discord)](https://discord.gg/H9CWzXv) [![Build Status](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged.svg?branch=master)](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged) [![codebeat badge](https://codebeat.co/badges/3bbdea35-c2ab-4273-b5d7-de6c4c9c1971)](https://codebeat.co/projects/github-com-nrchkb-node-red-contrib-homekit-bridged-master) [![Known Vulnerabilities](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged/badge.svg?targetFile=package.json)](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged?targetFile=package.json)
+[![Build Status](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged.svg?branch=master)](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged) [![codebeat badge](https://codebeat.co/badges/3bbdea35-c2ab-4273-b5d7-de6c4c9c1971)](https://codebeat.co/projects/github-com-nrchkb-node-red-contrib-homekit-bridged-master) [![Known Vulnerabilities](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged/badge.svg?targetFile=package.json)](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged?targetFile=package.json)
 
 ## Intro
 node-red-contrib-homekit-bridged is a Node-RED nodes pack to simulate Apple HomeKit devices. The goal is to emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README for the basics then head over to the [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for details and examples. If you're still stuck please open an issue, we are glad to help.
@@ -202,3 +202,6 @@ This will filter out all messages with their payload property hap.context not se
 [Marius Schmeding](https://github.com/mschm/node-red-contrib-homekit) - original implementation of HAP-NodeJS into Node-RED
 
 [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) - NodeJS implementation of Apple's HomeKit Accessory Server
+
+## Find us ##
+[![Discord](https://img.shields.io/discord/586065987267330068.svg?label=Discord)](https://discord.gg/H9CWzXv) [![Slack](https://img.shields.io/badge/Slack-temporary%20invite-green.svg)](https://join.slack.com/t/nrchkb/shared_invite/enQtNjU5MjkyMDE2NzA4LWE4M2EwYWNiNDA2MWNhZDQ0NjIyZjI1YTYwMGUyZDgzMzVlZDg5ODk2NDc2MDRiNTVkMTE5YWI4YTdmMDU1NzA)
