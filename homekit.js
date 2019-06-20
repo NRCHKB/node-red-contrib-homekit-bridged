@@ -1,6 +1,7 @@
-module.exports = function(RED) {
+module.exports = function (RED) {
     ("use strict");
 
+    const debug = require("debug")("NRCHKB");
     const HapNodeJS = require("hap-nodejs");
     const Service = HapNodeJS.Service;
     const API = require("./lib/api.js")(RED);
@@ -9,9 +10,13 @@ module.exports = function(RED) {
 
     // Initialize our storage system
     if (RED.settings.available()) {
+        debug("RED settings available");
+
         const userDir = RED.settings.userDir;
         HapNodeJS.init(userDir + "/homekit-persist");
     } else {
+        debug("RED settings not available");
+
         HapNodeJS.init();
     }
 

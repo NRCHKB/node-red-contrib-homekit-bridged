@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - CHANGELOG page introduction
  - travis autodeploy to npm on pushed tags
  - Change from "characteristic-change" to "set" to listen to HAP-NodeJS events
+ - Sorted Service Type list in UI
+ - RTSP Camera support
+ - HAP-NodeJS version changed to latest (0.4.52)
+ - More code refactoring
 
 ## [0.6.2] - 2019.03.27
 ### Changed
@@ -38,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Filter on Topic
  - NO_RESPONSE trigger [#48](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/48)
  - onIdentify [#54](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/54)
- - Added automatic tests for building project, code quality and finding vulnerabilites
+ - Added automatic tests for building project, code quality and finding vulnerabilities
  
 ### Changed
  - Redesigned README
