@@ -39,10 +39,10 @@
     "os": "^0.1.1"
   },
   "devDependencies": {
+    "assert": "^2.0.0",
     "eslint": "^5.16.0",
     "mocha": "^6.1.4",
-    "node-red": "^0.20.5",
-    "assert": "^2.0.0"
+    "node-red": "^0.20.6"
   },
   "eslintConfig": {
     "env": {

@@ -10,8 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - travis autodeploy to npm on pushed tags
  - Change from "characteristic-change" to "set" to listen to HAP-NodeJS events
  - Sorted Service Type list in UI
- - RTSP Camera support
+ - Camera support (RTSP, Video Doorbell and others)
  - HAP-NodeJS version changed to latest (0.4.52)
+ - Added Accessory Category field for Parent Service
  - More code refactoring
 
 ## [0.6.2] - 2019.03.27

@@ -14,6 +14,14 @@
           Bridge</label>
             <input id="node-input-bridge">
         </div>
+        <div class="form-row">
+            <label for="node-input-accessoryCategory">
+              <i class="fa fa-cog"></i>
+              Accessory Category</label>
+            <select id="node-input-accessoryCategory">
+              <option value="">Choose...</option>
+          </select>
+        </div>
     </div>
 
     <div id="isLinked" style="display: none;">
@@ -163,7 +171,7 @@
     <ul>
         <li><strong>Service Hierarchy</strong>: Choose if this Service is Parent or Linked</li>
         <ul>
-            <li>Parent has <strong>Bridge</strong>: On what Bridge to host this Service and its Accessory.</li>
+            <li>Parent has <strong>Bridge</strong> and <strong>Accessory Category</strong>: On what Bridge to host this Service and its Accessory and what kind of category is this Accessory, default <em>OTHER</em></li>
             <li>Linked has <strong>Parent Service</strong>: On what Parent Service link this Service.</li>
         </ul>
         <li><strong>Topic</strong>: An optional property that can be configured in the node or, if left blank, can be set by <code>msg.topic</code>. If <em>Filter on Topic</em> is selected <code>msg.topic</code> of incoming messages must match the configured
@@ -316,10 +324,16 @@
 
 <script type="text/javascript">
     let serviceTypes;
+    let accessoryTypes;
 
     //HomeKitServiceTypes
     $.getJSON("homekit/service/types", function(data) {
         serviceTypes = data;
+    });
+
+    //HomeKitAccessoryTypes
+    $.getJSON("homekit/accessory/types", function(data) {
+        accessoryTypes = data;
     });
 
     RED.nodes.registerType("homekit-service", {
@@ -327,11 +341,16 @@
         paletteLabel: "homekit",
         defaults: {
             isParent: {
+                value: "false",
                 required: true
             },
             bridge: {
                 value: "",
                 type: "homekit-bridge",
+                required: false
+            },
+            accessoryCategory: {
+                value: "OTHER",
                 required: false
             },
             parentService: {
@@ -520,6 +539,24 @@
                     cameraConfiguration.fadeOut("fast");
                 }
             }).change();
+
+            const selectCategoryName = $("#node-input-accessoryCategory");
+            for (let key in accessoryTypes) {
+                if (!accessoryTypes.hasOwnProperty(key)) continue;
+
+                selectCategoryName.append(
+                    $("<option></option>")
+                        .val(key)
+                        .text(key)
+                );
+            }
+
+            selectCategoryName
+                .find("option")
+                .filter(function() {
+                    return $(this).val() === node.accessoryCategory;
+                })
+                .attr("selected", true);
 
             node.editor = RED.editor.createEditor({
                 id: "node-input-characteristicProperties-editor",

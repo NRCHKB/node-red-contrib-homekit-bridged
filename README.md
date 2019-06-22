@@ -63,8 +63,9 @@ Every service node can be _Parent_ or _Linked_. Each Parent service creates an i
 <p>
 
 - **Service Hierarchy**: Whether the service is _Parent_ or _Linked_.
-   - **Bridge**: On what bridge to host this Service and its Accessory.
-   - **Parent Service**: Which Parent service the Linked service will be connected to.
+   - **Bridge**: On what bridge to host this Service and its Accessory. (Available only for Parent Service)
+   - **Accessory Category**: What kind of category is this Accessory. (Available only for Parent Service)
+   - **Parent Service**: Which Parent service the Linked service will be connected to. (Available only for Linked Service)
 - **Service**: Choose the type of Service from the list. [Services wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Services)
 - **Topic**: An optional property that can be configured in the node or, if left blank, can be set by msg.topic.
 - **Manufacturer, Model, Serial Number**: Can be anything you want.
