@@ -25,6 +25,12 @@ or find us on
 
 ## Security concerns regarding usage of NRCHKB
 
+NRCHKB is a node (plugin/library) for node-red. NRCHKB allow user to simulate HomeKit devices.
+
+### node-red
+
+To use node-red safely you should secure it properly with encryption and password protection - [here is how in official node-red docs](https://nodered.org/docs/security).
+
 ### Invalid Setup Codes
 
 The following Setup Codes must not be used due to their trivial, insecure nature.
