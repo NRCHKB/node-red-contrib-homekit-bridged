@@ -620,10 +620,10 @@
             node.isParent = $("#node-config-input-isParent").val() === "true";
 
             if (!node.isParent) {
-                node.parentService = $("node-input-parentService option:selected").val();
+                node.parentService = $("#node-input-parentService option:selected").val();
             }
 
-            node.serviceName = $("node-input-serviceName option:selected").val();
+            node.serviceName = $("#node-input-serviceName option:selected").val();
             $("#node-input-characteristicProperties").val(node.editor.getValue());
             node.editor.destroy();
             delete node.editor;
