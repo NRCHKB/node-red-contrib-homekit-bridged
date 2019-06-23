@@ -14,6 +14,14 @@
           Bridge</label>
             <input id="node-input-bridge">
         </div>
+        <div class="form-row">
+            <label for="node-input-accessoryCategory">
+              <i class="fa fa-cog"></i>
+              Accessory Category</label>
+            <select id="node-input-accessoryCategory">
+              <option value="">Choose...</option>
+          </select>
+        </div>
     </div>
 
     <div id="isLinked" style="display: none;">
@@ -65,6 +73,86 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
 
+    <div id="camera-configuration" style="display: none;">
+        <label>&nbsp;&nbsp;<i class="fa fa-video-camera"></i> Camera Configuration</label>
+        <div class="form-row">
+            <label for="node-input-cameraConfigVideoProcessor"><i class="fa fa-cog"></i> Video Processor</label>
+            <input type="text" id="node-input-cameraConfigVideoProcessor" placeholder="ffmpeg">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigSource"><i class="fa fa-tint"></i> Source</label>
+            <input type="text" id="node-input-cameraConfigSource" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigStillImageSource"><i class="fa fa-picture-o"></i> Still Image Source</label>
+            <input type="text" id="node-input-cameraConfigStillImageSource" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigMaxStreams"><i class="fa fa-tint"></i> Max Streams</label>
+            <input type="text" id="node-input-cameraConfigMaxStreams" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigMaxWidth"><i class="fa fa-text-width"></i> Max Width</label>
+            <input type="text" id="node-input-cameraConfigMaxWidth" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigMaxHeight"><i class="fa fa-text-height"></i> Max Height</label>
+            <input type="text" id="node-input-cameraConfigMaxHeight" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigMaxFPS"><i class="fa fa-clock-o"></i> Max FPS</label>
+            <input type="text" id="node-input-cameraConfigMaxFPS" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigMaxBitrate"><i class="fa fa-clock-o"></i> Max Bitrate</label>
+            <input type="text" id="node-input-cameraConfigMaxBitrate" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigVideoCodec"><i class="fa fa-video-camera"></i> Video Codec</label>
+            <input type="text" id="node-input-cameraConfigVideoCodec" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigAudioCodec"><i class="fa fa-video-camera"></i> Audio Codec</label>
+            <input type="text" id="node-input-cameraConfigAudioCodec" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigAudio"><i class="fa fa-headphones"></i> Audio</label>
+            <input type="checkbox" id="node-input-cameraConfigAudio">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigPacketSize"><i class="fa fa-get-pocket"></i> Packet Size</label>
+            <input type="text" id="node-input-cameraConfigPacketSize" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigVerticalFlip"><i class="fa fa-undo"></i> Vertical Flip</label>
+            <input type="checkbox" id="node-input-cameraConfigVerticalFlip">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigHorizontalFlip"><i class="fa fa-undo"></i> Horizontal Flip</label>
+            <input type="checkbox" id="node-input-cameraConfigHorizontalFlip">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigMapVideo"><i class="fa fa-video-camera"></i> Map Video</label>
+            <input type="text" id="node-input-cameraConfigMapVideo" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigMapAudio"><i class="fa fa-headphones"></i> Map Audio</label>
+            <input type="text" id="node-input-cameraConfigMapAudio" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigVideoFilter"><i class="fa fa-filter"></i> Video Filter</label>
+            <input type="text" id="node-input-cameraConfigVideoFilter" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigAdditionalCommandLine"><i class="fa fa-plus"></i> Additional Command Line</label>
+            <input type="text" id="node-input-cameraConfigAdditionalCommandLine" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-input-cameraConfigDebug"><i class="fa fa-bug"></i> Debug</label>
+            <input type="checkbox" id="node-input-cameraConfigDebug">
+        </div>
+    </div>
+
     <div class="form-row" style="margin-bottom: 0px;">
         <label for="node-input-characteristicProperties" style="width: 100% !important;">
           <i class="fa fa-wrench"></i>
@@ -83,7 +171,7 @@
     <ul>
         <li><strong>Service Hierarchy</strong>: Choose if this Service is Parent or Linked</li>
         <ul>
-            <li>Parent has <strong>Bridge</strong>: On what Bridge to host this Service and its Accessory.</li>
+            <li>Parent has <strong>Bridge</strong> and <strong>Accessory Category</strong>: On what Bridge to host this Service and its Accessory and what kind of category is this Accessory, default <em>OTHER</em></li>
             <li>Linked has <strong>Parent Service</strong>: On what Parent Service link this Service.</li>
         </ul>
         <li><strong>Topic</strong>: An optional property that can be configured in the node or, if left blank, can be set by <code>msg.topic</code>. If <em>Filter on Topic</em> is selected <code>msg.topic</code> of incoming messages must match the configured
@@ -91,6 +179,28 @@
         <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
         <li><strong>Service</strong>: Choose the type of Service from the list.</li>
         <li><strong>Name</strong>: <em>optional</em></li>
+        <li><strong>Camera Configuration</strong>: Additional configuration for CameraControl service.</li>
+        <ul>
+            <li><strong>Video Processor</strong>: Video processor used for Camera. Default is <em>ffmpeg</em>.</li>
+            <li><strong>Source</strong>: Camera source used for video processor. Example for ffmpeg <em>-re -i rtsp://192.168.0.227:8554/unicast</em></li>
+            <li><strong>Still Image Source</strong>: Camera snapshot source used for video processor. Example for ffmpeg <em>-i http://faster_still_image_grab_url/this_is_optional.jpg</em></li>
+            <li><strong>Max Streams</strong>: Maximum number of streams that will be generated for this camera, default <em>2</em>.</li>
+            <li><strong>Max Width</strong>: Maximum width reported to HomeKit, default <em>1280</em>.</li>
+            <li><strong>Max Height</strong>: Maximum height reported to HomeKit, default <em>720</em>.</li>
+            <li><strong>Max FPS</strong>: Maximum frame rate of the stream, default <em>10</em>.</li>
+            <li><strong>Max Bitrate</strong>: Maximum bit rate of the stream in kbit/s, default <em>300</em>.</li>
+            <li><strong>Video Codec</strong>: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated video codec with this option, default <em>libx264</em>.</li>
+            <li><strong>Audio Codec</strong>: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated audio codec with this option, default <em>libfdk_aac</em>.</li>
+            <li><strong>Audio</strong>: Can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, default <em>false</em>.</li>
+            <li><strong>Packet Size</strong>: If audio or video is choppy try a smaller value, set to a multiple of 188, default <em>1316</em>.</li>
+            <li><strong>Vertical Flip</strong>: Flips the stream vertically, default <em>false</em>.</li>
+            <li><strong>Horizontal Flip</strong>: Flips the stream horizontally, default <em>false</em>.</li>
+            <li><strong>Map Video</strong>: Select the stream used for video, default <em>0:0</em>.</li>
+            <li><strong>Map Audio</strong>: Select the stream used for audio, default <em>0:1</em>.</li>
+            <li><strong>Video Filter</strong>: Allows a custom video filter to be passed to FFmpeg via -vf, defaults to <em>scale=1280:720</em>.</li>
+            <li><strong>Additional Command Line</strong>: Allows additional of extra command line options to FFmpeg, default <em>-tune zerolatency</em>.</li>
+            <li><strong>Debug</strong>: Show the output of ffmpeg in the log, default <em>false</em>.</li>
+        </ul>
         <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
     </ul>
     <h2 id="toc_6">Input Messages</h2>
@@ -213,23 +323,44 @@
 </script>
 
 <script type="text/javascript">
+    RED.validators.port = function(port){return port >= 1 && port <= 65535 && port === port.toString()};
+</script>
+
+<script type="text/javascript">
     let serviceTypes;
+    let accessoryTypes;
 
     //HomeKitServiceTypes
     $.getJSON("homekit/service/types", function(data) {
         serviceTypes = data;
     });
 
+    //HomeKitAccessoryTypes
+    $.getJSON("homekit/accessory/types", function(data) {
+        accessoryTypes = data;
+    });
+
+    const cameraConfigRequiredField = function (value) {
+        if (this.serviceName === "CameraControl") {
+            return (value || "").toString().trim();
+        } else return true;
+    };
+
     RED.nodes.registerType("homekit-service", {
         category: "advanced",
         paletteLabel: "homekit",
         defaults: {
             isParent: {
+                value: "false",
                 required: true
             },
             bridge: {
                 value: "",
                 type: "homekit-bridge",
+                required: false
+            },
+            accessoryCategory: {
+                value: "OTHER",
                 required: false
             },
             parentService: {
@@ -264,6 +395,76 @@
             serialNo: {
                 value: "Default Serial Number",
                 required: true
+            },
+            cameraConfigVideoProcessor: {
+                value: "ffmpeg",
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigSource: {
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigStillImageSource: {
+                required: false
+            },
+            cameraConfigMaxStreams: {
+                value: 2,
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigMaxWidth: {
+                value: 1280,
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigMaxHeight: {
+                value: 720,
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigMaxFPS: {
+                value: 10,
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigMaxBitrate: {
+                value: 300,
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigVideoCodec: {
+                value: "libx264",
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigAudioCodec: {
+                value: "libfdk_aac",
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigAudio: {
+                value: false
+            },
+            cameraConfigPacketSize: {
+                value: 1316,
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigVerticalFlip: {
+                value: false
+            },
+            cameraConfigHorizontalFlip: {
+                value: false
+            },
+            cameraConfigMapVideo: {
+                value: "0:0",
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigMapAudio: {
+                value: "0:1",
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigVideoFilter: {
+                value: "scale=1280:720",
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigAdditionalCommandLine: {
+                value: "-tune zerolatency",
+                validate: cameraConfigRequiredField
+            },
+            cameraConfigDebug: {
+                value: false
             },
             characteristicProperties: {
                 value: "{}",
@@ -325,13 +526,41 @@
                         .text(key)
                 );
             }
+
+            let cameraConfiguration = $("#camera-configuration");
+
             selectServiceName
                 .find("option")
                 .filter(function() {
                     return $(this).val() === node.serviceName;
                 })
                 .attr("selected", true);
-            selectServiceName.change();
+
+            selectServiceName.change(function(){
+                if(this.value === "CameraControl") {
+                    cameraConfiguration.fadeIn("fast");
+                } else {
+                    cameraConfiguration.fadeOut("fast");
+                }
+            }).change();
+
+            const selectCategoryName = $("#node-input-accessoryCategory");
+            for (let key in accessoryTypes) {
+                if (!accessoryTypes.hasOwnProperty(key)) continue;
+
+                selectCategoryName.append(
+                    $("<option></option>")
+                        .val(key)
+                        .text(key)
+                );
+            }
+
+            selectCategoryName
+                .find("option")
+                .filter(function() {
+                    return $(this).val() === node.accessoryCategory;
+                })
+                .attr("selected", true);
 
             node.editor = RED.editor.createEditor({
                 id: "node-input-characteristicProperties-editor",
@@ -395,10 +624,10 @@
             node.isParent = $("#node-config-input-isParent").val() === "true";
 
             if (!node.isParent) {
-                node.parentService = $("node-input-parentService option:selected").val();
+                node.parentService = $("#node-input-parentService option:selected").val();
             }
 
-            node.serviceName = $("node-input-serviceName option:selected").val();
+            node.serviceName = $("#node-input-serviceName option:selected").val();
             $("#node-input-characteristicProperties").val(node.editor.getValue());
             node.editor.destroy();
             delete node.editor;
@@ -409,8 +638,8 @@
         },
         oneditresize: function(size) {
             const rows = $("#dialog-form>div:not(.node-text-editor-row)");
-            const height = $("#dialog-form").height();
-            for (const i = 0; i < rows.size(); i++) {
+            let height = $("#dialog-form").height();
+            for (let i = 0; i < rows.size(); i++) {
                 height -= $(rows[i]).outerHeight(true);
             }
             const editorRow = $("#dialog-form>div.node-text-editor-row");
@@ -438,7 +667,10 @@
             },
             port: {
                 required: false,
-                validate: RED.validators.port
+                validate: function (value) {
+                    if (value) return RED.validators.port(value);
+                    else return true;
+                }
             },
             allowInsecureRequest: {
                 value: false,
@@ -465,20 +697,19 @@
                 required: false
             },
             mdnsInterface: {
-                value: undefined,
                 required: false
             },
             mdnsPort: {
-                value: undefined,
                 required: false,
-                validate: RED.validators.port
+                validate: function (value) {
+                    if (value) return RED.validators.port(value);
+                    else return true;
+                }
             },
             mdnsIp: {
-                value: undefined,
                 required: false
             },
             mdnsTtl: {
-                value: undefined,
                 required: false
             },
             mdnsLoopback: {

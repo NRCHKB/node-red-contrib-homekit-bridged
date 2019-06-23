@@ -36,6 +36,9 @@ Please see instructions on Docker Hub.
 The Bridge node is a configuration node (means it will be not visible in a flow like other nodes) which will be added from within the service node. It creates the _bridge_ that iOS sees, i.e. the device that is added to the Apple Home app by the user.
 All accessories behind a bridge noded are then automatically added by iOS.
 
+<details><summary>Configuration fields:</summary>
+<p>
+
 - **Pin Code**: Specify the Pin for the pairing process.
 - **Port**: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.
 - **Allow Insecure Request**: Should we allow insecure request? Default false.
@@ -49,20 +52,46 @@ All accessories behind a bridge noded are then automatically added by iOS.
   - **TTL**: Set the multicast ttl. Optional.
   - **Loopback**: Receive your own packets. Optional. Default true.
   - **Reuse Address**: Set the reuseAddr option when creating the socket. Optional. Default true.
+</details>
 
 ### Service
 
 The Service node represents the single device you want to control or query.
 Every service node can be _Parent_ or _Linked_. Each Parent service creates an individual accessory in the Home app. Linked services add additional features to their Parent service - for example adding battery status to a motion detector. See examples in the [wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for details.
 
+<details><summary>Configuration fields:</summary>
+<p>
+
 - **Service Hierarchy**: Whether the service is _Parent_ or _Linked_.
-   - **Bridge**: On what bridge to host this Service and its Accessory.
-   - **Parent Service**: Which Parent service the Linked service will be connected to.
+   - **Bridge**: On what bridge to host this Service and its Accessory. (Available only for Parent Service)
+   - **Accessory Category**: What kind of category is this Accessory. (Available only for Parent Service)
+   - **Parent Service**: Which Parent service the Linked service will be connected to. (Available only for Linked Service)
 - **Service**: Choose the type of Service from the list. [Services wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Services)
 - **Topic**: An optional property that can be configured in the node or, if left blank, can be set by msg.topic.
 - **Manufacturer, Model, Serial Number**: Can be anything you want.
 - **Name**: If you intend to simulate a rocket, then why don't you call it _Rocket_.
+- **Camera Configuration**: Additional configuration for CameraControl service.
+   - **Video Processor**: Video processor used for Camera. Default is _ffmpeg_.
+   - **Source**: Camera source used for video processor. Example for ffmpeg _-re -i rtsp://192.168.0.227:8554/unicast_
+   - **Still Image Source**: Camera snapshot source used for video processor. Example for ffmpeg _-i http://faster_still_image_grab_url/this_is_optional.jpg_
+   - **Max Streams**: Maximum number of streams that will be generated for this camera, default _2_.
+   - **Max Width**: Maximum width reported to HomeKit, default _1280_.
+   - **Max Height**: Maximum height reported to HomeKit, default _720_.
+   - **Max FPS**: Maximum frame rate of the stream, default _10_.
+   - **Max Bitrate**: Maximum bit rate of the stream in kbit/s, default _300_.
+   - **Video Codec**: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated video codec with this option, default _libx264_.
+   - **Audio Codec**: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated audio codec with this option, default _libfdk_aac_.
+   - **Audio**: Can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, default _false_.
+   - **Packet Size**: If audio or video is choppy try a smaller value, set to a multiple of 188, default _1316_.
+   - **Vertical Flip**: Flips the stream vertically, default _false_.
+   - **Horizontal Flip**: Flips the stream horizontally, default _false_.
+   - **Map Video**: Select the stream used for video, default _0:0_.
+   - **Map Audio**: Select the stream used for audio, default _0:1_.
+   - **Video Filter**: Allows a custom video filter to be passed to FFmpeg via -vf, defaults to _scale=1280:720_.
+   - **Additional Command Line**: Allows additional of extra command line options to FFmpeg, default _-tune zerolatency_.
+   - **Debug**: Show the output of ffmpeg in the log, default _false_.
 - **Characteristic Properties**: Customise the properties of characteristics. [Characteristics wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Characteristics)
+</details>
 
 ## Input Messages
 
