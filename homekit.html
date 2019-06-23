@@ -323,6 +323,10 @@
 </script>
 
 <script type="text/javascript">
+    RED.validators.port = function(port){return port >= 1 && port <= 65535 && port === port.toString()};
+</script>
+
+<script type="text/javascript">
     let serviceTypes;
     let accessoryTypes;
 
@@ -335,6 +339,12 @@
     $.getJSON("homekit/accessory/types", function(data) {
         accessoryTypes = data;
     });
+
+    const cameraConfigRequiredField = function (value) {
+        if (this.serviceName === "CameraControl") {
+            return (value || "").toString().trim();
+        } else return true;
+    };
 
     RED.nodes.registerType("homekit-service", {
         category: "advanced",
@@ -388,79 +398,73 @@
             },
             cameraConfigVideoProcessor: {
                 value: "ffmpeg",
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigSource: {
-                value: undefined,
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigStillImageSource: {
-                value: undefined,
                 required: false
             },
             cameraConfigMaxStreams: {
                 value: 2,
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigMaxWidth: {
                 value: 1280,
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigMaxHeight: {
                 value: 720,
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigMaxFPS: {
                 value: 10,
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigMaxBitrate: {
                 value: 300,
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigVideoCodec: {
                 value: "libx264",
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigAudioCodec: {
                 value: "libfdk_aac",
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigAudio: {
-                value: false,
-                required: false
+                value: false
             },
             cameraConfigPacketSize: {
                 value: 1316,
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigVerticalFlip: {
-                value: false,
-                required: false
+                value: false
             },
             cameraConfigHorizontalFlip: {
-                value: false,
-                required: false
+                value: false
             },
             cameraConfigMapVideo: {
                 value: "0:0",
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigMapAudio: {
                 value: "0:1",
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigVideoFilter: {
                 value: "scale=1280:720",
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigAdditionalCommandLine: {
                 value: "-tune zerolatency",
-                required: false
+                validate: cameraConfigRequiredField
             },
             cameraConfigDebug: {
-                value: false,
-                required: false
+                value: false
             },
             characteristicProperties: {
                 value: "{}",
@@ -634,8 +638,8 @@
         },
         oneditresize: function(size) {
             const rows = $("#dialog-form>div:not(.node-text-editor-row)");
-            const height = $("#dialog-form").height();
-            for (const i = 0; i < rows.size(); i++) {
+            let height = $("#dialog-form").height();
+            for (let i = 0; i < rows.size(); i++) {
                 height -= $(rows[i]).outerHeight(true);
             }
             const editorRow = $("#dialog-form>div.node-text-editor-row");
@@ -663,7 +667,10 @@
             },
             port: {
                 required: false,
-                validate: RED.validators.port
+                validate: function (value) {
+                    if (value) return RED.validators.port(value);
+                    else return true;
+                }
             },
             allowInsecureRequest: {
                 value: false,
@@ -690,20 +697,19 @@
                 required: false
             },
             mdnsInterface: {
-                value: undefined,
                 required: false
             },
             mdnsPort: {
-                value: undefined,
                 required: false,
-                validate: RED.validators.port
+                validate: function (value) {
+                    if (value) return RED.validators.port(value);
+                    else return true;
+                }
             },
             mdnsIp: {
-                value: undefined,
                 required: false
             },
             mdnsTtl: {
-                value: undefined,
                 required: false
             },
             mdnsLoopback: {
