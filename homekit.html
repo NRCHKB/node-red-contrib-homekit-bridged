@@ -151,6 +151,15 @@
             <label for="node-input-cameraConfigDebug"><i class="fa fa-bug"></i> Debug</label>
             <input type="checkbox" id="node-input-cameraConfigDebug">
         </div>
+
+        <div class="form-row">
+            <label for="node-input-cameraConfigSnapshotOutput"><i class="fa fa-picture-o"></i> Snapshot output</label>
+            <select id="node-input-cameraConfigSnapshotOutput">
+                <option value="disabled" selected="selected">Disabled</option>
+                <option value="path">Path</option>
+                <option value="content">Content</option>
+            </select>
+        </div>
     </div>
 
     <div class="form-row" style="margin-bottom: 0px;">
@@ -200,6 +209,12 @@
             <li><strong>Video Filter</strong>: Allows a custom video filter to be passed to FFmpeg via -vf, defaults to <em>scale=1280:720</em>.</li>
             <li><strong>Additional Command Line</strong>: Allows additional of extra command line options to FFmpeg, default <em>-tune zerolatency</em>.</li>
             <li><strong>Debug</strong>: Show the output of ffmpeg in the log, default <em>false</em>.</li>
+            <li><strong>Snapshot output</strong>: Choose how to output camera snapshot</li>
+            <ul>
+                <li><strong>Disabled</strong>: there will be no output</li>
+                <li><strong>Path</strong>: file will be saved and path will be send to output, <em>msg.payload.cameraSnapshot</em> contains path value stored as a string.</li>
+                <li><strong>Content</strong>: file content will be send to output, <em>msg.payload.cameraSnapshot</em> contains Buffer object {"type":"Buffer","data":[]}.</li>
+            </ul>
         </ul>
         <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
     </ul>
@@ -466,6 +481,10 @@
             cameraConfigDebug: {
                 value: false
             },
+            cameraConfigSnapshotOutput: {
+                value: "disabled",
+                validate: cameraConfigRequiredField
+            },
             characteristicProperties: {
                 value: "{}",
                 validate: function(value) {
@@ -484,7 +503,7 @@
             }
         },
         inputs: 1,
-        outputs: 1,
+        outputs: 2,
         icon: "homekit.png",
         color: "#fcc127",
         label: function() {
