@@ -232,5 +232,5 @@ This will filter out all messages with their payload property hap.context not se
 
 [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) - NodeJS implementation of Apple's HomeKit Accessory Server
 
-## Find us ##
-[![Discord](https://img.shields.io/discord/586065987267330068.svg?label=Discord)](https://discord.gg/H9CWzXv) [![Slack](https://img.shields.io/badge/Slack-temporary%20invite-green.svg)](https://join.slack.com/t/nrchkb/shared_invite/enQtNjU5MjkyMDE2NzA4LWE4M2EwYWNiNDA2MWNhZDQ0NjIyZjI1YTYwMGUyZDgzMzVlZDg5ODk2NDc2MDRiNTVkMTE5YWI4YTdmMDU1NzA)
+## Contact us ##
+[mail to Shaquu](mailto:shaquu.github@gmail.com?subject=[NRCHKB])
