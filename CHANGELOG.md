@@ -11,9 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Change from "characteristic-change" to "set" to listen to HAP-NodeJS events
  - Sorted Service Type list in UI
  - Camera support (RTSP, Video Doorbell and others)
- - HAP-NodeJS version changed to latest (0.4.52)
+ - HAP-NodeJS version changed to latest (0.5.0)
  - Added Accessory Category field for Parent Service
  - More code refactoring
+### Changed
+ - MIT license
+ - Better node-red tests
+ - Pretiefied and linted code!
+### Fixed
+ - Removed read/write boundaries for Characteristics
 
 ## [0.6.2] - 2019.03.27
 ### Changed
