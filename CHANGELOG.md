@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - MIT license
  - Better node-red tests
  - Pretiefied and linted code!
+ - no more support for old (< 10) node versions, added travis checks for 12
 ### Fixed
  - Removed read/write boundaries for Characteristics
 
