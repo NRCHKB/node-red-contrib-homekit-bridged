@@ -504,6 +504,17 @@
         },
         inputs: 1,
         outputs: 2,
+        outputLabels: function(index) {
+            if (index === 0) {
+                return "default"
+            }
+
+            if (index === 1) {
+                return "camera snapshot"
+            }
+            
+            return ""
+        },
         icon: "homekit.png",
         color: "#fcc127",
         label: function() {
