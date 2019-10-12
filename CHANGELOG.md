@@ -4,23 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.X.Y] - 2019
+## [0.7.0] - 2019.10.12
 ### Added
  - CHANGELOG page introduction
  - travis autodeploy to npm on pushed tags
  - Change from "characteristic-change" to "set" to listen to HAP-NodeJS events
  - Sorted Service Type list in UI
  - Camera support (RTSP, Video Doorbell and others)
+ - RemoteKey value now appears in node output!
  - HAP-NodeJS version changed to latest (0.5.0)
  - Added Accessory Category field for Parent Service
  - More code refactoring
+ - Newest HomeKit Docs uploaded
+ - Security hints
+ - And more...
 ### Changed
  - MIT license
  - Better node-red tests
  - Pretiefied and linted code!
- - no more support for old (< 10) node versions, added travis checks for 12
+ - Support for node 8 and 10 only
+ - Github Actions for automatic tests and publish
+ - And more...
 ### Fixed
  - Removed read/write boundaries for Characteristics
+ - And more...
 
 ## [0.6.2] - 2019.03.27
 ### Changed
