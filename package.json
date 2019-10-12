@@ -1,75 +1,50 @@
 {
-  "name": "node-red-contrib-homekit-bridged",
-  "version": "0.6.2",
-  "description": "Node-RED nodes to simulate Apple HomeKit devices.",
-  "main": "homekit.js",
-  "scripts": {
-    "test": "mocha"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NRCHKB/node-red-contrib-homekit-bridged.git"
-  },
-  "keywords": [
-    "homekit",
-    "hap-nodejs",
-    "node-red",
-    "iot",
-    "homebridge",
-    "home"
-  ],
-  "node-red": {
-    "nodes": {
-      "homekit": "homekit.js"
+    "name": "node-red-contrib-homekit-bridged",
+    "version": "0.7.0",
+    "description": "Node-RED nodes to simulate Apple HomeKit devices.",
+    "main": "homekit.js",
+    "scripts": {
+        "test": "mocha --exit"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NRCHKB/node-red-contrib-homekit-bridged.git"
+    },
+    "keywords": [
+        "homekit",
+        "hap-nodejs",
+        "node-red",
+        "iot",
+        "homebridge",
+        "home"
+    ],
+    "node-red": {
+        "nodes": {
+            "homekit": "homekit.js"
+        }
+    },
+    "author": "Marius Schmeding, Oliver Rahner, Shaquu",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues"
+    },
+    "homepage": "https://github.com/NRCHKB/node-red-contrib-homekit-bridged#readme",
+    "dependencies": {
+        "child_process": "1.0.2",
+        "debug": "4.1.1",
+        "fs": "0.0.2",
+        "hap-nodejs": "0.5.0",
+        "ip": "1.1.5",
+        "net": "1.0.2",
+        "os": "0.1.1"
+    },
+    "devDependencies": {
+        "assert": "2.0.0",
+        "eslint": "^6.5.1",
+        "mocha": "6.2.1",
+        "node-red": "1.0.1",
+        "node-red-node-test-helper": "^0.2.3",
+        "prettier": "^1.18.2",
+        "should": "^13.2.3"
     }
-  },
-  "author": "Marius Schmeding, Oliver Rahner, Shaquu",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues"
-  },
-  "homepage": "https://github.com/NRCHKB/node-red-contrib-homekit-bridged#readme",
-  "dependencies": {
-    "hap-nodejs": "^0.4.48"
-  },
-  "devDependencies": {
-    "eslint": "^5.15.3",
-    "mocha": "^6.0.2",
-    "node-red": "^0.20.2",
-    "debug": "^4.1.1"
-  },
-  "eslintConfig": {
-    "env": {
-      "commonjs": true,
-      "es6": true,
-      "node": true
-    },
-    "extends": "eslint:recommended",
-    "globals": {
-      "Atomics": "readonly",
-      "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-      "ecmaVersion": 2018
-    },
-    "rules": {
-      "indent": [
-        "error",
-        4
-      ],
-      "linebreak-style": [
-        "error",
-        "unix"
-      ],
-      "quotes": [
-        "error",
-        "double"
-      ],
-      "semi": [
-        "error",
-        "always"
-      ],
-      "no-unused-vars": "off"
-    }
-  }
 }

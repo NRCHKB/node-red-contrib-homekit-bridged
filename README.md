@@ -3,18 +3,23 @@
 [![Build Status](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged.svg?branch=master)](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged) [![codebeat badge](https://codebeat.co/badges/3bbdea35-c2ab-4273-b5d7-de6c4c9c1971)](https://codebeat.co/projects/github-com-nrchkb-node-red-contrib-homekit-bridged-master) [![Known Vulnerabilities](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged/badge.svg?targetFile=package.json)](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged?targetFile=package.json)
 
 ## Intro
+node-red-contrib-homekit-bridged is a Node-RED nodes pack to simulate Apple HomeKit devices. The goal is to emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README for the basics then head over to the [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for details and examples. If you're still stuck please open an issue, we are glad to help.
 
-Node-RED nodes to simulate Apple HomeKit devices. The goal is to emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README for the basics then head over to the [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for details and examples. If you're still stuck please open an issue, we are glad to help.
-
-These nodes allow the creation of fully customizable accessories for use in Apple's Home app on iOS, Watch OS, and Mac OS. If you can get it in Node-RED, you can get it in HomeKit. The goal of the project is to create a platform where official HomeKit hardware can be emulated as closely as possible through node red.
+These nodes allow the creation of fully customizable accessories for use in Apple's Home.app on iOS, Watch OS, and Mac OS. If you can get it in Node-RED, you can get it in HomeKit. The goal of the project is to create a platform where official HomeKit hardware can be emulated as closely as possible through node red.
 
 ## Install
 
-For Debian / Ubuntu you need to install the following in order to support Bonjour / Avahi
+### Easy Install
 
-        sudo apt-get install libavahi-compat-libdnssd-dev
+If you have Node-RED already installed the recommended install method is to use the editor. To do this, select `Manage Pallette` from the Node-RED menu (top right), and then select `install` tab in the pallette. Search for and install this node (`node-red-contrib-homekit-bridged`).
 
-Then run the following command in your Node-RED user directory - typically `~/.node-red`
+### Using NPM
+
+If you have not yet installed Node-RED then run following command or go to [Node-RED Installation Guide](https://nodered.org/docs/getting-started/installation).
+
+        npm install -g --unsafe-perm node-red
+
+Next, to install node-red-contrib-homekit-bridged node run the following command in your Node-RED user directory - typically `~/.node-red`
 
         npm install node-red-contrib-homekit-bridged
 
@@ -28,8 +33,11 @@ Please see instructions on Docker Hub.
 
 ### Bridge
 
-The Bridge node is a configuration node which will be added from within the service node. It creates the _bridge_ that iOS sees, i.e. the device that is added to the Apple Home app by the user.
+The Bridge node is a configuration node (means it will be not visible in a flow like other nodes) which will be added from within the service node. It creates the _bridge_ that iOS sees, i.e. the device that is added to the Apple Home app by the user.
 All accessories behind a bridge noded are then automatically added by iOS.
+
+<details><summary>Configuration fields:</summary>
+<p>
 
 - **Pin Code**: Specify the Pin for the pairing process.
 - **Port**: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.
@@ -44,20 +52,46 @@ All accessories behind a bridge noded are then automatically added by iOS.
   - **TTL**: Set the multicast ttl. Optional.
   - **Loopback**: Receive your own packets. Optional. Default true.
   - **Reuse Address**: Set the reuseAddr option when creating the socket. Optional. Default true.
+</details>
 
 ### Service
 
 The Service node represents the single device you want to control or query.
 Every service node can be _Parent_ or _Linked_. Each Parent service creates an individual accessory in the Home app. Linked services add additional features to their Parent service - for example adding battery status to a motion detector. See examples in the [wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for details.
 
+<details><summary>Configuration fields:</summary>
+<p>
+
 - **Service Hierarchy**: Whether the service is _Parent_ or _Linked_.
-   - **Bridge**: On what bridge to host this Service and its Accessory.
-   - **Parent Service**: Which Parent service the Linked service will be connected to.
+   - **Bridge**: On what bridge to host this Service and its Accessory. (Available only for Parent Service)
+   - **Accessory Category**: What kind of category is this Accessory. (Available only for Parent Service)
+   - **Parent Service**: Which Parent service the Linked service will be connected to. (Available only for Linked Service)
 - **Service**: Choose the type of Service from the list. [Services wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Services)
 - **Topic**: An optional property that can be configured in the node or, if left blank, can be set by msg.topic.
 - **Manufacturer, Model, Serial Number**: Can be anything you want.
 - **Name**: If you intend to simulate a rocket, then why don't you call it _Rocket_.
+- **Camera Configuration**: Additional configuration for CameraControl service.
+   - **Video Processor**: Video processor used for Camera. Default is _ffmpeg_.
+   - **Source**: Camera source used for video processor. Example for ffmpeg _-re -i rtsp://192.168.0.227:8554/unicast_
+   - **Still Image Source**: Camera snapshot source used for video processor. Example for ffmpeg _-i http://faster_still_image_grab_url/this_is_optional.jpg_
+   - **Max Streams**: Maximum number of streams that will be generated for this camera, default _2_.
+   - **Max Width**: Maximum width reported to HomeKit, default _1280_.
+   - **Max Height**: Maximum height reported to HomeKit, default _720_.
+   - **Max FPS**: Maximum frame rate of the stream, default _10_.
+   - **Max Bitrate**: Maximum bit rate of the stream in kbit/s, default _300_.
+   - **Video Codec**: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated video codec with this option, default _libx264_.
+   - **Audio Codec**: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated audio codec with this option, default _libfdk_aac_.
+   - **Audio**: Can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, default _false_.
+   - **Packet Size**: If audio or video is choppy try a smaller value, set to a multiple of 188, default _1316_.
+   - **Vertical Flip**: Flips the stream vertically, default _false_.
+   - **Horizontal Flip**: Flips the stream horizontally, default _false_.
+   - **Map Video**: Select the stream used for video, default _0:0_.
+   - **Map Audio**: Select the stream used for audio, default _0:1_.
+   - **Video Filter**: Allows a custom video filter to be passed to FFmpeg via -vf, defaults to _scale=1280:720_.
+   - **Additional Command Line**: Allows additional of extra command line options to FFmpeg, default _-tune zerolatency_.
+   - **Debug**: Show the output of ffmpeg in the log, default _false_.
 - **Characteristic Properties**: Customise the properties of characteristics. [Characteristics wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Characteristics)
+</details>
 
 ## Input Messages
 
@@ -190,8 +224,13 @@ This will filter out all messages with their payload property hap.context not se
 
 [Shaq](https://github.com/Shaquu) - leading the current efforts to fix bugs and add features
 
+[crxporter](https://github.com/crxporter) - a lot of work on documentation and new features design
+
 [Oliver Rahner](https://github.com/oliverrahner) - reworked the code to add bridged mode - [read his story](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Credits#oliver-rahner-explains-his-work)
 
 [Marius Schmeding](https://github.com/mschm/node-red-contrib-homekit) - original implementation of HAP-NodeJS into Node-RED
 
 [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) - NodeJS implementation of Apple's HomeKit Accessory Server
+
+## Contact us ##
+[mail to Shaquu](mailto:shaquu.github@gmail.com?subject=[NRCHKB])
