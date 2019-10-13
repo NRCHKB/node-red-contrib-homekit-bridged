@@ -169,6 +169,19 @@ The following is a list of _Services_ that are currently supported. Check for mo
 - Window
 - WindowCovering
 
+## Context
+
+Context info can be provided as part of the input message and will be available in the output message as `hap.context`.
+
+**Example**:
+
+```json
+{
+  "On": 1,
+  "Context": "set_from_mqtt_topic"
+}
+```
+
 ## No Response
 
 You can set accessory "No Response" status by sending "NO_RESPONSE" as a value for any available characteristic.
@@ -212,6 +225,16 @@ This should output detailed information regarding everything in the homekit cont
 #### The same command gets sent over and over. How do I stop that?
 
 The built in `rbe` node may be placed as needed to only pass on messages if they are different from previous messages. 
+
+#### I only want to get messages when something has been changed in the Home app, but also all messages I send into the homekit node get forwarded, too. How do I stop that?
+
+Insert this node right after your homekit node:
+
+```
+[{"id":"","type":"switch","z":"","name":"check hap.context","property":"hap.context","propertyType":"msg","rules":[{"t":"nnull"}],"checkall":"true","repair":false,"outputs":1,"x":0,"y":0,"wires":[]}]
+```
+
+This will filter out all messages with their payload property hap.context not set, which means they are events that have been sent to homekit via node-red, not via the Home app.
 
 ## Contributors
 
