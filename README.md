@@ -116,52 +116,58 @@ Output messages are in the same format as input messages. They are emitted from 
 
 The following is a list of _Services_ that are currently supported. Check for more details on [the wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Services). If you encounter problems with any of them please file an Issue.
 
-- Air Quality Sensor
-- Battery Service
-- Camera Control
-- Camera RTP Stream Management
-- Carbon Dioxide Sensor
-- Carbon Monoxide Sensor
-- Contact Sensor
+- AccessoryInformation
+- AirPurifier
+- AirQualitySensor
+- BatteryService
+- BridgeConfiguration
+- BridgingState
+- CameraControl
+- CameraRTPStreamManagement
+- CarbonDioxideSensor
+- CarbonMonoxideSensor
+- ContactSensor
 - Door
 - Doorbell
 - Fan
-- Garage Door Opener
-- Humidity Sensor
-- Leak Sensor
-- Light Sensor
+- Fanv2
+- Faucet
+- FilterMaintenance
+- GarageDoorOpener
+- HeaterCooler
+- HumidifierDehumidifier
+- HumiditySensor
+- InputSource
+- IrrigationSystem
+- LeakSensor
+- LightSensor
 - Lightbulb
-- Lock Management
-- Lock Mechanism
+- LockManagement
+- LockMechanism
 - Microphone
-- Motion Sensor
-- Occupancy Sensor
+- MotionSensor
+- OccupancySensor
 - Outlet
+- Pairing
+- ProtocolInformation
 - Relay
-- Security System
-- Smoke Sensor
+- SecuritySystem
+- ServiceLabel
+- Slat
+- SmokeSensor
 - Speaker
-- Stateful Programmable Switch
-- Stateless Programmable Switch
+- StatefulProgrammableSwitch
+- StatelessProgrammableSwitch
 - Switch
-- Temperature Sensor
+- Television
+- TelevisionSpeaker
+- TemperatureSensor
 - Thermostat
-- Time Information
+- TimeInformation
+- TunneledBTLEAccessoryService
+- Valve
 - Window
-- Window Covering
-
-## Context
-
-Context info can be provided as part of the input message and will be available in the output message as `hap.context`.
-
-**Example**:
-
-```json
-{
-  "On": 1,
-  "Context": "set_from_mqtt_topic"
-}
-```
+- WindowCovering
 
 ## No Response
 
@@ -206,17 +212,6 @@ This should output detailed information regarding everything in the homekit cont
 #### The same command gets sent over and over. How do I stop that?
 
 The built in `rbe` node may be placed as needed to only pass on messages if they are different from previous messages. 
-
-#### I only want to get messages when something has been changed in the Home app, but also all messages I send into the homekit node get forwarded, too. How do I stop that?
-
-Insert this node right after your homekit node:
-
-```
-[{"id":"","type":"switch","z":"","name":"check hap.context","property":"hap.context","propertyType":"msg","rules":[{"t":"nnull"}],"checkall":"true","repair":false,"outputs":1,"x":0,"y":0,"wires":[]}]
-```
-
-This will filter out all messages with their payload property hap.context not set, which means they are events that have been sent to homekit via node-red, not via the Home app.
-
 
 ## Contributors
 
