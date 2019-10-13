@@ -7,10 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.7.2] - 2019.10.13
 ### Added
  - Added greenkeeper
+ - Added setting to Bidge configuration called Allow Message Passthrough
 ### Changed
  - Updated README
 ### Fixed
- - Revert hap.context in output
+ - Revert hap.context in node output
 
 
 ## [0.7.1] - 2019.10.13
