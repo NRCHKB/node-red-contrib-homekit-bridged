@@ -44,6 +44,7 @@ All accessories behind a bridge noded are then automatically added by iOS.
 - **Allow Insecure Request**: Should we allow insecure request? Default false.
 - **Manufacturer, Model, Serial Number**: Can be anything you want.
 - **Name**: Can be anything you want.
+- **Allow Message Passthrough**: If you allow then message from node input will be send to node output.
 - **Custom MDNS Configuration**: Check if you would like to use custom MDNS configuration.
   - **Multicast**: Use udp multicasting. Optional. Default true.
   - **Multicast Interface IP**: Explicitly specify a network interface. Optional. Defaults to all.
@@ -227,6 +228,8 @@ This should output detailed information regarding everything in the homekit cont
 The built in `rbe` node may be placed as needed to only pass on messages if they are different from previous messages. 
 
 #### I only want to get messages when something has been changed in the Home app, but also all messages I send into the homekit node get forwarded, too. How do I stop that?
+
+Set Allow Message Passthrough to false in the Bridge configuration or...
 
 Insert this node right after your homekit node:
 
