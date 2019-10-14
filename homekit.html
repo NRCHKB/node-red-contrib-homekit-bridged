@@ -278,6 +278,11 @@
     </div>
     <hr>
     <div class="form-row">
+        <input type="checkbox" id="node-config-input-allowMessagePassthrough" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-config-input-allowMessagePassthrough" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-step-forward"></i> Allow Message Passthrough</label>
+    </div>
+    <hr>
+    <div class="form-row">
         <input type="checkbox" id="node-config-input-customMdnsConfig" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-config-input-customMdnsConfig" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-filter"></i> Custom MDNS Configuration</label>
     </div>
@@ -324,6 +329,7 @@
         <li><strong>Allow Insecure Request</strong>: Should we allow insecure request? Default false.</li>
         <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
         <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>.</li>
+        <li><strong>Allow Message Passthrough</strong>: If you allow then message from node input will be send to node output.</li>
         <li><strong>Custom MDNS Configuration</strong>: Check if you would like to use custom mdns configuration.</li>
         <ul>
             <li><strong>Multicast</strong>: Use udp multicasting. Optional. Default true.</li>
@@ -749,6 +755,10 @@
             mdnsReuseAddr: {
                 value: true,
                 required: false
+            },
+            allowMessagePassthrough: {
+                value: true,
+                required: true
             }
         },
         label: function() {
@@ -758,6 +768,11 @@
             return this.bridgeName ? "node_label_italic" : "";
         },
         oneditprepare: function () {
+            if (typeof this.allowMessagePassthrough == "undefined") {
+                this.allowMessagePassthrough = true
+                $("#node-config-input-allowMessagePassthrough").prop('checked', true);
+            }
+
             let customMdnsConfigCheckbox = $("#node-config-input-customMdnsConfig");
             let mdnsConfiguration = $("#mdns-configuration");
 

@@ -44,6 +44,7 @@ All accessories behind a bridge noded are then automatically added by iOS.
 - **Allow Insecure Request**: Should we allow insecure request? Default false.
 - **Manufacturer, Model, Serial Number**: Can be anything you want.
 - **Name**: Can be anything you want.
+- **Allow Message Passthrough**: If you allow then message from node input will be send to node output.
 - **Custom MDNS Configuration**: Check if you would like to use custom MDNS configuration.
   - **Multicast**: Use udp multicasting. Optional. Default true.
   - **Multicast Interface IP**: Explicitly specify a network interface. Optional. Defaults to all.
@@ -116,39 +117,58 @@ Output messages are in the same format as input messages. They are emitted from 
 
 The following is a list of _Services_ that are currently supported. Check for more details on [the wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Services). If you encounter problems with any of them please file an Issue.
 
-- Air Quality Sensor
-- Battery Service
-- Camera Control
-- Camera RTP Stream Management
-- Carbon Dioxide Sensor
-- Carbon Monoxide Sensor
-- Contact Sensor
+- AccessoryInformation
+- AirPurifier
+- AirQualitySensor
+- BatteryService
+- BridgeConfiguration
+- BridgingState
+- CameraControl
+- CameraRTPStreamManagement
+- CarbonDioxideSensor
+- CarbonMonoxideSensor
+- ContactSensor
 - Door
 - Doorbell
 - Fan
-- Garage Door Opener
-- Humidity Sensor
-- Leak Sensor
-- Light Sensor
+- Fanv2
+- Faucet
+- FilterMaintenance
+- GarageDoorOpener
+- HeaterCooler
+- HumidifierDehumidifier
+- HumiditySensor
+- InputSource
+- IrrigationSystem
+- LeakSensor
+- LightSensor
 - Lightbulb
-- Lock Management
-- Lock Mechanism
+- LockManagement
+- LockMechanism
 - Microphone
-- Motion Sensor
-- Occupancy Sensor
+- MotionSensor
+- OccupancySensor
 - Outlet
+- Pairing
+- ProtocolInformation
 - Relay
-- Security System
-- Smoke Sensor
+- SecuritySystem
+- ServiceLabel
+- Slat
+- SmokeSensor
 - Speaker
-- Stateful Programmable Switch
-- Stateless Programmable Switch
+- StatefulProgrammableSwitch
+- StatelessProgrammableSwitch
 - Switch
-- Temperature Sensor
+- Television
+- TelevisionSpeaker
+- TemperatureSensor
 - Thermostat
-- Time Information
+- TimeInformation
+- TunneledBTLEAccessoryService
+- Valve
 - Window
-- Window Covering
+- WindowCovering
 
 ## Context
 
@@ -209,6 +229,8 @@ The built in `rbe` node may be placed as needed to only pass on messages if they
 
 #### I only want to get messages when something has been changed in the Home app, but also all messages I send into the homekit node get forwarded, too. How do I stop that?
 
+Set Allow Message Passthrough to false in the Bridge configuration or...
+
 Insert this node right after your homekit node:
 
 ```
@@ -216,7 +238,6 @@ Insert this node right after your homekit node:
 ```
 
 This will filter out all messages with their payload property hap.context not set, which means they are events that have been sent to homekit via node-red, not via the Home app.
-
 
 ## Contributors
 
