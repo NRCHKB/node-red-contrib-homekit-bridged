@@ -197,6 +197,8 @@ You can set accessory "No Response" status by sending "NO_RESPONSE" as a value f
 
 After "No Response" status was triggered, the accessory is marked accordingly when you try to control it or reopen Home.app.
 Any subsequent update of any characteristic value will reset this status.
+However the NO_RESPONSE status won't be visible until you exit and reopen the app. This is how the NO_RESPONSE status works in HomeKit and this behaviour can't be changed. Subsequent updates after NO_RESPONSE may also need an app restart to pick up the new state
+
 
 ## Topic
 
@@ -204,7 +206,7 @@ An optional property that can be configured in the node or, if left blank, can b
 
 If Filter on Topic is selected `msg.topic` of incoming messages must match the configured value for the message to be accepted. If Filter on Topic is selected and no Topic is set on the node, then `msg.topic` must match the node's Name.
 
-The Topic parameter can be used to filter incoming messages, making it possible to connect multiple Homekit services to, for example, one MQTT-in node and filter directly on the MQTT Topic. It can also be used to add additional metadata to the outgoing msg, making it possible to connect multiple Homekit services directly to an MQTT-out node or filter the flow in another way.
+The Topic parameter can be used to filter incoming messages, making it possible to connect multiple HomeKit services to, for example, one MQTT-in node and filter directly on the MQTT Topic. It can also be used to add additional metadata to the outgoing msg, making it possible to connect multiple HomeKit services directly to an MQTT-out node or filter the flow in another way.
 
 ## FAQ
 
