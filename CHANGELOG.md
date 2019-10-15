@@ -5,8 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [0.x.y]
+## [0.9.0] - 2019.xy.zv
+### Added
+ - After Service selection in node configuration Category will be automatically set to default for Service
 ### Changed
+ - Accessory Category in node configuration moved under Service selection
  - Clarify NO_RESPONSE in README
  - Update node-red version in dependencies
 
