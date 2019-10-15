@@ -163,6 +163,12 @@
                 <option value="content">Content</option>
             </select>
         </div>
+
+
+        <div class="form-row">
+            <label for="node-input-cameraConfigInterfaceName"><i class="fa fa-smile-o"></i> Interface Name</label>
+            <input type="text" id="node-input-cameraConfigInterfaceName" placeholder="">
+        </div>
     </div>
 
     <div class="form-row" style="margin-bottom: 0px;">
@@ -218,6 +224,7 @@
                 <li><strong>Path</strong>: file will be saved and path will be send to output, <em>msg.payload.cameraSnapshot</em> contains path value stored as a string.</li>
                 <li><strong>Content</strong>: file content will be send to output, <em>msg.payload.cameraSnapshot</em> contains Buffer object {"type":"Buffer","data":[]}.</li>
             </ul>
+            <li><strong>Interface Name</strong>: Selects the IP address of a given network interface.</li>
         </ul>
         <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
     </ul>
@@ -493,6 +500,9 @@
             cameraConfigSnapshotOutput: {
                 value: "disabled",
                 validate: cameraConfigRequiredField
+            },
+            cameraConfigInterfaceName: {
+                value: "",
             },
             characteristicProperties: {
                 value: "{}",

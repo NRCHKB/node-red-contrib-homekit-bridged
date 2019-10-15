@@ -91,6 +91,12 @@ Every service node can be _Parent_ or _Linked_. Each Parent service creates an i
    - **Video Filter**: Allows a custom video filter to be passed to FFmpeg via -vf, defaults to _scale=1280:720_.
    - **Additional Command Line**: Allows additional of extra command line options to FFmpeg, default _-tune zerolatency_.
    - **Debug**: Show the output of ffmpeg in the log, default _false_.
+   - **Snapshot Output**: Choose how to output camera snapshot:
+     - **Disabled**: there will be no output
+     - **Path**: file will be saved and path will be send to output, _msg.payload.cameraSnapshot_ contains path value stored as a string.
+     - **Content**: file content will be send to output, _msg.payload.cameraSnapshot_ contains Buffer object {"type":"Buffer","data":[]}.
+            
+   - **Interface Name**: Selects the IP address of a given network interface. The default is to select the first available, and that may not be the same IP address that ffmpeg will use. A mismatch will cause the iOS device to discard the video stream..
 - **Characteristic Properties**: Customise the properties of characteristics. [Characteristics wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Characteristics)
 </details>
 
