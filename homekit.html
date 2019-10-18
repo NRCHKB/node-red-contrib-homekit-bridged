@@ -552,6 +552,10 @@
                 isParentToggle.val("true");
             }
 
+            if (!node.accessoryCategory) {
+                node.accessoryCategory = 'OTHER'
+            }
+
             let isLinkedDiv = $("#isLinked");
             let isParentDiv = $("#isParent");
 
@@ -595,7 +599,9 @@
                 }
 
                 if (serviceTypes.hasOwnProperty(this.value)) {
-                    selectCategoryName.val(serviceTypes[this.value].category);
+                    if (node.accessoryCategory == '') {
+                        selectCategoryName.val(serviceTypes[this.value].category);
+                    }
                 }
             }).change();
 
