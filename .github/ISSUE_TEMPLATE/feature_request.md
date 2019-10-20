@@ -1,9 +1,9 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: "[FEATURE]"
+title: "[FEATURE] *short_feature_name*"
 labels: 'enhancement :+1:'
-assignees: ''
+assignees: Shaquu
 
 ---
 
