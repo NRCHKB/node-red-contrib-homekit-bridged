@@ -91,6 +91,12 @@ Every service node can be _Parent_ or _Linked_. Each Parent service creates an i
    - **Video Filter**: Allows a custom video filter to be passed to FFmpeg via -vf, defaults to _scale=1280:720_.
    - **Additional Command Line**: Allows additional of extra command line options to FFmpeg, default _-tune zerolatency_.
    - **Debug**: Show the output of ffmpeg in the log, default _false_.
+   - **Snapshot Output**: Choose how to output camera snapshot:
+     - **Disabled**: there will be no output
+     - **Path**: file will be saved and path will be send to output, _msg.payload.cameraSnapshot_ contains path value stored as a string.
+     - **Content**: file content will be send to output, _msg.payload.cameraSnapshot_ contains Buffer object {"type":"Buffer","data":[]}.
+            
+   - **Interface Name**: Selects the IP address of a given network interface. The default is to select the first available, and that may not be the same IP address that ffmpeg will use. A mismatch will cause the iOS device to discard the video stream..
 - **Characteristic Properties**: Customise the properties of characteristics. [Characteristics wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Characteristics)
 </details>
 
@@ -197,6 +203,8 @@ You can set accessory "No Response" status by sending "NO_RESPONSE" as a value f
 
 After "No Response" status was triggered, the accessory is marked accordingly when you try to control it or reopen Home.app.
 Any subsequent update of any characteristic value will reset this status.
+However the NO_RESPONSE status won't be visible until you exit and reopen the app. This is how the NO_RESPONSE status works in HomeKit and this behaviour can't be changed. Subsequent updates after NO_RESPONSE may also need an app restart to pick up the new state
+
 
 ## Topic
 
@@ -204,7 +212,7 @@ An optional property that can be configured in the node or, if left blank, can b
 
 If Filter on Topic is selected `msg.topic` of incoming messages must match the configured value for the message to be accepted. If Filter on Topic is selected and no Topic is set on the node, then `msg.topic` must match the node's Name.
 
-The Topic parameter can be used to filter incoming messages, making it possible to connect multiple Homekit services to, for example, one MQTT-in node and filter directly on the MQTT Topic. It can also be used to add additional metadata to the outgoing msg, making it possible to connect multiple Homekit services directly to an MQTT-out node or filter the flow in another way.
+The Topic parameter can be used to filter incoming messages, making it possible to connect multiple HomeKit services to, for example, one MQTT-in node and filter directly on the MQTT Topic. It can also be used to add additional metadata to the outgoing msg, making it possible to connect multiple HomeKit services directly to an MQTT-out node or filter the flow in another way.
 
 ## FAQ
 

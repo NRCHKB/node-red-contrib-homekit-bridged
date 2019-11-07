@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [0.9.0] - 2019.xy.zv
+### Added
+ - After Service selection in node configuration Category will be automatically set to default for Service
+ - Interface Name for Camera Service configuration
+### Changed
+ - Accessory Category in node configuration moved under Service selection
+ - Clarify NO_RESPONSE in README
+ - Update node-red version in dependencies
+ - Camera Service source code to match newest improvements in homebridge-camera-ffmpeg
+
+
 ## [0.8.0] - 2019.10.14
 ### Added
  - Added greenkeeper

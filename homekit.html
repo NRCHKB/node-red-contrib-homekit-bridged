@@ -14,14 +14,6 @@
           Bridge</label>
             <input id="node-input-bridge">
         </div>
-        <div class="form-row">
-            <label for="node-input-accessoryCategory">
-              <i class="fa fa-cog"></i>
-              Accessory Category</label>
-            <select id="node-input-accessoryCategory">
-              <option value="">Choose...</option>
-          </select>
-        </div>
     </div>
 
     <div id="isLinked" style="display: none;">
@@ -35,7 +27,6 @@
         </div>
     </div>
 
-
     <div class="form-row">
         <label for="node-input-serviceName">
           <i class="fa fa-cog"></i>
@@ -44,6 +35,18 @@
           <option value="">Choose...</option>
       </select>
     </div>
+
+    <div id="isParent">
+        <div class="form-row">
+            <label for="node-input-accessoryCategory">
+              <i class="fa fa-cog"></i>
+              Accessory Category</label>
+            <select id="node-input-accessoryCategory">
+              <option value="">Choose...</option>
+          </select>
+        </div>
+    </div>
+
     <div class="form-row">
         <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
         <input type="text" id="node-input-topic" placeholder="Topic">
@@ -160,6 +163,12 @@
                 <option value="content">Content</option>
             </select>
         </div>
+
+
+        <div class="form-row">
+            <label for="node-input-cameraConfigInterfaceName"><i class="fa fa-smile-o"></i> Interface Name</label>
+            <input type="text" id="node-input-cameraConfigInterfaceName" placeholder="">
+        </div>
     </div>
 
     <div class="form-row" style="margin-bottom: 0px;">
@@ -215,6 +224,7 @@
                 <li><strong>Path</strong>: file will be saved and path will be send to output, <em>msg.payload.cameraSnapshot</em> contains path value stored as a string.</li>
                 <li><strong>Content</strong>: file content will be send to output, <em>msg.payload.cameraSnapshot</em> contains Buffer object {"type":"Buffer","data":[]}.</li>
             </ul>
+            <li><strong>Interface Name</strong>: Selects the IP address of a given network interface.</li>
         </ul>
         <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
     </ul>
@@ -382,7 +392,7 @@
             },
             accessoryCategory: {
                 value: "OTHER",
-                required: false
+                required: true
             },
             parentService: {
                 value: "",
@@ -491,6 +501,9 @@
                 value: "disabled",
                 validate: cameraConfigRequiredField
             },
+            cameraConfigInterfaceName: {
+                value: "",
+            },
             characteristicProperties: {
                 value: "{}",
                 validate: function(value) {
@@ -539,6 +552,10 @@
                 isParentToggle.val("true");
             }
 
+            if (!node.accessoryCategory) {
+                node.accessoryCategory = 'OTHER'
+            }
+
             let isLinkedDiv = $("#isLinked");
             let isParentDiv = $("#isParent");
 
@@ -572,15 +589,22 @@
                 })
                 .attr("selected", true);
 
+            const selectCategoryName = $("#node-input-accessoryCategory");
+
             selectServiceName.change(function(){
                 if(this.value === "CameraControl") {
                     cameraConfiguration.fadeIn("fast");
                 } else {
                     cameraConfiguration.fadeOut("fast");
                 }
+
+                if (serviceTypes.hasOwnProperty(this.value)) {
+                    if (node.accessoryCategory == '') {
+                        selectCategoryName.val(serviceTypes[this.value].category);
+                    }
+                }
             }).change();
 
-            const selectCategoryName = $("#node-input-accessoryCategory");
             for (let key in accessoryTypes) {
                 if (!accessoryTypes.hasOwnProperty(key)) continue;
 
