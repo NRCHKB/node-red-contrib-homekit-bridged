@@ -1497,10 +1497,10 @@ growl@1.10.5:
   resolved "https://registry.yarnpkg.com/growl/-/growl-1.10.5.tgz#f2735dc2283674fa67478b10181059355c369e5e"
   integrity sha512-qBr4OuELkhPenW6goKVXiv47US3clb3/IbuWF9KNKEijAy9oeHxU9IgzjvJhHkUzhaj7rOUD7+YGWqUjLp5oSA==
 
-hap-nodejs@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/hap-nodejs/-/hap-nodejs-0.5.0.tgz#d5ce3edd706ea517d00d3bdeb8ee425cdbc81975"
-  integrity sha512-zP0M1C8T9XZNIcRhZLSw+GKHECZvai9sZdFXBeRFeIhJe4UCbDyfLK/Owe+aJPBdkhHcc1LguLHi3Jt2VH/YZQ==
+hap-nodejs@0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/hap-nodejs/-/hap-nodejs-0.5.4.tgz#137943b3ba5afc54e89ecb4ff7edc90d8e1e5267"
+  integrity sha512-ok1jikRvnmVUYEqz33MTHuCrm6CHkF1lQfe79Z3ExTDdiuhRLobkAE6M51FspZVTaLCRudrGT3bwBFpTKqgrSw==
   dependencies:
     bonjour-hap "^3.5.1"
     buffer-shims "^1.0.0"
