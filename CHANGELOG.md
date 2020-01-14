@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.0.0] - 2019.xy.zv
+## [1.0.0] - 2020.xy.zv
 ### Fixed
  - Node id macify algorithm changed
  - Corrections regarding issue [#12](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/12) so that changes can be deployed without restarting node-red
