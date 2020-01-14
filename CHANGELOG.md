@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2019.xy.zv
 ### Fixed
  - Node id macify algorithm changed
+ - Corrections regarding issue [#12](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/12) so that changes can be deployed without restarting node-red
+ - Automatically creating a new service and replacing the old one if the service type changed
+ - Automatically replacing an accessory with a new one if the accessory information changes (e.g. Name, Manufacturer, ...)
 ### Added
  - After Service selection in node configuration Category will be automatically set to default for Service
  - Interface Name for Camera Service configuration
@@ -18,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Update node-red version in dependencies
  - Camera Service source code to match newest improvements in homebridge-camera-ffmpeg
  - Update to latest HAP-NodeJS
+ - Removed unnecessary accessory category from service node
+ - Removed fields Manufacturer, Serial Number and Model from linked service nodes
 
 
 ## [0.8.0] - 2019.10.14

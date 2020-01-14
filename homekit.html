@@ -7,12 +7,33 @@
         </select>
     </div>
 
+    <div class="form-row">
+        <label for="node-input-serviceName">
+          <i class="fa fa-cog"></i>
+          Service</label>
+        <select id="node-input-serviceName">
+          <option value="">Choose...</option>
+      </select>
+    </div>
+
     <div id="isParent">
         <div class="form-row">
             <label for="node-input-bridge">
           <i class="fa fa-rocket"></i>
           Bridge</label>
             <input id="node-input-bridge">
+        </div>
+        <div class="form-row">
+            <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
+            <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
+        </div>
+        <div class="form-row">
+            <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
+            <input type="text" id="node-input-serialNo" placeholder="Serial Number">
+        </div>
+        <div class="form-row">
+            <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
+            <input type="text" id="node-input-model" placeholder="Model">
         </div>
     </div>
 
@@ -28,26 +49,6 @@
     </div>
 
     <div class="form-row">
-        <label for="node-input-serviceName">
-          <i class="fa fa-cog"></i>
-          Service</label>
-        <select id="node-input-serviceName">
-          <option value="">Choose...</option>
-      </select>
-    </div>
-
-    <div id="isParent">
-        <div class="form-row">
-            <label for="node-input-accessoryCategory">
-              <i class="fa fa-cog"></i>
-              Accessory Category</label>
-            <select id="node-input-accessoryCategory">
-              <option value="">Choose...</option>
-          </select>
-        </div>
-    </div>
-
-    <div class="form-row">
         <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
         <input type="text" id="node-input-topic" placeholder="Topic">
     </div>
@@ -55,18 +56,6 @@
         <label>&nbsp;</label>
         <input type="checkbox" id="node-input-filter" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-input-filter" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-filter"></i> Filter on Topic</label>
-    </div>
-    <div class="form-row">
-        <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
-        <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
-    </div>
-    <div class="form-row">
-        <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
-        <input type="text" id="node-input-serialNo" placeholder="Serial Number">
-    </div>
-    <div class="form-row">
-        <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
-        <input type="text" id="node-input-model" placeholder="Model">
     </div>
 
     <div class="form-row">
@@ -390,10 +379,6 @@
                 type: "homekit-bridge",
                 required: false
             },
-            accessoryCategory: {
-                value: "OTHER",
-                required: true
-            },
             parentService: {
                 value: "",
                 required: false
@@ -552,10 +537,6 @@
                 isParentToggle.val("true");
             }
 
-            if (!node.accessoryCategory) {
-                node.accessoryCategory = 'OTHER'
-            }
-
             let isLinkedDiv = $("#isLinked");
             let isParentDiv = $("#isParent");
 
@@ -589,38 +570,13 @@
                 })
                 .attr("selected", true);
 
-            const selectCategoryName = $("#node-input-accessoryCategory");
-
             selectServiceName.change(function(){
                 if(this.value === "CameraControl") {
                     cameraConfiguration.fadeIn("fast");
                 } else {
                     cameraConfiguration.fadeOut("fast");
                 }
-
-                if (serviceTypes.hasOwnProperty(this.value)) {
-                    if (node.accessoryCategory == '') {
-                        selectCategoryName.val(serviceTypes[this.value].category);
-                    }
-                }
             }).change();
-
-            for (let key in accessoryTypes) {
-                if (!accessoryTypes.hasOwnProperty(key)) continue;
-
-                selectCategoryName.append(
-                    $("<option></option>")
-                        .val(key)
-                        .text(key)
-                );
-            }
-
-            selectCategoryName
-                .find("option")
-                .filter(function() {
-                    return $(this).val() === node.accessoryCategory;
-                })
-                .attr("selected", true);
 
             node.editor = RED.editor.createEditor({
                 id: "node-input-characteristicProperties-editor",
