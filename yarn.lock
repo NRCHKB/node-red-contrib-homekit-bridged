@@ -438,11 +438,6 @@ buffer-indexof@^1.0.0:
   resolved "https://registry.yarnpkg.com/buffer-indexof/-/buffer-indexof-1.1.1.tgz#52fabcc6a606d1a00302802648ef68f639da268c"
   integrity sha512-4/rOEg86jivtPTeOUUT61jJO1Ya1TrR/OkqCSZDyq84WJh3LuuiphBYJN+fm5xufIk4XAFcEwte/8WzC8If/1g==
 
-buffer-shims@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/buffer-shims/-/buffer-shims-1.0.0.tgz#9978ce317388c649ad8793028c3477ef044a8b51"
-  integrity sha1-mXjOMXOIxkmth5MCjDR37wRKi1E=
-
 busboy@^0.2.11:
   version "0.2.14"
   resolved "https://registry.yarnpkg.com/busboy/-/busboy-0.2.14.tgz#6c2a622efcf47c57bbbe1e2a9c37ad36c7925453"
@@ -1543,13 +1538,12 @@ growl@1.10.5:
   resolved "https://registry.yarnpkg.com/growl/-/growl-1.10.5.tgz#f2735dc2283674fa67478b10181059355c369e5e"
   integrity sha512-qBr4OuELkhPenW6goKVXiv47US3clb3/IbuWF9KNKEijAy9oeHxU9IgzjvJhHkUzhaj7rOUD7+YGWqUjLp5oSA==
 
-hap-nodejs@^0.5.5:
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/hap-nodejs/-/hap-nodejs-0.5.5.tgz#45813decc6687c60c74bfaabee7b15f4ee95d05e"
-  integrity sha512-7a3FszMNC1wIu5Nf9aHnzkRKJeMEQfTDK8ewbKPu1fT8HJ6EVol/WKbV6YR0ueyqq+l8kGQ3e55KRwL277bWWA==
+hap-nodejs@^0.5.6:
+  version "0.5.6"
+  resolved "https://registry.yarnpkg.com/hap-nodejs/-/hap-nodejs-0.5.6.tgz#39423a62bfbd759d70adcfeca6f143e1b76c16e6"
+  integrity sha512-hK6HaRUKhO948roA/SF9+5t61qyAWsTCj9SeR3qTt9uQIyIWUpKIAiJlNQADMTb4LcJwC0yaVexw8cU5z2wxNw==
   dependencies:
     bonjour-hap "^3.5.1"
-    buffer-shims "^1.0.0"
     debug "^2.2.0"
     decimal.js "^7.2.3"
     fast-srp-hap "^1.0.1"
