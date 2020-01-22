@@ -1,4 +1,9 @@
-const should = require('should')
+const mocha = require('mocha')
+const describe = mocha.describe
+const beforeEach = mocha.beforeEach
+const afterEach = mocha.afterEach
+const it = mocha.it
+
 const helper = require('node-red-node-test-helper')
 const homekitNode = require('../homekit')
 

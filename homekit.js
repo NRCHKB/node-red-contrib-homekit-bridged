@@ -1,9 +1,6 @@
 module.exports = function(RED) {
-    ;('use strict')
-
     const debug = require('debug')('NRCHKB')
     const HapNodeJS = require('hap-nodejs')
-    const Service = HapNodeJS.Service
     const API = require('./lib/api.js')(RED)
     const HAPBridgeNode = require('./lib/HAPBridgeNode.js')(RED)
     const HAPServiceNode = require('./lib/HAPServiceNode.js')(RED)
