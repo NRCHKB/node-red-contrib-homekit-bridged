@@ -1,32 +1,32 @@
 name: Publish nrchkb@dev
 
 on:
-  push:
-    branches:
-      - dev
+    push:
+        branches:
+            - dev
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          version: 10
-      - run: |
-          npm install
-          npm run build --if-present
-          npm test
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - uses: actions/setup-node@v1
+              with:
+                  version: 10
+            - run: |
+                  npm install
+                  npm run build --if-present
+                  npm test
 
-  publish-npm:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 10
-          registry-url: https://registry.npmjs.org/
-      - run: npm publish --tag dev
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NODE_TKN}}
+    publish-npm:
+        needs: test
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: 10
+                  registry-url: https://registry.npmjs.org/
+            - run: npm publish --tag dev
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.NODE_TKN}}

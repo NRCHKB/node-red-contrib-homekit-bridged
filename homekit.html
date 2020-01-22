@@ -172,77 +172,77 @@
 </script>
 
 <script type="text/x-red" data-help-name="homekit-service">
-    <h3 id="toc_5">Service</h3>
-    <p>The Service node represents the single device you want to control or query.</p>
-    <p>Every service node creates its own HAP accessory to keep things simple.</p>
-    <ul>
-        <li><strong>Service Hierarchy</strong>: Choose if this Service is Parent or Linked</li>
-        <ul>
-            <li>Parent has <strong>Bridge</strong> and <strong>Accessory Category</strong>: On what Bridge to host this Service and its Accessory and what kind of category is this Accessory, default <em>OTHER</em></li>
-            <li>Linked has <strong>Parent Service</strong>: On what Parent Service link this Service.</li>
-        </ul>
-        <li><strong>Topic</strong>: An optional property that can be configured in the node or, if left blank, can be set by <code>msg.topic</code>. If <em>Filter on Topic</em> is selected <code>msg.topic</code> of incoming messages must match the configured
-            value for the message to be accepted. If <em>Filter on Topic</em> is selected and no <em>Topic</em> is set on the node, then <code>msg.topic</code> must match the nodes <em>Name</em></li>
-        <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
-        <li><strong>Service</strong>: Choose the type of Service from the list.</li>
-        <li><strong>Name</strong>: <em>optional</em></li>
-        <li><strong>Camera Configuration</strong>: Additional configuration for CameraControl service.</li>
-        <ul>
-            <li><strong>Video Processor</strong>: Video processor used for Camera. Default is <em>ffmpeg</em>.</li>
-            <li><strong>Source</strong>: Camera source used for video processor. Example for ffmpeg <em>-re -i rtsp://192.168.0.227:8554/unicast</em></li>
-            <li><strong>Still Image Source</strong>: Camera snapshot source used for video processor. Example for ffmpeg <em>-i http://faster_still_image_grab_url/this_is_optional.jpg</em></li>
-            <li><strong>Max Streams</strong>: Maximum number of streams that will be generated for this camera, default <em>2</em>.</li>
-            <li><strong>Max Width</strong>: Maximum width reported to HomeKit, default <em>1280</em>.</li>
-            <li><strong>Max Height</strong>: Maximum height reported to HomeKit, default <em>720</em>.</li>
-            <li><strong>Max FPS</strong>: Maximum frame rate of the stream, default <em>10</em>.</li>
-            <li><strong>Max Bitrate</strong>: Maximum bit rate of the stream in kbit/s, default <em>300</em>.</li>
-            <li><strong>Video Codec</strong>: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated video codec with this option, default <em>libx264</em>.</li>
-            <li><strong>Audio Codec</strong>: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated audio codec with this option, default <em>libfdk_aac</em>.</li>
-            <li><strong>Audio</strong>: Can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, default <em>false</em>.</li>
-            <li><strong>Packet Size</strong>: If audio or video is choppy try a smaller value, set to a multiple of 188, default <em>1316</em>.</li>
-            <li><strong>Vertical Flip</strong>: Flips the stream vertically, default <em>false</em>.</li>
-            <li><strong>Horizontal Flip</strong>: Flips the stream horizontally, default <em>false</em>.</li>
-            <li><strong>Map Video</strong>: Select the stream used for video, default <em>0:0</em>.</li>
-            <li><strong>Map Audio</strong>: Select the stream used for audio, default <em>0:1</em>.</li>
-            <li><strong>Video Filter</strong>: Allows a custom video filter to be passed to FFmpeg via -vf, defaults to <em>scale=1280:720</em>.</li>
-            <li><strong>Additional Command Line</strong>: Allows additional of extra command line options to FFmpeg, default <em>-tune zerolatency</em>.</li>
-            <li><strong>Debug</strong>: Show the output of ffmpeg in the log, default <em>false</em>.</li>
-            <li><strong>Snapshot output</strong>: Choose how to output camera snapshot</li>
-            <ul>
-                <li><strong>Disabled</strong>: there will be no output</li>
-                <li><strong>Path</strong>: file will be saved and path will be send to output, <em>msg.payload.cameraSnapshot</em> contains path value stored as a string.</li>
-                <li><strong>Content</strong>: file content will be send to output, <em>msg.payload.cameraSnapshot</em> contains Buffer object {"type":"Buffer","data":[]}.</li>
-            </ul>
-            <li><strong>Interface Name</strong>: Selects the IP address of a given network interface.</li>
-        </ul>
-        <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
-    </ul>
-    <h2 id="toc_6">Input Messages</h2>
-    <p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
-    <p><strong>Example</strong>: to signal that an <em>Outlet</em> is turned on and in use, send the following payload</p>
-    <div>
-        <pre><code class="language-javascript">{
-      &quot;On&quot;: 1,
-      &quot;OutletInUse&quot;: 1
-  }</code></pre>
-    </div>
-    <p><strong>Hint</strong>: to find out what <em>Characteristics</em> you can address, just send <code>{&quot;foo&quot;:&quot;bar&quot;}</code> and watch the debug tab ;)</p>
-    <h2 id="toc_7">Output Messages</h2>
-    <p>Output messages are in the same format as input messages. They are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
-    <h2 id="toc_8">Characteristic Properties</h2>
-    <p><strong>Example</strong>: allow temperatures below 0&deg;C</p>
-    <div>
-        <pre><code class="language-json">{
-      &quot;CurrentTemperature&quot;: {
-          &quot;minValue&quot;: -100
-      }
-      <p><strong>Example</strong>: limit fan speed multiples of 25%</p>
-      <div><pre><code class="language-json">{
-      &quot;RotationSpeed&quot;: {
-          &quot;minStep&quot;: 25
-      }
-  }</code></pre>
-    </div>
+      <h3 id="toc_5">Service</h3>
+      <p>The Service node represents the single device you want to control or query.</p>
+      <p>Every service node creates its own HAP accessory to keep things simple.</p>
+      <ul>
+          <li><strong>Service Hierarchy</strong>: Choose if this Service is Parent or Linked</li>
+          <ul>
+              <li>Parent has <strong>Bridge</strong> and <strong>Accessory Category</strong>: On what Bridge to host this Service and its Accessory and what kind of category is this Accessory, default <em>OTHER</em></li>
+              <li>Linked has <strong>Parent Service</strong>: On what Parent Service link this Service.</li>
+          </ul>
+          <li><strong>Topic</strong>: An optional property that can be configured in the node or, if left blank, can be set by <code>msg.topic</code>. If <em>Filter on Topic</em> is selected <code>msg.topic</code> of incoming messages must match the configured
+              value for the message to be accepted. If <em>Filter on Topic</em> is selected and no <em>Topic</em> is set on the node, then <code>msg.topic</code> must match the nodes <em>Name</em></li>
+          <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
+          <li><strong>Service</strong>: Choose the type of Service from the list.</li>
+          <li><strong>Name</strong>: <em>optional</em></li>
+          <li><strong>Camera Configuration</strong>: Additional configuration for CameraControl service.</li>
+          <ul>
+              <li><strong>Video Processor</strong>: Video processor used for Camera. Default is <em>ffmpeg</em>.</li>
+              <li><strong>Source</strong>: Camera source used for video processor. Example for ffmpeg <em>-re -i rtsp://192.168.0.227:8554/unicast</em></li>
+              <li><strong>Still Image Source</strong>: Camera snapshot source used for video processor. Example for ffmpeg <em>-i http://faster_still_image_grab_url/this_is_optional.jpg</em></li>
+              <li><strong>Max Streams</strong>: Maximum number of streams that will be generated for this camera, default <em>2</em>.</li>
+              <li><strong>Max Width</strong>: Maximum width reported to HomeKit, default <em>1280</em>.</li>
+              <li><strong>Max Height</strong>: Maximum height reported to HomeKit, default <em>720</em>.</li>
+              <li><strong>Max FPS</strong>: Maximum frame rate of the stream, default <em>10</em>.</li>
+              <li><strong>Max Bitrate</strong>: Maximum bit rate of the stream in kbit/s, default <em>300</em>.</li>
+              <li><strong>Video Codec</strong>: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated video codec with this option, default <em>libx264</em>.</li>
+              <li><strong>Audio Codec</strong>: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated audio codec with this option, default <em>libfdk_aac</em>.</li>
+              <li><strong>Audio</strong>: Can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, default <em>false</em>.</li>
+              <li><strong>Packet Size</strong>: If audio or video is choppy try a smaller value, set to a multiple of 188, default <em>1316</em>.</li>
+              <li><strong>Vertical Flip</strong>: Flips the stream vertically, default <em>false</em>.</li>
+              <li><strong>Horizontal Flip</strong>: Flips the stream horizontally, default <em>false</em>.</li>
+              <li><strong>Map Video</strong>: Select the stream used for video, default <em>0:0</em>.</li>
+              <li><strong>Map Audio</strong>: Select the stream used for audio, default <em>0:1</em>.</li>
+              <li><strong>Video Filter</strong>: Allows a custom video filter to be passed to FFmpeg via -vf, defaults to <em>scale=1280:720</em>.</li>
+              <li><strong>Additional Command Line</strong>: Allows additional of extra command line options to FFmpeg, default <em>-tune zerolatency</em>.</li>
+              <li><strong>Debug</strong>: Show the output of ffmpeg in the log, default <em>false</em>.</li>
+              <li><strong>Snapshot output</strong>: Choose how to output camera snapshot</li>
+              <ul>
+                  <li><strong>Disabled</strong>: there will be no output</li>
+                  <li><strong>Path</strong>: file will be saved and path will be send to output, <em>msg.payload.cameraSnapshot</em> contains path value stored as a string.</li>
+                  <li><strong>Content</strong>: file content will be send to output, <em>msg.payload.cameraSnapshot</em> contains Buffer object {"type":"Buffer","data":[]}.</li>
+              </ul>
+              <li><strong>Interface Name</strong>: Selects the IP address of a given network interface.</li>
+          </ul>
+          <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
+      </ul>
+      <h2 id="toc_6">Input Messages</h2>
+      <p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
+      <p><strong>Example</strong>: to signal that an <em>Outlet</em> is turned on and in use, send the following payload</p>
+      <div>
+          <pre><code class="language-javascript">{
+        &quot;On&quot;: 1,
+        &quot;OutletInUse&quot;: 1
+    }</code></pre>
+      </div>
+      <p><strong>Hint</strong>: to find out what <em>Characteristics</em> you can address, just send <code>{&quot;foo&quot;:&quot;bar&quot;}</code> and watch the debug tab ;)</p>
+      <h2 id="toc_7">Output Messages</h2>
+      <p>Output messages are in the same format as input messages. They are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
+      <h2 id="toc_8">Characteristic Properties</h2>
+      <p><strong>Example</strong>: allow temperatures below 0&deg;C</p>
+      <div>
+          <pre><code class="language-json">{
+        &quot;CurrentTemperature&quot;: {
+            &quot;minValue&quot;: -100
+        }
+        <p><strong>Example</strong>: limit fan speed multiples of 25%</p>
+        <div><pre><code class="language-json">{
+        &quot;RotationSpeed&quot;: {
+            &quot;minStep&quot;: 25
+        }
+    }</code></pre>
+      </div>
 </script>
 
 <script type="text/x-red" data-template-name="homekit-bridge">
@@ -343,426 +343,447 @@
 </script>
 
 <script type="text/javascript">
-    RED.validators.port = function(port){return port >= 1 && port <= 65535 && port === port.toString()};
+    RED.validators.port = function(port) {
+        return port >= 1 && port <= 65535 && port === port.toString()
+    }
 </script>
 
 <script type="text/javascript">
-    let serviceTypes;
-    let accessoryTypes;
+    let serviceTypes
+    let accessoryTypes
 
     //HomeKitServiceTypes
-    $.getJSON("homekit/service/types", function(data) {
-        serviceTypes = data;
-    });
+    $.getJSON('homekit/service/types', function(data) {
+        serviceTypes = data
+    })
 
     //HomeKitAccessoryTypes
-    $.getJSON("homekit/accessory/types", function(data) {
-        accessoryTypes = data;
-    });
+    $.getJSON('homekit/accessory/types', function(data) {
+        accessoryTypes = data
+    })
 
-    const cameraConfigRequiredField = function (value) {
-        if (this.serviceName === "CameraControl") {
-            return (value || "").toString().trim();
-        } else return true;
-    };
+    const cameraConfigRequiredField = function(value) {
+        if (this.serviceName === 'CameraControl') {
+            return (value || '').toString().trim()
+        } else return true
+    }
 
-    RED.nodes.registerType("homekit-service", {
-        category: "advanced",
-        paletteLabel: "homekit",
+    RED.nodes.registerType('homekit-service', {
+        category: 'advanced',
+        paletteLabel: 'homekit',
         defaults: {
             isParent: {
-                value: "false",
-                required: true
+                value: 'false',
+                required: true,
             },
             bridge: {
-                value: "",
-                type: "homekit-bridge",
-                required: false
+                value: '',
+                type: 'homekit-bridge',
+                required: false,
             },
             parentService: {
-                value: "",
-                required: false
+                value: '',
+                required: false,
             },
             name: {
-                value: "",
+                value: '',
                 required: true,
                 validate: function(value) {
-                    return value.length > 0;
-                }
+                    return value.length > 0
+                },
             },
             serviceName: {
-                value: "",
-                required: true
+                value: '',
+                required: true,
             },
             topic: {
-                value:""
+                value: '',
             },
             filter: {
-                value: false
+                value: false,
             },
             manufacturer: {
-                value: "Default Manufacturer",
-                required: true
+                value: 'Default Manufacturer',
+                required: true,
             },
             model: {
-                value: "Default Model",
-                required: true
+                value: 'Default Model',
+                required: true,
             },
             serialNo: {
-                value: "Default Serial Number",
-                required: true
+                value: 'Default Serial Number',
+                required: true,
             },
             cameraConfigVideoProcessor: {
-                value: "ffmpeg",
-                validate: cameraConfigRequiredField
+                value: 'ffmpeg',
+                validate: cameraConfigRequiredField,
             },
             cameraConfigSource: {
-                validate: cameraConfigRequiredField
+                validate: cameraConfigRequiredField,
             },
             cameraConfigStillImageSource: {
-                required: false
+                required: false,
             },
             cameraConfigMaxStreams: {
                 value: 2,
-                validate: cameraConfigRequiredField
+                validate: cameraConfigRequiredField,
             },
             cameraConfigMaxWidth: {
                 value: 1280,
-                validate: cameraConfigRequiredField
+                validate: cameraConfigRequiredField,
             },
             cameraConfigMaxHeight: {
                 value: 720,
-                validate: cameraConfigRequiredField
+                validate: cameraConfigRequiredField,
             },
             cameraConfigMaxFPS: {
                 value: 10,
-                validate: cameraConfigRequiredField
+                validate: cameraConfigRequiredField,
             },
             cameraConfigMaxBitrate: {
                 value: 300,
-                validate: cameraConfigRequiredField
+                validate: cameraConfigRequiredField,
             },
             cameraConfigVideoCodec: {
-                value: "libx264",
-                validate: cameraConfigRequiredField
+                value: 'libx264',
+                validate: cameraConfigRequiredField,
             },
             cameraConfigAudioCodec: {
-                value: "libfdk_aac",
-                validate: cameraConfigRequiredField
+                value: 'libfdk_aac',
+                validate: cameraConfigRequiredField,
             },
             cameraConfigAudio: {
-                value: false
+                value: false,
             },
             cameraConfigPacketSize: {
                 value: 1316,
-                validate: cameraConfigRequiredField
+                validate: cameraConfigRequiredField,
             },
             cameraConfigVerticalFlip: {
-                value: false
+                value: false,
             },
             cameraConfigHorizontalFlip: {
-                value: false
+                value: false,
             },
             cameraConfigMapVideo: {
-                value: "0:0",
-                validate: cameraConfigRequiredField
+                value: '0:0',
+                validate: cameraConfigRequiredField,
             },
             cameraConfigMapAudio: {
-                value: "0:1",
-                validate: cameraConfigRequiredField
+                value: '0:1',
+                validate: cameraConfigRequiredField,
             },
             cameraConfigVideoFilter: {
-                value: "scale=1280:720",
-                validate: cameraConfigRequiredField
+                value: 'scale=1280:720',
+                validate: cameraConfigRequiredField,
             },
             cameraConfigAdditionalCommandLine: {
-                value: "-tune zerolatency",
-                validate: cameraConfigRequiredField
+                value: '-tune zerolatency',
+                validate: cameraConfigRequiredField,
             },
             cameraConfigDebug: {
-                value: false
+                value: false,
             },
             cameraConfigSnapshotOutput: {
-                value: "disabled",
-                validate: cameraConfigRequiredField
+                value: 'disabled',
+                validate: cameraConfigRequiredField,
             },
             cameraConfigInterfaceName: {
-                value: "",
+                value: '',
             },
             characteristicProperties: {
-                value: "{}",
+                value: '{}',
                 validate: function(value) {
                     if (value.length === 0) {
-                        return true;
+                        return true
                     }
 
                     try {
-                        JSON.parse(value);
+                        JSON.parse(value)
                     } catch (e) {
-                        return false;
+                        return false
                     }
 
-                    return value[0] === "{";
-                }
-            }
+                    return value[0] === '{'
+                },
+            },
         },
         inputs: 1,
         outputs: 2,
         outputLabels: function(index) {
             if (index === 0) {
-                return "default"
+                return 'default'
             }
 
             if (index === 1) {
-                return "camera snapshot"
+                return 'camera snapshot'
             }
-            
-            return ""
+
+            return ''
         },
-        icon: "homekit.png",
-        color: "#fcc127",
+        icon: 'homekit.png',
+        color: '#fcc127',
         label: function() {
-            return this.name || this.serviceName || "Service";
+            return this.name || this.serviceName || 'Service'
         },
         labelStyle: function() {
-            return this.name ? "node_label_italic" : "";
+            return this.name ? 'node_label_italic' : ''
         },
         oneditprepare: function() {
-            let node = this;
-            let isParentToggle = $("#node-config-input-isParent");
+            let node = this
+            let isParentToggle = $('#node-config-input-isParent')
 
             if (node.isParent === false) {
-                isParentToggle.val("false");
+                isParentToggle.val('false')
             } else {
-                isParentToggle.val("true");
+                isParentToggle.val('true')
             }
 
-            let isLinkedDiv = $("#isLinked");
-            let isParentDiv = $("#isParent");
+            let isLinkedDiv = $('#isLinked')
+            let isParentDiv = $('#isParent')
 
-            isParentToggle.change(function(){
-                if(isParentToggle.val() === "true") {
-                    isLinkedDiv.fadeOut("fast");
-                    isParentDiv.fadeIn("fast");
-                } else {
-                    isParentDiv.fadeOut("fast");
-                    isLinkedDiv.fadeIn("fast");
-                }
-            }).change();
+            isParentToggle
+                .change(function() {
+                    if (isParentToggle.val() === 'true') {
+                        isLinkedDiv.fadeOut('fast')
+                        isParentDiv.fadeIn('fast')
+                    } else {
+                        isParentDiv.fadeOut('fast')
+                        isLinkedDiv.fadeIn('fast')
+                    }
+                })
+                .change()
 
-            const selectServiceName = $("#node-input-serviceName");
+            const selectServiceName = $('#node-input-serviceName')
             for (let key in serviceTypes) {
-                if (!serviceTypes.hasOwnProperty(key)) continue;
+                if (!serviceTypes.hasOwnProperty(key)) continue
 
                 selectServiceName.append(
-                    $("<option></option>")
+                    $('<option></option>')
                         .val(key)
                         .text(key)
-                );
+                )
             }
 
-            let cameraConfiguration = $("#camera-configuration");
+            let cameraConfiguration = $('#camera-configuration')
 
             selectServiceName
-                .find("option")
+                .find('option')
                 .filter(function() {
-                    return $(this).val() === node.serviceName;
+                    return $(this).val() === node.serviceName
                 })
-                .attr("selected", true);
+                .attr('selected', true)
 
-            selectServiceName.change(function(){
-                if(this.value === "CameraControl") {
-                    cameraConfiguration.fadeIn("fast");
-                } else {
-                    cameraConfiguration.fadeOut("fast");
-                }
-            }).change();
+            selectServiceName
+                .change(function() {
+                    if (this.value === 'CameraControl') {
+                        cameraConfiguration.fadeIn('fast')
+                    } else {
+                        cameraConfiguration.fadeOut('fast')
+                    }
+                })
+                .change()
 
             node.editor = RED.editor.createEditor({
-                id: "node-input-characteristicProperties-editor",
-                mode: "ace/mode/json",
-                value: $("#node-input-characteristicProperties").val()
-            });
+                id: 'node-input-characteristicProperties-editor',
+                mode: 'ace/mode/json',
+                value: $('#node-input-characteristicProperties').val(),
+            })
 
-            const selectParentService = $("#node-input-parentService");
+            const selectParentService = $('#node-input-parentService')
 
-            const candidateNodes = RED.nodes.filterNodes({type: "homekit-service"});
-            const inSubflow = !!RED.nodes.subflow(node.z);
+            const candidateNodes = RED.nodes.filterNodes({
+                type: 'homekit-service',
+            })
+            const inSubflow = !!RED.nodes.subflow(node.z)
             candidateNodes.forEach(function(n) {
                 if (!n.name || n.name.length < 1 || !n.isParent) {
-                    return;
+                    return
                 }
 
                 if (n.id === node.id) {
-                    return;
+                    return
                 }
 
                 if (inSubflow) {
                     if (n.z !== node.z) {
-                        return;
+                        return
                     }
                 } else {
                     if (!!RED.nodes.subflow(n.z)) {
-                        return;
+                        return
                     }
                 }
 
-                let sublabel;
-                let tab = RED.nodes.workspace(n.z);
+                let sublabel
+                let tab = RED.nodes.workspace(n.z)
                 if (tab) {
-                    sublabel = tab.label || tab.id;
+                    sublabel = tab.label || tab.id
                 } else {
-                    tab = RED.nodes.subflow(n.z);
-                    sublabel = "subflow : " + tab.name;
+                    tab = RED.nodes.subflow(n.z)
+                    sublabel = 'subflow : ' + tab.name
                 }
 
-                const value = n.id;
-                const text = n.name + " (" + sublabel + ")";
+                const value = n.id
+                const text = n.name + ' (' + sublabel + ')'
 
                 selectParentService.append(
-                    $("<option></option>")
+                    $('<option></option>')
                         .val(value)
                         .text(text)
-                );
-            });
+                )
+            })
 
             selectParentService
-                .find("option")
+                .find('option')
                 .filter(function() {
-                    return $(this).val() === node.parentService;
+                    return $(this).val() === node.parentService
                 })
-                .attr("selected", true);
-            selectParentService.change();
+                .attr('selected', true)
+            selectParentService.change()
         },
         oneditsave: function() {
-            let node = this;
+            let node = this
 
-            node.isParent = $("#node-config-input-isParent").val() === "true";
+            node.isParent = $('#node-config-input-isParent').val() === 'true'
 
             if (!node.isParent) {
-                node.parentService = $("#node-input-parentService option:selected").val();
+                node.parentService = $(
+                    '#node-input-parentService option:selected'
+                ).val()
             }
 
-            node.serviceName = $("#node-input-serviceName option:selected").val();
-            $("#node-input-characteristicProperties").val(node.editor.getValue());
-            node.editor.destroy();
-            delete node.editor;
+            node.serviceName = $(
+                '#node-input-serviceName option:selected'
+            ).val()
+            $('#node-input-characteristicProperties').val(
+                node.editor.getValue()
+            )
+            node.editor.destroy()
+            delete node.editor
         },
         oneditcancel: function() {
-            this.editor.destroy();
-            delete this.editor;
+            this.editor.destroy()
+            delete this.editor
         },
         oneditresize: function(size) {
-            const rows = $("#dialog-form>div:not(.node-text-editor-row)");
-            let height = $("#dialog-form").height();
+            const rows = $('#dialog-form>div:not(.node-text-editor-row)')
+            let height = $('#dialog-form').height()
             for (let i = 0; i < rows.size(); i++) {
-                height -= $(rows[i]).outerHeight(true);
+                height -= $(rows[i]).outerHeight(true)
             }
-            const editorRow = $("#dialog-form>div.node-text-editor-row");
+            const editorRow = $('#dialog-form>div.node-text-editor-row')
             height -=
-                parseInt(editorRow.css("marginTop")) +
-                parseInt(editorRow.css("marginBottom"));
-            $(".node-text-editor").css("height", height + "px");
-            this.editor.resize();
-        }
-    });
+                parseInt(editorRow.css('marginTop')) +
+                parseInt(editorRow.css('marginBottom'))
+            $('.node-text-editor').css('height', height + 'px')
+            this.editor.resize()
+        },
+    })
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType("homekit-bridge", {
-        category: "config",
+    RED.nodes.registerType('homekit-bridge', {
+        category: 'config',
         defaults: {
             bridgeName: {
-                value: "",
-                required: true
+                value: '',
+                required: true,
             },
             pinCode: {
-                value: "111-11-111",
+                value: '111-11-111',
                 required: true,
-                validate: RED.validators.regex(/[0-9]{3}-[0-9]{2}-[0-9]{3}/)
+                validate: RED.validators.regex(/[0-9]{3}-[0-9]{2}-[0-9]{3}/),
             },
             port: {
                 required: false,
-                validate: function (value) {
-                    if (value) return RED.validators.port(value);
-                    else return true;
-                }
+                validate: function(value) {
+                    if (value) return RED.validators.port(value)
+                    else return true
+                },
             },
             allowInsecureRequest: {
                 value: false,
-                required: true
+                required: true,
             },
             manufacturer: {
-                value: "Default Manufacturer",
-                required: true
+                value: 'Default Manufacturer',
+                required: true,
             },
             model: {
-                value: "Default Model",
-                required: true
+                value: 'Default Model',
+                required: true,
             },
             serialNo: {
-                value: "Default Serial Number",
-                required: true
+                value: 'Default Serial Number',
+                required: true,
             },
             customMdnsConfig: {
                 value: false,
-                required: false
+                required: false,
             },
             mdnsMulticast: {
                 value: true,
-                required: false
+                required: false,
             },
             mdnsInterface: {
-                required: false
+                required: false,
             },
             mdnsPort: {
                 required: false,
-                validate: function (value) {
-                    if (value) return RED.validators.port(value);
-                    else return true;
-                }
+                validate: function(value) {
+                    if (value) return RED.validators.port(value)
+                    else return true
+                },
             },
             mdnsIp: {
-                required: false
+                required: false,
             },
             mdnsTtl: {
-                required: false
+                required: false,
             },
             mdnsLoopback: {
                 value: true,
-                required: false
+                required: false,
             },
             mdnsReuseAddr: {
                 value: true,
-                required: false
+                required: false,
             },
             allowMessagePassthrough: {
                 value: true,
-                required: true
-            }
+                required: true,
+            },
         },
         label: function() {
-            return this.bridgeName || "Bridge";
+            return this.bridgeName || 'Bridge'
         },
         labelStyle: function() {
-            return this.bridgeName ? "node_label_italic" : "";
+            return this.bridgeName ? 'node_label_italic' : ''
         },
-        oneditprepare: function () {
-            if (typeof this.allowMessagePassthrough == "undefined") {
+        oneditprepare: function() {
+            if (typeof this.allowMessagePassthrough == 'undefined') {
                 this.allowMessagePassthrough = true
-                $("#node-config-input-allowMessagePassthrough").prop('checked', true);
+                $('#node-config-input-allowMessagePassthrough').prop(
+                    'checked',
+                    true
+                )
             }
 
-            let customMdnsConfigCheckbox = $("#node-config-input-customMdnsConfig");
-            let mdnsConfiguration = $("#mdns-configuration");
+            let customMdnsConfigCheckbox = $(
+                '#node-config-input-customMdnsConfig'
+            )
+            let mdnsConfiguration = $('#mdns-configuration')
 
-            customMdnsConfigCheckbox.change(function(){
-                if(this.checked) {
-                    mdnsConfiguration.fadeIn("fast");
-                } else {
-                    mdnsConfiguration.fadeOut("fast");
-                }
-            }).change();
-        }
-    });
+            customMdnsConfigCheckbox
+                .change(function() {
+                    if (this.checked) {
+                        mdnsConfiguration.fadeIn('fast')
+                    } else {
+                        mdnsConfiguration.fadeOut('fast')
+                    }
+                })
+                .change()
+        },
+    })
 </script>

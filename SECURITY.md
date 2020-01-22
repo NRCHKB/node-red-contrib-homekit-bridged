@@ -17,7 +17,7 @@ If vulnerability is a serious risk then please consider contacting us directly a
 
 ## Reporting a Vulnerability
 
-Contact Shaq#6198 at Discord 
+Contact Shaq#6198 at Discord
 
 or find us on
 
@@ -35,15 +35,16 @@ To use node-red safely you should secure it properly with encryption and passwor
 
 The following Setup Codes must not be used due to their trivial, insecure nature.
 In future release (possibly 1.X.Y) they will be forbidden programmatically.
-- 000-00-000
-- 111-11-111
-- 222-22-222
-- 333-33-333
-- 444-44-444
-- 555-55-555
-- 666-66-666
-- 777-77-777
-- 888-88-888
-- 999-99-999
-- 123-45-678
-- 876-54-321
+
+-   000-00-000
+-   111-11-111
+-   222-22-222
+-   333-33-333
+-   444-44-444
+-   555-55-555
+-   666-66-666
+-   777-77-777
+-   888-88-888
+-   999-99-999
+-   123-45-678
+-   876-54-321
