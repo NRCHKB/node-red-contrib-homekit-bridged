@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   After Service selection in node configuration Category will be automatically set to default for Service
 -   Interface Name for Camera Service configuration
 -   Support for new TV Remote services
+-   Now first output is for onChange, second for onSet and third for camera snapshot. [#200](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/200)
 
 ### Changed
 

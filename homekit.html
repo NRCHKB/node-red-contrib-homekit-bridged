@@ -512,10 +512,14 @@
         outputs: 2,
         outputLabels: function(index) {
             if (index === 0) {
-                return 'default'
+                return 'onChange'
             }
 
             if (index === 1) {
+                return 'onSet'
+            }
+
+            if (index === 2) {
                 return 'camera snapshot'
             }
 
@@ -578,8 +582,10 @@
                 .change(function() {
                     if (this.value === 'CameraControl') {
                         cameraConfiguration.fadeIn('fast')
+                        node.outputs = 3
                     } else {
                         cameraConfiguration.fadeOut('fast')
+                        node.outputs = 2
                     }
                 })
                 .change()
