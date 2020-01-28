@@ -1,6 +1,6 @@
 {
     "name": "node-red-contrib-homekit-bridged",
-    "version": "1.0.0-dev.7",
+    "version": "1.0.0-dev.8",
     "description": "Node-RED nodes to simulate Apple HomeKit devices.",
     "main": "homekit.js",
     "scripts": {
@@ -37,10 +37,10 @@
     },
     "devDependencies": {
         "eslint": "^6.8.0",
-        "eslint-config-prettier": "^6.9.0",
+        "eslint-config-prettier": "^6.10.0",
         "eslint-plugin-prettier": "^3.1.2",
         "husky": "^4.2.1",
-        "mocha": "^7.0.0",
+        "mocha": "^7.0.1",
         "node-red": "^1.0.3",
         "node-red-node-test-helper": "^0.2.3",
         "prettier": "^1.19.1"
