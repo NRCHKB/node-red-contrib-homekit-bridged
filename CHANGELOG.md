@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Corrections regarding issue [#12](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/12) so that changes can be deployed without restarting node-red
 -   Automatically creating a new service and replacing the old one if the service type changed
 -   Automatically replacing an accessory with a new one if the accessory information changes (e.g. Name, Manufacturer, ...)
+-   Video Filter value in Camera Control is now optional [#194](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/194) (can be empty, before it was generated if was empty)
+-   Removed updateReachability as it is deprecated (and doesn't make a difference)
 
 ### Added
 
