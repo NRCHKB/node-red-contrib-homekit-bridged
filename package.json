@@ -1,10 +1,12 @@
 {
     "name": "node-red-contrib-homekit-bridged",
-    "version": "0.8.0",
+    "version": "1.0.0",
     "description": "Node-RED nodes to simulate Apple HomeKit devices.",
     "main": "homekit.js",
     "scripts": {
-        "test": "mocha --exit"
+        "test": "mocha --exit",
+        "fix": "eslint --fix \"**/*.js\"",
+        "lint": "eslint \"**/*.js\""
     },
     "repository": {
         "type": "git",
@@ -30,21 +32,78 @@
     },
     "homepage": "https://github.com/NRCHKB/node-red-contrib-homekit-bridged#readme",
     "dependencies": {
-        "child_process": "1.0.2",
-        "debug": "4.1.1",
-        "fs": "0.0.2",
-        "hap-nodejs": "0.5.0",
-        "ip": "1.1.5",
-        "net": "1.0.2",
-        "os": "0.1.1"
+        "debug": "^4.1.1",
+        "hap-nodejs": "^0.5.6"
     },
     "devDependencies": {
-        "assert": "2.0.0",
-        "eslint": "^6.5.1",
-        "mocha": "6.2.1",
-        "node-red": "1.0.1",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "husky": "^4.2.3",
+        "mocha": "^7.0.1",
+        "node-red": "^1.0.3",
         "node-red-node-test-helper": "^0.2.3",
-        "prettier": "^1.18.2",
-        "should": "^13.2.3"
+        "prettier": "^1.19.1"
+    },
+    "eslintConfig": {
+        "env": {
+            "browser": true,
+            "commonjs": true,
+            "es6": true,
+            "node": true
+        },
+        "extends": [
+            "prettier",
+            "eslint:recommended"
+        ],
+        "plugins": [
+            "prettier"
+        ],
+        "globals": {
+            "Atomics": "readonly",
+            "SharedArrayBuffer": "readonly"
+        },
+        "parserOptions": {
+            "ecmaVersion": 2018
+        },
+        "rules": {
+            "prettier/prettier": "off",
+            "indent": [
+                "error",
+                4
+            ],
+            "linebreak-style": [
+                "error",
+                "unix"
+            ],
+            "quotes": [
+                "error",
+                "single"
+            ],
+            "semi": [
+                "error",
+                "never"
+            ],
+            "no-prototype-builtins": "off"
+        }
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "useTabs": false,
+        "semi": false,
+        "singleQuote": true,
+        "trailingComma": "es5"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged && yarn lint",
+            "pre-push": "yarn lint"
+        },
+        "lint-staged": {
+            "*.js": [
+                "eslint --fix",
+                "git add"
+            ]
+        }
     }
 }

@@ -1,13 +1,10 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: "[FEATURE]"
+title: '[FEATURE] *short_feature_name*'
 labels: 'enhancement :+1:'
-assignees: ''
-
----
-
-**Is your feature request related to a problem? Please describe.**
+assignees: Shaquu
+---**Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
 **Describe the solution you'd like**
