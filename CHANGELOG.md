@@ -5,11 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2020.xy.zv
+## [1.0.0] - 2020.02.23
+
+Lost backward compatibility. In order to make it work read this [notice](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/163#issuecomment-590108567).
 
 ### Fixed
 
--   Node id macify algorithm changed
+-   Node id macify algorithm changed [#170](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/170)
 -   Corrections regarding issue [#12](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/12) so that changes can be deployed without restarting node-red
 -   Automatically creating a new service and replacing the old one if the service type changed
 -   Automatically replacing an accessory with a new one if the accessory information changes (e.g. Name, Manufacturer, ...)
@@ -22,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Interface Name for Camera Service configuration
 -   Support for new TV Remote services
 -   Now first output is for onChange, second for onSet and third for camera snapshot. [#200](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/200)
+-   Sponsor Button on repository page
 
 ### Changed
 
