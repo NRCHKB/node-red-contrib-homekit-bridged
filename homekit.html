@@ -204,7 +204,7 @@
               <li><strong>Horizontal Flip</strong>: Flips the stream horizontally, default <em>false</em>.</li>
               <li><strong>Map Video</strong>: Select the stream used for video, default <em>0:0</em>.</li>
               <li><strong>Map Audio</strong>: Select the stream used for audio, default <em>0:1</em>.</li>
-              <li><strong>Video Filter</strong>: Allows a custom video filter to be passed to FFmpeg via -vf, defaults to <em>scale=1280:720</em>.</li>
+              <li><strong>Video Filter</strong>: Allows a custom video filter to be passed to FFmpeg via -vf, defaults to <em>scale=1280:720</em> but is optional.</li>
               <li><strong>Additional Command Line</strong>: Allows additional of extra command line options to FFmpeg, default <em>-tune zerolatency</em>.</li>
               <li><strong>Debug</strong>: Show the output of ffmpeg in the log, default <em>false</em>.</li>
               <li><strong>Snapshot output</strong>: Choose how to output camera snapshot</li>
@@ -474,8 +474,7 @@
                 validate: cameraConfigRequiredField,
             },
             cameraConfigVideoFilter: {
-                value: 'scale=1280:720',
-                validate: cameraConfigRequiredField,
+                value: 'scale=1280:720'
             },
             cameraConfigAdditionalCommandLine: {
                 value: '-tune zerolatency',

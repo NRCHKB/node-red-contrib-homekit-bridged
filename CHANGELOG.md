@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2020.03.01
+
+### Fixed
+-   Video Filter value in Camera Control is now optional in node-red editor too [#214](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/214)
+
+## [1.0.2] - 2020.03.01
+
+### Added
+-   Warning about lost compatibility on README page.
+
 ## [1.0.0] - 2020.02.23
 
 Lost backward compatibility. In order to make it work read this [notice](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/163#issuecomment-590108567).
