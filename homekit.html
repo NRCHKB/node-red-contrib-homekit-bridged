@@ -205,7 +205,7 @@
               <li><strong>Map Video</strong>: Select the stream used for video, default <em>0:0</em>.</li>
               <li><strong>Map Audio</strong>: Select the stream used for audio, default <em>0:1</em>.</li>
               <li><strong>Video Filter</strong>: Allows a custom video filter to be passed to FFmpeg via -vf, defaults to <em>scale=1280:720</em> but is optional.</li>
-              <li><strong>Additional Command Line</strong>: Allows additional of extra command line options to FFmpeg, default <em>-tune zerolatency</em>.</li>
+              <li><strong>Additional Command Line</strong>: Allows additional of extra command line options to FFmpeg, default <em>-tune zerolatency</em> but is optional.</li>
               <li><strong>Debug</strong>: Show the output of ffmpeg in the log, default <em>false</em>.</li>
               <li><strong>Snapshot output</strong>: Choose how to output camera snapshot</li>
               <ul>
@@ -379,11 +379,19 @@
             bridge: {
                 value: '',
                 type: 'homekit-bridge',
-                required: false,
+                validate: function(value) {
+                    if (this.isParent == true) {
+                        return value.length > 0
+                    } else return true
+                }
             },
             parentService: {
                 value: '',
-                required: false,
+                validate: function(value) {
+                    if (this.isParent == false) {
+                        return value.length > 0
+                    } else return true
+                }
             },
             name: {
                 value: '',
@@ -478,7 +486,6 @@
             },
             cameraConfigAdditionalCommandLine: {
                 value: '-tune zerolatency',
-                validate: cameraConfigRequiredField,
             },
             cameraConfigDebug: {
                 value: false,
