@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [x.y.z]
+
+### Added
+-   Firmware Revision configuration option [#211](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/211)
+
+### Fixed
+-   Error status is not passed to callback when "No response" was triggered [#227](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/227)
+
+### Changed
+-   Updated hap-nodejs to 0.5.9
+-   Updated dependencies to latest versions
+
 ## [1.0.4] - 2020.03.03
 
 ### Fixed
