@@ -8,7 +8,7 @@
 
 ## Intro
 
-node-red-contrib-homekit-bridged (or NRCHKB) is a Node-RED nodes pack to simulate Apple HomeKit devices. The goal is to emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README for the basics then head over to the [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for details and examples. If you're still stuck please open an issue, we are glad to help.
+node-red-contrib-homekit-bridged (aka NRCHKB) is a Node-RED nodes pack to simulate Apple HomeKit devices. The goal is to emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README for the basics then head over to the [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for details and examples. If you're still stuck please open an issue, we are glad to help.
 
 These nodes allow the creation of fully customizable accessories for use in devices supporting [HomeKit](https://support.apple.com/en-gb/HT204893) which are iPhone, iPad, iPod touch, Apple Watch or Mac. If you can get it in Node-RED, you can get it in HomeKit. The goal of the project is to create a platform where official HomeKit hardware can be emulated as closely as possible through node red.
 
@@ -19,11 +19,11 @@ Recommended version of Node.js is 10.x (but 8.x is allowed) and for Node-RED you
 
 ### Easy Install
 
-If you have Node-RED already installed the recommended install method is to use the editor. To do this, select `Manage pallette` from the Node-RED menu (top right).
+If you have Node-RED already installed the recommended install method is to use the editor. To do this, select `Manage palette` from the Node-RED menu (top right).
 
 ![enter image description here](https://raw.githubusercontent.com/NRCHKB/nrchkb-static/master/img/getting-started/nrchkb_install_0.png)
 
-Then select `Install` tab in the pallette. Search for and install this node (`node-red-contrib-homekit-bridged`).
+Then select `Install` tab in the palette. Search for and install this node (`node-red-contrib-homekit-bridged`).
 
 ![enter image description here](https://raw.githubusercontent.com/NRCHKB/nrchkb-static/master/img/getting-started/nrchkb_install_1.png)
 
