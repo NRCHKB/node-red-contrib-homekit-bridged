@@ -36,6 +36,14 @@
         	<input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision">
     	</div>
         <div class="form-row">
+        	<label for="node-input-hardwareRev"><i class="fa fa-wrench"></i> Hardware Revision</label>
+        	<input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision">
+    	</div>
+        <div class="form-row">
+        	<label for="node-input-sofwareRev"><i class="fa fa-wrench"></i> Software Revision</label>
+        	<input type="text" id="node-input-sofwareRev" placeholder="Software Revision">
+    	</div>
+        <div class="form-row">
             <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
             <input type="text" id="node-input-model" placeholder="Model">
         </div>
@@ -189,6 +197,8 @@
               value for the message to be accepted. If <em>Filter on Topic</em> is selected and no <em>Topic</em> is set on the node, then <code>msg.topic</code> must match the nodes <em>Name</em></li>
           <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
           <li><strong>Firmware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>2.9.6</em>. Other types of strings are ignored and won't be displayed.</li>
+          <li><strong>Hardware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>2.9.6</em>. Other types of strings are ignored and won't be displayed.</li>
+          <li><strong>Software Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>2.9.6</em>. Other types of strings are ignored and won't be displayed.</li>
           <li><strong>Service</strong>: Choose the type of Service from the list.</li>
           <li><strong>Name</strong>: <em>optional</em></li>
           <li><strong>Camera Configuration</strong>: Additional configuration for CameraControl service.</li>
@@ -428,8 +438,16 @@
                 required: true,
             },
             firmwareRev: {
-                value: 'Default Firmware Revision',
-                required: true,
+                value: '1.0.0',
+                required: false,
+            },
+            hardwareRev: {
+                value: '1.0.0',
+                required: false,
+            },
+            softwareRev: {
+                value: '1.0.0',
+                required: false,
             },
             cameraConfigVideoProcessor: {
                 value: 'ffmpeg',
