@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Error status is not passed to callback when "No response" was triggered [#227](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/227) also discussed in [#185](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/185)
 
 ### Changed
--   Updated hap-nodejs to 0.6.4
+-   Updated hap-nodejs to 0.7.3
 -   Updated dependencies to latest versions
 -   Moved lint-staged config to main level and added minimum nodejs version
 
