@@ -21,7 +21,7 @@ Contact Shaq#6198 at Discord
 
 or find us on
 
-[![Discord](https://img.shields.io/discord/586065987267330068.svg?label=Discord)](https://discord.gg/H9CWzXv) [![Slack](https://img.shields.io/badge/Slack-temporary%20invite-green.svg)](https://join.slack.com/t/nrchkb/shared_invite/enQtNjU5MjkyMDE2NzA4LWE4M2EwYWNiNDA2MWNhZDQ0NjIyZjI1YTYwMGUyZDgzMzVlZDg5ODk2NDc2MDRiNTVkMTE5YWI4YTdmMDU1NzA)
+[![Discord](https://img.shields.io/discord/586065987267330068.svg?label=Discord)](https://discord.gg/amwV5tq)
 
 ## Security concerns regarding usage of NRCHKB
 

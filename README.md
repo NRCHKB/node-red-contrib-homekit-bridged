@@ -2,43 +2,43 @@
 
 [![Build Status](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged.svg?branch=master)](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged) [![codebeat badge](https://codebeat.co/badges/3bbdea35-c2ab-4273-b5d7-de6c4c9c1971)](https://codebeat.co/projects/github-com-nrchkb-node-red-contrib-homekit-bridged-master) [![Known Vulnerabilities](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged/badge.svg?targetFile=package.json)](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged?targetFile=package.json)
 
+Get support at [![Discord](https://img.shields.io/discord/586065987267330068.svg?label=Discord)](https://discord.gg/amwV5tq)
+
 # ⚠️ WARNING ⚠️ 
 ### Version 1.0.X upgrade is a breaking change. Please review the [release notes](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/releases/tag/v1.0.1) thoroughly before updating!
 
 ## Intro
 
-node-red-contrib-homekit-bridged is a Node-RED nodes pack to simulate Apple HomeKit devices. The goal is to emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README for the basics then head over to the [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for details and examples. If you're still stuck please open an issue, we are glad to help.
+node-red-contrib-homekit-bridged (aka NRCHKB) is a Node-RED nodes pack to simulate Apple HomeKit devices. The goal is to emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README for the basics then head over to the [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for details and examples. If you're still stuck please open an issue, we are glad to help.
 
-These nodes allow the creation of fully customizable accessories for use in Apple's Home.app on iOS, Watch OS, and Mac OS. If you can get it in Node-RED, you can get it in HomeKit. The goal of the project is to create a platform where official HomeKit hardware can be emulated as closely as possible through node red.
+These nodes allow the creation of fully customizable accessories for use in devices supporting [HomeKit](https://support.apple.com/en-gb/HT204893) which are iPhone, iPad, iPod touch, Apple Watch or Mac. If you can get it in Node-RED, you can get it in HomeKit. The goal of the project is to create a platform where official HomeKit hardware can be emulated as closely as possible through node red.
 
 ## Install
 
+In favour to use NRCHKB which is Node-RED node (plugin) you need [Node.js](https://nodejs.org/en/) and [Node-RED](https://nodered.org/) itself installed.
+The recommended version of Node.js is 10.x (or higher) and for Node-RED you should use the latest version. For instructions how to install Node-RED go [here](https://nodered.org/docs/getting-started/).
+
 ### Easy Install
 
-If you have Node-RED already installed the recommended install method is to use the editor. To do this, select `Manage Pallette` from the Node-RED menu (top right), and then select `install` tab in the pallette. Search for and install this node (`node-red-contrib-homekit-bridged`).
+If you have Node-RED already installed the recommended install method is to use the editor. To do this, select `Manage palette` from the Node-RED menu (top right).
+Then select `Install` tab in the palette. Search for and install this node (`node-red-contrib-homekit-bridged`).
 
 ### Using NPM
 
-If you have not yet installed Node-RED then run following command or go to [Node-RED Installation Guide](https://nodered.org/docs/getting-started/installation).
-
-        npm install -g --unsafe-perm node-red
-
 Next, to install node-red-contrib-homekit-bridged node run the following command in your Node-RED user directory - typically `~/.node-red`
 
-        npm install node-red-contrib-homekit-bridged
+    npm i node-red-contrib-homekit-bridged
 
 ### Docker
 
 You can also pull a [docker image](https://hub.docker.com/r/raymondmm/node-red-homekit/) containing everything needed to get started, thanks to [Raymond Mouthaan](https://github.com/RaymondMouthaan).
 
-Please see instructions on Docker Hub.
-
 ## Nodes
 
 ### Bridge
 
-The Bridge node is a configuration node (means it will be not visible in a flow like other nodes) which will be added from within the service node. It creates the _bridge_ that iOS sees, i.e. the device that is added to the Apple Home app by the user.
-All accessories behind a bridge noded are then automatically added by iOS.
+The Bridge node is a configuration node (means it will be not visible in a flow like other nodes) which will be added from within the service node. It creates the _bridge_ that HomeKit application sees, i.e. the device that is added to the Apple Home app by the user.
+All accessories behind a bridge node will be added automatically.
 
 <details><summary>Configuration fields:</summary>
 <p>
@@ -57,7 +57,7 @@ All accessories behind a bridge noded are then automatically added by iOS.
     -   **TTL**: Set the multicast ttl. Optional.
     -   **Loopback**: Receive your own packets. Optional. Default true.
     -   **Reuse Address**: Set the reuseAddr option when creating the socket. Optional. Default true.
-        </details>
+</details>
 
 ### Service
 
@@ -101,7 +101,8 @@ Every service node can be _Parent_ or _Linked_. Each Parent service creates an i
         -   **Content**: file content will be send to output, _msg.payload.cameraSnapshot_ contains Buffer object {"type":"Buffer","data":[]}.
     -   **Interface Name**: Selects the IP address of a given network interface. The default is to select the first available, and that may not be the same IP address that ffmpeg will use. A mismatch will cause the iOS device to discard the video stream..
 -   **Characteristic Properties**: Customise the properties of characteristics. [Characteristics wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Characteristics)
-    </details>
+
+</details>
 
 ## Input Messages
 
@@ -116,69 +117,93 @@ Input messages can be used to update any _Characteristic_ that the selected _Ser
 }
 ```
 
-**Hint**: to find out what _Characteristics_ you can address, just send `{"foo":"bar"}` and watch the debug tab ;)
+**Hint**: to find out what _Characteristics_ you can address, just send `{"foo":"bar"}` and watch debug tab in node-red ;)
 
 ## Output Messages
 
 Output messages are in the same format as input messages. They are emitted from the node when it receives _Characteristics_ updates from a paired iOS device.
 
+Currently, there are two main and one mandatory output port for homekit-service in node-red.
+
+1. onChange, is fired when a value has been changed, this is the most recommended to use for most cases.
+2. onSet, is fired every time a value has been set (even to the same value as before), it is used to capture repeated input like Television pilot buttons.
+3. camera snapshot, is enabled only for CameraController Service and is used to retrieve camera snapshot data
+
 ## Supported Types
 
-The following is a list of _Services_ that are currently supported. Check for more details on [the wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Services). If you encounter problems with any of them please file an Issue.
+The following is a list of _Services_ that are currently supported. Check for more details on [the wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Services).
+<details><summary>Supported Services:</summary>
+<p>
 
--   AccessoryInformation
--   AirPurifier
--   AirQualitySensor
--   BatteryService
--   BridgeConfiguration
--   BridgingState
--   CameraControl
--   CameraRTPStreamManagement
--   CarbonDioxideSensor
--   CarbonMonoxideSensor
--   ContactSensor
--   Door
--   Doorbell
--   Fan
--   Fanv2
--   Faucet
--   FilterMaintenance
--   GarageDoorOpener
--   HeaterCooler
--   HumidifierDehumidifier
--   HumiditySensor
--   InputSource
--   IrrigationSystem
--   LeakSensor
--   LightSensor
--   Lightbulb
--   LockManagement
--   LockMechanism
--   Microphone
--   MotionSensor
--   OccupancySensor
--   Outlet
--   Pairing
--   ProtocolInformation
--   Relay
--   SecuritySystem
--   ServiceLabel
--   Slat
--   SmokeSensor
--   Speaker
--   StatefulProgrammableSwitch
--   StatelessProgrammableSwitch
--   Switch
--   Television
--   TelevisionSpeaker
--   TemperatureSensor
--   Thermostat
--   TimeInformation
--   TunneledBTLEAccessoryService
--   Valve
--   Window
--   WindowCovering
+ - AccessControl
+ - AccessoryInformation
+ - AirPurifier
+ - AirQualitySensor
+ - BatteryService
+ - CameraRTPStreamManagement
+ - CarbonDioxideSensor
+ - CarbonMonoxideSensor
+ - ContactSensor
+ - Door
+ - Doorbell
+ - Fan
+ - Fanv2
+ - FilterMaintenance
+ - Faucet
+ - GarageDoorOpener
+ - HeaterCooler
+ - HumidifierDehumidifier
+ - HumiditySensor
+ - IrrigationSystem
+ - LeakSensor
+ - LightSensor
+ - Lightbulb
+ - LockManagement
+ - LockMechanism
+ - Microphone
+ - MotionSensor
+ - OccupancySensor
+ - Outlet
+ - SecuritySystem
+ - ServiceLabel
+ - Slat
+ - SmokeSensor
+ - SmartSpeaker
+ - Speaker
+ - StatelessProgrammableSwitch
+ - Switch
+ - TemperatureSensor
+ - Thermostat
+ - Valve
+ - Window
+ - WindowCovering
+ - CameraOperatingMode
+ - CameraEventRecordingManagement
+ - WiFiRouter
+ - WiFiSatellite
+ - PowerManagement
+ - TransferTransportManagement
+ - CameraControl
+ - StatefulProgrammableSwitch
+ - BridgeConfiguration
+ - BridgingState
+ - Pairing
+ - ProtocolInformation
+ - Relay
+ - TimeInformation
+ - TunneledBTLEAccessoryService
+ - Television
+ - InputSource
+ - TelevisionSpeaker
+ - TargetControlManagement
+ - TargetControl
+ - AudioStreamManagement
+ - Siri
+ - DataStreamTransportManagement
+</details>
 
+If you encounter problems with any of them please [create new Issue](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/new/choose).
+ 
 ## Context
 
 Context info can be provided as part of the input message and will be available in the output message as `hap.context`.
@@ -206,7 +231,7 @@ You can set accessory "No Response" status by sending "NO_RESPONSE" as a value f
 
 After "No Response" status was triggered, the accessory is marked accordingly when you try to control it or reopen Home.app.
 Any subsequent update of any characteristic value will reset this status.
-However the NO_RESPONSE status won't be visible until you exit and reopen the app. This is how the NO_RESPONSE status works in HomeKit and this behaviour can't be changed. Subsequent updates after NO_RESPONSE may also need an app restart to pick up the new state
+However, the NO_RESPONSE status won't be visible until you exit and reopen the app. This is how the NO_RESPONSE status works in HomeKit and this behaviour can't be changed. Subsequent updates after NO_RESPONSE may also need an app restart to pick up the new state
 
 ## Topic
 
@@ -229,7 +254,7 @@ Our [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki)
 #### How can I generate Debug logs?
 
 Stop your node-red instance and start it again using the following command:
-`DEBUG=NRCHKB,Accessory,HAPServer,EventedHTTPServer node-red`
+`DEBUG=NRCHKB*,Accessory,HAPServer,EventedHTTPServer node-red`
 
 This should output detailed information regarding everything in the homekit context.
 
@@ -253,16 +278,14 @@ This will filter out all messages with their payload property hap.context not se
 
 #### Big thanks to [all who have contributed to the project](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/graphs/contributors).
 
-[Shaq](https://github.com/Shaquu) - leading the current efforts to fix bugs and add features
+- [Shaquu](https://github.com/Shaquu) - leading the current efforts to fix bugs and add features
+- [crxporter](https://github.com/crxporter) - a lot of work on the documentation and new features design
+- [Oliver Rahner](https://github.com/oliverrahner) - reworked the code to add a bridged mode - [read his story](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Credits#oliver-rahner-explains-his-work)
+- [Marius Schmeding](https://github.com/mschm/node-red-contrib-homekit) - original implementation of HAP-NodeJS into Node-RED
 
-[crxporter](https://github.com/crxporter) - a lot of work on documentation and new features design
-
-[Oliver Rahner](https://github.com/oliverrahner) - reworked the code to add bridged mode - [read his story](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Credits#oliver-rahner-explains-his-work)
-
-[Marius Schmeding](https://github.com/mschm/node-red-contrib-homekit) - original implementation of HAP-NodeJS into Node-RED
-
-[HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) - NodeJS implementation of Apple's HomeKit Accessory Server
+Also, thanks to creators of [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) - NodeJS implementation of Apple's HomeKit Accessory Server
 
 ## Contact us
 
-[mail to Shaquu](mailto:shaquu.github@gmail.com?subject=[NRCHKB])
+ - [Our Discord server](https://discord.gg/amwV5tq)
+ - [Mail directly to Shaquu](mailto:shaquu.github@gmail.com?subject=[NRCHKB])
