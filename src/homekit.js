@@ -1,9 +1,9 @@
 module.exports = function(RED) {
     const debug = require('debug')('NRCHKB')
     const HAPStorage = require('hap-nodejs').HAPStorage
-    const API = require('./lib/api.js')(RED)
-    const HAPBridgeNode = require('./lib/HAPBridgeNode.js')(RED)
-    const HAPServiceNode = require('./lib/HAPServiceNode.js')(RED)
+    const API = require('./lib/api')(RED)
+    const HAPBridgeNode = require('./lib/HAPBridgeNode')(RED)
+    const HAPServiceNode = require('./lib/HAPServiceNode')(RED)
 
     // Initialize our storage system
     if (RED.settings.available()) {

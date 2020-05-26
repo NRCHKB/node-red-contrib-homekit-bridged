@@ -365,16 +365,10 @@
 
 <script type="text/javascript">
     let serviceTypes
-    let accessoryTypes
 
     //HomeKitServiceTypes
     $.getJSON('homekit/service/types', function(data) {
         serviceTypes = data
-    })
-
-    //HomeKitAccessoryTypes
-    $.getJSON('homekit/accessory/types', function(data) {
-        accessoryTypes = data
     })
 
     const cameraConfigRequiredField = function(value) {
