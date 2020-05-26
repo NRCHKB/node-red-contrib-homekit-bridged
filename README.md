@@ -123,7 +123,7 @@ Input messages can be used to update any _Characteristic_ that the selected _Ser
 
 Output messages are in the same format as input messages. They are emitted from the node when it receives _Characteristics_ updates from a paired iOS device.
 
-Currently, there are two main and one mandatory output port for homekit-service in node-red.
+Currently, there are two main and one conditional output port for homekit-service in node-red.
 
 1. onChange, is fired when a value has been changed, this is the most recommended to use for most cases.
 2. onSet, is fired every time a value has been set (even to the same value as before), it is used to capture repeated input like Television pilot buttons.
