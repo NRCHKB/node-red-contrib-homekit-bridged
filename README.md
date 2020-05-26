@@ -25,7 +25,7 @@ Then select `Install` tab in the palette. Search for and install this node (`nod
 
 ### Using NPM
 
-Next, to install node-red-contrib-homekit-bridged node run the following command in your Node-RED user directory - typically `~/.node-red`
+To install NRCHKB node run the following command in your Node-RED user directory - typically `~/.node-red`
 
     npm i node-red-contrib-homekit-bridged
 
