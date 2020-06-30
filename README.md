@@ -1,12 +1,12 @@
 # node-red-contrib-homekit-bridged
 
-#### ⚠️ CAUTION ⚠️ 
-###### Version 1.0.X upgrade is a breaking change. Please review the [release notes](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/releases/tag/v1.0.1) thoroughly before updating!
-
-## You need help with your setup?
+## Do you need help with your setup?
 Join us on our Discord server (click on the logo below)!
 
 <a href="https://discord.gg/amwV5tq"><img alt="Discord" src="https://github.com/NRCHKB/nrchkb-static/raw/master/img/Discord-Logo%2BWordmark-Color.png" width="400"/></a>
+
+#### ⚠️ CAUTION ⚠️ 
+###### Upgrading from versions 0.X to 1.X is a breaking change, all devices will be reset in the Home app. Please review the [release notes](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/releases/tag/v1.0.1) thoroughly before updating!
 
 ## Intro
 
