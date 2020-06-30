@@ -1,11 +1,12 @@
 # node-red-contrib-homekit-bridged
 
-[![Build Status](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged.svg?branch=master)](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged) [![codebeat badge](https://codebeat.co/badges/3bbdea35-c2ab-4273-b5d7-de6c4c9c1971)](https://codebeat.co/projects/github-com-nrchkb-node-red-contrib-homekit-bridged-master) [![Known Vulnerabilities](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged/badge.svg?targetFile=package.json)](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged?targetFile=package.json)
+## Do you need help with your setup?
+Join us on our Discord server (click on the logo below)!
 
-Get support at [![Discord](https://img.shields.io/discord/586065987267330068.svg?label=Discord)](https://discord.gg/amwV5tq)
+<a href="https://discord.gg/amwV5tq"><img alt="Discord" src="https://github.com/NRCHKB/nrchkb-static/raw/master/img/Discord-Logo%2BWordmark-Color.png" width="400"/></a>
 
-# ⚠️ WARNING ⚠️ 
-### Version 1.0.X upgrade is a breaking change. Please review the [release notes](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/releases/tag/v1.0.1) thoroughly before updating!
+#### ⚠️ CAUTION ⚠️ 
+###### Upgrading from versions 0.X to 1.X is a breaking change, all devices will be reset in the Home app. Please review the [release notes](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/releases/tag/v1.0.1) thoroughly before updating!
 
 ## Intro
 
@@ -16,7 +17,10 @@ These nodes allow the creation of fully customizable accessories for use in devi
 ## Install
 
 In favour to use NRCHKB which is Node-RED node (plugin) you need [Node.js](https://nodejs.org/en/) and [Node-RED](https://nodered.org/) itself installed.
-The recommended version of Node.js is 10.x (or higher) and for Node-RED you should use the latest version. For instructions how to install Node-RED go [here](https://nodered.org/docs/getting-started/).
+The recommended version of Node.js is 10.x (or higher) and for Node-RED you should use the latest version. 
+
+For instructions how to install Node-RED go [here](https://nodered.org/docs/getting-started/). 
+Node.js will be installed together with Node-RED.
 
 ### Easy Install
 
@@ -203,6 +207,8 @@ The following is a list of _Services_ that are currently supported. Check for mo
 </details>
 
 If you encounter problems with any of them please [create new Issue](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/new/choose).
+
+If you need help with the setup itself then please write on our Discord.
  
 ## Context
 
@@ -287,5 +293,8 @@ Also, thanks to creators of [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) -
 
 ## Contact us
 
- - [Our Discord server](https://discord.gg/amwV5tq)
+ - [Our Discord server](https://discord.gg/amwV5tq) [![Discord](https://img.shields.io/discord/586065987267330068.svg?label=Discord)](https://discord.gg/amwV5tq)
  - [Mail directly to Shaquu](mailto:shaquu.github@gmail.com?subject=[NRCHKB])
+
+##
+[![Build Status](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged.svg?branch=master)](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged) [![codebeat badge](https://codebeat.co/badges/3bbdea35-c2ab-4273-b5d7-de6c4c9c1971)](https://codebeat.co/projects/github-com-nrchkb-node-red-contrib-homekit-bridged-master) [![Known Vulnerabilities](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged/badge.svg?targetFile=package.json)](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged?targetFile=package.json)
