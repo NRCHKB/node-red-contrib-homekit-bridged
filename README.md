@@ -5,6 +5,7 @@
 
 ## You need help with your setup?
 Join us on our Discord server (click on the logo below)!
+
 <a href="https://discord.gg/amwV5tq"><img alt="Discord" src="https://github.com/NRCHKB/nrchkb-static/raw/master/img/Discord-Logo%2BWordmark-Color.png" width="400"/></a>
 
 ## Intro
