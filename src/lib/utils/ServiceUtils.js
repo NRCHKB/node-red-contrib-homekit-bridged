@@ -5,14 +5,12 @@ module.exports = function(node) {
     const Characteristic = HapNodeJS.Characteristic
 
     const CameraSource = require('../cameraSource').Camera
+    
+    const NO_RESPONSE_MSG = 'NO_RESPONSE'
 
     const onCharacteristicGet = function(callback) {
-        if (node.accessory.reachable === true) {
-            //callback(null, characteristic.value)
-            callback(null, this.value)
-        } else {
-            callback('no response', null)
-        }
+        debug('onCharacteristicGet with status: ' + this.status + ' and value ' + this.value + ' and reachability is ' + node.accessory.reachable)
+        callback(node.accessory.reachable === true ? this.status : new Error(NO_RESPONSE_MSG), this.value)
     }
 
     const onValueChange = function(outputNumber, {oldValue, newValue, context}) {
@@ -53,7 +51,8 @@ module.exports = function(node) {
 
     // eslint-disable-next-line no-unused-vars
     const onCharacteristicSet = function(newValue, callback, context) {
-        callback(node.accessory.reachable === true ? null : 'no response')
+        debug('onCharacteristicSet with status: ' + this.status + ' and value ' + this.value + ' and reachability is ' + node.accessory.reachable)
+        callback(node.accessory.reachable === true ? null : new Error(NO_RESPONSE_MSG))
 
         onValueChange.call(this, 1, {
             undefined,
@@ -109,16 +108,11 @@ module.exports = function(node) {
                         node.supported.join(', ')
                 )
             } else {
+                node.accessory.updateReachability(msg.payload[key] !== NO_RESPONSE_MSG)
+                
                 let characteristic = node.service.getCharacteristic(
                     Characteristic[key]
                 )
-                const noResponseMsg = 'NO_RESPONSE'
-
-                if (msg.payload[key] === noResponseMsg) {
-                    characteristic.updateValue(new Error(noResponseMsg))
-                    
-                    return
-                }
 
                 if (context !== null) {
                     characteristic.setValue(

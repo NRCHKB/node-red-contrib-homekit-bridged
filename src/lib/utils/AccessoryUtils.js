@@ -12,6 +12,9 @@ module.exports = function(node) {
      *  manufacturer
      *  serialNo
      *  model
+     *  firmwareRev
+     *  hardwareRev
+     *  softwareRev
      */
     const getOrCreate = function(bridge, accessoryInformation, subtypeUUID) {
         let accessory = null
@@ -117,6 +120,35 @@ module.exports = function(node) {
                     Characteristic.Model,
                     accessoryInformation.model
                 )
+
+            const revisionRegex = /\d+\.\d+\.\d+/
+
+            if (accessoryInformation.firmwareRev && accessoryInformation.firmwareRev.match(revisionRegex)){
+                accessory
+                    .getService(Service.AccessoryInformation)
+                    .setCharacteristic(
+                        Characteristic.FirmwareRevision,
+                        accessoryInformation.firmwareRev
+                    )
+            }
+
+            if (accessoryInformation.hardwareRev && accessoryInformation.hardwareRev.match(revisionRegex)){
+                accessory
+                    .getService(Service.AccessoryInformation)
+                    .setCharacteristic(
+                        Characteristic.HardwareRevision,
+                        accessoryInformation.hardwareRev
+                    )
+            }
+
+            if (accessoryInformation.softwareRev && accessoryInformation.softwareRev.match(revisionRegex)){
+                accessory
+                    .getService(Service.AccessoryInformation)
+                    .setCharacteristic(
+                        Characteristic.SoftwareRevision,
+                        accessoryInformation.softwareRev
+                    )
+            }
 
             // Adding new accessory to the bridge.
             bridge.addBridgedAccessories([accessory])

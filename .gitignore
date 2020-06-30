@@ -313,3 +313,5 @@ $RECYCLE.BIN/
 
 .idea
 .vscode
+
+build/**/*.js

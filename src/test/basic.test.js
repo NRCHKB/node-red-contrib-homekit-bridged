@@ -7,7 +7,7 @@ const it = mocha.it
 const helper = require('node-red-node-test-helper')
 const homekitNode = require('../homekit')
 
-const exampleFlow = require('./exampleFlow')
+const exampleFlow = require('./exampleFlow.json')
 
 helper.init(require.resolve('node-red'))
 

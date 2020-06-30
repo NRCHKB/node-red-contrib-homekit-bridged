@@ -54,7 +54,7 @@ module.exports = function(RED) {
 
     function waitForParent(node, config) {
         // eslint-disable-next-line no-unused-vars
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             node.status({
                 fill: 'yellow',
                 shape: 'ring',
@@ -114,6 +114,9 @@ module.exports = function(RED) {
         node.serialNo = config.serialNo
         node.model = config.model
         node.accessoryType = config.accessoryType
+        node.firmwareRev = config.firmwareRev
+        node.hardwareRev = config.hardwareRev
+        node.softwareRev = config.softwareRev
 
         const bridge = node.bridgeNode.bridge
 
@@ -146,6 +149,9 @@ module.exports = function(RED) {
                     manufacturer: node.manufacturer,
                     serialNo: node.serialNo,
                     model: node.model,
+                    firmwareRev: node.firmwareRev,
+                    hardwareRev: node.hardwareRev,
+                    softwareRev: node.softwareRev,
                 },
                 subtypeUUID // subtype of the primary service for identification
             )
