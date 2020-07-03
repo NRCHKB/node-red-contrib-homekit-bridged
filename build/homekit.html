@@ -361,6 +361,12 @@
     RED.validators.port = function(port) {
         return port >= 1 && port <= 65535 && port === port.toString()
     }
+
+    const isValueDefined = function(value) {
+        if (typeof(value) === 'undefined') return false
+        if (value === null) return false
+        return true
+    }
 </script>
 
 <script type="text/javascript">
@@ -390,7 +396,7 @@
                 type: 'homekit-bridge',
                 validate: function(value) {
                     if (this.isParent == true) {
-                        return value.length > 0
+                        return isValueDefined(value) && value.length > 0
                     } else return true
                 }
             },
@@ -398,7 +404,7 @@
                 value: '',
                 validate: function(value) {
                     if (this.isParent == false) {
-                        return value.length > 0
+                        return isValueDefined(value) && value.length > 0
                     } else return true
                 }
             },
@@ -406,7 +412,7 @@
                 value: '',
                 required: true,
                 validate: function(value) {
-                    return value.length > 0
+                    return isValueDefined(value) && value.length > 0
                 },
             },
             serviceName: {
@@ -521,7 +527,7 @@
             characteristicProperties: {
                 value: '{}',
                 validate: function(value) {
-                    if (value.length === 0) {
+                    if (isValueDefined(value) && value.length === 0) {
                         return true
                     }
 
@@ -534,6 +540,9 @@
                     return value[0] === '{'
                 },
             },
+            outputs: {
+                value: 2
+            }
         },
         inputs: 1,
         outputs: 2,

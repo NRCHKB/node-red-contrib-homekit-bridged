@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [x.y.z]
+
+### Fixed
+-   JS console error when opening a linked service [#278](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/278)
+-   Fixed outputs number not being remembered by editor
+
 ## [1.1.1] - 2020.06.30
 
 ### Added
