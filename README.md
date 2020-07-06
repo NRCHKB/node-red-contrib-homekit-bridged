@@ -260,7 +260,7 @@ Our [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki)
 #### How can I generate Debug logs?
 
 Stop your node-red instance and start it again using the following command:
-`DEBUG=NRCHKB*,Accessory,HAPServer,EventedHTTPServer node-red`
+`DEBUG=NRCHKB*,HAP-NodeJS:* node-red`
 
 This should output detailed information regarding everything in the homekit context.
 
