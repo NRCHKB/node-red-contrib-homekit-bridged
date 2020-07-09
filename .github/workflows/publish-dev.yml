@@ -32,7 +32,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Publish
         if: contains(env.PACKAGE_VERSION, 'dev') == true
-      - run: |
+        run: |
           npm i -g yarn
           yarn install --frozen-lockfile
           yarn build
