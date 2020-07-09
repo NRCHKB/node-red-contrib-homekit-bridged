@@ -1,9 +1,9 @@
 name: Dev publish
 
 on:
-    push:
-        branches:
-            - dev
+  push:
+    branches:
+      - dev
 
 jobs:
   build:
@@ -14,10 +14,10 @@ jobs:
         with:
           node-version: 12
       - run: |
-            npm i -g yarn
-            yarn install --frozen-lockfile
-            yarn build --if-present
-            yarn test
+          npm i -g yarn
+          yarn install --frozen-lockfile
+          yarn build
+          yarn test
 
   publish-npm:
     needs: build
@@ -33,9 +33,9 @@ jobs:
       - name: Publish
         if: contains(env.PACKAGE_VERSION, 'dev') == true
       - run: |
-            npm i -g yarn
-            yarn install --frozen-lockfile
-            yarn build --if-present
-            yarn publish
+          npm i -g yarn
+          yarn install --frozen-lockfile
+          yarn build
+          yarn publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NODE_TKN}}
