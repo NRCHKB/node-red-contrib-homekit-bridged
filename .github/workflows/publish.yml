@@ -43,7 +43,6 @@ jobs:
   publish-gpr:
     needs: build
     runs-on: ubuntu-latest
-    if: contains(env.PROJECT_TO_TEST, 'SomeString')
     steps:
       - name: Extract PACKAGE_VERSION
         run: echo ::set-env name=PACKAGE_VERSION::$(node -p -e "require('./package.json').version")
