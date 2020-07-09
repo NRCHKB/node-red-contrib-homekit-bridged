@@ -1,4 +1,4 @@
-name: Publish nrchkb
+name: Release publish
 
 on:
     push:
@@ -6,34 +6,57 @@ on:
             - master
 
 jobs:
-    test:
-        runs-on: ${{ matrix.os }}
-        strategy:
-            matrix:
-                node_version: [10, 12, 13, 14]
-                os: [ubuntu-latest, windows-latest, macOS-latest]
-        steps:
-            - uses: actions/checkout@v1
-            - uses: actions/setup-node@v1
-              with:
-                  version: ${{ matrix.node_version }}
-            - run: |
-                  npm install
-                  npm run build --if-present
-                  npm test
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: |
+            npm i -g yarn
+            yarn install --frozen-lockfile
+            yarn build --if-present
+            yarn test
 
-    publish-npm:
-        needs: test
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v1
-            - uses: actions/setup-node@v1
-              with:
-                  node-version: 10
-                  registry-url: https://registry.npmjs.org/
-            - run: |
-                  npm install
-                  npm run build --if-present
-                  npm publish
-              env:
-                  NODE_AUTH_TOKEN: ${{secrets.NODE_TKN}}
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract PACKAGE_VERSION
+        run: echo ::set-env name=PACKAGE_VERSION::$(node -p -e "require('./package.json').version")
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - name: Publish
+        if: contains(env.PACKAGE_VERSION, 'dev') != true
+      - run: |
+            npm i -g yarn
+            yarn install --frozen-lockfile
+            yarn build --if-present
+            yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NODE_TKN}}
+
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract PACKAGE_VERSION
+        run: echo ::set-env name=PACKAGE_VERSION::$(node -p -e "require('./package.json').version")
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://npm.pkg.github.com/
+      - name: Publish
+        if: contains(env.PACKAGE_VERSION, 'dev') != true
+      - run: |
+            npm i -g yarn
+            yarn install --frozen-lockfile
+            yarn build --if-present
+            yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GHUB_TKN}}
