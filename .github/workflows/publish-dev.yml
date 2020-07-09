@@ -23,13 +23,13 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Extract PACKAGE_VERSION
-        run: echo ::set-env name=PACKAGE_VERSION::$(node -p -e "require('./package.json').version")
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
+      - name: Extract PACKAGE_VERSION
+        run: echo ::set-env name=PACKAGE_VERSION::$(node -p -e "require('./package.json').version")
       - name: Publish
         if: contains(env.PACKAGE_VERSION, 'dev') == true
         run: |
