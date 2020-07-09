@@ -28,6 +28,7 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
+          always-auth: true
       - name: Extract PACKAGE_VERSION
         run: echo ::set-env name=PACKAGE_VERSION::$(node -p -e "require('./package.json').version")
       - name: Publish
@@ -49,6 +50,7 @@ jobs:
         with:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
+          always-auth: true
       - name: Extract PACKAGE_VERSION
         run: echo ::set-env name=PACKAGE_VERSION::$(node -p -e "require('./package.json').version")
       - name: Publish
