@@ -58,6 +58,7 @@ jobs:
           npm i -g yarn
           yarn install --frozen-lockfile
           yarn build
+          npm init --scope=nrchkb -y
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GHUB_TKN}}
