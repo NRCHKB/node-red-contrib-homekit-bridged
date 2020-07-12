@@ -1,8 +1,8 @@
 module.exports = function(RED) {
-    const debug = require('debug')('NRCHKB')
+    const debug = require('debug')('NRCHKB:HAPBridgeNode')
     const HapNodeJS = require('hap-nodejs')
     const Bridge = HapNodeJS.Bridge
-    const Accessory = HapNodeJS.Accessory
+    const Categories = HapNodeJS.Categories
     const Service = HapNodeJS.Service
     const Characteristic = HapNodeJS.Characteristic
     const uuid = HapNodeJS.uuid
@@ -32,6 +32,9 @@ module.exports = function(RED) {
         this.manufacturer = config.manufacturer
         this.serialNo = config.serialNo
         this.model = config.model
+        this.firmwareRev = config.firmwareRev ? config.firmwareRev : '0.0.0'
+        this.hardwareRev = config.hardwareRev
+        this.softwareRev = config.softwareRev
 
         if (config.customMdnsConfig) {
             this.mdnsConfig = {}
@@ -65,7 +68,7 @@ module.exports = function(RED) {
             }
         }
 
-        this.accessoryType = Accessory.Categories.BRIDGE
+        this.accessoryType = Categories.BRIDGE
         this.published = false
         this.bridgeUsername = macify(this.id)
         const bridgeUUID = uuid.generate(this.id)
@@ -146,12 +149,15 @@ module.exports = function(RED) {
 
             callback()
         })
-
+        
         bridge
             .getService(Service.AccessoryInformation)
             .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
             .setCharacteristic(Characteristic.SerialNumber, this.serialNo)
             .setCharacteristic(Characteristic.Model, this.model)
+            .setCharacteristic(Characteristic.FirmwareRevision, this.firmwareRev)
+            .setCharacteristic(Characteristic.HardwareRevision, this.hardwareRev)
+            .setCharacteristic(Characteristic.SoftwareRevision, this.softwareRev)
 
         this.bridge = bridge
     }

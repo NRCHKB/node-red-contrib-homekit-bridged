@@ -7,7 +7,7 @@ const fs = require('fs')
 const ip = require('ip')
 const spawn = require('child_process').spawn
 
-const debug = require('debug')('NRCHKB_Camera')
+const debug = require('debug')('NRCHKB:CameraSource')
 
 module.exports = {
     Camera: Camera,

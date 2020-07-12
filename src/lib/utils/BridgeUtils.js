@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 module.exports = function(node) {
-    const debug = require('debug')('NRCHKB')
+    const debug = require('debug')('NRCHKB:BridgeUtils')
 
     // Publish accessory after the service has been added
     // BUT ONLY after 5 seconds with no new service have passed
