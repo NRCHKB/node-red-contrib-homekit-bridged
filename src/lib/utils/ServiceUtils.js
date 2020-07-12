@@ -1,5 +1,5 @@
 module.exports = function(node) {
-    const debug = require('debug')('NRCHKB')
+    const debug = require('debug')('NRCHKB:ServiceUtils')
     const HapNodeJS = require('hap-nodejs')
     const Service = HapNodeJS.Service
     const Characteristic = HapNodeJS.Characteristic

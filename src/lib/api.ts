@@ -2,8 +2,10 @@ import {Red} from "node-red";
 import * as HapNodeJS from "hap-nodejs"
 import express from 'express'
 
+const version = (require('../../package.json').version as string).trim()
+
 module.exports = function(RED: Red) {
-    const debug = require('debug')('NRCHKB')
+    const debug = require('debug')('NRCHKB:api')
 
     // Service API response data
     let serviceData: {
@@ -30,7 +32,7 @@ module.exports = function(RED: Red) {
 
         // Retrieve Service Types
         RED.httpAdmin.get(
-            '/homekit/service/types',
+            '/nrchkb/service/types',
             RED.auth.needsPermission('homekit.read'),
             (_req: express.Request, res: express.Response) => {
                 res.json(serviceData)
@@ -38,14 +40,69 @@ module.exports = function(RED: Red) {
         )
     }
 
+    // NRCHKB Version API
+    const _initNRCHKBVersionAPI = function() {
+        debug('Initialize NRCHKBVersionAPI')
+
+        debug('Running version:', version)
+
+        const releaseVersionRegex = /(\d+)\.(\d+)\.(\d+)/
+        const devVersionRegex = /(\d+)\.(\d+)\.(\d+)-dev\.(\d+)/
+
+        const releaseVersionFound = releaseVersionRegex.test(version)
+        const devVersionFound = devVersionRegex.test(version)
+
+        let xyzVersion = '0.0.0'
+
+        if (devVersionFound) {
+            try {
+                const match = devVersionRegex.exec(version)
+
+                if (match) {
+                    xyzVersion = 0 + '.' + match[1] + match[2] + match[3] + '.'  + match[4]
+                } else {
+                    debug('Could not match dev version')
+                }
+            } catch (e) {
+                console.error(e)
+            }
+        } else if (releaseVersionFound) {
+            try {
+                const match = releaseVersionRegex.exec(version)
+
+                if (match) {
+                    xyzVersion = match[0]
+                } else {
+                    debug('Could not match release version')
+                }
+            } catch (e) {
+                console.error(e)
+            }
+        } else {
+            debug('Bad version format')
+            xyzVersion = '0.0.0'
+        }
+
+        debug('Evaluated as:', xyzVersion)
+
+        // Retrieve NRCHKB version
+        RED.httpAdmin.get(
+            '/nrchkb/version',
+            RED.auth.needsPermission('homekit.read'),
+            (_req: express.Request, res: express.Response) => {
+                res.json({
+                    version: xyzVersion
+                })
+            }
+        )
+    }
+
     const init = function() {
         _initServiceAPI()
+        _initNRCHKBVersionAPI()
     }
 
     return {
-        init: init,
-        _: {
-            initServiceAPI: _initServiceAPI,
-        },
+        init: init
     }
 }

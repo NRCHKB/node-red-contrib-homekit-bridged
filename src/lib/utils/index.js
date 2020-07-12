@@ -4,6 +4,7 @@ module.exports = function(node) {
     const AccessoryUtils = require('./AccessoryUtils.js')(node)
     const CharacteristicUtils = require('./CharacteristicUtils.js')(node)
     const MdnsUtils = require('./MdnsUtils.js')()
+    const EnvironmentUtils = require('./EnvironmentUtils')()
 
     return {
         ServiceUtils: ServiceUtils,
@@ -11,5 +12,6 @@ module.exports = function(node) {
         AccessoryUtils: AccessoryUtils,
         CharacteristicUtils: CharacteristicUtils,
         MdnsUtils: MdnsUtils,
+        EnvironmentUtils: EnvironmentUtils
     }
 }

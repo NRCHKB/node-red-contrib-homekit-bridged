@@ -32,6 +32,10 @@
             <input type="text" id="node-input-serialNo" placeholder="Serial Number">
         </div>
         <div class="form-row">
+            <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
+            <input type="text" id="node-input-model" placeholder="Model">
+        </div>
+        <div class="form-row">
         	<label for="node-input-firmwareRev"><i class="fa fa-wrench"></i> Firmware Revision</label>
         	<input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision">
     	</div>
@@ -40,13 +44,9 @@
         	<input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision">
     	</div>
         <div class="form-row">
-        	<label for="node-input-sofwareRev"><i class="fa fa-wrench"></i> Software Revision</label>
-        	<input type="text" id="node-input-sofwareRev" placeholder="Software Revision">
+        	<label for="node-input-softwareRev"><i class="fa fa-wrench"></i> Software Revision</label>
+        	<input type="text" id="node-input-softwareRev" placeholder="Software Revision">
     	</div>
-        <div class="form-row">
-            <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
-            <input type="text" id="node-input-model" placeholder="Model">
-        </div>
     </div>
 
     <div id="isLinked" style="display: none;">
@@ -196,9 +196,9 @@
           <li><strong>Topic</strong>: An optional property that can be configured in the node or, if left blank, can be set by <code>msg.topic</code>. If <em>Filter on Topic</em> is selected <code>msg.topic</code> of incoming messages must match the configured
               value for the message to be accepted. If <em>Filter on Topic</em> is selected and no <em>Topic</em> is set on the node, then <code>msg.topic</code> must match the nodes <em>Name</em></li>
           <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
-          <li><strong>Firmware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>2.9.6</em>. Other types of strings are ignored and won't be displayed.</li>
-          <li><strong>Hardware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>2.9.6</em>. Other types of strings are ignored and won't be displayed.</li>
-          <li><strong>Software Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>2.9.6</em>. Other types of strings are ignored and won't be displayed.</li>
+          <li><strong>Firmware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
+          <li><strong>Hardware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
+          <li><strong>Software Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
           <li><strong>Service</strong>: Choose the type of Service from the list.</li>
           <li><strong>Name</strong>: <em>optional</em></li>
           <li><strong>Camera Configuration</strong>: Additional configuration for CameraControl service.</li>
@@ -287,6 +287,18 @@
         <input type="text" id="node-config-input-model" placeholder="Model">
     </div>
     <div class="form-row">
+        <label for="node-input-firmwareRev"><i class="fa fa-wrench"></i> Firmware Revision</label>
+        <input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision">
+    </div>
+    <div class="form-row">
+        <label for="node-input-hardwareRev"><i class="fa fa-wrench"></i> Hardware Revision</label>
+        <input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision">
+    </div>
+    <div class="form-row">
+        <label for="node-input-softwareRev"><i class="fa fa-wrench"></i> Software Revision</label>
+        <input type="text" id="node-input-softwareRev" placeholder="Software Revision">
+    </div>
+    <div class="form-row">
         <label for="node-config-input-bridgeName"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-config-input-bridgeName" placeholder="Name">
     </div>
@@ -342,6 +354,9 @@
         <li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.</li>
         <li><strong>Allow Insecure Request</strong>: Should we allow insecure request? Default false.</li>
         <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
+        <li><strong>Firmware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
+        <li><strong>Hardware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
+        <li><strong>Software Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
         <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>.</li>
         <li><strong>Allow Message Passthrough</strong>: If you allow then message from node input will be send to node output.</li>
         <li><strong>Custom MDNS Configuration</strong>: Check if you would like to use custom mdns configuration.</li>
@@ -371,16 +386,33 @@
 
 <script type="text/javascript">
     let serviceTypes
+    let nrchkbVersion = '0.0.0'
 
     //HomeKitServiceTypes
-    $.getJSON('homekit/service/types', function(data) {
+    $.getJSON('nrchkb/service/types', function(data) {
         serviceTypes = data
     })
+
+    //NRCHKB version
+    $.ajax({
+        url: 'nrchkb/version',
+        dataType: 'json',
+        async: false,
+        success: function(data) {
+            nrchkbVersion = data.version
+            console.log(data)
+        }
+    });
 
     const cameraConfigRequiredField = function(value) {
         if (this.serviceName === 'CameraControl') {
             return (value || '').toString().trim()
         } else return true
+    }
+
+    const versionValidator = (value) => {
+        if (value) return /^(\d+\.)?(\d+\.)?(\.|\d+)$/.test(value)
+        else return true
     }
 
     RED.nodes.registerType('homekit-service', {
@@ -426,11 +458,11 @@
                 value: false,
             },
             manufacturer: {
-                value: 'Default Manufacturer',
+                value: 'NRCHKB',
                 required: true,
             },
             model: {
-                value: 'Default Model',
+                value: nrchkbVersion,
                 required: true,
             },
             serialNo: {
@@ -438,16 +470,19 @@
                 required: true,
             },
             firmwareRev: {
-                value: '1.0.0',
+                value: nrchkbVersion,
                 required: false,
+                validate: versionValidator
             },
             hardwareRev: {
-                value: '1.0.0',
+                value: nrchkbVersion,
                 required: false,
+                validate: versionValidator
             },
             softwareRev: {
-                value: '1.0.0',
+                value: nrchkbVersion,
                 required: false,
+                validate: versionValidator
             },
             cameraConfigVideoProcessor: {
                 value: 'ffmpeg',
@@ -749,16 +784,31 @@
                 required: true,
             },
             manufacturer: {
-                value: 'Default Manufacturer',
+                value: 'NRCHKB',
                 required: true,
             },
             model: {
-                value: 'Default Model',
+                value: nrchkbVersion,
                 required: true,
             },
             serialNo: {
                 value: 'Default Serial Number',
                 required: true,
+            },
+            firmwareRev: {
+                value: nrchkbVersion,
+                required: false,
+                validate: versionValidator
+            },
+            hardwareRev: {
+                value: nrchkbVersion,
+                required: false,
+                validate: versionValidator
+            },
+            softwareRev: {
+                value: nrchkbVersion,
+                required: false,
+                validate: versionValidator
             },
             customMdnsConfig: {
                 value: false,

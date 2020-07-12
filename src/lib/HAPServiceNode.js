@@ -1,11 +1,19 @@
 module.exports = function(RED) {
-    const debug = require('debug')('NRCHKB')
+    const debug = require('debug')('NRCHKB:HAPServiceNode')
     const HapNodeJS = require('hap-nodejs')
     const uuid = HapNodeJS.uuid
     let publishTimers = {}
 
     const init = function(config) {
         RED.nodes.createNode(this, config)
+        
+        const EnvironmentUtils = require('../lib/utils/EnvironmentUtils')
+        
+        const envName = EnvironmentUtils().evaluateProperty(RED, this, 'name')
+        if (envName) {
+            config.name = envName
+            debug('Overriding name with:', envName)
+        }
 
         this.isParentNode =
             typeof config.isParent === 'boolean' ? config.isParent : true

@@ -1,4 +1,5 @@
 module.exports = function(RED) {
+    const path = require('path')
     const debug = require('debug')('NRCHKB')
     const HAPStorage = require('hap-nodejs').HAPStorage
     const API = require('./lib/api')(RED)
@@ -8,7 +9,9 @@ module.exports = function(RED) {
     // Initialize our storage system
     if (RED.settings.available()) {
         debug('RED settings available')
-        HAPStorage.setCustomStoragePath(RED.settings.userDir + '/homekit-persist')
+        const hapStoragePath = path.resolve(RED.settings.userDir, 'homekit-persist')
+        HAPStorage.setCustomStoragePath(hapStoragePath)
+        debug('HAPStorage path set to ', hapStoragePath)
     } else {
         debug('RED settings not available')
     }

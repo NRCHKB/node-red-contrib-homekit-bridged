@@ -10,6 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 -   JS console error when opening a linked service [#278](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/278)
 -   Fixed outputs number not being remembered by editor
+-   Fixed saving Software Revision fo Service node
+-   Fixed HAPStorage path on Windows
+
+### Added
+-   Now you can pass Service Name to Subflow Service [#298](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/298)
+-   Added Firmware, Software and Hardware Revision fields to Bridge configuration
+
+### Changed
+-   Now Firmware, Software and Hardware Revision and Model fields are set by default to NRCHKB version, Manufacturer is NRCHKB by default
 
 ## [1.1.1] - 2020.06.30
 
