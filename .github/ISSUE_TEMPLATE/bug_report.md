@@ -25,8 +25,8 @@ If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. Rpi, Docker]
-- Node version: [run `node -v` in terminal]
-- NPM version: [run `npm -v` in terminal]
+ - Node version: [run `node -v` in terminal]
+ - NPM version: [run `npm -v` in terminal]
  - NodeRed version: 
  - NRCHKB Plugin Version: [found in pallette manager]
 
