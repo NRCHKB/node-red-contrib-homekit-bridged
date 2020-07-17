@@ -48,7 +48,7 @@ All accessories behind a bridge node will be added automatically.
 <p>
 
 -   **Pin Code**: Specify the Pin for the pairing process.
--   **Port**: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.
+-   **Port**: If you are behind a Firewall, you may want to specify a port. Cannot be 1880 as it is reserved for node-red. Otherwise, leave empty.
 -   **Allow Insecure Request**: Should we allow insecure request? Default false.
 -   **Manufacturer, Model, Serial Number**: Can be anything you want.
 -   **Name**: Can be anything you want.
@@ -56,7 +56,7 @@ All accessories behind a bridge node will be added automatically.
 -   **Custom MDNS Configuration**: Check if you would like to use custom MDNS configuration.
     -   **Multicast**: Use udp multicasting. Optional. Default true.
     -   **Multicast Interface IP**: Explicitly specify a network interface. Optional. Defaults to all.
-    -   **Port**: Set the udp port. Optional. Default 5353.
+    -   **Port**: Set the udp port. Cannot be 1880 as it is reserved for node-red. Optional. Default 5353.
     -   **Multicast Address IP**: Set the udp ip. Optional.
     -   **TTL**: Set the multicast ttl. Optional.
     -   **Loopback**: Receive your own packets. Optional. Default true.
@@ -130,7 +130,7 @@ Output messages are in the same format as input messages. They are emitted from 
 Currently, there are two main and one conditional output port for homekit-service in node-red.
 
 1. onChange, is fired when a value has been changed, this is the most recommended to use for most cases.
-2. onSet, is fired every time a value has been set (even to the same value as before), it is used to capture repeated input like Television pilot buttons.
+2. onSet, is fired every time a value has been set (even to the same value as before), it is used to capture repeated input like Television remote buttons.
 3. camera snapshot, is enabled only for CameraController Service and is used to retrieve camera snapshot data
 
 ## Supported Types
@@ -139,71 +139,74 @@ The following is a list of _Services_ that are currently supported. Check for mo
 <details><summary>Supported Services:</summary>
 <p>
 
- - AccessControl
- - AccessoryInformation
- - AirPurifier
- - AirQualitySensor
- - BatteryService
- - CameraRTPStreamManagement
- - CarbonDioxideSensor
- - CarbonMonoxideSensor
- - ContactSensor
- - Door
- - Doorbell
- - Fan
- - Fanv2
- - FilterMaintenance
- - Faucet
- - GarageDoorOpener
- - HeaterCooler
- - HumidifierDehumidifier
- - HumiditySensor
- - IrrigationSystem
- - LeakSensor
- - LightSensor
- - Lightbulb
- - LockManagement
- - LockMechanism
- - Microphone
- - MotionSensor
- - OccupancySensor
- - Outlet
- - SecuritySystem
- - ServiceLabel
- - Slat
- - SmokeSensor
- - SmartSpeaker
- - Speaker
- - StatelessProgrammableSwitch
- - Switch
- - TemperatureSensor
- - Thermostat
- - Valve
- - Window
- - WindowCovering
- - CameraOperatingMode
- - CameraEventRecordingManagement
- - WiFiRouter
- - WiFiSatellite
- - PowerManagement
- - TransferTransportManagement
- - CameraControl
- - StatefulProgrammableSwitch
- - BridgeConfiguration
- - BridgingState
- - Pairing
- - ProtocolInformation
- - Relay
- - TimeInformation
- - TunneledBTLEAccessoryService
- - Television
- - InputSource
- - TelevisionSpeaker
- - TargetControlManagement
- - TargetControl
- - AudioStreamManagement
- - Siri
- - DataStreamTransportManagement
+  - AccessControl
+  - AccessoryInformation
+  - AirPurifier
+  - AirQualitySensor
+  - BatteryService
+  - CameraRTPStreamManagement
+  - CarbonDioxideSensor
+  - CarbonMonoxideSensor
+  - ContactSensor
+  - Door
+  - Doorbell
+  - Fan
+  - Fanv2
+  - FilterMaintenance
+  - Faucet
+  - GarageDoorOpener
+  - HeaterCooler
+  - HumidifierDehumidifier
+  - HumiditySensor
+  - IrrigationSystem
+  - LeakSensor
+  - LightSensor
+  - Lightbulb
+  - LockManagement
+  - LockMechanism
+  - Microphone
+  - MotionSensor
+  - OccupancySensor
+  - Outlet
+  - SecuritySystem
+  - ServiceLabel
+  - Slat
+  - SmokeSensor
+  - SmartSpeaker
+  - Speaker
+  - StatelessProgrammableSwitch
+  - Switch
+  - TemperatureSensor
+  - Thermostat
+  - Valve
+  - Window
+  - WindowCovering
+  - CameraOperatingMode
+  - CameraEventRecordingManagement
+  - WiFiRouter
+  - WiFiSatellite
+  - PowerManagement
+  - TransferTransportManagement
+  - AccessoryRuntimeInformation
+  - Diagnostics
+  - WiFiTransport
+  - CameraControl
+  - StatefulProgrammableSwitch
+  - BridgeConfiguration
+  - BridgingState
+  - Pairing
+  - ProtocolInformation
+  - Relay
+  - TimeInformation
+  - TunneledBTLEAccessoryService
+  - Television
+  - InputSource
+  - TelevisionSpeaker
+  - TargetControlManagement
+  - TargetControl
+  - AudioStreamManagement
+  - Siri
+  - DataStreamTransportManagement
 </details>
 
 If you encounter problems with any of them please [create new Issue](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/new/choose).
@@ -260,7 +263,7 @@ Our [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki)
 #### How can I generate Debug logs?
 
 Stop your node-red instance and start it again using the following command:
-`DEBUG=NRCHKB*,HAP-NodeJS:* node-red`
+`DEBUG=NRCHKB*,HAP-NodeJS* node-red`
 
 This should output detailed information regarding everything in the homekit context.
 

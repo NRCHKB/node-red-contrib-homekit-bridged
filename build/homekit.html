@@ -1,4 +1,4 @@
-<script type="text/x-red" data-template-name="homekit-service">
+<script data-template-name="homekit-service" type="text/x-red">
     <div class="form-row">
         <label for="node-config-input-isParent"><i class="fa fa-tasks"></i> Service Hierarchy</label>
         <select id="node-config-input-isParent">
@@ -181,9 +181,10 @@
     <div class="form-row node-text-editor-row">
         <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-characteristicProperties-editor"></div>
     </div>
+
 </script>
 
-<script type="text/x-red" data-help-name="homekit-service">
+<script data-help-name="homekit-service" type="text/x-red">
       <h3 id="toc_5">Service</h3>
       <p>The Service node represents the single device you want to control or query.</p>
       <p>Every service node creates its own HAP accessory to keep things simple.</p>
@@ -258,9 +259,10 @@
         }
     }</code></pre>
       </div>
+
 </script>
 
-<script type="text/x-red" data-template-name="homekit-bridge">
+<script data-template-name="homekit-bridge" type="text/x-red">
     <div class="form-row">
         <label for="node-config-input-pinCode"><i class="fa fa-lock"></i> Pin Code</label>
         <input type="text" id="node-config-input-pinCode" placeholder="xxx-xx-xxx">
@@ -343,15 +345,16 @@
         </div>
     </div>
     <hr>
+
 </script>
 
-<script type="text/x-red" data-help-name="homekit-bridge">
+<script data-help-name="homekit-bridge" type="text/x-red">
     <h3 id="toc_4">Bridge</h3>
     <p>The Bridge node is a configuration node, specifying the <em>bridge</em> that iOS sees, i.e. the device that is manually being added by the user. All accessories behind a bridge noded are then automatically added by iOS.
     </p>
     <ul>
         <li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
-        <li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Otherwise leave empty.</li>
+        <li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Cannot be 1880 as it is reserved for node-red. Otherwise, leave empty.</li>
         <li><strong>Allow Insecure Request</strong>: Should we allow insecure request? Default false.</li>
         <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
         <li><strong>Firmware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
@@ -363,22 +366,23 @@
         <ul>
             <li><strong>Multicast</strong>: Use udp multicasting. Optional. Default true.</li>
             <li><strong>Multicast Interface IP:</strong>: Explicitly specify a network interface. Optional. Defaults to all.</li>
-            <li><strong>Port</strong>: Set the udp port. Optional. Default 5353.</li>
+            <li><strong>Port</strong>: Set the udp port. Cannot be 1880 as it is reserved for node-red. Optional. Default 5353.</li>
             <li><strong>Multicast Address IP</strong>: Set the udp ip. Optional. </li>
             <li><strong>TTL</strong>: Set the multicast ttl. Optional. </li>
             <li><strong>Loopback</strong>: Receive your own packets. Optional. Default true.</li>
             <li><strong>Reuse Address</strong>: Set the reuseAddr option when creating the socket. Optional. Default true.</li>
         </ul>
     </ul>
+
 </script>
 
 <script type="text/javascript">
     RED.validators.port = function(port) {
-        return port >= 1 && port <= 65535 && port === port.toString()
+        return port != 1880 && port >= 1 && port <= 65535 && port === port.toString()
     }
 
     const isValueDefined = function(value) {
-        if (typeof(value) === 'undefined') return false
+        if (typeof (value) === 'undefined') return false
         if (value === null) return false
         return true
     }
@@ -401,8 +405,8 @@
         success: function(data) {
             nrchkbVersion = data.version
             console.log(data)
-        }
-    });
+        },
+    })
 
     const cameraConfigRequiredField = function(value) {
         if (this.serviceName === 'CameraControl') {
@@ -430,7 +434,7 @@
                     if (this.isParent == true) {
                         return isValueDefined(value) && value.length > 0
                     } else return true
-                }
+                },
             },
             parentService: {
                 value: '',
@@ -438,7 +442,7 @@
                     if (this.isParent == false) {
                         return isValueDefined(value) && value.length > 0
                     } else return true
-                }
+                },
             },
             name: {
                 value: '',
@@ -472,17 +476,17 @@
             firmwareRev: {
                 value: nrchkbVersion,
                 required: false,
-                validate: versionValidator
+                validate: versionValidator,
             },
             hardwareRev: {
                 value: nrchkbVersion,
                 required: false,
-                validate: versionValidator
+                validate: versionValidator,
             },
             softwareRev: {
                 value: nrchkbVersion,
                 required: false,
-                validate: versionValidator
+                validate: versionValidator,
             },
             cameraConfigVideoProcessor: {
                 value: 'ffmpeg',
@@ -544,7 +548,7 @@
                 validate: cameraConfigRequiredField,
             },
             cameraConfigVideoFilter: {
-                value: 'scale=1280:720'
+                value: 'scale=1280:720',
             },
             cameraConfigAdditionalCommandLine: {
                 value: '-tune zerolatency',
@@ -576,8 +580,8 @@
                 },
             },
             outputs: {
-                value: 2
-            }
+                value: 2,
+            },
         },
         inputs: 1,
         outputs: 2,
@@ -636,7 +640,7 @@
                 selectServiceName.append(
                     $('<option></option>')
                         .val(key)
-                        .text(key)
+                        .text(key),
                 )
             }
 
@@ -707,7 +711,7 @@
                 selectParentService.append(
                     $('<option></option>')
                         .val(value)
-                        .text(text)
+                        .text(text),
                 )
             })
 
@@ -726,15 +730,15 @@
 
             if (!node.isParent) {
                 node.parentService = $(
-                    '#node-input-parentService option:selected'
+                    '#node-input-parentService option:selected',
                 ).val()
             }
 
             node.serviceName = $(
-                '#node-input-serviceName option:selected'
+                '#node-input-serviceName option:selected',
             ).val()
             $('#node-input-characteristicProperties').val(
-                node.editor.getValue()
+                node.editor.getValue(),
             )
             node.editor.destroy()
             delete node.editor
@@ -798,17 +802,17 @@
             firmwareRev: {
                 value: nrchkbVersion,
                 required: false,
-                validate: versionValidator
+                validate: versionValidator,
             },
             hardwareRev: {
                 value: nrchkbVersion,
                 required: false,
-                validate: versionValidator
+                validate: versionValidator,
             },
             softwareRev: {
                 value: nrchkbVersion,
                 required: false,
-                validate: versionValidator
+                validate: versionValidator,
             },
             customMdnsConfig: {
                 value: false,
@@ -858,12 +862,12 @@
                 this.allowMessagePassthrough = true
                 $('#node-config-input-allowMessagePassthrough').prop(
                     'checked',
-                    true
+                    true,
                 )
             }
 
             let customMdnsConfigCheckbox = $(
-                '#node-config-input-customMdnsConfig'
+                '#node-config-input-customMdnsConfig',
             )
             let mdnsConfiguration = $('#mdns-configuration')
 

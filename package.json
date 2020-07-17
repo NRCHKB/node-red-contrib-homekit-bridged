@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-homekit-bridged",
-  "version": "1.2.0-dev.4",
+  "version": "1.2.0-dev.5",
   "description": "Node-RED nodes to simulate Apple HomeKit devices.",
   "main": "build/homekit.js",
   "scripts": {
@@ -60,8 +60,9 @@
     "node-red": "^1.1.2",
     "node-red-node-test-helper": "^0.2.5",
     "prettier": "^2.0.5",
+    "supports-color": "^7.1.0",
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.7"
   },
   "eslintConfig": {
     "env": {

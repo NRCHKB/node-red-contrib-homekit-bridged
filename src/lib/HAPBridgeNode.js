@@ -6,94 +6,100 @@ module.exports = function(RED) {
     const Service = HapNodeJS.Service
     const Characteristic = HapNodeJS.Characteristic
     const uuid = HapNodeJS.uuid
-
+    
     const MdnsUtils = require('./utils/MdnsUtils.js')()
-
+    
     const init = function(config) {
         RED.nodes.createNode(this, config)
-
+        
         const self = this
-
+        
         this.name = config.bridgeName
         debug('Setting name to ' + config.bridgeName)
-
+        
         this.pinCode = config.pinCode
         this.port = config.port
         this.allowInsecureRequest =
             config.allowInsecureRequest !== undefined
                 ? config.allowInsecureRequest
                 : false
-
+        
         this.allowMessagePassthrough =
             config.allowMessagePassthrough !== undefined
                 ? config.allowMessagePassthrough
                 : false
-
+        
         this.manufacturer = config.manufacturer
         this.serialNo = config.serialNo
         this.model = config.model
         this.firmwareRev = config.firmwareRev ? config.firmwareRev : '0.0.0'
         this.hardwareRev = config.hardwareRev
         this.softwareRev = config.softwareRev
-
+        
         if (config.customMdnsConfig) {
             this.mdnsConfig = {}
-
+            
             if (MdnsUtils.checkMulticast(config.mdnsMulticast)) {
                 this.mdnsConfig.multicast = config.mdnsMulticast
             }
-
+            
             if (MdnsUtils.checkInterface(config.mdnsInterface)) {
                 this.mdnsConfig.interface = config.mdnsInterface
             }
-
+            
             if (MdnsUtils.checkPort(config.mdnsPort)) {
                 this.mdnsConfig.port = parseInt(config.mdnsPort)
             }
-
+            
             if (MdnsUtils.checkIp(config.mdnsIp)) {
                 this.mdnsConfig.ip = config.mdnsIp
             }
-
+            
             if (MdnsUtils.checkTtl(config.mdnsTtl)) {
                 this.mdnsConfig.ttl = parseInt(config.mdnsTtl)
             }
-
+            
             if (MdnsUtils.checkLoopback(config.mdnsLoopback)) {
                 this.mdnsConfig.loopback = config.mdnsLoopback
             }
-
+            
             if (MdnsUtils.checkReuseAddr(config.mdnsReuseAddr)) {
                 this.mdnsConfig.reuseAddr = config.mdnsReuseAddr
             }
         }
-
+        
         this.accessoryType = Categories.BRIDGE
         this.published = false
         this.bridgeUsername = macify(this.id)
         const bridgeUUID = uuid.generate(this.id)
-
+        
         debug(
             'Creating Bridge with name \'' +
-                this.name +
-                '\' and UUID \'' +
-                bridgeUUID +
-                '\''
+            this.name +
+            '\' and UUID \'' +
+            bridgeUUID +
+            '\'',
         )
-
+        
         let bridge = new Bridge(this.name, bridgeUUID)
-
+        
         this.publish = function() {
             debug(
-                'publishing bridge with name \'' +
-                    self.name +
-                    '\', pin code \'' +
-                    self.pinCode +
-                    '\' and ' +
-                    bridge.bridgedAccessories.length +
-                    ' accessories.'
+                'Publishing bridge with name \'' +
+                self.name +
+                '\', pin code \'' +
+                self.pinCode +
+                '\' and ' +
+                bridge.bridgedAccessories.length +
+                ' accessories.',
             )
-
+            
+            if (self.port !== '' && ((self.port && self.port == 1880) || (self.mdnsConfig.port && self.mdnsConfig.port == 1880))) {
+                self.error('Cannot publish Bridge \'' + self.name + '\' on port 1880 as it is reserved for node-red.')
+                self.published = false
+                return false
+            }
+            
             for (
                 let i = 0, len = bridge.bridgedAccessories.length;
                 i < len;
@@ -102,16 +108,16 @@ module.exports = function(RED) {
                 if (bridge.bridgedAccessories[i].cameraSource) {
                     debug(
                         'Paired Camera from Accessory ' +
-                            bridge.bridgedAccessories[i].displayName +
-                            ' to Bridge ' +
-                            bridge.displayName
+                        bridge.bridgedAccessories[i].displayName +
+                        ' to Bridge ' +
+                        bridge.displayName,
                     )
                     bridge.cameraSource =
                         bridge.bridgedAccessories[i].cameraSource
                     break
                 }
             }
-
+            
             bridge.publish(
                 {
                     username: self.bridgeUsername,
@@ -120,12 +126,14 @@ module.exports = function(RED) {
                     category: self.accessoryType,
                     mdns: self.mdnsConfig,
                 },
-                self.allowInsecureRequest
+                self.allowInsecureRequest,
             )
-
+            
             self.published = true
+            
+            return true
         }
-
+        
         this.on('close', function(removed, done) {
             if (removed) {
                 // This node has been deleted
@@ -136,17 +144,17 @@ module.exports = function(RED) {
                 bridge = null
                 self.published = false
             }
-
+            
             done()
         })
-
+        
         bridge.on('identify', function(paired, callback) {
             if (paired) {
                 debug('Identify called on paired Bridge ' + self.name)
             } else {
                 debug('Identify called on unpaired Bridge ' + self.name)
             }
-
+            
             callback()
         })
         
@@ -158,10 +166,10 @@ module.exports = function(RED) {
             .setCharacteristic(Characteristic.FirmwareRevision, this.firmwareRev)
             .setCharacteristic(Characteristic.HardwareRevision, this.hardwareRev)
             .setCharacteristic(Characteristic.SoftwareRevision, this.softwareRev)
-
+        
         this.bridge = bridge
     }
-
+    
     return {
         init: init,
     }

@@ -3,7 +3,7 @@ module.exports = function(RED) {
     const HapNodeJS = require('hap-nodejs')
     const uuid = HapNodeJS.uuid
     let publishTimers = {}
-
+    
     const init = function(config) {
         RED.nodes.createNode(this, config)
         
@@ -14,10 +14,10 @@ module.exports = function(RED) {
             config.name = envName
             debug('Overriding name with:', envName)
         }
-
+        
         this.isParentNode =
             typeof config.isParent === 'boolean' ? config.isParent : true
-
+        
         if (this.isParentNode) {
             debug('Starting Parent Service ' + config.name)
             configure(this, config)
@@ -26,11 +26,11 @@ module.exports = function(RED) {
                 .then(() => {
                     debug(
                         'Starting ' +
-                            (config.serviceName === 'CameraControl'
-                                ? 'Camera'
-                                : 'Linked') +
-                            ' Service ' +
-                            config.name
+                        (config.serviceName === 'CameraControl'
+                            ? 'Camera'
+                            : 'Linked') +
+                        ' Service ' +
+                        config.name,
                     )
                     configure(this, config)
                 })
@@ -45,21 +45,21 @@ module.exports = function(RED) {
                                 : 'Linked') +
                             ' Service',
                     })
-
+                    
                     this.error(
                         'Error while starting ' +
-                            (config.serviceName === 'CameraControl'
-                                ? 'Camera'
-                                : 'Linked') +
-                            ' Service ' +
-                            config.name +
-                            ': ',
-                        e
+                        (config.serviceName === 'CameraControl'
+                            ? 'Camera'
+                            : 'Linked') +
+                        ' Service ' +
+                        config.name +
+                        ': ',
+                        e,
                     )
                 })
         }
     }
-
+    
     function waitForParent(node, config) {
         // eslint-disable-next-line no-unused-vars
         return new Promise((resolve) => {
@@ -68,7 +68,7 @@ module.exports = function(RED) {
                 shape: 'ring',
                 text: 'Waiting for Parent Service',
             })
-
+            
             const checkAndWait = () => {
                 if (RED.nodes.getNode(config.parentService)) {
                     resolve()
@@ -79,18 +79,18 @@ module.exports = function(RED) {
             checkAndWait()
         })
     }
-
+    
     const configure = function(node, config) {
         const Utils = require('./utils')(node)
         const AccessoryUtils = Utils.AccessoryUtils
         const BridgeUtils = Utils.BridgeUtils
         const CharacteristicUtils = Utils.CharacteristicUtils
         const ServiceUtils = Utils.ServiceUtils
-
+        
         node.bridgeNode
         let parentNode
         node.parentService
-
+        
         if (node.isParentNode) {
             node.bridgeNode = RED.nodes.getNode(config.bridge)
             node.childNodes = []
@@ -98,21 +98,21 @@ module.exports = function(RED) {
         } else {
             // Retrieve parent service node
             parentNode = RED.nodes.getNode(config.parentService)
-
+            
             if (!parentNode) {
                 throw Error('Parent Node not assigned')
             }
-
+            
             node.parentService = parentNode.service
-
+            
             if (!node.parentService) {
                 throw Error('Parent Service not assigned')
             }
-
+            
             node.bridgeNode = parentNode.bridgeNode
             parentNode.childNodes.push(node)
         }
-
+        
         // Service node properties
         node.name = config.name
         node.topic = config.topic
@@ -125,12 +125,12 @@ module.exports = function(RED) {
         node.firmwareRev = config.firmwareRev
         node.hardwareRev = config.hardwareRev
         node.softwareRev = config.softwareRev
-
+        
         const bridge = node.bridgeNode.bridge
-
+        
         // Generate UUID from node id
         const subtypeUUID = uuid.generate(node.id)
-
+        
         // According to the HomeKit Accessory Protocol Specification the value
         // of the fields Name, Manufacturer, Serial Number and Model must not
         // change throughout the lifetime of an accessory. Because of that the
@@ -139,13 +139,13 @@ module.exports = function(RED) {
         // changes.
         const accessoryUUID = uuid.generate(
             'A' +
-                node.id +
-                node.name +
-                node.manufacturer +
-                node.serialNo +
-                node.model
+            node.id +
+            node.name +
+            node.manufacturer +
+            node.serialNo +
+            node.model,
         )
-
+        
         // Look for existing Accessory or create a new one
         let accessory
         if (node.isParentNode) {
@@ -161,16 +161,16 @@ module.exports = function(RED) {
                     hardwareRev: node.hardwareRev,
                     softwareRev: node.softwareRev,
                 },
-                subtypeUUID // subtype of the primary service for identification
+                subtypeUUID, // subtype of the primary service for identification
             )
-
+            
             //Respond to identify
             node.onIdentify = AccessoryUtils.onIdentify
             accessory.on('identify', node.onIdentify)
         } else {
             accessory = parentNode.accessory
         }
-
+        
         // Look for existing Service or create a new one
         const service = ServiceUtils.getOrCreate(
             accessory,
@@ -180,18 +180,18 @@ module.exports = function(RED) {
                 serviceName: node.serviceName,
                 config: config,
             },
-            node.parentService
+            node.parentService,
         )
-
+        
         node.characteristicProperties = CharacteristicUtils.load(
             service,
-            config
+            config,
         )
-
+        
         publishTimers = BridgeUtils.delayedPublish(node, publishTimers)
-
+        
         node.service = service
-
+        
         // The pinCode should be shown to the user until interaction with iOS
         // client starts
         node.status({
@@ -199,22 +199,22 @@ module.exports = function(RED) {
             shape: 'ring',
             text: node.bridgeNode.pinCode,
         })
-
+        
         // Emit message when value changes
         // service.on("characteristic-change", ServiceUtils.onCharacteristicChange);
-
+        
         // Subscribe to set and get on characteristics for that service and get
         // list of all supported
         node.supported = CharacteristicUtils.subscribeAndGetSupported(service)
-
+        
         // Respond to inputs
         node.on('input', ServiceUtils.onInput)
-
+        
         node.on('close', ServiceUtils.onClose)
-
+        
         node.accessory = accessory
     }
-
+    
     return {
         init: init,
     }

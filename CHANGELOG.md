@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Fixed outputs number not being remembered by editor
 -   Fixed saving Software Revision fo Service node
 -   Fixed HAPStorage path on Windows
+-   There was a translation issue, changed pilot to remote in README.
 
 ### Added
 -   Now you can pass Service Name to Subflow Service [#298](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/298)
@@ -19,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 -   Now Firmware, Software and Hardware Revision and Model fields are set by default to NRCHKB version, Manufacturer is NRCHKB by default
+-   Updated hap-nodejs to 0.7.7
+-   Updated dependencies to latest versions
+-   Disallow using port 1880 for Bridge as that port is reserved for node-red
 
 ## [1.1.1] - 2020.06.30
 
