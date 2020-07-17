@@ -5,13 +5,13 @@ module.exports = function(node) {
     const CharacteristicUtils = require('./CharacteristicUtils.js')(node)
     const MdnsUtils = require('./MdnsUtils.js')()
     const EnvironmentUtils = require('./EnvironmentUtils')()
-
+    
     return {
         ServiceUtils: ServiceUtils,
         BridgeUtils: BridgeUtils,
         AccessoryUtils: AccessoryUtils,
         CharacteristicUtils: CharacteristicUtils,
         MdnsUtils: MdnsUtils,
-        EnvironmentUtils: EnvironmentUtils
+        EnvironmentUtils: EnvironmentUtils,
     }
 }

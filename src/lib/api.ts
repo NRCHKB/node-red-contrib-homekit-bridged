@@ -1,5 +1,5 @@
-import {Red} from "node-red";
-import * as HapNodeJS from "hap-nodejs"
+import { Red } from 'node-red'
+import * as HapNodeJS from 'hap-nodejs'
 import express from 'express'
 
 const version = (require('../../package.json').version as string).trim()
@@ -24,9 +24,9 @@ module.exports = function(RED: Red) {
                 return newService
             })
             .sort((a, b) => {
-                if(a.displayName < b.displayName) return -1;
-                if(a.displayName > b.displayName) return 1;
-                return 0;
+                if (a.displayName < b.displayName) return -1
+                if (a.displayName > b.displayName) return 1
+                return 0
             })
             .forEach(serialized => serviceData[serialized.displayName] = serialized)
 
@@ -36,7 +36,7 @@ module.exports = function(RED: Red) {
             RED.auth.needsPermission('homekit.read'),
             (_req: express.Request, res: express.Response) => {
                 res.json(serviceData)
-            }
+            },
         )
     }
 
@@ -59,7 +59,7 @@ module.exports = function(RED: Red) {
                 const match = devVersionRegex.exec(version)
 
                 if (match) {
-                    xyzVersion = 0 + '.' + match[1] + match[2] + match[3] + '.'  + match[4]
+                    xyzVersion = 0 + '.' + match[1] + match[2] + match[3] + '.' + match[4]
                 } else {
                     debug('Could not match dev version')
                 }
@@ -91,9 +91,9 @@ module.exports = function(RED: Red) {
             RED.auth.needsPermission('homekit.read'),
             (_req: express.Request, res: express.Response) => {
                 res.json({
-                    version: xyzVersion
+                    version: xyzVersion,
                 })
-            }
+            },
         )
     }
 
@@ -103,6 +103,6 @@ module.exports = function(RED: Red) {
     }
 
     return {
-        init: init
+        init: init,
     }
 }
