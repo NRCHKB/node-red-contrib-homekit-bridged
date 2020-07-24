@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 -   Now you can pass Service Name to Subflow Service [#298](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/298)
 -   Added Firmware, Software and Hardware Revision fields to Bridge configuration
+-   Now we have a first example example to import in node-red!
 
 ### Changed
 -   Now Firmware, Software and Hardware Revision and Model fields are set by default to NRCHKB version, Manufacturer is NRCHKB by default
