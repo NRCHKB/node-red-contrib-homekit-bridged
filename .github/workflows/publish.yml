@@ -55,7 +55,6 @@ jobs:
       - name: Publish
         if: contains(env.PACKAGE_VERSION, 'dev') != true
         run: |
-          npm i -g yarn
           yarn install --frozen-lockfile
           yarn build
           npm init --scope=nrchkb -y
