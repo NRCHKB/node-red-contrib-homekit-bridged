@@ -1,0 +1,203 @@
+[
+  {
+    "id": "fd58cee.fbdb73",
+    "type": "tab",
+    "label": "Switch Example",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "38688705.a04688",
+    "type": "group",
+    "z": "fd58cee.fbdb73",
+    "name": "Output debug",
+    "style": {
+      "label": true
+    },
+    "nodes": [
+      "d6f9e9ce.b3af8"
+    ],
+    "x": 434,
+    "y": 79,
+    "w": 212,
+    "h": 82
+  },
+  {
+    "id": "d1632249.c45458",
+    "type": "group",
+    "z": "fd58cee.fbdb73",
+    "name": "HomeKit Switch Accessory",
+    "style": {
+      "stroke": "#ffC000",
+      "label": true
+    },
+    "nodes": [
+      "4ea13695.19871"
+    ],
+    "x": 234,
+    "y": 79,
+    "w": 192,
+    "h": 82
+  },
+  {
+    "id": "d3163811.ca7aa8",
+    "type": "group",
+    "z": "fd58cee.fbdb73",
+    "name": "Controls",
+    "style": {
+      "label": true
+    },
+    "nodes": [
+      "e02112b7.b761d",
+      "e9073d2c.84e64"
+    ],
+    "x": 54,
+    "y": 59,
+    "w": 172,
+    "h": 122
+  },
+  {
+    "id": "4ea13695.19871",
+    "type": "homekit-service",
+    "z": "fd58cee.fbdb73",
+    "g": "d1632249.c45458",
+    "isParent": true,
+    "bridge": "3dcda60a.e5ff12",
+    "parentService": "",
+    "name": "My Switch",
+    "serviceName": "Switch",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "NRCHKB",
+    "model": "0.120.5",
+    "serialNo": "Default Serial Number",
+    "firmwareRev": "0.120.5",
+    "hardwareRev": "0.120.5",
+    "softwareRev": "0.120.5",
+    "cameraConfigVideoProcessor": "ffmpeg",
+    "cameraConfigSource": "",
+    "cameraConfigStillImageSource": "",
+    "cameraConfigMaxStreams": 2,
+    "cameraConfigMaxWidth": 1280,
+    "cameraConfigMaxHeight": 720,
+    "cameraConfigMaxFPS": 10,
+    "cameraConfigMaxBitrate": 300,
+    "cameraConfigVideoCodec": "libx264",
+    "cameraConfigAudioCodec": "libfdk_aac",
+    "cameraConfigAudio": false,
+    "cameraConfigPacketSize": 1316,
+    "cameraConfigVerticalFlip": false,
+    "cameraConfigHorizontalFlip": false,
+    "cameraConfigMapVideo": "0:0",
+    "cameraConfigMapAudio": "0:1",
+    "cameraConfigVideoFilter": "scale=1280:720",
+    "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+    "cameraConfigDebug": false,
+    "cameraConfigSnapshotOutput": "disabled",
+    "cameraConfigInterfaceName": "",
+    "characteristicProperties": "{}",
+    "outputs": 2,
+    "x": 330,
+    "y": 120,
+    "wires": [
+      [
+        "d6f9e9ce.b3af8"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "d6f9e9ce.b3af8",
+    "type": "debug",
+    "z": "fd58cee.fbdb73",
+    "g": "38688705.a04688",
+    "name": "",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 530,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "e02112b7.b761d",
+    "type": "inject",
+    "z": "fd58cee.fbdb73",
+    "g": "d3163811.ca7aa8",
+    "name": "On",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"On\":true}",
+    "payloadType": "json",
+    "x": 150,
+    "y": 100,
+    "wires": [
+      [
+        "4ea13695.19871"
+      ]
+    ]
+  },
+  {
+    "id": "e9073d2c.84e64",
+    "type": "inject",
+    "z": "fd58cee.fbdb73",
+    "g": "d3163811.ca7aa8",
+    "name": "Off",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"On\":false}",
+    "payloadType": "json",
+    "x": 150,
+    "y": 140,
+    "wires": [
+      [
+        "4ea13695.19871"
+      ]
+    ]
+  },
+  {
+    "id": "3dcda60a.e5ff12",
+    "type": "homekit-bridge",
+    "z": "",
+    "bridgeName": "My Bridge",
+    "pinCode": "111-11-111",
+    "port": "",
+    "allowInsecureRequest": false,
+    "manufacturer": "NRCHKB",
+    "model": "0.120.5",
+    "serialNo": "Default Serial Number",
+    "firmwareRev": "0.120.5",
+    "hardwareRev": "0.120.5",
+    "softwareRev": "0.120.5",
+    "customMdnsConfig": false,
+    "mdnsMulticast": true,
+    "mdnsInterface": "",
+    "mdnsPort": "",
+    "mdnsIp": "",
+    "mdnsTtl": "",
+    "mdnsLoopback": true,
+    "mdnsReuseAddr": true,
+    "allowMessagePassthrough": true
+  }
+]
