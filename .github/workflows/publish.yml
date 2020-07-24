@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 10
       - run: |
           npm i -g yarn
           yarn install --frozen-lockfile
@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 10
           registry-url: https://registry.npmjs.org/
           always-auth: true
       - name: Extract PACKAGE_VERSION
@@ -48,7 +48,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 10
           registry-url: https://npm.pkg.github.com/
       - name: Extract PACKAGE_VERSION
         run: echo ::set-env name=PACKAGE_VERSION::$(node -p -e "require('./package.json').version")
