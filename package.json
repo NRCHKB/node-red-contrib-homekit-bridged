@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-homekit-bridged",
-  "version": "1.2.0-dev.6",
+  "version": "1.2.0-dev.7",
   "description": "Node-RED nodes to simulate Apple HomeKit devices.",
   "main": "build/homekit.js",
   "scripts": {
@@ -130,6 +130,7 @@
     "node": ">=10.17.0"
   },
   "files": [
-    "/build"
+    "/build",
+    "/examples"
   ]
 }
