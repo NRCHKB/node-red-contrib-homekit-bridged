@@ -3,7 +3,7 @@
 ## Do you need help with your setup?
 Join us on our Discord server (click on the logo below)!
 
-<a href="https://discord.gg/amwV5tq"><img alt="Discord" src="https://github.com/NRCHKB/nrchkb-static/raw/master/img/Discord-Logo%2BWordmark-Color.png" width="400"/></a>
+<a href="https://discord.gg/uvYac5u"><img alt="Discord" src="https://github.com/NRCHKB/nrchkb-static/raw/master/img/Discord-Logo%2BWordmark-Color.png" width="400"/></a>
 
 #### ⚠️ CAUTION ⚠️ 
 ###### Upgrading from versions 0.X to 1.X is a breaking change, all devices will be reset in the Home app. Please review the [release notes](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/releases/tag/v1.0.1) thoroughly before updating!
@@ -293,7 +293,7 @@ Also, thanks to creators of [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) -
 
 ## Contact us
 
- - [Our Discord server](https://discord.gg/amwV5tq) [![Discord](https://img.shields.io/discord/586065987267330068.svg?label=Discord)](https://discord.gg/amwV5tq)
+ - [Our Discord server](https://discord.gg/uvYac5u) [![Discord](https://img.shields.io/discord/586065987267330068.svg?label=Discord)](https://discord.gg/amwV5tq)
  - [Mail directly to Shaquu](mailto:shaquu.github@gmail.com?subject=[NRCHKB])
 
 ##
