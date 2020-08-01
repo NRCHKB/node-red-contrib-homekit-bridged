@@ -1,0 +1,35 @@
+<script type="text/javascript">
+    RED.validators.port = function(port) {
+        return port != 1880 && port >= 1 && port <= 65535 && port === port.toString()
+    }
+
+    const isValueDefined = function(value) {
+        return 'undefined' === typeof value ? false : null !== value
+    }
+
+    let serviceTypes
+    let nrchkbVersion = '0.0.0'
+
+    //HomeKitServiceTypes
+    $.getJSON('nrchkb/service/types', function(data) {
+        serviceTypes = data
+    })
+
+    //NRCHKB version
+    $.ajax({
+        url: 'nrchkb/version',
+        dataType: 'json',
+        async: false,
+        success: function(data) {
+            nrchkbVersion = data.version
+        },
+    })
+
+    const versionValidator = function(value) {
+        return value ? /^(\d+\.)?(\d+\.)?(\.|\d+)$/.test(value) : true
+    }
+
+    const cameraConfigRequiredField = function(value) {
+        return 'CameraControl' === this.serviceName ? (value || '').toString().trim() : true
+    }
+</script>
