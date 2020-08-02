@@ -2,7 +2,7 @@ import { Red } from 'node-red'
 import * as HapNodeJS from 'hap-nodejs'
 import express from 'express'
 
-const version = (require('../../package.json').version as string).trim()
+const version = require('../../package.json').version.trim()
 
 module.exports = function(RED: Red) {
     const debug = require('debug')('NRCHKB:api')
@@ -13,7 +13,7 @@ module.exports = function(RED: Red) {
     } = {}
 
     // Service API
-    const _initServiceAPI = function() {
+    const _initServiceAPI = () => {
         debug('Initialize ServiceAPI')
 
         Object.values(HapNodeJS.Service)
@@ -23,11 +23,7 @@ module.exports = function(RED: Red) {
                 newService.displayName = service.name
                 return newService
             })
-            .sort((a, b) => {
-                if (a.displayName < b.displayName) return -1
-                if (a.displayName > b.displayName) return 1
-                return 0
-            })
+            .sort((a, b) => a.displayName < b.displayName ? -1 : a.displayName > b.displayName ? 1 : 0)
             .forEach(serialized => serviceData[serialized.displayName] = serialized)
 
         // Retrieve Service Types
@@ -41,7 +37,7 @@ module.exports = function(RED: Red) {
     }
 
     // NRCHKB Version API
-    const _initNRCHKBVersionAPI = function() {
+    const _initNRCHKBVersionAPI = () => {
         debug('Initialize NRCHKBVersionAPI')
 
         debug('Running version:', version)
@@ -97,7 +93,7 @@ module.exports = function(RED: Red) {
         )
     }
 
-    const init = function() {
+    const init = () => {
         _initServiceAPI()
         _initNRCHKBVersionAPI()
     }
