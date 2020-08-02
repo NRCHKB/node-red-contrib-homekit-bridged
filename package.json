@@ -6,9 +6,9 @@
   "scripts": {
     "build": "yarn clean && tsc",
     "clean": "rimraf build/lib build/**/*.js",
-    "test": "mocha -r ts-node/register './src/**/*.test.js' --exit",
-    "fix": "eslint --fix \"src/**/*.js\"",
-    "lint": "eslint \"src/**/*.js\""
+    "test": "yarn build && mocha -r ts-node/register './src/**/*.test.[tj]s' --exit",
+    "fix": "eslint --fix \"src/**/*.[tj]s\"",
+    "lint": "eslint \"src/**/*.[tj]s\""
   },
   "repository": {
     "type": "git",
@@ -53,6 +53,7 @@
     "@types/mocha": "^8.0.1",
     "@types/node": "^10.17.28",
     "@types/node-red": "^0.20.1",
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.6.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
@@ -67,6 +68,7 @@
     "typescript": "^3.9.7"
   },
   "eslintConfig": {
+    "parser": "babel-eslint",
     "env": {
       "browser": true,
       "commonjs": true,
@@ -85,7 +87,9 @@
       "SharedArrayBuffer": "readonly"
     },
     "parserOptions": {
-      "ecmaVersion": 2018
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+      "allowImportExportEverywhere": true
     },
     "rules": {
       "prettier/prettier": "off",

@@ -10,4 +10,4 @@ const EnvironmentUtils = () => {
     }
 }
 
-export = EnvironmentUtils
+module.exports = EnvironmentUtils

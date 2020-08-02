@@ -2,7 +2,7 @@ import { Red } from 'node-red'
 import * as HapNodeJS from 'hap-nodejs'
 import express from 'express'
 
-const version = (require('../../package.json').version as string).trim()
+const version = require('../../package.json').version.trim()
 
 module.exports = function(RED: Red) {
     const debug = require('debug')('NRCHKB:api')
