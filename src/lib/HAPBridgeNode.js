@@ -7,7 +7,7 @@ module.exports = function(RED) {
     const Characteristic = HapNodeJS.Characteristic
     const uuid = HapNodeJS.uuid
     
-    const MdnsUtils = require('./utils/MdnsUtils.js')()
+    const MdnsUtils = require('./utils/MdnsUtils')()
     
     const init = function(config) {
         RED.nodes.createNode(this, config)
