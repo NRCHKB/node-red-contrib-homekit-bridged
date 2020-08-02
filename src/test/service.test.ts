@@ -72,42 +72,35 @@ const flow = [
     }
 ]
 
-describe('Service Node',  () => {
+describe('Service Node',  function () {
+    this.timeout(30000)
 
-    beforeEach( (done) => {
+    beforeEach( function (done) {
         helper.startServer(done)
     })
 
-    afterEach( (done) => {
+    afterEach( function (done) {
         helper.unload()
         helper.stopServer(done)
     })
 
-    it('should be loaded',  (done) => {
-        helper.load([nrchkb, homekitBridgeNode, homekitServiceNode], flow, () => {
-            try {
-                const s1 = helper.getNode('s1')
-                s1.should.have.property('type', 'homekit-service')
-                done()
-            } catch (error) {
-                done(new Error(error))
-            }
+    it('should be loaded',  function (done) {
+        helper.load([nrchkb, homekitBridgeNode, homekitServiceNode], flow, function () {
+            const s1 = helper.getNode('s1')
+            s1.should.have.property('type', 'homekit-service')
+            done()
         }).catch((error: any) => {
             done(new Error(error))
         })
     })
 
-    it('should output ON:true payload',  (done) => {
-        helper.load([nrchkb, homekitBridgeNode, homekitServiceNode], flow, () => {
+    it('should output ON:true payload',  function (done) {
+        helper.load([nrchkb, homekitBridgeNode, homekitServiceNode], flow, function () {
             const s1 = helper.getNode('s1')
 
             s1.on('input',  (msg: any) => {
-                try {
-                    msg.should.have.property('On', true)
-                    done()
-                } catch (error) {
-                    done(new Error(error))
-                }
+                msg.should.have.property('On', true)
+                done()
             })
 
             s1.receive({'On':true})
@@ -116,17 +109,13 @@ describe('Service Node',  () => {
         })
     })
 
-    it('should output ON:false payload',  (done) => {
-        helper.load([nrchkb, homekitBridgeNode, homekitServiceNode], flow, () => {
+    it('should output ON:false payload',  function (done) {
+        helper.load([nrchkb, homekitBridgeNode, homekitServiceNode], flow, function () {
             const s1 = helper.getNode('s1')
 
-            s1.on('input',  (msg: any) => {
-                try {
-                    msg.should.have.property('On', false)
-                    done()
-                } catch (error) {
-                    done(new Error(error))
-                }
+            s1.on('input',  function (msg: any) {
+                msg.should.have.property('On', false)
+                done()
             })
 
             s1.receive({'On':false})
