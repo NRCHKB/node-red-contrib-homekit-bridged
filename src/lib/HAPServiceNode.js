@@ -3,9 +3,41 @@ module.exports = function(RED) {
     const HapNodeJS = require('hap-nodejs')
     const uuid = HapNodeJS.uuid
     let publishTimers = {}
+
+    const preInit = function(config) {
+        RED.nodes.createNode(this, config)
+
+        const node = this
+        node.RED = RED
+
+        const ServiceUtils = require('./utils/ServiceUtils')(node)
+
+        new Promise((resolve) => {
+            if (config.waitForSetupMsg) {
+                debug('Waiting for Setup message. It should be of format {"payload":{"nrchkb":{"setup":{}}}}')
+                
+                node.setupDone = false
+
+                node.status({
+                    fill: 'blue',
+                    shape: 'dot',
+                    text: 'Waiting for Setup',
+                })
+
+                node.handleWaitForSetup = (msg) => ServiceUtils.handleWaitForSetup(config, msg, resolve)
+                node.on('input', node.handleWaitForSetup)
+            } else {
+                resolve(config)
+            }
+        }).then((newConfig) => {
+            init.call(node, newConfig)
+        })
+    }
     
     const init = function(config) {
-        RED.nodes.createNode(this, config)
+        this.config = config
+
+        const ServiceUtils = require('./utils/ServiceUtils')(this)
 
         this.isParentNode =
             typeof config.isParent === 'boolean' ? config.isParent : true
@@ -14,7 +46,7 @@ module.exports = function(RED) {
             debug('Starting Parent Service ' + config.name)
             configure(this, config)
         } else {
-            waitForParent(this, config)
+            ServiceUtils.waitForParent(this, config)
                 .then(() => {
                     debug(
                         'Starting ' +
@@ -50,26 +82,6 @@ module.exports = function(RED) {
                     )
                 })
         }
-    }
-    
-    function waitForParent(node, config) {
-        // eslint-disable-next-line no-unused-vars
-        return new Promise((resolve) => {
-            node.status({
-                fill: 'yellow',
-                shape: 'ring',
-                text: 'Waiting for Parent Service',
-            })
-            
-            const checkAndWait = () => {
-                if (RED.nodes.getNode(config.parentService)) {
-                    resolve()
-                } else {
-                    setTimeout(checkAndWait, 1000)
-                }
-            }
-            checkAndWait()
-        })
     }
     
     const configure = function(node, config) {
@@ -208,6 +220,7 @@ module.exports = function(RED) {
     }
     
     return {
-        init: init,
+        preInit,
+        init,
     }
 }

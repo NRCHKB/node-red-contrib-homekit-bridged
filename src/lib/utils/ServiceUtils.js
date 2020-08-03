@@ -252,13 +252,57 @@ module.exports = function(node) {
             node.error('Missing configuration for CameraControl.')
         }
     }
+
+    const waitForParent = (node, config) => {
+        return new Promise((resolve) => {
+            node.status({
+                fill: 'blue',
+                shape: 'dot',
+                text: 'Waiting for Parent Service',
+            })
+
+            const checkAndWait = () => {
+                if (node.RED.nodes.getNode(config.parentService)) {
+                    resolve()
+                } else {
+                    setTimeout(checkAndWait, 1000)
+                }
+            }
+            checkAndWait()
+        })
+    }
+
+    const handleWaitForSetup = (config, msg, resolve) => {
+        if (node.setupDone) {
+            return
+        }
+
+        if (msg.hasOwnProperty('payload')
+            && (msg.payload.hasOwnProperty('nrchkb'))
+            && msg.payload.nrchkb.hasOwnProperty('setup')) {
+            node.setupDone = true
+
+            const newConfig = {
+                ...config,
+                ...msg.payload.nrchkb.setup
+            }
+
+            node.removeListener('input', node.handleWaitForSetup)
+
+            resolve(newConfig)
+        } else {
+            node.warn('Invalid message (required {"payload":{"nrchkb":{"setup":{}}}})')
+        }
+    }
     
     return {
-        getOrCreate: getOrCreate,
-        onCharacteristicGet: onCharacteristicGet,
-        onCharacteristicSet: onCharacteristicSet,
-        onCharacteristicChange: onCharacteristicChange,
-        onInput: onInput,
-        onClose: onClose,
+        getOrCreate,
+        onCharacteristicGet,
+        onCharacteristicSet,
+        onCharacteristicChange,
+        onInput,
+        onClose,
+        waitForParent,
+        handleWaitForSetup
     }
 }

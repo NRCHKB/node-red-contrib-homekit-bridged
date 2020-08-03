@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 -   Added Firmware, Software and Hardware Revision fields to Bridge configuration
 -   Now we have a first example example to import in node-red!
+-   You can make Service node wait for setup message.
 
 ### Changed
 -   Now Firmware, Software and Hardware Revision and Model fields are set by default to NRCHKB version, Manufacturer is NRCHKB by default

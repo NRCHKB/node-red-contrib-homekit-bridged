@@ -177,6 +177,11 @@
         <label for="node-input-characteristicProperties"><i class="fa fa-wrench"></i> Characteristic Properties</label>
         <input type="text" id="node-input-characteristicProperties" style="width: 70%">
     </div>
+
+    <div class="form-row">
+        <label for="node-input-waitForSetupMsg"><i class="fa fa-bug"></i> Wait for Setup message</label>
+        <input type="checkbox" id="node-input-waitForSetupMsg">
+    </div>
 </script>
 
 <script data-help-name="homekit-service" type="text/x-red">
@@ -228,6 +233,7 @@
       <li><strong>Interface Name</strong>: Selects the IP address of a given network interface.</li>
    </ul>
    <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
+   <li><strong>Wait for Setup message</strong>: If yes then Service node will wait for a input message with appropriate payload.</li>
 </ul>
 <h2 id="toc_6">Input Messages</h2>
 <p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
@@ -427,9 +433,12 @@
                     return true
                 },
             },
+            waitForSetupMsg: {
+                value: false
+            },
             outputs: {
                 value: 2,
-            },
+            }
         },
         inputs: 1,
         outputs: 2,
