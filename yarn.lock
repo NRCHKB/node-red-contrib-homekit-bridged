@@ -100,13 +100,13 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@node-red/editor-api@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@node-red/editor-api/-/editor-api-1.1.2.tgz#2fc234f289de0fe2e55a8903d2a4ec7e4e0d42df"
-  integrity sha512-yvA7sO9kqpnojwtnO+K03CsRfU9XBIVYTnPHJYcA94IhxF/sm+iCL1VlZPEMXTEt4VvMfTRKY9U1bHIVAKBtLA==
+"@node-red/editor-api@1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@node-red/editor-api/-/editor-api-1.1.3.tgz#f374bd0098c6361452c1f9d7e6e50d95e579931a"
+  integrity sha512-NejrCeQSPwvIaxxEiwOnU25Ylnu4ZEtumIIy2mWLd0IojE6HXDBGhAqfxtksIyg6TnrqKsID/JxK0mLgTs/npQ==
   dependencies:
-    "@node-red/editor-client" "1.1.2"
-    "@node-red/util" "1.1.2"
+    "@node-red/editor-client" "1.1.3"
+    "@node-red/util" "1.1.3"
     bcryptjs "2.4.3"
     body-parser "1.19.0"
     clone "2.1.2"
@@ -125,15 +125,15 @@
   optionalDependencies:
     bcrypt "3.0.6"
 
-"@node-red/editor-client@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@node-red/editor-client/-/editor-client-1.1.2.tgz#249d0a8b20a45c8f89eadd12912870064f0be019"
-  integrity sha512-cHsRxs/0QWqSO8LtTlwIsbEdTADjy3N5KOB2V1E3pNhz4zPy3+6472bnDF93HmywRen1wOWVXxBQTAf5aOHfaQ==
+"@node-red/editor-client@1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@node-red/editor-client/-/editor-client-1.1.3.tgz#7fe28ff0add3c28a7d4cb4a1a20aa5d6236c4253"
+  integrity sha512-oMVij+p/+RyRVOBSfvv2nt4pmurOOGH+KQglWVN3jiWs2D4mUXgsBfg/mbHn4wtvEBYtKFOQacXL7N22WES02g==
 
-"@node-red/nodes@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@node-red/nodes/-/nodes-1.1.2.tgz#d0dd288224d08406594ed0cb3ffa389975f379da"
-  integrity sha512-sVwwrkCpT/padCcPMIQH4Yro4+qOYBBCkn85FnTY+7KlGLUPLhFQr4A30mWoJX5Wk+zTpe3nXqr9R0ccGrhWYg==
+"@node-red/nodes@1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@node-red/nodes/-/nodes-1.1.3.tgz#3e0e289f65a68535ca024801a06bfc4097612b7c"
+  integrity sha512-XAMSiQrBPqpG7/XZqquZ5V1F/ibaDr/e96BrforFfkVGdzeb/5I+/MI2bSl3s/pJiuj4CuKSkQ7gWKbNwa4mvQ==
   dependencies:
     ajv "6.12.3"
     body-parser "1.19.0"
@@ -161,33 +161,33 @@
     ws "6.2.1"
     xml2js "0.4.23"
 
-"@node-red/registry@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@node-red/registry/-/registry-1.1.2.tgz#dc4686b8b0719c8f884bf158822c9671a604ff62"
-  integrity sha512-ApbQviP0q77zI1BREFhbMbNzP972RB4BtZHUOFbXGbcSLaQpX7QLt7+gNTkwTEg5VwHt1nQPNWbAVdP+Aq3RiA==
+"@node-red/registry@1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@node-red/registry/-/registry-1.1.3.tgz#aef66ecae417d6172f7959c11c3d3e1d03d3fa3c"
+  integrity sha512-ULvrgC7fpClTHluiQcc4EptaYRPEoKdqfozSxL6XJW5x1BRNU9Iv7+5txhKoumcy7a54bavol32VA7/JRyewjg==
   dependencies:
-    "@node-red/util" "1.1.2"
+    "@node-red/util" "1.1.3"
     semver "6.3.0"
     uglify-js "3.10.0"
     when "3.7.8"
 
-"@node-red/runtime@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@node-red/runtime/-/runtime-1.1.2.tgz#870f7b9e590f2cc75fbefadfe3ccd8c180088cb3"
-  integrity sha512-szt7L6/wWZax84VsgER8uZB3rnBHofjb2b1qQzRm4yG02O8YZ8elw1kKi0b6B6D+Xo5h3z29h/oJyYdBS8/9sA==
+"@node-red/runtime@1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@node-red/runtime/-/runtime-1.1.3.tgz#4f16e9c32ac1da4ddb662628019fb529939b6da6"
+  integrity sha512-tJWPDPCFmp2sB+YZaLtPHOuuwNXQdQ15tizz1vL9i0S+0VVXE8SX2WhBzbsBxSitpNxQ6zTfq8bK28Zh75HCVg==
   dependencies:
-    "@node-red/registry" "1.1.2"
-    "@node-red/util" "1.1.2"
+    "@node-red/registry" "1.1.3"
+    "@node-red/util" "1.1.3"
     clone "2.1.2"
     express "4.17.1"
     fs-extra "8.1.0"
     json-stringify-safe "5.0.1"
     when "3.7.8"
 
-"@node-red/util@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@node-red/util/-/util-1.1.2.tgz#d5edadf13364a6b5c9c84b8a06bfc119ec3ed992"
-  integrity sha512-9G45g4W7HcCJ9IpIF76sCbDuqHWHmkAHI+lNE02TC8yvGzEOyb6VMvU0vph5JT499752WSlNQwk/g823VrqYLw==
+"@node-red/util@1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@node-red/util/-/util-1.1.3.tgz#261be34de74b58a27597b30c3dab1618b98a5947"
+  integrity sha512-Wa/L2bFRK9dR8K1zGlhp3Z9tqZgHsKaSK329YQGRIvAApbH5G//58V1oJdj3+9Gg8xza5YXx4Cw9hHs2m1du6A==
   dependencies:
     clone "2.1.2"
     i18next "15.1.2"
@@ -2745,10 +2745,10 @@ mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-mocha@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/mocha/-/mocha-8.1.0.tgz#e651d05dcc5e42389f3412c2173ca13352a8bacd"
-  integrity sha512-sI0gaI1I/jPVu3KFpnveWGadfe3JNBAENqgTUPgLZAUppu725zS2mrVztzAgIR8DUscuS4doEBTx9LATC+HSeA==
+mocha@^8.1.1:
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/mocha/-/mocha-8.1.1.tgz#1de1ba4e9a2c955d96b84e469d7540848223592d"
+  integrity sha512-p7FuGlYH8t7gaiodlFreseLxEmxTgvyG9RgPHODFPySNhwUehu8NIb0vdSt3WFckSneswZ0Un5typYcWElk7HQ==
   dependencies:
     ansi-colors "4.1.1"
     browser-stdout "1.3.1"
@@ -2995,15 +2995,15 @@ node-red-node-test-helper@^0.2.5:
     stoppable "1.1.0"
     supertest "4.0.2"
 
-node-red@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/node-red/-/node-red-1.1.2.tgz#8a1214b023bdeb67c84221577ef024384e2e4f93"
-  integrity sha512-In2GzDLER2Bm5SkuEQVrekrSFtPljpkMaEYcZxNkbTomYixI63PrCm1IJEZjEBjSkFaK5zY1t3sfEHKdAla+MQ==
+node-red@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/node-red/-/node-red-1.1.3.tgz#f46a758f6707880cc6c3134599af5b8d5a1b4931"
+  integrity sha512-U+bxzyjB66dwIm0DZwvCqy34A6CJICro8xNNbMqA8GWnNrY6/ZGuUrmNuApsH3n8stkOPB4CozdR9JpEXTqbtw==
   dependencies:
-    "@node-red/editor-api" "1.1.2"
-    "@node-red/nodes" "1.1.2"
-    "@node-red/runtime" "1.1.2"
-    "@node-red/util" "1.1.2"
+    "@node-red/editor-api" "1.1.3"
+    "@node-red/nodes" "1.1.3"
+    "@node-red/runtime" "1.1.3"
+    "@node-red/util" "1.1.3"
     basic-auth "2.0.1"
     bcryptjs "2.4.3"
     express "4.17.1"
