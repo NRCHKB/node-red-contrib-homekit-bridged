@@ -1,9 +1,10 @@
 import { Red } from 'node-red'
+import * as path from 'path'
+import { HAPStorage } from 'hap-nodejs'
+
+const debug = require('debug')('NRCHKB')
 
 module.exports = (RED: Red) => {
-    const path = require('path')
-    const debug = require('debug')('NRCHKB')
-    const HAPStorage = require('hap-nodejs').HAPStorage
     const API = require('./lib/api')(RED)
 
     // Initialize our storage system

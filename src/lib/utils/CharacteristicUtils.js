@@ -1,7 +1,7 @@
 module.exports = function(node) {
     const HapNodeJS = require('hap-nodejs')
     const Characteristic = HapNodeJS.Characteristic
-    const ServiceUtils = require('./ServiceUtils.js')(node)
+    const ServiceUtils = require('./ServiceUtils')(node)
     
     const load = function(service, config) {
         let characteristicProperties = {}

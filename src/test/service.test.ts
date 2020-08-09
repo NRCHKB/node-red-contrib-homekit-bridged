@@ -113,7 +113,7 @@ describe('Service Node',  function () {
         helper.load([nrchkb, homekitBridgeNode, homekitServiceNode], flow, function () {
             const s1 = helper.getNode('s1')
 
-            s1.on('input',  function (msg: any) {
+            s1.on('input', function (msg: any) {
                 msg.should.have.property('On', false)
                 done()
             })

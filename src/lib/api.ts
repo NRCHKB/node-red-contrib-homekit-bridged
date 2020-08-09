@@ -8,7 +8,7 @@ module.exports = function(RED: Red) {
     const debug = require('debug')('NRCHKB:api')
 
     // Service API response data
-    let serviceData: {
+    const serviceData: {
         [key: string]: HapNodeJS.SerializedService
     } = {}
 

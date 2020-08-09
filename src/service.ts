@@ -5,5 +5,5 @@ module.exports = (RED: Red) => {
     const HAPServiceNode = require('./lib/HAPServiceNode')(RED)
 
     debug('Registering homekit-service type')
-    RED.nodes.registerType('homekit-service', HAPServiceNode.init)
+    RED.nodes.registerType('homekit-service', HAPServiceNode.preInit)
 }

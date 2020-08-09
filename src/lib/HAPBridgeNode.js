@@ -7,12 +7,12 @@ module.exports = function(RED) {
     const Characteristic = HapNodeJS.Characteristic
     const uuid = HapNodeJS.uuid
     
-    const MdnsUtils = require('./utils/MdnsUtils.js')()
+    const MdnsUtils = require('./utils/MdnsUtils')()
     
     const init = function(config) {
         RED.nodes.createNode(this, config)
-        
-        const self = this
+
+        this.config = config
         
         this.name = config.bridgeName
         debug('Setting name to ' + config.bridgeName)
@@ -82,7 +82,8 @@ module.exports = function(RED) {
         )
         
         let bridge = new Bridge(this.name, bridgeUUID)
-        
+
+        const self = this
         this.publish = function() {
             debug(
                 'Publishing bridge with name \'' +
@@ -171,7 +172,7 @@ module.exports = function(RED) {
     }
     
     return {
-        init: init,
+        init,
     }
 }
 
