@@ -1,0 +1,219 @@
+[
+    {
+        "id": "384e0889.1fdae",
+        "type": "group",
+        "z": "60b06629.a2ebd",
+        "name": "Color Bulb: input from device, output to device",
+        "style": {
+            "stroke": "#999999",
+            "fill": "none",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "d838176b.dbaf7",
+            "7bf880d4.3cd4d",
+            "ee1452a5.08edd",
+            "c6ed2a2a.90a01",
+            "8cdfae2b.2f2ce8",
+            "1758401b.6c62e8"
+        ],
+        "x": 14,
+        "y": 659,
+        "w": 752,
+        "h": 162,
+        "info": "# Color Bulb\n\nThis is a color bulb. It accepts and sends out Hue, Saturation, Value, and On/off state.\n\nHue is the color\n\nSaturation is how deep the color is\n\nValue is brightness\n\nOn is power state"
+    },
+    {
+        "id": "d838176b.dbaf7",
+        "type": "debug",
+        "z": "60b06629.a2ebd",
+        "g": "384e0889.1fdae",
+        "name": "Color light output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 630,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "7bf880d4.3cd4d",
+        "type": "homekit-service",
+        "z": "60b06629.a2ebd",
+        "g": "384e0889.1fdae",
+        "isParent": true,
+        "bridge": "409001a1.3e7a78",
+        "parentService": "",
+        "name": "Color",
+        "serviceName": "Lightbulb",
+        "topic": "",
+        "filter": false,
+        "manufacturer": "Garrett",
+        "model": "Color",
+        "serialNo": "42",
+        "firmwareRev": "1.2",
+        "hardwareRev": "1.0.0",
+        "softwareRev": "1.0.0",
+        "cameraConfigVideoProcessor": "ffmpeg",
+        "cameraConfigSource": "",
+        "cameraConfigStillImageSource": "",
+        "cameraConfigMaxStreams": 2,
+        "cameraConfigMaxWidth": 1280,
+        "cameraConfigMaxHeight": 720,
+        "cameraConfigMaxFPS": 10,
+        "cameraConfigMaxBitrate": 300,
+        "cameraConfigVideoCodec": "libx264",
+        "cameraConfigAudioCodec": "libfdk_aac",
+        "cameraConfigAudio": false,
+        "cameraConfigPacketSize": 1316,
+        "cameraConfigVerticalFlip": false,
+        "cameraConfigHorizontalFlip": false,
+        "cameraConfigMapVideo": "0:0",
+        "cameraConfigMapAudio": "0:1",
+        "cameraConfigVideoFilter": "scale=1280:720",
+        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+        "cameraConfigDebug": false,
+        "cameraConfigSnapshotOutput": "disabled",
+        "cameraConfigInterfaceName": "",
+        "characteristicProperties": "{\n    \"Brightness\":true,\n    \"Hue\":true,\n    \"Saturation\":true\n}",
+        "outputs": 2,
+        "x": 410,
+        "y": 780,
+        "wires": [
+            [
+                "d838176b.dbaf7"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "ee1452a5.08edd",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "384e0889.1fdae",
+        "name": "NO RESPONSE",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"On\":\"NO_RESPONSE\"}",
+        "payloadType": "json",
+        "x": 340,
+        "y": 700,
+        "wires": [
+            [
+                "7bf880d4.3cd4d"
+            ]
+        ]
+    },
+    {
+        "id": "c6ed2a2a.90a01",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "384e0889.1fdae",
+        "name": "ON",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"On\":true}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 700,
+        "wires": [
+            [
+                "7bf880d4.3cd4d"
+            ]
+        ]
+    },
+    {
+        "id": "8cdfae2b.2f2ce8",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "384e0889.1fdae",
+        "name": "Reset HSV",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"Brightness\":50,\"Hue\":50,\"Saturation\":50}",
+        "payloadType": "json",
+        "x": 120,
+        "y": 780,
+        "wires": [
+            [
+                "7bf880d4.3cd4d"
+            ]
+        ]
+    },
+    {
+        "id": "1758401b.6c62e8",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "384e0889.1fdae",
+        "name": "OFF",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"On\":false}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 740,
+        "wires": [
+            [
+                "7bf880d4.3cd4d"
+            ]
+        ]
+    },
+    {
+        "id": "409001a1.3e7a78",
+        "type": "homekit-bridge",
+        "z": "",
+        "bridgeName": "Demo 1",
+        "pinCode": "153-10-538",
+        "port": "",
+        "allowInsecureRequest": false,
+        "manufacturer": "NRCHKB",
+        "model": "Demo",
+        "serialNo": "1.1.2",
+        "customMdnsConfig": false,
+        "mdnsMulticast": true,
+        "mdnsInterface": "",
+        "mdnsPort": "",
+        "mdnsIp": "",
+        "mdnsTtl": "",
+        "mdnsLoopback": true,
+        "mdnsReuseAddr": true,
+        "allowMessagePassthrough": true
+    }
+]
