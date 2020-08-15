@@ -1,0 +1,268 @@
+[
+    {
+        "id": "c869b0a5.e4def8",
+        "type": "group",
+        "z": "60b06629.a2ebd",
+        "name": "Fan Simplified: input from device, output to device",
+        "style": {
+            "stroke": "#999999",
+            "fill": "none",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "dadd634c.ae2258",
+            "753e3777.49a1d",
+            "992f4930.012aa",
+            "2497a466.aa0e84",
+            "c53b76fb.7a3cc8",
+            "6c9646ee.1f3a18",
+            "1e42a8f3.cf008f"
+        ],
+        "x": 14,
+        "y": 1819,
+        "w": 752,
+        "h": 202,
+        "info": "# Fan Simple\n\nThis example is for a 3-speed fan.\n\nSpeeds are: <br/>\nLow = 33<br/>\nMedium = 66<br/>\nHigh = 99<br/>\n\nValues outside of this are restricted and will not work. The home app will \"snap\" to these values. Siri will respond to \"set fan to low/medium/high\" with the corresponding value."
+    },
+    {
+        "id": "dadd634c.ae2258",
+        "type": "debug",
+        "z": "60b06629.a2ebd",
+        "g": "c869b0a5.e4def8",
+        "name": "Fan output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 1860,
+        "wires": []
+    },
+    {
+        "id": "753e3777.49a1d",
+        "type": "homekit-service",
+        "z": "60b06629.a2ebd",
+        "g": "c869b0a5.e4def8",
+        "isParent": true,
+        "bridge": "409001a1.3e7a78",
+        "parentService": "",
+        "name": "Fan Speeds",
+        "serviceName": "Fan",
+        "topic": "",
+        "filter": false,
+        "manufacturer": "Gman",
+        "model": "Default Model",
+        "serialNo": "CRX1",
+        "firmwareRev": "1.0.0",
+        "hardwareRev": "1.0.0",
+        "softwareRev": "1.0.0",
+        "cameraConfigVideoProcessor": "ffmpeg",
+        "cameraConfigSource": "",
+        "cameraConfigStillImageSource": "",
+        "cameraConfigMaxStreams": 2,
+        "cameraConfigMaxWidth": 1280,
+        "cameraConfigMaxHeight": 720,
+        "cameraConfigMaxFPS": 10,
+        "cameraConfigMaxBitrate": 300,
+        "cameraConfigVideoCodec": "libx264",
+        "cameraConfigAudioCodec": "libfdk_aac",
+        "cameraConfigAudio": false,
+        "cameraConfigPacketSize": 1316,
+        "cameraConfigVerticalFlip": false,
+        "cameraConfigHorizontalFlip": false,
+        "cameraConfigMapVideo": "0:0",
+        "cameraConfigMapAudio": "0:1",
+        "cameraConfigVideoFilter": "scale=1280:720",
+        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+        "cameraConfigDebug": false,
+        "cameraConfigSnapshotOutput": "disabled",
+        "cameraConfigInterfaceName": "",
+        "characteristicProperties": "{\n    \"RotationSpeed\": {\n        \"minValue\":0,\n        \"maxValue\":99,\n        \"minStep\":33\n    }\n}",
+        "outputs": 2,
+        "x": 430,
+        "y": 1860,
+        "wires": [
+            [
+                "dadd634c.ae2258"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "992f4930.012aa",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "c869b0a5.e4def8",
+        "name": "NO RESPONSE",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"On\":\"NO_RESPONSE\"}",
+        "payloadType": "json",
+        "x": 380,
+        "y": 1940,
+        "wires": [
+            [
+                "753e3777.49a1d"
+            ]
+        ]
+    },
+    {
+        "id": "2497a466.aa0e84",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "c869b0a5.e4def8",
+        "name": "OFF",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"On\":false}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 1860,
+        "wires": [
+            [
+                "753e3777.49a1d"
+            ]
+        ]
+    },
+    {
+        "id": "c53b76fb.7a3cc8",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "c869b0a5.e4def8",
+        "name": "Low",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"On\":true,\"RotationSpeed\":33}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 1900,
+        "wires": [
+            [
+                "753e3777.49a1d"
+            ]
+        ]
+    },
+    {
+        "id": "6c9646ee.1f3a18",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "c869b0a5.e4def8",
+        "name": "Medium",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"On\":true,\"RotationSpeed\":66}",
+        "payloadType": "json",
+        "x": 120,
+        "y": 1940,
+        "wires": [
+            [
+                "753e3777.49a1d"
+            ]
+        ]
+    },
+    {
+        "id": "1e42a8f3.cf008f",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "c869b0a5.e4def8",
+        "name": "High",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"On\":true,\"RotationSpeed\":99}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 1980,
+        "wires": [
+            [
+                "753e3777.49a1d"
+            ]
+        ]
+    },
+    {
+        "id": "409001a1.3e7a78",
+        "type": "homekit-bridge",
+        "z": "",
+        "bridgeName": "Demo 1",
+        "pinCode": "153-10-538",
+        "port": "",
+        "allowInsecureRequest": false,
+        "manufacturer": "NRCHKB",
+        "model": "Demo",
+        "serialNo": "1.1.2",
+        "customMdnsConfig": false,
+        "mdnsMulticast": true,
+        "mdnsInterface": "",
+        "mdnsPort": "",
+        "mdnsIp": "",
+        "mdnsTtl": "",
+        "mdnsLoopback": true,
+        "mdnsReuseAddr": true,
+        "allowMessagePassthrough": true
+    }
+]

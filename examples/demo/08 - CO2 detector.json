@@ -1,0 +1,258 @@
+[
+    {
+        "id": "ab48426e.25466",
+        "type": "group",
+        "z": "60b06629.a2ebd",
+        "name": "CO2 Sensor: input only sensor",
+        "style": {
+            "stroke": "#999999",
+            "fill": "none",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "88892b4.8a61bd8",
+            "3611c654.8a42f2",
+            "62cafcb0.8ade9c",
+            "a0171cdb.f209b",
+            "6f7de764.a6a688",
+            "8758b463.afb0f",
+            "69e8161b.74b7a",
+            "40010b09.c73cdc"
+        ],
+        "x": 14,
+        "y": 839,
+        "w": 752,
+        "h": 202,
+        "info": "# CO2 Sensor\n\nThere are three inputs to this example, one for each level of Carbon Dioxide in the air. Options are:\n\n**0 ppm:** this will assume no CO2 <br/>\n**Safe level:** this will assume a level between 1 and 999 ppm, inclusive <br/>\n**Dangerous level:** this will assume a level between 1,000 and 100,000, inclusive; this will also trigger an alert"
+    },
+    {
+        "id": "88892b4.8a61bd8",
+        "type": "homekit-service",
+        "z": "60b06629.a2ebd",
+        "g": "ab48426e.25466",
+        "isParent": true,
+        "bridge": "409001a1.3e7a78",
+        "parentService": "",
+        "name": "CO2 Sensor",
+        "serviceName": "CarbonDioxideSensor",
+        "topic": "",
+        "filter": false,
+        "manufacturer": "Default Manufacturer",
+        "model": "Carbon",
+        "serialNo": "Default Serial Number",
+        "firmwareRev": "22",
+        "hardwareRev": "11",
+        "cameraConfigVideoProcessor": "",
+        "cameraConfigSource": "",
+        "cameraConfigStillImageSource": "",
+        "cameraConfigMaxStreams": "",
+        "cameraConfigMaxWidth": "",
+        "cameraConfigMaxHeight": "",
+        "cameraConfigMaxFPS": "",
+        "cameraConfigMaxBitrate": "",
+        "cameraConfigVideoCodec": "",
+        "cameraConfigAudioCodec": "",
+        "cameraConfigAudio": false,
+        "cameraConfigPacketSize": "",
+        "cameraConfigVerticalFlip": false,
+        "cameraConfigHorizontalFlip": false,
+        "cameraConfigMapVideo": "",
+        "cameraConfigMapAudio": "",
+        "cameraConfigVideoFilter": "",
+        "cameraConfigAdditionalCommandLine": "",
+        "cameraConfigDebug": false,
+        "cameraConfigSnapshotOutput": "disabled",
+        "cameraConfigInterfaceName": "",
+        "characteristicProperties": "{\n    \"CarbonDioxideLevel\" : true,\n    \"CarbonDioxidePeakLevel\": true,\n    \"StatusActive\" : true\n}",
+        "outputs": 2,
+        "x": 670,
+        "y": 880,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "3611c654.8a42f2",
+        "type": "function",
+        "z": "60b06629.a2ebd",
+        "g": "ab48426e.25466",
+        "name": "Random values, peak value",
+        "func": "// Reset all values to 0 if 0ppm input\nif(msg.payload === 0){\n    context.set('lastPeak',0);\n    newMsg = {\n        payload: {\n            \"CarbonDioxideLevel\":0,\n            \"CarbonDioxidePeakLevel\":0,\n            \"CarbonDioxideDetected\":0\n        }\n    };\n    return newMsg;\n}\n\n// Initialize vars\nvar CurrentLevel = 0;\nvar lastPeak = context.get('lastPeak');\n\n// Set random safe or dangerous levels\nif(msg.payload === \"Safe\"){\n    CurrentLevel = Math.floor(Math.random() * (999 - 1 + 1) + 1);\n}\nif(msg.payload === \"Danger\"){\n    CurrentLevel = Math.floor(Math.random() * (100000 - 1000 + 1) + 1000);\n}\n\n// Formulate output message\nvar newMsg = {\n    payload: {\n        \"CarbonDioxideLevel\" : CurrentLevel,\n        \"CarbonDioxideDetected\" : 0\n    }\n};\n\n// Set new peak level\nif(CurrentLevel > lastPeak){\n    lastPeak = CurrentLevel;\n    context.set('lastPeak',CurrentLevel);\n    newMsg.payload.CarbonDioxidePeakLevel = CurrentLevel;\n}\n\n// Set warning if dangerous\nif (CurrentLevel >= 1000) {\n    newMsg.payload.CarbonDioxideDetected = 1;\n} \n\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is deployed.\ncontext.set('lastPeak',0);\n",
+        "finalize": "",
+        "x": 400,
+        "y": 880,
+        "wires": [
+            [
+                "88892b4.8a61bd8"
+            ]
+        ]
+    },
+    {
+        "id": "62cafcb0.8ade9c",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "ab48426e.25466",
+        "name": "Active",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"StatusActive\":true}",
+        "payloadType": "json",
+        "x": 470,
+        "y": 920,
+        "wires": [
+            [
+                "88892b4.8a61bd8"
+            ]
+        ]
+    },
+    {
+        "id": "a0171cdb.f209b",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "ab48426e.25466",
+        "name": "Inactive",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"StatusActive\":false}",
+        "payloadType": "json",
+        "x": 470,
+        "y": 960,
+        "wires": [
+            [
+                "88892b4.8a61bd8"
+            ]
+        ]
+    },
+    {
+        "id": "6f7de764.a6a688",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "ab48426e.25466",
+        "name": "NO RESPONSE",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"CarbonDioxideLevel\":\"NO_RESPONSE\"}",
+        "payloadType": "json",
+        "x": 440,
+        "y": 1000,
+        "wires": [
+            [
+                "88892b4.8a61bd8"
+            ]
+        ]
+    },
+    {
+        "id": "8758b463.afb0f",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "ab48426e.25466",
+        "name": "0 ppm",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 110,
+        "y": 880,
+        "wires": [
+            [
+                "3611c654.8a42f2"
+            ]
+        ]
+    },
+    {
+        "id": "69e8161b.74b7a",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "ab48426e.25466",
+        "name": "Safe Level",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Safe",
+        "payloadType": "str",
+        "x": 120,
+        "y": 920,
+        "wires": [
+            [
+                "3611c654.8a42f2"
+            ]
+        ]
+    },
+    {
+        "id": "40010b09.c73cdc",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "ab48426e.25466",
+        "name": "Dangerous level",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Danger",
+        "payloadType": "str",
+        "x": 140,
+        "y": 960,
+        "wires": [
+            [
+                "3611c654.8a42f2"
+            ]
+        ]
+    },
+    {
+        "id": "409001a1.3e7a78",
+        "type": "homekit-bridge",
+        "z": "",
+        "bridgeName": "Demo 1",
+        "pinCode": "153-10-538",
+        "port": "",
+        "allowInsecureRequest": false,
+        "manufacturer": "NRCHKB",
+        "model": "Demo",
+        "serialNo": "1.1.2",
+        "customMdnsConfig": false,
+        "mdnsMulticast": true,
+        "mdnsInterface": "",
+        "mdnsPort": "",
+        "mdnsIp": "",
+        "mdnsTtl": "",
+        "mdnsLoopback": true,
+        "mdnsReuseAddr": true,
+        "allowMessagePassthrough": true
+    }
+]

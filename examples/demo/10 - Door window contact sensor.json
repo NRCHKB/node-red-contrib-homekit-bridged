@@ -1,0 +1,268 @@
+[
+    {
+        "id": "a875cc7.a4c42b",
+        "type": "group",
+        "z": "60b06629.a2ebd",
+        "name": "Contact Sensor: input only sensor",
+        "style": {
+            "stroke": "#999999",
+            "fill": "none",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "a5194c26.18c628",
+            "2f9bc0d.42a73c",
+            "dfca0b2d.8b8e8",
+            "d74a610c.09a36",
+            "c15b6468.ae2eb8",
+            "6f7bc7fa.7f4f6",
+            "99b55eb3.e31bf8",
+            "508d9ccf.29e404"
+        ],
+        "x": 14,
+        "y": 1359,
+        "w": 752,
+        "h": 242,
+        "info": "# Contact Sensor\n\nThe contact sensor has one inject node to Open the sensor (door, window, etc). Once open, a ten second timer will run then set it back to closed.\n\nAdditional inputs are for \"No Response\", \"Tampered\", and \"Battery\". Note that this battery will not show a battery level but only a good/low battery status."
+    },
+    {
+        "id": "a5194c26.18c628",
+        "type": "homekit-service",
+        "z": "60b06629.a2ebd",
+        "g": "a875cc7.a4c42b",
+        "isParent": true,
+        "bridge": "409001a1.3e7a78",
+        "parentService": "",
+        "name": "Contact Sensor",
+        "serviceName": "ContactSensor",
+        "topic": "",
+        "filter": false,
+        "manufacturer": "Full Contact",
+        "model": "Door",
+        "serialNo": "Sensor",
+        "firmwareRev": "1.0.0",
+        "hardwareRev": "1.0.0",
+        "softwareRev": "1.0.0",
+        "cameraConfigVideoProcessor": "ffmpeg",
+        "cameraConfigSource": "",
+        "cameraConfigStillImageSource": "",
+        "cameraConfigMaxStreams": 2,
+        "cameraConfigMaxWidth": 1280,
+        "cameraConfigMaxHeight": 720,
+        "cameraConfigMaxFPS": 10,
+        "cameraConfigMaxBitrate": 300,
+        "cameraConfigVideoCodec": "libx264",
+        "cameraConfigAudioCodec": "libfdk_aac",
+        "cameraConfigAudio": false,
+        "cameraConfigPacketSize": 1316,
+        "cameraConfigVerticalFlip": false,
+        "cameraConfigHorizontalFlip": false,
+        "cameraConfigMapVideo": "0:0",
+        "cameraConfigMapAudio": "0:1",
+        "cameraConfigVideoFilter": "scale=1280:720",
+        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+        "cameraConfigDebug": false,
+        "cameraConfigSnapshotOutput": "disabled",
+        "cameraConfigInterfaceName": "",
+        "characteristicProperties": "{\n    \"StatusTampered\":true,\n    \"StatusLowBattery\":true\n}",
+        "outputs": 2,
+        "x": 660,
+        "y": 1400,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "2f9bc0d.42a73c",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "a875cc7.a4c42b",
+        "name": "Tampered",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"StatusTampered\":1}",
+        "payloadType": "json",
+        "x": 120,
+        "y": 1520,
+        "wires": [
+            [
+                "a5194c26.18c628"
+            ]
+        ]
+    },
+    {
+        "id": "dfca0b2d.8b8e8",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "a875cc7.a4c42b",
+        "name": "Clear tampered",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"StatusTampered\":0}",
+        "payloadType": "json",
+        "x": 140,
+        "y": 1560,
+        "wires": [
+            [
+                "a5194c26.18c628"
+            ]
+        ]
+    },
+    {
+        "id": "d74a610c.09a36",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "a875cc7.a4c42b",
+        "name": "Low batt",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"StatusLowBattery\":1}",
+        "payloadType": "json",
+        "x": 480,
+        "y": 1520,
+        "wires": [
+            [
+                "a5194c26.18c628"
+            ]
+        ]
+    },
+    {
+        "id": "c15b6468.ae2eb8",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "a875cc7.a4c42b",
+        "name": "Good batt",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"StatusLowBattery\":0}",
+        "payloadType": "json",
+        "x": 480,
+        "y": 1560,
+        "wires": [
+            [
+                "a5194c26.18c628"
+            ]
+        ]
+    },
+    {
+        "id": "6f7bc7fa.7f4f6",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "a875cc7.a4c42b",
+        "name": "NO RESPONSE",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"ContactSensorState\":\"NO_RESPONSE\"}",
+        "payloadType": "json",
+        "x": 140,
+        "y": 1460,
+        "wires": [
+            [
+                "a5194c26.18c628"
+            ]
+        ]
+    },
+    {
+        "id": "99b55eb3.e31bf8",
+        "type": "trigger",
+        "z": "60b06629.a2ebd",
+        "g": "a875cc7.a4c42b",
+        "name": "10 Sec open",
+        "op1": "",
+        "op2": "{\"ContactSensorState\":0}",
+        "op1type": "pay",
+        "op2type": "json",
+        "duration": "10",
+        "extend": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 350,
+        "y": 1400,
+        "wires": [
+            [
+                "a5194c26.18c628"
+            ]
+        ]
+    },
+    {
+        "id": "508d9ccf.29e404",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "a875cc7.a4c42b",
+        "name": "Open",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "{\"ContactSensorState\":1}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 1400,
+        "wires": [
+            [
+                "99b55eb3.e31bf8"
+            ]
+        ]
+    },
+    {
+        "id": "409001a1.3e7a78",
+        "type": "homekit-bridge",
+        "z": "",
+        "bridgeName": "Demo 1",
+        "pinCode": "153-10-538",
+        "port": "",
+        "allowInsecureRequest": false,
+        "manufacturer": "NRCHKB",
+        "model": "Demo",
+        "serialNo": "1.1.2",
+        "customMdnsConfig": false,
+        "mdnsMulticast": true,
+        "mdnsInterface": "",
+        "mdnsPort": "",
+        "mdnsIp": "",
+        "mdnsTtl": "",
+        "mdnsLoopback": true,
+        "mdnsReuseAddr": true,
+        "allowMessagePassthrough": true
+    }
+]
