@@ -1,6 +1,6 @@
-import { Red } from 'node-red'
+import { NodeAPI } from 'node-red'
 
-module.exports = (RED: Red) => {
+module.exports = (RED: NodeAPI) => {
     const debug = require('debug')('NRCHKB')
     const HAPBridgeNode = require('./lib/HAPBridgeNode')(RED)
 

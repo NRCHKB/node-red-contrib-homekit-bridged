@@ -1,10 +1,10 @@
-import { Red } from 'node-red'
+import { NodeAPI } from 'node-red'
 import * as HapNodeJS from 'hap-nodejs'
 import express from 'express'
 
 const version = require('../../package.json').version.trim()
 
-module.exports = function(RED: Red) {
+module.exports = function(RED: NodeAPI) {
     const debug = require('debug')('NRCHKB:api')
 
     // Service API response data
