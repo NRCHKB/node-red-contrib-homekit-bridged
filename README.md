@@ -3,7 +3,7 @@
 ## Do you need help with your setup?
 Join us on our Discord server (click on the logo below)!
 
-[![NRCHKB Discord](https://discordapp.com/api/guilds/586065987267330068/widget.png?style=banner2)](https://discord.gg/amwV5tq)
+[![NRCHKB Discord](https://discordapp.com/api/guilds/586065987267330068/widget.png?style=banner2)](https://discord.gg/uvYac5u)
 
 #### ⚠️ CAUTION ⚠️ 
 ###### Upgrading from versions 0.X to 1.X is a breaking change, all devices will be reset in the Home app. Please review the [release notes](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/releases/tag/v1.0.1) thoroughly before updating!
@@ -263,7 +263,7 @@ Our [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki)
 #### How can I generate Debug logs?
 
 Stop your node-red instance and start it again using the following command:
-`DEBUG=NRCHKB*,HAP-NodeJS* node-red`
+`DEBUG=NRCHKB*,HAP-NodeJS*,Accessory,HAPServer,EventedHTTPServer node-red`
 
 This should output detailed information regarding everything in the homekit context.
 
@@ -296,7 +296,7 @@ Also, thanks to creators of [HAP-NodeJS](https://github.com/KhaosT/HAP-NodeJS) -
 
 ## Contact us
 
- - [Our Discord server](https://discord.gg/amwV5tq) [![NRCHKB Discord](https://discordapp.com/api/guilds/586065987267330068/widget.png?style=shield)](https://discord.gg/amwV5tq)
+ - [Our Discord server](https://discord.gg/uvYac5u) [![NRCHKB Discord](https://img.shields.io/discord/586065987267330068.svg?label=Discord)](https://discord.gg/amwV5tq)
  - [Mail directly to Shaquu](mailto:shaquu.github@gmail.com?subject=[NRCHKB])
 
 ##
