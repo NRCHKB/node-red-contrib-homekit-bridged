@@ -1,0 +1,232 @@
+<script data-template-name="homekit-bridge" type="text/x-red">
+    <div class="form-row">
+        <label for="node-config-input-pinCode"><i class="fa fa-lock"></i> Pin Code</label>
+        <input type="text" id="node-config-input-pinCode" placeholder="xxx-xx-xxx">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
+        <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign">
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-config-input-allowInsecureRequest" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-config-input-allowInsecureRequest" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-shield"></i> Allow Insecure Request</label>
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
+        <input type="text" id="node-config-input-manufacturer" placeholder="Manufacturer">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
+        <input type="text" id="node-config-input-serialNo" placeholder="Serial Number">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-model"><i class="fa fa-wrench"></i> Model</label>
+        <input type="text" id="node-config-input-model" placeholder="Model">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-firmwareRev"><i class="fa fa-wrench"></i> Firmware Revision</label>
+        <input type="text" id="node-config-input-firmwareRev" placeholder="Firmware Revision">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-hardwareRev"><i class="fa fa-wrench"></i> Hardware Revision</label>
+        <input type="text" id="node-config-input-hardwareRev" placeholder="Hardware Revision">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-softwareRev"><i class="fa fa-wrench"></i> Software Revision</label>
+        <input type="text" id="node-config-input-softwareRev" placeholder="Software Revision">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-bridgeName"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-config-input-bridgeName" placeholder="Name">
+    </div>
+    <hr>
+    <div class="form-row">
+        <input type="checkbox" id="node-config-input-allowMessagePassthrough" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-config-input-allowMessagePassthrough" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-step-forward"></i> Allow Message Passthrough</label>
+    </div>
+    <hr>
+    <div class="form-row">
+        <input type="checkbox" id="node-config-input-customMdnsConfig" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-config-input-customMdnsConfig" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-filter"></i> Custom MDNS Configuration</label>
+    </div>
+    <div id="mdns-configuration" style="display: none;">
+        <div class="form-row">
+            <label for="node-config-input-mdnsMulticast"><i class="fa fa-ellipsis-v"></i> Multicast</label>
+            <input type="checkbox" id="node-config-input-mdnsMulticast" checked>
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-mdnsInterface"><i class="fa fa-location-arrow"></i> Multicast Interface IP</label>
+            <input type="text" id="node-config-input-mdnsInterface" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-mdnsPort"><i class="fa fa-location-arrow"></i> Port</label>
+            <input type="text" id="node-config-input-mdnsPort" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-mdnsIp"><i class="fa fa-location-arrow"></i> Multicast Address IP</label>
+            <input type="text" id="node-config-input-mdnsIp" placeholder="">
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-mdnsTtl"><i class="fa fa-repeat"></i> TTL</label>
+            <input type="text" id="node-config-input-mdnsTtl" placeholder="255">
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-mdnsLoopback"><i class="fa fa-undo"></i> Loopback</label>
+            <input type="checkbox" id="node-config-input-mdnsLoopback" checked>
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-mdnsReuseAddr"><i class="fa fa-location-arrow"></i> Reuse Address</label>
+            <input type="checkbox" id="node-config-input-mdnsReuseAddr" checked>
+        </div>
+    </div>
+    <hr>
+</script>
+
+<script data-help-name="homekit-bridge" type="text/x-red">
+    <h3 id="toc_4">Bridge</h3>
+    <p>The Bridge node is a configuration node, specifying the <em>bridge</em> that iOS sees, i.e. the device that is manually being added by the user. All accessories behind a bridge noded are then automatically added by iOS.
+    </p>
+    <ul>
+        <li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
+        <li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Cannot be 1880 as it is reserved for node-red. Otherwise, leave empty.</li>
+        <li><strong>Allow Insecure Request</strong>: Should we allow insecure request? Default false.</li>
+        <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
+        <li><strong>Firmware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
+        <li><strong>Hardware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
+        <li><strong>Software Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
+        <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>.</li>
+        <li><strong>Allow Message Passthrough</strong>: If you allow then message from node input will be send to node output.</li>
+        <li><strong>Custom MDNS Configuration</strong>: Check if you would like to use custom mdns configuration.</li>
+        <ul>
+            <li><strong>Multicast</strong>: Use udp multicasting. Optional. Default true.</li>
+            <li><strong>Multicast Interface IP:</strong>: Explicitly specify a network interface. Optional. Defaults to all.</li>
+            <li><strong>Port</strong>: Set the udp port. Cannot be 1880 as it is reserved for node-red. Optional. Default 5353.</li>
+            <li><strong>Multicast Address IP</strong>: Set the udp ip. Optional. </li>
+            <li><strong>TTL</strong>: Set the multicast ttl. Optional. </li>
+            <li><strong>Loopback</strong>: Receive your own packets. Optional. Default true.</li>
+            <li><strong>Reuse Address</strong>: Set the reuseAddr option when creating the socket. Optional. Default true.</li>
+        </ul>
+    </ul>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('homekit-bridge', {
+        category: 'config',
+        defaults: {
+            bridgeName: {
+                value: '',
+                required: true,
+            },
+            pinCode: {
+                value: '111-11-111',
+                required: true,
+                validate: RED.validators.regex(/[0-9]{3}-[0-9]{2}-[0-9]{3}/),
+            },
+            port: {
+                required: false,
+                validate: function(value) {
+                    if (value) return RED.validators.port(value)
+                    else return true
+                },
+            },
+            allowInsecureRequest: {
+                value: false,
+                required: true,
+            },
+            manufacturer: {
+                value: 'NRCHKB',
+                required: true,
+            },
+            model: {
+                value: nrchkbVersion,
+                required: true,
+            },
+            serialNo: {
+                value: 'Default Serial Number',
+                required: true,
+            },
+            firmwareRev: {
+                value: nrchkbVersion,
+                required: false,
+                validate: versionValidator,
+            },
+            hardwareRev: {
+                value: nrchkbVersion,
+                required: false,
+                validate: versionValidator,
+            },
+            softwareRev: {
+                value: nrchkbVersion,
+                required: false,
+                validate: versionValidator,
+            },
+            customMdnsConfig: {
+                value: false,
+                required: false,
+            },
+            mdnsMulticast: {
+                value: true,
+                required: false,
+            },
+            mdnsInterface: {
+                required: false,
+            },
+            mdnsPort: {
+                required: false,
+                validate: function(value) {
+                    if (value) return RED.validators.port(value)
+                    else return true
+                },
+            },
+            mdnsIp: {
+                required: false,
+            },
+            mdnsTtl: {
+                required: false,
+            },
+            mdnsLoopback: {
+                value: true,
+                required: false,
+            },
+            mdnsReuseAddr: {
+                value: true,
+                required: false,
+            },
+            allowMessagePassthrough: {
+                value: true,
+                required: true,
+            },
+        },
+        label: function() {
+            return this.bridgeName || 'Bridge'
+        },
+        labelStyle: function() {
+            return this.bridgeName ? 'node_label_italic' : ''
+        },
+        oneditprepare: function() {
+            if (typeof this.allowMessagePassthrough == 'undefined') {
+                this.allowMessagePassthrough = true
+                $('#node-config-input-allowMessagePassthrough').prop(
+                    'checked',
+                    true,
+                )
+            }
+
+            let customMdnsConfigCheckbox = $(
+                '#node-config-input-customMdnsConfig',
+            )
+            let mdnsConfiguration = $('#mdns-configuration')
+
+            customMdnsConfigCheckbox
+                .change(function() {
+                    if (this.checked) {
+                        mdnsConfiguration.fadeIn('fast')
+                    } else {
+                        mdnsConfiguration.fadeOut('fast')
+                    }
+                })
+                .change()
+        },
+    })
+</script>

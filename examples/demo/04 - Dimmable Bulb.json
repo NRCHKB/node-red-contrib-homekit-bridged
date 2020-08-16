@@ -1,0 +1,192 @@
+[
+    {
+        "id": "3a57bebe.a3b222",
+        "type": "group",
+        "z": "60b06629.a2ebd",
+        "name": "Dimmable Bulb: input from device, output to device",
+        "style": {
+            "stroke": "#999999",
+            "fill": "none",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "459254fe.49c72c",
+            "379657db.a99df8",
+            "52a07047.03ce7",
+            "253b3550.729caa",
+            "b9bc7f3d.51acf"
+        ],
+        "x": 14,
+        "y": 519,
+        "w": 752,
+        "h": 122,
+        "info": "# Dimmable Bulb\n\nThis is a dimmable bulb. The Characteristic Properties enable brightness. It is a white bulb which can be adjusted from 0 to 100% brightness."
+    },
+    {
+        "id": "459254fe.49c72c",
+        "type": "homekit-service",
+        "z": "60b06629.a2ebd",
+        "g": "3a57bebe.a3b222",
+        "isParent": true,
+        "bridge": "409001a1.3e7a78",
+        "parentService": "",
+        "name": "Dimmable",
+        "serviceName": "Lightbulb",
+        "topic": "",
+        "filter": false,
+        "manufacturer": "Garrett",
+        "model": "Dummy",
+        "serialNo": "Default Serial Number",
+        "firmwareRev": "1.1.9",
+        "hardwareRev": "1.0.0",
+        "softwareRev": "1.0.0",
+        "cameraConfigVideoProcessor": "ffmpeg",
+        "cameraConfigSource": "",
+        "cameraConfigStillImageSource": "",
+        "cameraConfigMaxStreams": 2,
+        "cameraConfigMaxWidth": 1280,
+        "cameraConfigMaxHeight": 720,
+        "cameraConfigMaxFPS": 10,
+        "cameraConfigMaxBitrate": 300,
+        "cameraConfigVideoCodec": "libx264",
+        "cameraConfigAudioCodec": "libfdk_aac",
+        "cameraConfigAudio": false,
+        "cameraConfigPacketSize": 1316,
+        "cameraConfigVerticalFlip": false,
+        "cameraConfigHorizontalFlip": false,
+        "cameraConfigMapVideo": "0:0",
+        "cameraConfigMapAudio": "0:1",
+        "cameraConfigVideoFilter": "scale=1280:720",
+        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+        "cameraConfigDebug": false,
+        "cameraConfigSnapshotOutput": "disabled",
+        "cameraConfigInterfaceName": "",
+        "characteristicProperties": "{\n    \"Brightness\":true\n}",
+        "outputs": 2,
+        "x": 380,
+        "y": 600,
+        "wires": [
+            [
+                "379657db.a99df8"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "379657db.a99df8",
+        "type": "debug",
+        "z": "60b06629.a2ebd",
+        "g": "3a57bebe.a3b222",
+        "name": "Dimmable light output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 620,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "52a07047.03ce7",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "3a57bebe.a3b222",
+        "name": "NO RESPONSE",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"On\":\"NO_RESPONSE\"}",
+        "payloadType": "json",
+        "x": 320,
+        "y": 560,
+        "wires": [
+            [
+                "459254fe.49c72c"
+            ]
+        ]
+    },
+    {
+        "id": "253b3550.729caa",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "3a57bebe.a3b222",
+        "name": "ON",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"On\":true}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 560,
+        "wires": [
+            [
+                "459254fe.49c72c"
+            ]
+        ]
+    },
+    {
+        "id": "b9bc7f3d.51acf",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "3a57bebe.a3b222",
+        "name": "OFF",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"On\":false}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 600,
+        "wires": [
+            [
+                "459254fe.49c72c"
+            ]
+        ]
+    },
+    {
+        "id": "409001a1.3e7a78",
+        "type": "homekit-bridge",
+        "z": "",
+        "bridgeName": "Demo 1",
+        "pinCode": "153-10-538",
+        "port": "",
+        "allowInsecureRequest": false,
+        "manufacturer": "NRCHKB",
+        "model": "Demo",
+        "serialNo": "1.1.2",
+        "customMdnsConfig": false,
+        "mdnsMulticast": true,
+        "mdnsInterface": "",
+        "mdnsPort": "",
+        "mdnsIp": "",
+        "mdnsTtl": "",
+        "mdnsLoopback": true,
+        "mdnsReuseAddr": true,
+        "allowMessagePassthrough": true
+    }
+]

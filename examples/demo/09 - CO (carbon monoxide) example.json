@@ -1,0 +1,293 @@
+[
+    {
+        "id": "6eaa9b9e.282734",
+        "type": "group",
+        "z": "60b06629.a2ebd",
+        "name": "CO plus CO2 Sensor: input only sensor",
+        "style": {
+            "stroke": "#999999",
+            "fill": "none",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "2e6738a6.ef5dd8",
+            "79889759.8219c",
+            "7f53465b.356a68",
+            "97aff586.786ff8",
+            "659ff3da.236404",
+            "e6105066.f8911",
+            "b433a780.665a7",
+            "d4b30334.a19e58",
+            "b0eeeb34.2dde8"
+        ],
+        "x": 14,
+        "y": 1059,
+        "w": 752,
+        "h": 282,
+        "info": "# Combined Sensor\nThis is a sensor which will display both Carbon Monoxide (poisonous, deadly gas) and Carbon Dioxide (what humans exhale) levels.\n\n# CO Sensor\n\nThere are three inputs to this example, one for each level of Carbon Monoxide in the air. Options are:\n\n**0 ppm:** this will assume no CO in the air <br/>\n**Low level:** this will assume a level between 1 and 35 ppm, inclusive. This level is generally assumed to not cause problems in healthy adults <br/>\n**Dangerous level:** this will assume a level between 35 and 5000, inclusive; this will also trigger an alert in Home app\n\n## IF YOU HAVE A CARBON MONOXIDE DETECTOR EVER READING ABOVE 35 PPM, PLEASE EVACUATE THE AREA AND SEEK FRESH AIR IMMEDIATELY TO AVOID RISK OF DEATH ##\n\n# CO2 Sensor\n\nThere are three inputs to this example, one for each level of Carbon Dioxide in the air. Options are:\n\n**0 ppm:** this will assume no CO2 in the air <br/>\n**CO2 Level:** this will assume a level between 1 and 100,000 ppm, inclusive <br/>\n**Dangerous level:** this will assume a level between 1,000 and 100,000, inclusive\n\n"
+    },
+    {
+        "id": "2e6738a6.ef5dd8",
+        "type": "homekit-service",
+        "z": "60b06629.a2ebd",
+        "g": "6eaa9b9e.282734",
+        "isParent": true,
+        "bridge": "409001a1.3e7a78",
+        "parentService": "",
+        "name": "CO detector",
+        "serviceName": "CarbonMonoxideSensor",
+        "topic": "",
+        "filter": false,
+        "manufacturer": "MONOxide",
+        "model": "1",
+        "serialNo": "2",
+        "firmwareRev": "2",
+        "hardwareRev": "2",
+        "softwareRev": "1.0.0",
+        "cameraConfigVideoProcessor": "ffmpeg",
+        "cameraConfigSource": "",
+        "cameraConfigStillImageSource": "",
+        "cameraConfigMaxStreams": 2,
+        "cameraConfigMaxWidth": 1280,
+        "cameraConfigMaxHeight": 720,
+        "cameraConfigMaxFPS": 10,
+        "cameraConfigMaxBitrate": 300,
+        "cameraConfigVideoCodec": "libx264",
+        "cameraConfigAudioCodec": "libfdk_aac",
+        "cameraConfigAudio": false,
+        "cameraConfigPacketSize": 1316,
+        "cameraConfigVerticalFlip": false,
+        "cameraConfigHorizontalFlip": false,
+        "cameraConfigMapVideo": "0:0",
+        "cameraConfigMapAudio": "0:1",
+        "cameraConfigVideoFilter": "scale=1280:720",
+        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+        "cameraConfigDebug": false,
+        "cameraConfigSnapshotOutput": "disabled",
+        "cameraConfigInterfaceName": "",
+        "characteristicProperties": "{\n    \"CarbonMonoxideLevel\":{\n        \"maxValue\":5000\n    },\n    \"CarbonMonoxidePeakLevel\":{\n        \"maxValue\":5000\n    },\n    \"CarbonDioxideLevel\":true,\n    \"CarbonDioxidePeakLevel\":true\n}",
+        "outputs": 2,
+        "x": 670,
+        "y": 1100,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "79889759.8219c",
+        "type": "function",
+        "z": "60b06629.a2ebd",
+        "g": "6eaa9b9e.282734",
+        "name": "Carbon DIoxide",
+        "func": "if(msg.payload === 0){\n    context.set('lastPeak',0);\n    newMsg = {\n        payload: {\n            \"CarbonDioxideLevel\":0\n        }\n    }\n    return newMsg;\n}\n\n// Initialize vars\nvar CurrentLevel = 0;\nvar lastPeak = context.get('lastPeak');\n\n// Set random level\nif(msg.payload === \"CO2\"){\n    CurrentLevel = Math.floor(Math.random() * (100000 - 1 + 1) + 1);\n}\n\n\n// Formulate output message\nvar newMsg = {\n    payload: {\n        \"CarbonDioxideLevel\" : CurrentLevel\n    }\n};\n\n// Set new peak level\nif(CurrentLevel > lastPeak){\n    lastPeak = CurrentLevel;\n    context.set('lastPeak',CurrentLevel);\n    newMsg.payload.CarbonDioxidePeakLevel = CurrentLevel;\n}\n\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Code added here will be run once\n// whenever the node is deployed.\ncontext.set('lastPeak',0);",
+        "finalize": "",
+        "x": 380,
+        "y": 1260,
+        "wires": [
+            [
+                "2e6738a6.ef5dd8"
+            ]
+        ]
+    },
+    {
+        "id": "7f53465b.356a68",
+        "type": "function",
+        "z": "60b06629.a2ebd",
+        "g": "6eaa9b9e.282734",
+        "name": "Carbon MONoxide",
+        "func": "// Reset all values to 0 if 0ppm input\nif(msg.payload === 0){\n    context.set('lastPeak',0);\n    newMsg = {\n        payload: {\n            \"CarbonMonoxideLevel\":0,\n            \"CarbonMonoxidePeakLevel\":0,\n            \"CarbonMonoxideDetected\":0\n        }\n    };\n    return newMsg;\n}\n\n// Initialize vars\nvar CurrentLevel = 0;\nvar lastPeak = context.get('lastPeak');\n\n// Set random Low or Dangerous levels\nif(msg.payload === \"Low\"){\n    CurrentLevel = Math.floor(Math.random() * (35 - 1 + 1) + 1);\n}\nif(msg.payload === \"Danger\"){\n    CurrentLevel = Math.floor(Math.random() * (5000 - 35 + 1) + 35);\n}\n\n// Formulate output message\nvar newMsg = {\n    payload: {\n        \"CarbonMonoxideLevel\" : CurrentLevel,\n        \"CarbonMonoxideDetected\" : 0\n    }\n};\n\n// Set new peak level\nif(CurrentLevel > lastPeak){\n    lastPeak = CurrentLevel;\n    context.set('lastPeak',CurrentLevel);\n    newMsg.payload.CarbonMonoxidePeakLevel = CurrentLevel;\n}\n\n// Set warning if dangerous\nif (CurrentLevel >= 35) {\n    newMsg.payload.CarbonMonoxideDetected = 1;\n} \n\nreturn newMsg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 390,
+        "y": 1140,
+        "wires": [
+            [
+                "2e6738a6.ef5dd8"
+            ]
+        ]
+    },
+    {
+        "id": "97aff586.786ff8",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "6eaa9b9e.282734",
+        "name": "NO RESPONSE",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"CarbonMonoxideLevel\":\"NO_RESPONSE\"}",
+        "payloadType": "json",
+        "x": 400,
+        "y": 1100,
+        "wires": [
+            [
+                "2e6738a6.ef5dd8"
+            ]
+        ]
+    },
+    {
+        "id": "659ff3da.236404",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "6eaa9b9e.282734",
+        "name": "Clear CO2 Peak",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 140,
+        "y": 1260,
+        "wires": [
+            [
+                "79889759.8219c"
+            ]
+        ]
+    },
+    {
+        "id": "e6105066.f8911",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "6eaa9b9e.282734",
+        "name": "0 ppm",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 130,
+        "y": 1100,
+        "wires": [
+            [
+                "7f53465b.356a68"
+            ]
+        ]
+    },
+    {
+        "id": "b433a780.665a7",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "6eaa9b9e.282734",
+        "name": "CO2 Level",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "CO2",
+        "payloadType": "str",
+        "x": 120,
+        "y": 1300,
+        "wires": [
+            [
+                "79889759.8219c"
+            ]
+        ]
+    },
+    {
+        "id": "d4b30334.a19e58",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "6eaa9b9e.282734",
+        "name": "Low level",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Low",
+        "payloadType": "str",
+        "x": 140,
+        "y": 1140,
+        "wires": [
+            [
+                "7f53465b.356a68"
+            ]
+        ]
+    },
+    {
+        "id": "b0eeeb34.2dde8",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "6eaa9b9e.282734",
+        "name": "Danger level",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Danger",
+        "payloadType": "str",
+        "x": 150,
+        "y": 1180,
+        "wires": [
+            [
+                "7f53465b.356a68"
+            ]
+        ]
+    },
+    {
+        "id": "409001a1.3e7a78",
+        "type": "homekit-bridge",
+        "z": "",
+        "bridgeName": "Demo 1",
+        "pinCode": "153-10-538",
+        "port": "",
+        "allowInsecureRequest": false,
+        "manufacturer": "NRCHKB",
+        "model": "Demo",
+        "serialNo": "1.1.2",
+        "customMdnsConfig": false,
+        "mdnsMulticast": true,
+        "mdnsInterface": "",
+        "mdnsPort": "",
+        "mdnsIp": "",
+        "mdnsTtl": "",
+        "mdnsLoopback": true,
+        "mdnsReuseAddr": true,
+        "allowMessagePassthrough": true
+    }
+]

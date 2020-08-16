@@ -1,0 +1,331 @@
+[
+    {
+        "id": "60e44fde.c914f8",
+        "type": "group",
+        "z": "60b06629.a2ebd",
+        "name": "Air Purifier: input power state, output commands device",
+        "style": {
+            "stroke": "#999999",
+            "fill": "none",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "8dea49.4a770db8",
+            "5302e4aa.1b466c",
+            "bfe1c73d.c165a8",
+            "9739d842.a402f",
+            "87048a6e.df64e8",
+            "db412cea.4a62f8",
+            "46418e19.aa6d6",
+            "664dadf9.85d0d4",
+            "d7cd8a56.628178",
+            "3de34c4c.1871a4",
+            "ee8894e4.f1855"
+        ],
+        "x": 14,
+        "y": 119,
+        "w": 822,
+        "h": 162,
+        "info": "Turning the device on or off will send:\n`{\"Active\":[0, 1]}`\n\nAfter changing power state, the device will be \"Turning on\" or \"Turning off\" until a current state is sent of:\n`{\"CurrentAirPurifierState\":[0, 1, 2]}`\n0: off <br/>\n1: idle <br/>\n2: on <br/>\n\nThere will be a slider in the home app for sending `RotationSpeed`\n\nThere will be a switch on Home app for \"Oscillate\" which sends:\n`{\"SwingMode\":[0,1]}`\n\nChanging mode to manual to auto will send payload:\n`{\"TargetAirPurifierState\":[0, 1]}`\n\nChild lock will send \n`{\"LockPhysicalControls\": [0, 1]}`\n\n"
+    },
+    {
+        "id": "8dea49.4a770db8",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "60e44fde.c914f8",
+        "name": "off",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"CurrentAirPurifierState\":0}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 160,
+        "wires": [
+            [
+                "5302e4aa.1b466c"
+            ]
+        ]
+    },
+    {
+        "id": "5302e4aa.1b466c",
+        "type": "homekit-service",
+        "z": "60b06629.a2ebd",
+        "g": "60e44fde.c914f8",
+        "isParent": true,
+        "bridge": "409001a1.3e7a78",
+        "parentService": "",
+        "name": "Air purifier",
+        "serviceName": "AirPurifier",
+        "topic": "",
+        "filter": false,
+        "manufacturer": "Purity",
+        "model": "Air",
+        "serialNo": "23",
+        "firmwareRev": "1.0.0",
+        "hardwareRev": "1.0.0",
+        "softwareRev": "1.0.0",
+        "cameraConfigVideoProcessor": "ffmpeg",
+        "cameraConfigSource": "",
+        "cameraConfigStillImageSource": "",
+        "cameraConfigMaxStreams": 2,
+        "cameraConfigMaxWidth": 1280,
+        "cameraConfigMaxHeight": 720,
+        "cameraConfigMaxFPS": 10,
+        "cameraConfigMaxBitrate": 300,
+        "cameraConfigVideoCodec": "libx264",
+        "cameraConfigAudioCodec": "libfdk_aac",
+        "cameraConfigAudio": false,
+        "cameraConfigPacketSize": 1316,
+        "cameraConfigVerticalFlip": false,
+        "cameraConfigHorizontalFlip": false,
+        "cameraConfigMapVideo": "0:0",
+        "cameraConfigMapAudio": "0:1",
+        "cameraConfigVideoFilter": "scale=1280:720",
+        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+        "cameraConfigDebug": false,
+        "cameraConfigSnapshotOutput": "disabled",
+        "cameraConfigInterfaceName": "",
+        "characteristicProperties": "{\n    \"SwingMode\":true,\n    \"RotationSpeed\":true,\n    \"LockPhysicalControls\":true\n}",
+        "outputs": 2,
+        "x": 290,
+        "y": 160,
+        "wires": [
+            [
+                "bfe1c73d.c165a8",
+                "9739d842.a402f"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "bfe1c73d.c165a8",
+        "type": "debug",
+        "z": "60b06629.a2ebd",
+        "g": "60e44fde.c914f8",
+        "name": "Purifier output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 420,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "9739d842.a402f",
+        "type": "function",
+        "z": "60b06629.a2ebd",
+        "g": "60e44fde.c914f8",
+        "name": "on/off",
+        "func": "if (msg.hap !== undefined && msg.hap.context !== undefined){\n    if (msg.payload.Active === 1){\n        return [msg,null];\n    }\n    if (msg.payload.Active === 0){\n        return [null,msg];\n    }\n}\nreturn;",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 450,
+        "y": 160,
+        "wires": [
+            [
+                "664dadf9.85d0d4",
+                "d7cd8a56.628178"
+            ],
+            [
+                "3de34c4c.1871a4"
+            ]
+        ],
+        "outputLabels": [
+            "On",
+            "Off"
+        ]
+    },
+    {
+        "id": "87048a6e.df64e8",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "60e44fde.c914f8",
+        "name": "idle",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"CurrentAirPurifierState\":1}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 200,
+        "wires": [
+            [
+                "5302e4aa.1b466c"
+            ]
+        ]
+    },
+    {
+        "id": "db412cea.4a62f8",
+        "type": "inject",
+        "z": "60b06629.a2ebd",
+        "g": "60e44fde.c914f8",
+        "name": "on",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"CurrentAirPurifierState\":2}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 240,
+        "wires": [
+            [
+                "5302e4aa.1b466c"
+            ]
+        ]
+    },
+    {
+        "id": "46418e19.aa6d6",
+        "type": "link in",
+        "z": "60b06629.a2ebd",
+        "g": "60e44fde.c914f8",
+        "name": "",
+        "links": [
+            "ee8894e4.f1855"
+        ],
+        "x": 235,
+        "y": 240,
+        "wires": [
+            [
+                "5302e4aa.1b466c"
+            ]
+        ]
+    },
+    {
+        "id": "664dadf9.85d0d4",
+        "type": "trigger",
+        "z": "60b06629.a2ebd",
+        "g": "60e44fde.c914f8",
+        "name": "5 sec to idle",
+        "op1": "",
+        "op2": "{\"CurrentAirPurifierState\":1}",
+        "op1type": "nul",
+        "op2type": "json",
+        "duration": "5",
+        "extend": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 650,
+        "y": 160,
+        "wires": [
+            [
+                "ee8894e4.f1855"
+            ]
+        ]
+    },
+    {
+        "id": "d7cd8a56.628178",
+        "type": "trigger",
+        "z": "60b06629.a2ebd",
+        "g": "60e44fde.c914f8",
+        "name": "10 sec to on",
+        "op1": "",
+        "op2": "{\"CurrentAirPurifierState\":2}",
+        "op1type": "nul",
+        "op2type": "json",
+        "duration": "10",
+        "extend": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 650,
+        "y": 200,
+        "wires": [
+            [
+                "ee8894e4.f1855"
+            ]
+        ]
+    },
+    {
+        "id": "3de34c4c.1871a4",
+        "type": "trigger",
+        "z": "60b06629.a2ebd",
+        "g": "60e44fde.c914f8",
+        "name": "5 sec to off",
+        "op1": "",
+        "op2": "{\"CurrentAirPurifierState\":0}",
+        "op1type": "nul",
+        "op2type": "json",
+        "duration": "5",
+        "extend": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 650,
+        "y": 240,
+        "wires": [
+            [
+                "ee8894e4.f1855"
+            ]
+        ]
+    },
+    {
+        "id": "ee8894e4.f1855",
+        "type": "link out",
+        "z": "60b06629.a2ebd",
+        "g": "60e44fde.c914f8",
+        "name": "",
+        "links": [
+            "46418e19.aa6d6"
+        ],
+        "x": 795,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "409001a1.3e7a78",
+        "type": "homekit-bridge",
+        "z": "",
+        "bridgeName": "Demo 1",
+        "pinCode": "153-10-538",
+        "port": "",
+        "allowInsecureRequest": false,
+        "manufacturer": "NRCHKB",
+        "model": "Demo",
+        "serialNo": "1.1.2",
+        "customMdnsConfig": false,
+        "mdnsMulticast": true,
+        "mdnsInterface": "",
+        "mdnsPort": "",
+        "mdnsIp": "",
+        "mdnsTtl": "",
+        "mdnsLoopback": true,
+        "mdnsReuseAddr": true,
+        "allowMessagePassthrough": true
+    }
+]
