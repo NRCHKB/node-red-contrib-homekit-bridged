@@ -35,7 +35,7 @@ To install NRCHKB node run the following command in your Node-RED user directory
 
 ### Docker
 
-You can also pull a [docker image](https://hub.docker.com/r/raymondmm/node-red-homekit/) containing everything needed to get started, thanks to [Raymond Mouthaan](https://github.com/RaymondMouthaan).
+You can also pull a [docker image](https://github.com/NRCHKB/node-red-contrib-homekit-docker) containing everything needed to get started, thanks to [Raymond Mouthaan](https://github.com/RaymondMouthaan).
 
 ## Nodes
 
