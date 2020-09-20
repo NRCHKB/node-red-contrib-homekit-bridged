@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [x.y.z]
 
 ### Changed
--   Updated hap-nodejs to 0.7.9
+-   Updated hap-nodejs to 0.8.2
 -   Updated dependencies to latest versions
 
 ## [1.2.0] - 2020.08.16
