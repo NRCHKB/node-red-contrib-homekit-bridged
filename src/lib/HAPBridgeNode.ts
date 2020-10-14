@@ -1,4 +1,7 @@
-module.exports = function(RED) {
+import { NodeAPI } from 'node-red'
+import HAPBridgeConfigType from './types/HAPBridgeConfigType'
+
+module.exports = (RED: NodeAPI) => {
     const debug = require('debug')('NRCHKB:HAPBridgeNode')
     const HapNodeJS = require('hap-nodejs')
     const Bridge = HapNodeJS.Bridge
@@ -8,8 +11,8 @@ module.exports = function(RED) {
     const uuid = HapNodeJS.uuid
     
     const MdnsUtils = require('./utils/MdnsUtils')()
-    
-    const init = function(config) {
+
+    const init = function(this: any, config: HAPBridgeConfigType) {
         RED.nodes.createNode(this, config)
 
         this.config = config
@@ -48,7 +51,7 @@ module.exports = function(RED) {
             }
             
             if (MdnsUtils.checkPort(config.mdnsPort)) {
-                this.mdnsConfig.port = parseInt(config.mdnsPort)
+                this.mdnsConfig.port = parseInt(config.mdnsPort.toString())
             }
             
             if (MdnsUtils.checkIp(config.mdnsIp)) {
@@ -56,7 +59,7 @@ module.exports = function(RED) {
             }
             
             if (MdnsUtils.checkTtl(config.mdnsTtl)) {
-                this.mdnsConfig.ttl = parseInt(config.mdnsTtl)
+                this.mdnsConfig.ttl = parseInt(config.mdnsTtl.toString())
             }
             
             if (MdnsUtils.checkLoopback(config.mdnsLoopback)) {
@@ -135,7 +138,7 @@ module.exports = function(RED) {
             return true
         }
         
-        this.on('close', function(removed, done) {
+        this.on('close', function(removed: any, done: () => any) {
             if (removed) {
                 // This node has been deleted
                 bridge.destroy()
@@ -149,7 +152,7 @@ module.exports = function(RED) {
             done()
         })
         
-        bridge.on('identify', function(paired, callback) {
+        bridge.on('identify', function(paired: any, callback: () => any) {
             if (paired) {
                 debug('Identify called on paired Bridge ' + self.name)
             } else {
@@ -170,18 +173,29 @@ module.exports = function(RED) {
         
         this.bridge = bridge
     }
+
+    const macify = (nodeId: string) => {
+        if (nodeId) {
+            const noDecimalStr = nodeId.replace('.', '')
+            const paddedStr = noDecimalStr.padEnd(12, '0')
+
+            const match = paddedStr.match(/.{1,2}/g)
+
+            if (match) {
+                return match
+                    .join(':')
+                    .substr(0, 17)
+                    .toUpperCase()
+            } else {
+                throw new Error('match failed in macify process for padded string ' + paddedStr)
+            }
+        } else {
+            throw new Error('nodeId cannot be empty in macify process')
+        }
+    }
     
     return {
         init,
+        macify
     }
-}
-
-function macify(nodeId) {
-    const noDecimalStr = nodeId.replace('.', '')
-    const paddedStr = noDecimalStr.padEnd(12, '0')
-    return paddedStr
-        .match(/.{1,2}/g)
-        .join(':')
-        .substr(0, 17)
-        .toUpperCase()
 }

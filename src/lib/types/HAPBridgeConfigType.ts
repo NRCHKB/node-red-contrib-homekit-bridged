@@ -1,4 +1,6 @@
-type HAPBridgeConfigType = {
+import { NodeDef } from 'node-red'
+
+type HAPBridgeConfigType = NodeDef & {
     bridgeName: string,
     pinCode: string,
     port: number,
