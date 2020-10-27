@@ -4,7 +4,6 @@
   "description": "Node-RED nodes to simulate Apple HomeKit devices.",
   "main": "build/homekit.js",
   "scripts": {
-    "preinstall": "node build/helper/preinstall.js",
     "build": "yarn clean && tsc",
     "clean": "rimraf build/lib build/**/*.js",
     "test": "yarn build && mocha -r ts-node/register './src/**/*.test.[tj]s' --exit",
