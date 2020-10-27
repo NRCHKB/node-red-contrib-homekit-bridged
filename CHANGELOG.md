@@ -9,10 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 -   More code tests
+-   preinstall script will verify if Node.js meet criteria
 
 ### Changed
 -   Updated hap-nodejs to 0.8.2
 -   Updated dependencies to latest versions
+-   TypeScript-ify code
 
 ## [1.2.0] - 2020.08.16
 

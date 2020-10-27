@@ -8,7 +8,7 @@ describe('HAPBridgeNode',  function () {
     this.timeout(30000)
 
     it('string macify should pass',  function (done) {
-        const stringToMacify = "BRIDGE NAME"
+        const stringToMacify = 'BRIDGE NAME'
         HAPBridgeNode.macify(stringToMacify)
         done()
     })
@@ -30,7 +30,7 @@ describe('HAPBridgeNode',  function () {
     })
 
     it('empty string macify should fail',  function (done) {
-        const stringToMacify = ""
+        const stringToMacify = ''
         should.throws(() => {
             HAPBridgeNode.macify(stringToMacify)
         }, 'nodeId cannot be empty in macify process')

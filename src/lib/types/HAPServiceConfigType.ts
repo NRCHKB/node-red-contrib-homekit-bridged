@@ -1,8 +1,9 @@
-import HAPBridgeNodeType from './HAPBridgeNodeType'
+import { NodeDef } from 'node-red'
+import CameraConfigType from './CameraConfigType'
 
-type HAPServiceConfigType = {
+type HAPServiceConfigType = NodeDef & {
     isParent: boolean,
-    bridge: HAPBridgeNodeType,
+    bridge: string,
     parentService: string,
     name: string,
     serviceName: string,
@@ -14,29 +15,8 @@ type HAPServiceConfigType = {
     firmwareRev?: string,
     hardwareRev?: string,
     softwareRev?: string,
-    cameraConfigVideoProcessor: string,
-    cameraConfigSource: string,
-    cameraConfigStillImageSource?: string,
-    cameraConfigMaxStreams: number,
-    cameraConfigMaxWidth: number,
-    cameraConfigMaxHeight: number,
-    cameraConfigMaxFPS: number,
-    cameraConfigMaxBitrate: number,
-    cameraConfigVideoCodec: string,
-    cameraConfigAudioCodec: string,
-    cameraConfigAudio: string,
-    cameraConfigPacketSize: number,
-    cameraConfigVerticalFlip: boolean,
-    cameraConfigHorizontalFlip: boolean,
-    cameraConfigMapVideo: string,
-    cameraConfigMapAudio: string,
-    cameraConfigVideoFilter: string,
-    cameraConfigAdditionalCommandLine: string,
-    cameraConfigDebug: boolean,
-    cameraConfigSnapshotOutput: string,
-    cameraConfigInterfaceName: string,
     characteristicProperties: string,
     waitForSetupMsg: boolean
-}
+} & CameraConfigType
 
 export default HAPServiceConfigType

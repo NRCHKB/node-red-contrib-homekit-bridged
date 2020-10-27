@@ -1,5 +1,6 @@
 import { NodeAPI } from 'node-red'
 import HAPBridgeConfigType from './types/HAPBridgeConfigType'
+import HAPBridgeNodeType from './types/HAPBridgeNodeType'
 
 module.exports = (RED: NodeAPI) => {
     const debug = require('debug')('NRCHKB:HAPBridgeNode')
@@ -9,73 +10,73 @@ module.exports = (RED: NodeAPI) => {
     const Service = HapNodeJS.Service
     const Characteristic = HapNodeJS.Characteristic
     const uuid = HapNodeJS.uuid
-    
+
     const MdnsUtils = require('./utils/MdnsUtils')()
 
-    const init = function(this: any, config: HAPBridgeConfigType) {
+    const init = function(this: HAPBridgeNodeType, config: HAPBridgeConfigType) {
         RED.nodes.createNode(this, config)
 
         this.config = config
-        
+
         this.name = config.bridgeName
         debug('Setting name to ' + config.bridgeName)
-        
+
         this.pinCode = config.pinCode
         this.port = config.port
         this.allowInsecureRequest =
             config.allowInsecureRequest !== undefined
                 ? config.allowInsecureRequest
                 : false
-        
+
         this.allowMessagePassthrough =
             config.allowMessagePassthrough !== undefined
                 ? config.allowMessagePassthrough
                 : false
-        
+
         this.manufacturer = config.manufacturer
         this.serialNo = config.serialNo
         this.model = config.model
         this.firmwareRev = config.firmwareRev ? config.firmwareRev : '0.0.0'
         this.hardwareRev = config.hardwareRev
         this.softwareRev = config.softwareRev
-        
+
         if (config.customMdnsConfig) {
             this.mdnsConfig = {}
-            
+
             if (MdnsUtils.checkMulticast(config.mdnsMulticast)) {
                 this.mdnsConfig.multicast = config.mdnsMulticast
             }
-            
+
             if (MdnsUtils.checkInterface(config.mdnsInterface)) {
                 this.mdnsConfig.interface = config.mdnsInterface
             }
-            
+
             if (MdnsUtils.checkPort(config.mdnsPort)) {
                 this.mdnsConfig.port = parseInt(config.mdnsPort.toString())
             }
-            
+
             if (MdnsUtils.checkIp(config.mdnsIp)) {
                 this.mdnsConfig.ip = config.mdnsIp
             }
-            
+
             if (MdnsUtils.checkTtl(config.mdnsTtl)) {
                 this.mdnsConfig.ttl = parseInt(config.mdnsTtl.toString())
             }
-            
+
             if (MdnsUtils.checkLoopback(config.mdnsLoopback)) {
                 this.mdnsConfig.loopback = config.mdnsLoopback
             }
-            
+
             if (MdnsUtils.checkReuseAddr(config.mdnsReuseAddr)) {
                 this.mdnsConfig.reuseAddr = config.mdnsReuseAddr
             }
         }
-        
+
         this.accessoryType = Categories.BRIDGE
         this.published = false
         this.bridgeUsername = macify(this.id)
         const bridgeUUID = uuid.generate(this.id)
-        
+
         debug(
             'Creating Bridge with name \'' +
             this.name +
@@ -83,7 +84,7 @@ module.exports = (RED: NodeAPI) => {
             bridgeUUID +
             '\'',
         )
-        
+
         let bridge = new Bridge(this.name, bridgeUUID)
 
         const self = this
@@ -97,13 +98,13 @@ module.exports = (RED: NodeAPI) => {
                 bridge.bridgedAccessories.length +
                 ' accessories.',
             )
-            
-            if (self.port !== '' && ((self.port && self.port == 1880) || (self.mdnsConfig.port && self.mdnsConfig.port == 1880))) {
+
+            if (((self.port && self.port == 1880) || (self.mdnsConfig.port && self.mdnsConfig.port == 1880))) {
                 self.error('Cannot publish Bridge \'' + self.name + '\' on port 1880 as it is reserved for node-red.')
                 self.published = false
                 return false
             }
-            
+
             for (
                 let i = 0, len = bridge.bridgedAccessories.length;
                 i < len;
@@ -121,7 +122,7 @@ module.exports = (RED: NodeAPI) => {
                     break
                 }
             }
-            
+
             bridge.publish(
                 {
                     username: self.bridgeUsername,
@@ -132,12 +133,12 @@ module.exports = (RED: NodeAPI) => {
                 },
                 self.allowInsecureRequest,
             )
-            
+
             self.published = true
-            
+
             return true
         }
-        
+
         this.on('close', function(removed: any, done: () => any) {
             if (removed) {
                 // This node has been deleted
@@ -148,20 +149,20 @@ module.exports = (RED: NodeAPI) => {
                 bridge = null
                 self.published = false
             }
-            
+
             done()
         })
-        
+
         bridge.on('identify', function(paired: any, callback: () => any) {
             if (paired) {
                 debug('Identify called on paired Bridge ' + self.name)
             } else {
                 debug('Identify called on unpaired Bridge ' + self.name)
             }
-            
+
             callback()
         })
-        
+
         bridge
             .getService(Service.AccessoryInformation)
             .setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
@@ -170,7 +171,7 @@ module.exports = (RED: NodeAPI) => {
             .setCharacteristic(Characteristic.FirmwareRevision, this.firmwareRev)
             .setCharacteristic(Characteristic.HardwareRevision, this.hardwareRev)
             .setCharacteristic(Characteristic.SoftwareRevision, this.softwareRev)
-        
+
         this.bridge = bridge
     }
 
@@ -193,7 +194,7 @@ module.exports = (RED: NodeAPI) => {
             throw new Error('nodeId cannot be empty in macify process')
         }
     }
-    
+
     return {
         init,
         macify
