@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [x.y.z]
 
+### Fixed
+-   There was a problem when mdsnConfig was empty #322
+
 ### Added
 -   More code tests
 -   NRCHKB will verify if Node.js version criteria is met on start

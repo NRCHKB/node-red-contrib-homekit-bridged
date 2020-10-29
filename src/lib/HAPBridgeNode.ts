@@ -99,7 +99,7 @@ module.exports = (RED: NodeAPI) => {
                 ' accessories.',
             )
 
-            if (((self.port && self.port == 1880) || (self.mdnsConfig.port && self.mdnsConfig.port == 1880))) {
+            if (((self.port && self.port == 1880) || (self.mdnsConfig?.port && self.mdnsConfig?.port == 1880))) {
                 self.error('Cannot publish Bridge \'' + self.name + '\' on port 1880 as it is reserved for node-red.')
                 self.published = false
                 return false
