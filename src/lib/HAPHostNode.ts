@@ -44,7 +44,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             }
 
             if (MdnsUtils.checkPort(config.mdnsPort)) {
-                self.mdnsConfig.port = parseInt(config.mdnsPort.toString())
+                self.mdnsConfig.port = parseInt(config.mdnsPort?.toString())
             }
 
             if (MdnsUtils.checkIp(config.mdnsIp)) {
@@ -52,7 +52,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             }
 
             if (MdnsUtils.checkTtl(config.mdnsTtl)) {
-                self.mdnsConfig.ttl = parseInt(config.mdnsTtl.toString())
+                self.mdnsConfig.ttl = parseInt(config.mdnsTtl?.toString())
             }
 
             if (MdnsUtils.checkLoopback(config.mdnsLoopback)) {
@@ -184,15 +184,15 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             .setCharacteristic(Characteristic.Model, self.config.model)
             .setCharacteristic(
                 Characteristic.FirmwareRevision,
-                self.config.firmwareRev.toString()
+                self.config.firmwareRev?.toString()
             )
             .setCharacteristic(
                 Characteristic.HardwareRevision,
-                self.config.hardwareRev.toString()
+                self.config.hardwareRev?.toString()
             )
             .setCharacteristic(
                 Characteristic.SoftwareRevision,
-                self.config.softwareRev.toString()
+                self.config.softwareRev?.toString()
             )
     }
 
