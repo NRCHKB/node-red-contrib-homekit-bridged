@@ -522,7 +522,13 @@
                 .change()
 
             const selectHostType = $('#node-config-input-hostType')
-            selectHostType.val(node.hostType)
+
+            if (node.hostType) {
+                selectHostType.val(node.hostType)
+            } else {
+                // Make sure that host type is selected when upgrading nrchkb
+                selectHostType.val(0)
+            }
 
             let isOnBridgeDiv = $('#isOnBridge')
             let isAccessoryDiv = $('#isAccessory')
