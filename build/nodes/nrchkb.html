@@ -8,11 +8,17 @@
     }
 
     let serviceTypes
+    let accessoryCategories
     let nrchkbVersion = '0.0.0'
 
-    //HomeKitServiceTypes
+    //HomeKit Service Types
     $.getJSON('nrchkb/service/types', function(data) {
         serviceTypes = data
+    })
+
+    //HomeKit Accessory Categories
+    $.getJSON('nrchkb/accessory/categories', function(data) {
+        accessoryTypes = data
     })
 
     //NRCHKB version

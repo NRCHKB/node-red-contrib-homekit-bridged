@@ -17,11 +17,28 @@
     </div>
 
     <div id="isParent">
-        <div class="form-row" style="height: 34px;">
-            <label for="node-input-bridge">
-          <i class="fa fa-rocket"></i>
-          Bridge</label>
-            <input id="node-input-bridge">
+        <div class="form-row">
+            <label for="node-config-input-hostType"><i class="fa fa-tasks"></i> Host Type</label>
+            <select id="node-config-input-hostType" style="width: 70%">
+                <option value="0" selected="selected">Bridge</option>
+                <option value="1">Accessory</option>
+            </select>
+        </div>
+        <div id="isOnBridge">
+            <div class="form-row" style="height: 34px;">
+                <label for="node-input-bridge">
+              <i class="fa fa-rocket"></i>
+              Bridge</label>
+                <input id="node-input-bridge">
+            </div>
+        </div>
+        <div id="isAccessory">
+            <div class="form-row" style="height: 34px;">
+                <label for="node-input-accessoryId">
+              <i class="fa fa-rocket"></i>
+              Accessory</label>
+                <input id="node-input-accessoryId">
+            </div>
         </div>
         <div class="form-row">
             <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
@@ -273,18 +290,32 @@
 
 <script type="text/javascript">
     RED.nodes.registerType('homekit-service', {
-        category: 'advanced',
+        category: "Apple HomeKit",
         paletteLabel: 'homekit',
         defaults: {
             isParent: {
                 value: 'false',
                 required: true,
             },
+            hostType: {
+                // 0 is Bridge, 1 is Accessory
+                value: 0,
+                required: true,
+            },
             bridge: {
                 value: '',
                 type: 'homekit-bridge',
                 validate: function(value) {
-                    if (this.isParent == true) {
+                    if (this.isParent == true && this.hostType == 0) {
+                        return isValueDefined(value) && value.length > 0
+                    } else return true
+                },
+            },
+            accessoryId: {
+                value: '',
+                type: 'homekit-standalone',
+                validate: function(value) {
+                    if (this.isParent == true && this.hostType == 1) {
                         return isValueDefined(value) && value.length > 0
                     } else return true
                 },
@@ -490,6 +521,24 @@
                 })
                 .change()
 
+            const selectHostType = $('#node-config-input-hostType')
+            selectHostType.val(node.hostType)
+
+            let isOnBridgeDiv = $('#isOnBridge')
+            let isAccessoryDiv = $('#isAccessory')
+
+            selectHostType
+                .change(function() {
+                    if (selectHostType.val() == 0) {
+                        isAccessoryDiv.hide()
+                        isOnBridgeDiv.show()
+                    } else {
+                        isOnBridgeDiv.hide()
+                        isAccessoryDiv.show()
+                    }
+                })
+                .change()
+
             const selectServiceName = $('#node-input-serviceName')
             for (let key in serviceTypes) {
                 if (!serviceTypes.hasOwnProperty(key)) continue
@@ -529,10 +578,12 @@
 
             const selectParentService = $('#node-input-parentService')
 
+            const inSubflow = !!RED.nodes.subflow(node.z)
+
             const candidateNodes = RED.nodes.filterNodes({
                 type: 'homekit-service',
             })
-            const inSubflow = !!RED.nodes.subflow(node.z)
+
             candidateNodes.forEach(function(n) {
                 if (!n.name || n.name.length < 1 || !n.isParent) {
                     return
@@ -578,11 +629,29 @@
                 })
                 .attr('selected', true)
             selectParentService.change()
+
+            $("#node-input-accessoryId option[value='${n.accessoryId}']").attr("disabled", false);
+            candidateNodes.forEach(function(n) {
+                if (n.id == node.id) {
+                    return
+                }
+
+                if (n.hostType == 0) {
+                    return
+                }
+
+                if (n.accessory) {
+                    const accessoryOption = $("#node-input-accessoryId option[value='" + n.accessoryId + "']");
+                    accessoryOption.attr("disabled", true);
+                    accessoryOption.text(accessoryOption.text() + " already used by " + n.name)
+                }
+            })
         },
         oneditsave: function() {
             let node = this
 
             node.isParent = $('#node-config-input-isParent').val() === 'true'
+            node.hostType = $('#node-config-input-hostType').val()
 
             if (!node.isParent) {
                 node.parentService = $(

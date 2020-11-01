@@ -1,69 +1,76 @@
 import { NodeAPI } from 'node-red'
 import HAPServiceConfigType from './types/HAPServiceConfigType'
 import HAPServiceNodeType from './types/HAPServiceNodeType'
-import HAPBridgeNodeType from './types/HAPBridgeNodeType'
+import HAPHostNodeType from './types/HAPHostNodeType'
+import HostType from './types/HostType'
+import { uuid } from 'hap-nodejs'
 
 module.exports = (RED: NodeAPI) => {
     const debug = require('debug')('NRCHKB:HAPServiceNode')
-    const HapNodeJS = require('hap-nodejs')
-    const uuid = HapNodeJS.uuid
-    let publishTimers = {}
 
-    const preInit = function(this: HAPServiceNodeType, config: HAPServiceConfigType) {
-        RED.nodes.createNode(this, config)
+    const preInit = function (
+        this: HAPServiceNodeType,
+        config: HAPServiceConfigType
+    ) {
+        const self = this
+        RED.nodes.createNode(self, config)
+        self.RED = RED
+        self.publishTimers = {}
 
-        const node = this
-        node.RED = RED
-
-        const ServiceUtils = require('./utils/ServiceUtils')(node)
+        const ServiceUtils = require('./utils/ServiceUtils')(self)
 
         new Promise<HAPServiceConfigType>((resolve) => {
             if (config.waitForSetupMsg) {
-                debug('Waiting for Setup message. It should be of format {"payload":{"nrchkb":{"setup":{}}}}')
+                debug(
+                    'Waiting for Setup message. It should be of format {"payload":{"nrchkb":{"setup":{}}}}'
+                )
 
-                node.setupDone = false
+                self.setupDone = false
 
-                node.status({
+                self.status({
                     fill: 'blue',
                     shape: 'dot',
                     text: 'Waiting for Setup',
                 })
 
-                node.handleWaitForSetup = (msg: {}) => ServiceUtils.handleWaitForSetup(config, msg, resolve)
-                node.on('input', node.handleWaitForSetup)
+                self.handleWaitForSetup = (msg: Record<string, unknown>) =>
+                    ServiceUtils.handleWaitForSetup(config, msg, resolve)
+                self.on('input', self.handleWaitForSetup)
             } else {
                 resolve(config)
             }
         }).then((newConfig) => {
-            init.call(node, newConfig)
+            init.call(self, newConfig)
         })
     }
 
-    const init = function(this: HAPServiceNodeType, config: HAPServiceConfigType) {
-        this.config = config
+    const init = function (
+        this: HAPServiceNodeType,
+        config: HAPServiceConfigType
+    ) {
+        const self = this
+        self.config = config
 
         const ServiceUtils = require('./utils/ServiceUtils')(this)
 
-        this.isParentNode = config.isParent
-
-        if (this.isParentNode) {
+        if (self.config.isParent) {
             debug('Starting Parent Service ' + config.name)
-            configure(this, config)
+            configure.call(self)
         } else {
-            ServiceUtils.waitForParent(this, config)
+            ServiceUtils.waitForParent(self)
                 .then(() => {
                     debug(
                         'Starting ' +
-                        (config.serviceName === 'CameraControl'
-                            ? 'Camera'
-                            : 'Linked') +
-                        ' Service ' +
-                        config.name,
+                            (config.serviceName === 'CameraControl'
+                                ? 'Camera'
+                                : 'Linked') +
+                            ' Service ' +
+                            config.name
                     )
-                    configure(this, config)
+                    configure.call(self)
                 })
                 .catch((e: any) => {
-                    this.status({
+                    self.status({
                         fill: 'red',
                         shape: 'ring',
                         text:
@@ -74,22 +81,24 @@ module.exports = (RED: NodeAPI) => {
                             ' Service',
                     })
 
-                    this.error(
+                    self.error(
                         'Error while starting ' +
-                        (config.serviceName === 'CameraControl'
-                            ? 'Camera'
-                            : 'Linked') +
-                        ' Service ' +
-                        config.name +
-                        ': ',
-                        e,
+                            (config.serviceName === 'CameraControl'
+                                ? 'Camera'
+                                : 'Linked') +
+                            ' Service ' +
+                            config.name +
+                            ': ',
+                        e
                     )
                 })
         }
     }
 
-    const configure = function(node: HAPServiceNodeType, config: HAPServiceConfigType) {
-        const Utils = require('./utils')(node)
+    const configure = function (this: HAPServiceNodeType) {
+        const self = this
+
+        const Utils = require('./utils')(self)
         const AccessoryUtils = Utils.AccessoryUtils
         const BridgeUtils = Utils.BridgeUtils
         const CharacteristicUtils = Utils.CharacteristicUtils
@@ -97,44 +106,45 @@ module.exports = (RED: NodeAPI) => {
 
         let parentNode: HAPServiceNodeType
 
-        if (node.isParentNode) {
-            node.bridgeNode = RED.nodes.getNode(config.bridge) as HAPBridgeNodeType
-            node.childNodes = []
-            node.childNodes.push(node)
+        if (self.config.isParent) {
+            const hostId =
+                self.config.hostType == HostType.BRIDGE
+                    ? self.config.bridge
+                    : self.config.accessoryId
+
+            self.hostNode = RED.nodes.getNode(hostId) as HAPHostNodeType
+
+            if (!self.hostNode) {
+                throw Error('Host Node not found')
+            }
+
+            self.childNodes = []
+            self.childNodes.push(self)
         } else {
             // Retrieve parent service node
-            parentNode = RED.nodes.getNode(config.parentService) as HAPServiceNodeType
+            parentNode = RED.nodes.getNode(
+                self.config.parentService
+            ) as HAPServiceNodeType
 
             if (!parentNode) {
                 throw Error('Parent Node not assigned')
             }
 
-            node.parentService = parentNode.service
+            self.parentService = parentNode.service
 
-            if (!node.parentService) {
+            if (!self.parentService) {
                 throw Error('Parent Service not assigned')
             }
 
-            node.bridgeNode = parentNode.bridgeNode
-            parentNode.childNodes.push(node)
+            self.hostNode = parentNode.hostNode
+            parentNode.childNodes.push(self)
         }
 
         // Service node properties
-        node.name = config.name
-        node.topic = config.topic
-        node.filter = config.filter
-        node.serviceName = config.serviceName
-        node.manufacturer = config.manufacturer
-        node.serialNo = config.serialNo
-        node.model = config.model
-        node.firmwareRev = config.firmwareRev
-        node.hardwareRev = config.hardwareRev
-        node.softwareRev = config.softwareRev
-
-        const bridge = node.bridgeNode.bridge
+        self.name = self.config.name
 
         // Generate UUID from node id
-        const subtypeUUID = uuid.generate(node.id)
+        const subtypeUUID = uuid.generate(self.id)
 
         // According to the HomeKit Accessory Protocol Specification the value
         // of the fields Name, Manufacturer, Serial Number and Model must not
@@ -144,65 +154,62 @@ module.exports = (RED: NodeAPI) => {
         // changes.
         const accessoryUUID = uuid.generate(
             'A' +
-            node.id +
-            node.name +
-            node.manufacturer +
-            node.serialNo +
-            node.model,
+                self.id +
+                self.name +
+                self.config.manufacturer +
+                self.config.serialNo +
+                self.config.model
         )
 
         // Look for existing Accessory or create a new one
-        let accessory
-        if (node.isParentNode) {
-            accessory = AccessoryUtils.getOrCreate(
-                bridge,
+        if (self.config.isParent) {
+            self.accessory = AccessoryUtils.getOrCreate(
+                self.hostNode.host,
                 {
-                    name: node.name,
+                    name: self.name,
                     UUID: accessoryUUID,
-                    manufacturer: node.manufacturer,
-                    serialNo: node.serialNo,
-                    model: node.model,
-                    firmwareRev: node.firmwareRev,
-                    hardwareRev: node.hardwareRev,
-                    softwareRev: node.softwareRev,
+                    manufacturer: self.config.manufacturer,
+                    serialNo: self.config.serialNo,
+                    model: self.config.model,
+                    firmwareRev: self.config.firmwareRev,
+                    hardwareRev: self.config.hardwareRev,
+                    softwareRev: self.config.softwareRev,
                 },
-                subtypeUUID, // subtype of the primary service for identification
+                subtypeUUID // subtype of the primary service for identification
             )
 
             //Respond to identify
-            node.onIdentify = AccessoryUtils.onIdentify
-            accessory.on('identify', node.onIdentify)
+            self.onIdentify = AccessoryUtils.onIdentify
+            self.accessory.on('identify', self.onIdentify)
         } else {
-            accessory = parentNode!.accessory
+            self.accessory = parentNode!.accessory
         }
 
         // Look for existing Service or create a new one
-        const service = ServiceUtils.getOrCreate(
-            accessory,
+        self.service = ServiceUtils.getOrCreate(
+            self.accessory,
             {
-                name: node.name,
+                name: self.name,
                 UUID: subtypeUUID,
-                serviceName: node.serviceName,
-                config: config,
+                serviceName: self.config.serviceName,
+                config: self.config,
             },
-            node.parentService,
+            self.parentService
         )
 
-        node.characteristicProperties = CharacteristicUtils.load(
-            service,
-            config,
+        self.characteristicProperties = CharacteristicUtils.load(
+            self.service,
+            self.config
         )
 
-        publishTimers = BridgeUtils.delayedPublish(node, publishTimers)
-
-        node.service = service
+        self.publishTimers = BridgeUtils.delayedPublish(self)
 
         // The pinCode should be shown to the user until interaction with iOS
         // client starts
-        node.status({
+        self.status({
             fill: 'yellow',
             shape: 'ring',
-            text: node.bridgeNode.pinCode,
+            text: self.hostNode.config.pinCode,
         })
 
         // Emit message when value changes
@@ -210,14 +217,14 @@ module.exports = (RED: NodeAPI) => {
 
         // Subscribe to set and get on characteristics for that service and get
         // list of all supported
-        node.supported = CharacteristicUtils.subscribeAndGetSupported(service)
+        self.supported = CharacteristicUtils.subscribeAndGetSupported(
+            self.service
+        )
 
         // Respond to inputs
-        node.on('input', ServiceUtils.onInput)
+        self.on('input', ServiceUtils.onInput)
 
-        node.on('close', ServiceUtils.onClose)
-
-        node.accessory = accessory
+        self.on('close', ServiceUtils.onClose)
     }
 
     return {

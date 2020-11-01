@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 -   More code tests
 -   NRCHKB will verify if Node.js version criteria is met on start
+-   NRCHKB now supports Standalone Accessory mode (like in old times)
 
 ### Changed
 -   Updated hap-nodejs to 0.8.2
