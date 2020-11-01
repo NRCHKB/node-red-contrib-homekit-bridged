@@ -134,9 +134,12 @@ module.exports = function (node) {
                         node.supported.join(', ')
                 )
             } else {
-                node.accessory.updateReachability(
-                    msg.payload[key] !== NO_RESPONSE_MSG
-                )
+                if (node.config.hostType == HostType.BRIDGE) {
+                    // updateReachability is only supported on bridged accessories
+                    node.accessory.updateReachability(
+                        msg.payload[key] !== NO_RESPONSE_MSG
+                    )
+                }
 
                 let characteristic = node.service.getCharacteristic(
                     Characteristic[key]
