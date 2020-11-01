@@ -6,6 +6,7 @@ Join us on our Discord server (click on the logo below)!
 [![NRCHKB Discord](https://discordapp.com/api/guilds/586065987267330068/widget.png?style=banner2)](https://discord.gg/uvYac5u)
 
 #### ⚠️ CAUTION ⚠️ 
+##### Before upgrading make sure that you are using latest version of [Node-RED](https://nodered.org/docs/getting-started/local) and latest LTS version of [Node.js](https://nodejs.org/en/download/)
 ###### Upgrading from versions 0.X to 1.X is a breaking change, all devices will be reset in the Home app. Please review the [release notes](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/releases/tag/v1.0.1) thoroughly before updating!
 
 ## Intro
@@ -35,7 +36,7 @@ To install NRCHKB node run the following command in your Node-RED user directory
 
 ### Docker
 
-You can also pull a [docker image](https://hub.docker.com/r/raymondmm/node-red-homekit/) containing everything needed to get started, thanks to [Raymond Mouthaan](https://github.com/RaymondMouthaan).
+You can also pull a [docker image](https://github.com/NRCHKB/node-red-contrib-homekit-docker) containing everything needed to get started, thanks to [Raymond Mouthaan](https://github.com/RaymondMouthaan).
 
 ## Nodes
 
