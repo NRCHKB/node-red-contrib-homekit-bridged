@@ -22,9 +22,9 @@ module.exports = function (node) {
 
         // create accessory object
         debug(
-            'Looking for accessory with service subtype \'' +
+            "Looking for accessory with service subtype '" +
                 subtypeUUID +
-                '\'...'
+                "'..."
         )
 
         // Try to find an accessory which contains a service with the same
@@ -77,11 +77,11 @@ module.exports = function (node) {
             }
         } else {
             debug(
-                '... didn\'t find it. Adding new accessory with name \'' +
+                "... didn't find it. Adding new accessory with name '" +
                     accessoryInformation.name +
-                    '\' and UUID \'' +
+                    "' and UUID '" +
                     accessoryInformation.UUID +
-                    '\''
+                    "'"
             )
         }
 

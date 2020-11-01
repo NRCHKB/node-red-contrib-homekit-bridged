@@ -65,17 +65,16 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
         }
 
         self.accessoryType =
-            self.hostType === HostType.BRIDGE
+            self.hostType == HostType.BRIDGE
                 ? HapCategories.BRIDGE
                 : config.accessoryType
+
         self.published = false
         self.bridgeUsername = macify(self.id)
         const hostUUID = uuid.generate(self.id)
 
         const hostTypeName =
-            self.hostType === HostType.BRIDGE
-                ? 'Bridge'
-                : 'Standalone Accessory'
+            self.hostType == HostType.BRIDGE ? 'Bridge' : 'Standalone Accessory'
 
         debug(
             'Creating ' +
@@ -87,7 +86,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                 "'"
         )
 
-        if (self.hostType === HostType.BRIDGE) {
+        if (self.hostType == HostType.BRIDGE) {
             self.host = new Bridge(self.name, hostUUID)
         } else {
             self.host = new Accessory(self.name, hostUUID)
@@ -101,7 +100,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                     self.name +
                     "', pin code '" +
                     self.config.pinCode +
-                    (self.hostType === HostType.BRIDGE
+                    (self.hostType == HostType.BRIDGE
                         ? "' and " +
                           self.host.bridgedAccessories.length +
                           ' accessories.'

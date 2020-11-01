@@ -1,10 +1,9 @@
 import { NodeDef } from 'node-red'
 import CameraConfigType from './CameraConfigType'
-import HostType from './HostType'
 
 type HAPServiceConfigType = NodeDef & {
     isParent: boolean
-    hostType: HostType
+    hostType: number
     bridge: string
     accessoryId: string
     parentService: string

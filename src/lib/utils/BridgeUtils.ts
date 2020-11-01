@@ -16,32 +16,34 @@ module.exports = function () {
             }
 
             const hostTypeName =
-                node.hostNode.hostType === HostType.BRIDGE
+                node.hostNode.hostType == HostType.BRIDGE
                     ? 'Bridge'
                     : 'Standalone Accessory'
 
             node.publishTimers[node.hostNode.id] = setTimeout(function () {
                 try {
-                    const published = node.hostNode.publish()
+                    if (!node.hostNode.published) {
+                        const published = node.hostNode.publish()
 
-                    if (published) {
-                        debug(
-                            hostTypeName +
-                                " '" +
-                                node.hostNode.name +
-                                "' [" +
-                                node.hostNode.id +
-                                '] published'
-                        )
-                    } else {
-                        debug(
-                            hostTypeName +
-                                " '" +
-                                node.hostNode.name +
-                                "' [" +
-                                node.hostNode.id +
-                                '] NOT published'
-                        )
+                        if (published) {
+                            debug(
+                                hostTypeName +
+                                    " '" +
+                                    node.hostNode.name +
+                                    "' [" +
+                                    node.hostNode.id +
+                                    '] published'
+                            )
+                        } else {
+                            debug(
+                                hostTypeName +
+                                    " '" +
+                                    node.hostNode.name +
+                                    "' [" +
+                                    node.hostNode.id +
+                                    '] NOT published'
+                            )
+                        }
                     }
                 } catch (err) {
                     node.error(

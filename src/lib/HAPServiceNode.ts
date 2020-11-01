@@ -14,6 +14,7 @@ module.exports = (RED: NodeAPI) => {
     ) {
         const self = this
         RED.nodes.createNode(self, config)
+        self.config = config
         self.RED = RED
         self.publishTimers = {}
 
@@ -51,13 +52,13 @@ module.exports = (RED: NodeAPI) => {
         const self = this
         self.config = config
 
-        const ServiceUtils = require('./utils/ServiceUtils')(this)
+        const ServiceUtils = require('./utils/ServiceUtils')(self)
 
         if (self.config.isParent) {
             debug('Starting Parent Service ' + config.name)
             configure.call(self)
         } else {
-            ServiceUtils.waitForParent(self)
+            ServiceUtils.waitForParent()
                 .then(() => {
                     debug(
                         'Starting ' +
@@ -69,7 +70,7 @@ module.exports = (RED: NodeAPI) => {
                     )
                     configure.call(self)
                 })
-                .catch((e: any) => {
+                .catch((error: any) => {
                     self.status({
                         fill: 'red',
                         shape: 'ring',
@@ -88,8 +89,8 @@ module.exports = (RED: NodeAPI) => {
                                 : 'Linked') +
                             ' Service ' +
                             config.name +
-                            ': ',
-                        e
+                            ': ' +
+                            error
                     )
                 })
         }
@@ -146,43 +147,49 @@ module.exports = (RED: NodeAPI) => {
         // Generate UUID from node id
         const subtypeUUID = uuid.generate(self.id)
 
-        // According to the HomeKit Accessory Protocol Specification the value
-        // of the fields Name, Manufacturer, Serial Number and Model must not
-        // change throughout the lifetime of an accessory. Because of that the
-        // accessory UUID will be generated based on that data to ensure that
-        // a new accessory will be created if any of those configuration values
-        // changes.
-        const accessoryUUID = uuid.generate(
-            'A' +
-                self.id +
-                self.name +
-                self.config.manufacturer +
-                self.config.serialNo +
-                self.config.model
-        )
-
         // Look for existing Accessory or create a new one
-        if (self.config.isParent) {
-            self.accessory = AccessoryUtils.getOrCreate(
-                self.hostNode.host,
-                {
-                    name: self.name,
-                    UUID: accessoryUUID,
-                    manufacturer: self.config.manufacturer,
-                    serialNo: self.config.serialNo,
-                    model: self.config.model,
-                    firmwareRev: self.config.firmwareRev,
-                    hardwareRev: self.config.hardwareRev,
-                    softwareRev: self.config.softwareRev,
-                },
-                subtypeUUID // subtype of the primary service for identification
+        if (self.config.hostType == HostType.BRIDGE) {
+            // According to the HomeKit Accessory Protocol Specification the value
+            // of the fields Name, Manufacturer, Serial Number and Model must not
+            // change throughout the lifetime of an accessory. Because of that the
+            // accessory UUID will be generated based on that data to ensure that
+            // a new accessory will be created if any of those configuration values
+            // changes.
+            const accessoryUUID = uuid.generate(
+                'A' +
+                    self.id +
+                    self.name +
+                    self.config.manufacturer +
+                    self.config.serialNo +
+                    self.config.model
             )
 
-            //Respond to identify
-            self.onIdentify = AccessoryUtils.onIdentify
-            self.accessory.on('identify', self.onIdentify)
+            if (self.config.isParent) {
+                self.accessory = AccessoryUtils.getOrCreate(
+                    self.hostNode.host,
+                    {
+                        name: self.name,
+                        UUID: accessoryUUID,
+                        manufacturer: self.config.manufacturer,
+                        serialNo: self.config.serialNo,
+                        model: self.config.model,
+                        firmwareRev: self.config.firmwareRev,
+                        hardwareRev: self.config.hardwareRev,
+                        softwareRev: self.config.softwareRev,
+                    },
+                    subtypeUUID // subtype of the primary service for identification
+                )
+
+                //Respond to identify
+                self.onIdentify = AccessoryUtils.onIdentify
+                self.accessory.on('identify', self.onIdentify)
+            } else {
+                self.accessory = parentNode!.accessory
+            }
         } else {
-            self.accessory = parentNode!.accessory
+            // We are using Standalone Accessory mode so no need to create new Accessory as we have "host" already
+            debug('Binding Service accessory as Standalone Accessory')
+            self.accessory = self.hostNode.host
         }
 
         // Look for existing Service or create a new one
@@ -202,7 +209,9 @@ module.exports = (RED: NodeAPI) => {
             self.config
         )
 
-        self.publishTimers = BridgeUtils.delayedPublish(self)
+        if (self.config.isParent) {
+            self.publishTimers = BridgeUtils.delayedPublish(self)
+        }
 
         // The pinCode should be shown to the user until interaction with iOS
         // client starts

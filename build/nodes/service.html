@@ -31,6 +31,30 @@
               Bridge</label>
                 <input id="node-input-bridge">
             </div>
+            <div class="form-row">
+                <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
+                <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
+            </div>
+            <div class="form-row">
+                <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
+                <input type="text" id="node-input-serialNo" placeholder="Serial Number">
+            </div>
+            <div class="form-row">
+                <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
+                <input type="text" id="node-input-model" placeholder="Model">
+            </div>
+            <div class="form-row">
+                <label for="node-input-firmwareRev"><i class="fa fa-wrench"></i> Firmware Revision</label>
+                <input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision">
+            </div>
+            <div class="form-row">
+                <label for="node-input-hardwareRev"><i class="fa fa-wrench"></i> Hardware Revision</label>
+                <input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision">
+            </div>
+            <div class="form-row">
+                <label for="node-input-softwareRev"><i class="fa fa-wrench"></i> Software Revision</label>
+                <input type="text" id="node-input-softwareRev" placeholder="Software Revision">
+            </div>
         </div>
         <div id="isAccessory">
             <div class="form-row" style="height: 34px;">
@@ -40,30 +64,6 @@
                 <input id="node-input-accessoryId">
             </div>
         </div>
-        <div class="form-row">
-            <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
-            <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
-        </div>
-        <div class="form-row">
-            <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
-            <input type="text" id="node-input-serialNo" placeholder="Serial Number">
-        </div>
-        <div class="form-row">
-            <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
-            <input type="text" id="node-input-model" placeholder="Model">
-        </div>
-        <div class="form-row">
-        	<label for="node-input-firmwareRev"><i class="fa fa-wrench"></i> Firmware Revision</label>
-        	<input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision">
-    	</div>
-        <div class="form-row">
-        	<label for="node-input-hardwareRev"><i class="fa fa-wrench"></i> Hardware Revision</label>
-        	<input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision">
-    	</div>
-        <div class="form-row">
-        	<label for="node-input-softwareRev"><i class="fa fa-wrench"></i> Software Revision</label>
-        	<input type="text" id="node-input-softwareRev" placeholder="Software Revision">
-    	</div>
     </div>
 
     <div id="isLinked" style="display: none;">
@@ -640,7 +640,7 @@
                     return
                 }
 
-                if (n.accessory) {
+                if (n.accessoryId) {
                     const accessoryOption = $("#node-input-accessoryId option[value='" + n.accessoryId + "']");
                     accessoryOption.attr("disabled", true);
                     accessoryOption.text(accessoryOption.text() + " already used by " + n.name)

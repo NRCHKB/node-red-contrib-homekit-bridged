@@ -112,7 +112,7 @@ module.exports = function (node) {
         const topic = node.topic ? node.topic : node.name
         if (node.filter === true && msg.topic !== topic) {
             debug(
-                'msg.topic doesn\'t match configured value and filter is enabled. Dropping message.'
+                "msg.topic doesn't match configured value and filter is enabled. Dropping message."
             )
             return
         }
@@ -208,7 +208,7 @@ module.exports = function (node) {
             serviceInformation.UUID
         )
         debug(
-            'Looking for service with UUID \'' + serviceInformation.UUID + '\'...'
+            "Looking for service with UUID '" + serviceInformation.UUID + "'..."
         )
 
         // search for a service with the same subtype
@@ -217,7 +217,7 @@ module.exports = function (node) {
         })
 
         if (service && newService.UUID !== service.UUID) {
-            // if the UUID and therefor the type changed, the wohle service
+            // if the UUID and therefore the type changed, the whole service
             // will be replaced
             debug('... service type changed! Removing the old service.')
             accessory.removeService(service)
@@ -228,7 +228,7 @@ module.exports = function (node) {
             // if no matching service was found or the type changed, then a new
             // service will be added
             debug(
-                '... didn\'t find it. Adding new ' +
+                "... didn't find it. Adding new " +
                     serviceInformation.serviceName +
                     ' service.'
             )
@@ -283,7 +283,9 @@ module.exports = function (node) {
         }
     }
 
-    const waitForParent = (node, config) => {
+    const waitForParent = () => {
+        debug(node.name + ' is waiting for Parent Service')
+
         return new Promise((resolve) => {
             node.status({
                 fill: 'blue',
@@ -292,13 +294,17 @@ module.exports = function (node) {
             })
 
             const checkAndWait = () => {
-                if (node.RED.nodes.getNode(config.parentService)) {
+                if (node.RED.nodes.getNode(node.config.parentService)) {
                     resolve()
                 } else {
                     setTimeout(checkAndWait, 1000)
                 }
             }
             checkAndWait()
+        }).catch((error) => {
+            node.error('Waiting for Parent Service failed due to: ' + error)
+
+            throw error
         })
     }
 
