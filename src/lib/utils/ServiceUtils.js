@@ -1,3 +1,5 @@
+import HostType from '../types/HostType'
+
 module.exports = function (node) {
     const debug = require('debug')('NRCHKB:ServiceUtils')
     const HapNodeJS = require('hap-nodejs')
