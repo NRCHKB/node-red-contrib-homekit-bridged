@@ -22,7 +22,7 @@ type HAPHostConfigType = NodeDef & {
     mdnsLoopback: boolean
     mdnsReuseAddr: boolean
     allowMessagePassthrough: boolean
-    accessoryType: HapCategories
+    accessoryCategory: HapCategories
 }
 
 export default HAPHostConfigType

@@ -65,10 +65,9 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             }
         }
 
-        self.accessoryType =
-            self.hostType == HostType.BRIDGE
-                ? HapCategories.BRIDGE
-                : config.accessoryType
+        self.accessoryCategory = ((self.hostType == HostType.BRIDGE
+            ? HapCategories.BRIDGE
+            : self.config.accessoryCategory) as unknown) as Categories
 
         self.published = false
         self.bridgeUsername = macify(self.id)
@@ -128,7 +127,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                     username: self.bridgeUsername,
                     port: self.config.port,
                     pincode: self.config.pinCode,
-                    category: (self.accessoryType as unknown) as Categories,
+                    category: self.accessoryCategory,
                     mdns: self.mdnsConfig,
                 },
                 self.config.allowInsecureRequest

@@ -241,15 +241,14 @@
                 .change()
 
             const selectCategoryName = $("#node-config-input-accessoryCategory");
-            for (let key in accessoryTypes) {
-                if (!accessoryTypes.hasOwnProperty(key)) continue;
 
+            Object.entries(accessoryCategories).forEach(([key, value]) => {
                 selectCategoryName.append(
                     $("<option></option>")
                         .val(key)
-                        .text(key)
+                        .text(value)
                 );
-            }
+            })
 
             selectCategoryName
                 .find("option")
