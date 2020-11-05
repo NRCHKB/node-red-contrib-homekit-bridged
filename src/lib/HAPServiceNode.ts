@@ -8,15 +8,29 @@ import { uuid } from 'hap-nodejs'
 module.exports = (RED: NodeAPI) => {
     const debug = require('debug')('NRCHKB:HAPServiceNode')
 
+    /**
+     * Config override when user created services in old NRCHKB version
+     */
+    const nrchkbConfigOverride = function (this: HAPServiceNodeType) {
+        const self = this
+
+        if (!self.config.hostType) {
+            // When moving from 1.2 to 1.3 hostType is not defined on homekit-service
+            self.config.hostType = HostType.BRIDGE
+        }
+    }
+
     const preInit = function (
         this: HAPServiceNodeType,
         config: HAPServiceConfigType
     ) {
         const self = this
-        RED.nodes.createNode(self, config)
         self.config = config
         self.RED = RED
         self.publishTimers = {}
+
+        nrchkbConfigOverride.call(self)
+        RED.nodes.createNode(self, config)
 
         const ServiceUtils = require('./utils/ServiceUtils')(self)
 
@@ -139,6 +153,8 @@ module.exports = (RED: NodeAPI) => {
 
             self.hostNode = parentNode.hostNode
             parentNode.childNodes.push(self)
+
+            self.accessory = parentNode.accessory
         }
 
         // Service node properties
@@ -183,8 +199,6 @@ module.exports = (RED: NodeAPI) => {
                 //Respond to identify
                 self.onIdentify = AccessoryUtils.onIdentify
                 self.accessory.on('identify', self.onIdentify)
-            } else {
-                self.accessory = parentNode!.accessory
             }
         } else {
             // We are using Standalone Accessory mode so no need to create new Accessory as we have "host" already

@@ -12,6 +12,7 @@ import {
     uuid,
 } from 'hap-nodejs'
 import HapCategories from './types/HapCategories'
+import { SemVer } from 'semver'
 
 module.exports = (RED: NodeAPI, hostType: HostType) => {
     const debug = require('debug')('NRCHKB:HAPHostNode')
@@ -29,7 +30,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
         debug('Setting name to ' + config.bridgeName)
 
         if (semver.parse(config.firmwareRev) == null) {
-            config.firmwareRev = semver.parse('0.0.0')!
+            config.firmwareRev = new SemVer('0.0.0')
         }
 
         if (config.customMdnsConfig) {
@@ -171,8 +172,12 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             callback()
         })
 
-        self.host
-            .getService(Service.AccessoryInformation)! // Service.AccessoryInformation created on Host creation
+        // Service.AccessoryInformation created on Host creation
+        const accessoryInformationService =
+            self.host.getService(Service.AccessoryInformation) ||
+            self.host.addService(Service.AccessoryInformation)
+
+        accessoryInformationService
             .setCharacteristic(
                 Characteristic.Manufacturer,
                 self.config.manufacturer
