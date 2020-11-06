@@ -12,17 +12,31 @@ module.exports = (RED: NodeAPI) => {
     /**
      * Config override when user created services in old NRCHKB version
      */
-    const nrchkbConfigOverride = function (this: HAPServiceNodeType) {
+    const nrchkbConfigCompatibilityOverride = function (
+        this: HAPServiceNodeType
+    ) {
         const self = this
 
-        if (!self.config.hostType) {
-            // When moving from 1.2 to 1.3 hostType is not defined on homekit-service
-            self.config.hostType = HostType.BRIDGE
-        }
-
         if (self.config.isParent === undefined) {
+            debug(
+                'nrchkbConfigCompatibilityOverride => self.config.isParent=' +
+                    self.config.isParent +
+                    ' value changed to true'
+            )
             // Services created in pre linked services era where working in 1.2 but due to more typescript in 1.3+ it started to cause some errors
             self.config.isParent = true
+        }
+
+        if (!self.config.hostType) {
+            if (self.config.isParent) {
+                debug(
+                    'nrchkbConfigCompatibilityOverride => self.config.hostType=' +
+                        self.config.hostType +
+                        ' value changed to HostType.BRIDGE'
+                )
+                // When moving from 1.2 to 1.3 hostType is not defined on homekit-service
+                self.config.hostType = HostType.BRIDGE
+            }
         }
     }
 
@@ -35,7 +49,7 @@ module.exports = (RED: NodeAPI) => {
         self.RED = RED
         self.publishTimers = {}
 
-        nrchkbConfigOverride.call(self)
+        nrchkbConfigCompatibilityOverride.call(self)
         RED.nodes.createNode(self, config)
 
         const ServiceUtils = require('./utils/ServiceUtils')(self)

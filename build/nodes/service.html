@@ -637,6 +637,7 @@
             selectParentService.change()
 
             $("#node-input-accessoryId option[value='${n.accessoryId}']").attr("disabled", false);
+
             candidateNodes.forEach(function(n) {
                 if (n.id == node.id) {
                     return
@@ -647,6 +648,11 @@
                 }
 
                 if (n.accessoryId) {
+                    if (n.accessoryId == node.accessoryId) {
+                        // Same accessory cannot be used twice!
+                        $("#node-input-accessoryId").val("_ADD_");
+                    }
+
                     const accessoryOption = $("#node-input-accessoryId option[value='" + n.accessoryId + "']");
                     accessoryOption.attr("disabled", true);
                     accessoryOption.text(accessoryOption.text() + " already used by " + n.name)
@@ -659,10 +665,20 @@
             node.isParent = $('#node-config-input-isParent').val() === 'true'
             node.hostType = $('#node-config-input-hostType').val()
 
+            if (node.hostType == 0) {
+                //Host Type is a Bridge so we truncate accessory relation
+                node.accessoryId = undefined
+            } else {
+                //Host Type is a Standalone Accessory so we truncate bridge relation
+                node.bridge = undefined
+            }
+
             if (!node.isParent) {
                 node.parentService = $(
                     '#node-input-parentService option:selected',
                 ).val()
+                node.bridge = undefined
+                node.accessoryId = undefined
             }
 
             node.serviceName = $(
