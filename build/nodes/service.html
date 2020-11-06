@@ -509,6 +509,8 @@
             let isLinkedDiv = $('#isLinked')
             let isParentDiv = $('#isParent')
 
+            const selectHostType = $('#node-config-input-hostType')
+
             isParentToggle
                 .change(function() {
                     if (isParentToggle.val() === 'true') {
@@ -517,11 +519,10 @@
                     } else {
                         isParentDiv.fadeOut('fast')
                         isLinkedDiv.fadeIn('fast')
+                        selectHostType.val("_ADD_")
                     }
                 })
                 .change()
-
-            const selectHostType = $('#node-config-input-hostType')
 
             if (node.hostType) {
                 selectHostType.val(node.hostType)
@@ -538,9 +539,11 @@
                     if (selectHostType.val() == 0) {
                         isAccessoryDiv.hide()
                         isOnBridgeDiv.show()
+                        $("#node-input-accessoryId").val("_ADD_");
                     } else {
                         isOnBridgeDiv.hide()
                         isAccessoryDiv.show()
+                        $("#node-input-bridge").val("_ADD_");
                     }
                 })
                 .change()
@@ -620,11 +623,13 @@
 
                 const value = n.id
                 const text = n.name + ' (' + sublabel + ')'
+                const hostType = n.hostType
 
                 selectParentService.append(
                     $('<option></option>')
                         .val(value)
-                        .text(text),
+                        .text(text)
+                        .attr("hostType", hostType),
                 )
             })
 
@@ -634,6 +639,7 @@
                     return $(this).val() === node.parentService
                 })
                 .attr('selected', true)
+
             selectParentService.change()
 
             $("#node-input-accessoryId option[value='${n.accessoryId}']").attr("disabled", false);
@@ -665,20 +671,11 @@
             node.isParent = $('#node-config-input-isParent').val() === 'true'
             node.hostType = $('#node-config-input-hostType').val()
 
-            if (node.hostType == 0) {
-                //Host Type is a Bridge so we truncate accessory relation
-                node.accessoryId = undefined
-            } else {
-                //Host Type is a Standalone Accessory so we truncate bridge relation
-                node.bridge = undefined
-            }
 
             if (!node.isParent) {
-                node.parentService = $(
-                    '#node-input-parentService option:selected',
-                ).val()
-                node.bridge = undefined
-                node.accessoryId = undefined
+                const selectedParentService = $('#node-input-parentService option:selected')
+                node.parentService = selectedParentService.val()
+                node.hostType = selectedParentService.attr("hostType")
             }
 
             node.serviceName = $(

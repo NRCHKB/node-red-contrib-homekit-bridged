@@ -136,7 +136,11 @@ module.exports = function (node) {
                         node.supported.join(', ')
                 )
             } else {
-                if (node.config.hostType == HostType.BRIDGE) {
+                if (
+                    (node.config.isParent &&
+                        node.config.hostType == HostType.BRIDGE) ||
+                    node.parentNode?.hostType == HostType.BRIDGE
+                ) {
                     // updateReachability is only supported on bridged accessories
                     node.accessory.updateReachability(
                         msg.payload[key] !== NO_RESPONSE_MSG

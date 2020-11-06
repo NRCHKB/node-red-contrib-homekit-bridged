@@ -27,14 +27,14 @@ module.exports = (RED: NodeAPI) => {
             self.config.isParent = true
         }
 
-        if (!self.config.hostType) {
+        if (self.config.hostType === undefined) {
+            // When moving from 1.2 to 1.3 hostType is not defined on homekit-service
             if (self.config.isParent) {
                 debug(
                     'nrchkbConfigCompatibilityOverride => self.config.hostType=' +
                         self.config.hostType +
                         ' value changed to HostType.BRIDGE'
                 )
-                // When moving from 1.2 to 1.3 hostType is not defined on homekit-service
                 self.config.hostType = HostType.BRIDGE
             }
         }
