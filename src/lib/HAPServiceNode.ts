@@ -4,6 +4,7 @@ import HAPServiceNodeType from './types/HAPServiceNodeType'
 import HAPHostNodeType from './types/HAPHostNodeType'
 import HostType from './types/HostType'
 import { uuid } from 'hap-nodejs'
+import UnifiedLogger from './utils/UnifiedLogger'
 
 module.exports = (RED: NodeAPI) => {
     const debug = require('debug')('NRCHKB:HAPServiceNode')
@@ -17,6 +18,11 @@ module.exports = (RED: NodeAPI) => {
         if (!self.config.hostType) {
             // When moving from 1.2 to 1.3 hostType is not defined on homekit-service
             self.config.hostType = HostType.BRIDGE
+        }
+
+        if (self.config.isParent === undefined) {
+            // Services created in pre linked services era where working in 1.2 but due to more typescript in 1.3+ it started to cause some errors
+            self.config.isParent = true
         }
     }
 
@@ -85,26 +91,14 @@ module.exports = (RED: NodeAPI) => {
                     configure.call(self)
                 })
                 .catch((error: any) => {
-                    self.status({
-                        fill: 'red',
-                        shape: 'ring',
-                        text:
-                            'Error while starting ' +
-                            (config.serviceName === 'CameraControl'
-                                ? 'Camera'
-                                : 'Linked') +
-                            ' Service',
-                    })
-
-                    self.error(
+                    UnifiedLogger.error(
+                        self,
                         'Error while starting ' +
                             (config.serviceName === 'CameraControl'
                                 ? 'Camera'
                                 : 'Linked') +
-                            ' Service ' +
-                            config.name +
-                            ': ' +
-                            error
+                            ' Service',
+                        error
                     )
                 })
         }
@@ -130,6 +124,7 @@ module.exports = (RED: NodeAPI) => {
             self.hostNode = RED.nodes.getNode(hostId) as HAPHostNodeType
 
             if (!self.hostNode) {
+                UnifiedLogger.error(self, 'Host Node not found')
                 throw Error('Host Node not found')
             }
 
