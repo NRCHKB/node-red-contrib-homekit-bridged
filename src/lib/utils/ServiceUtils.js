@@ -303,7 +303,8 @@ module.exports = function (node) {
             })
 
             const checkAndWait = () => {
-                if (node.RED.nodes.getNode(node.config.parentService)) {
+                const parentNode = node.RED.nodes.getNode(node.config.parentService)
+                if (parentNode && parentNode.configured) {
                     resolve()
                 } else {
                     setTimeout(checkAndWait, 1000)

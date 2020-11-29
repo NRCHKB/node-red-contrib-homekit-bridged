@@ -91,6 +91,7 @@ module.exports = (RED: NodeAPI) => {
         if (self.config.isParent) {
             debug('Starting Parent Service ' + config.name)
             configure.call(self)
+            self.configured = true
         } else {
             ServiceUtils.waitForParent()
                 .then(() => {
@@ -103,6 +104,7 @@ module.exports = (RED: NodeAPI) => {
                             config.name
                     )
                     configure.call(self)
+                    self.configured = true
                 })
                 .catch((error: any) => {
                     UnifiedLogger.error(
