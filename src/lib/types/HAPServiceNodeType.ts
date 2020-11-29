@@ -8,6 +8,7 @@ type HAPServiceNodeType = Node & {
     config: HAPServiceConfigType
     RED: NodeAPI
     setupDone: boolean
+    configured: boolean
     handleWaitForSetup: (msg: any) => any
     onIdentify: (paired: boolean, callback: () => any) => void
     hostNode: HAPHostNodeType
