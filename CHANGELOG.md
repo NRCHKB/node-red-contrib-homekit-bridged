@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 -   There was a problem when mdsnConfig was empty #322
+-   Linked service throws error during setup if parent waits for the setup message (thanks @AlexOwl)
 
 ### Added
 -   More code tests
