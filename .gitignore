@@ -316,3 +316,5 @@ $RECYCLE.BIN/
 
 build/**/*.js
 !build/helper/preinstall.js
+
+*.d.ts

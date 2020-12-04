@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-homekit-bridged",
-  "version": "1.3.0-dev.18",
+  "version": "1.3.0-dev.19",
   "description": "Node-RED nodes to simulate Apple HomeKit devices.",
   "main": "build/nodes/nrchkb.js",
   "scripts": {
@@ -47,7 +47,7 @@
   "dependencies": {
     "debug": "^4.3.1",
     "hap-nodejs": "^0.8.2",
-    "semver": "^7.3.2"
+    "semver": "^7.3.4"
   },
   "devDependencies": {
     "@homebridge/ciao": "^1.0.12",
@@ -56,12 +56,12 @@
     "@types/node": "^10.17.39",
     "@types/node-red": "^1.1.1",
     "@types/semver": "^7.3.4",
-    "@typescript-eslint/eslint-plugin": "^4.8.2",
-    "@typescript-eslint/parser": "^4.8.2",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-prettier": "^3.2.0",
     "husky": "^4.3.0",
     "lint-staged": "^10.5.2",
     "mocha": "^8.2.1",
@@ -69,7 +69,7 @@
     "node-red-node-test-helper": "^0.2.5",
     "prettier": "^2.2.1",
     "supports-color": "^8.0.0",
-    "ts-node": "^9.0.0",
+    "ts-node": "^9.1.0",
     "typescript": "^4.1.2"
   },
   "husky": {
