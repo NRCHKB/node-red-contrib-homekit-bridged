@@ -32,6 +32,11 @@ jobs:
       - name: Extract PACKAGE_VERSION
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
+      - name: Prepare Discord notification messages
+        id: discord-prepare
+        run: |
+         echo ::set-output name=DISCORD_MSG_DEV_ANN::'{"embed":{"title":"New dev version `${{ steps.package-version.outputs.current-version }}` has been released.","description":"Changelog is available [here](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/commits/dev/CHANGELOG.md)","url":"https://github.com/NRCHKB/node-red-contrib-homekit-bridged/tree/dev","color":9371648,"fields":[{"name":"How to install","value":"1. Stop node-red 2. Backup `~/.node-red` folder 3. `cd ~/.node-red` 4. `npm i node-red-contrib-homekit-bridged@${{ steps.package-version.outputs.current-version }}` 5. Start node-red"}]}}' 
+         echo ::set-output name=DISCORD_MSG_ERROR::'{"embed":{"title":"Dev version `${{ steps.package-version.outputs.current-version }}` failed to be released.","description":"Changelog is available [here](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/commits/dev/CHANGELOG.md)","url":"https://github.com/NRCHKB/node-red-contrib-homekit-bridged/tree/dev","color":9371648,"fields":[{"name":"How to install","value":"1. Stop node-red 2. Backup `~/.node-red` folder 3. `cd ~/.node-red` 4. `npm i node-red-contrib-homekit-bridged@${{ steps.package-version.outputs.current-version }}` 5. Start node-red"}]}}' 
       - name: Publish
         if: contains(steps.package-version.outputs.current-version, 'dev') == true
         run: |
@@ -44,11 +49,11 @@ jobs:
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEV_ANN }}
-          DISCORD_EMBEDS: ${{ secrets.DISCORD_MSG_DEV_ANN }}
+          DISCORD_EMBEDS: ${{ steps.discord-prepare.outputs.DISCORD_MSG_DEV_ANN }}
         uses: Shaquu/action-discord@master
       - name: Discord error notification
         if: ${{ failure() }}
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ERROR }}
-          DISCORD_EMBEDS: ${{ secrets.DISCORD_MSG_ERROR }}
+          DISCORD_EMBEDS: ${{ steps.discord-prepare.outputs.DISCORD_MSG_ERROR }}
         uses: Shaquu/action-discord@master
