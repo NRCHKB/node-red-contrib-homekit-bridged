@@ -44,11 +44,11 @@ jobs:
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEV_ANN }}
-          DISCORD_EMBEDS: '{"embed":{"title":"New dev version `${{ env.PACKAGE_VERSION }}` has been released.","description":"Changelog is available [here](https:\/\/github.com\/NRCHKB\/node-red-contrib-homekit-bridged\/commits\/dev\/CHANGELOG.md)","url":"https:\/\/github.com\/NRCHKB\/node-red-contrib-homekit-bridged\/tree\/dev","color":9371648,"fields":[{"name":"How to install","value":"1. Stop node-red\n2. Backup `~\/.node-red` folder\n3. `cd ~\/.node-red`\n4. `npm i node-red-contrib-homekit-bridged@${{ env.PACKAGE_VERSION }}`\n5. Start node-red"}]}}'
+          DISCORD_EMBEDS: "{\"embed\":{\"title\":\"New dev version `${{ env.PACKAGE_VERSION }}` has been released.\",\"description\":\"Changelog is available [here](https:\\\/\\\/github.com\\\/NRCHKB\\\/node-red-contrib-homekit-bridged\\\/commits\\\/dev\\\/CHANGELOG.md)\",\"url\":\"https:\\\/\\\/github.com\\\/NRCHKB\\\/node-red-contrib-homekit-bridged\\\/tree\\\/dev\",\"color\":9371648,\"fields\":[{\"name\":\"How to install\",\"value\":\"1. Stop node-red\\n2. Backup `~\\\/.node-red` folder\\n3. `cd ~\\\/.node-red`\\n4. `npm i node-red-contrib-homekit-bridged@${{ env.PACKAGE_VERSION }}`\\n5. Start node-red\"}]}}"
         uses: Ilshidur/action-discord@master
       - name: Discord error notification
         if: ${{ failure() }}
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ERROR }}
-          DISCORD_EMBEDS: '{"embed":{"title":"Dev version `${{ env.PACKAGE_VERSION }}` failed to be released.","description":"Changelog is available [here](https:\/\/github.com\/NRCHKB\/node-red-contrib-homekit-bridged\/commits\/dev\/CHANGELOG.md)","url":"https:\/\/github.com\/NRCHKB\/node-red-contrib-homekit-bridged\/tree\/dev","color":9371648,"fields":[{"name":"How to install","value":"1. Stop node-red\n2. Backup `~\/.node-red` folder\n3. `cd ~\/.node-red`\n4. `npm i node-red-contrib-homekit-bridged@${{ env.PACKAGE_VERSION }}`\n5. Start node-red"}]}}'
+          DISCORD_EMBEDS: "{\"embed\":{\"title\":\"Dev version `${{ env.PACKAGE_VERSION }}` failed to be released.\",\"description\":\"Changelog is available [here](https:\\\/\\\/github.com\\\/NRCHKB\\\/node-red-contrib-homekit-bridged\\\/commits\\\/dev\\\/CHANGELOG.md)\",\"url\":\"https:\\\/\\\/github.com\\\/NRCHKB\\\/node-red-contrib-homekit-bridged\\\/tree\\\/dev\",\"color\":9371648,\"fields\":[{\"name\":\"How to install\",\"value\":\"1. Stop node-red\\n2. Backup `~\\\/.node-red` folder\\n3. `cd ~\\\/.node-red`\\n4. `npm i node-red-contrib-homekit-bridged@${{ env.PACKAGE_VERSION }}`\\n5. Start node-red\"}]}}"
         uses: Ilshidur/action-discord@master
