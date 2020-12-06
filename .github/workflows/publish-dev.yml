@@ -45,10 +45,10 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEV_ANN }}
           DISCORD_EMBEDS: ${{ secrets.DISCORD_MSG_DEV_ANN }}
-        uses: Ilshidur/action-discord@master
+        uses: Shaquu/action-discord@master
       - name: Discord error notification
         if: ${{ failure() }}
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ERROR }}
           DISCORD_EMBEDS: ${{ secrets.DISCORD_MSG_ERROR }}
-        uses: Ilshidur/action-discord@master
+        uses: Shaquu/action-discord@master
