@@ -13,8 +13,6 @@ This is a collection of nodes which can be used to imitate HomeKit devices insid
 If you have Node-RED already installed the recommended install method is to use the editor. To do this, select `Manage palette` from the Node-RED menu (top right).
 Then select `Install` tab in the palette. Search for and install this node (`node-red-contrib-homekit-bridged`).
 
-bridged
-
 ### Docker Install
 
 You can also pull a [docker image](https://github.com/NRCHKB/node-red-contrib-homekit-docker) containing everything needed to get started, thanks to [Raymond Mouthaan](https://github.com/RaymondMouthaan).
