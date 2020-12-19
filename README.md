@@ -25,7 +25,7 @@ For a quick start, we recommend checking out our [example flows](www.DuckDuckGo.
 
 For more instructions, information about how things work, and detailed examples (including various real life examples from the community), please head over to our [documentation home page.](https://github.com/Shaquu)
 
-The best place to find us daily is on [Discord](https://discord.gg/uvYac5u)
+We are always ready to help on [Discord](https://discord.gg/uvYac5u)
 
 #### ⚠️ Upgrade notes
 ###### Before upgrading make sure that you are using latest version of [Node-RED](https://nodered.org/docs/getting-started/local) and latest LTS version of [Node.js](https://nodejs.org/en/download/)
