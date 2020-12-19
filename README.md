@@ -19,9 +19,9 @@ You can also pull a [docker image](https://github.com/NRCHKB/node-red-contrib-ho
 
 ### Getting Started
 
-For a quick start, we recommend checking out our [example flows](www.DuckDuckGo.com) which are included with the plugin, they can be imported using the NodeRED hamburger menu after install. 
+[**Example flows**](www.DuckDuckGo.com) For a quick start, we recommend checking out the flows which are included with the plugin, they can be imported using the NodeRED hamburger menu after install. 
 
-For more instructions, information about how things work, and detailed examples (including various real life examples from the community), please head over to our [documentation home page.](https://github.com/Shaquu)
+[**Documentation home page**](https://github.com/Shaquu) For more instructions, information about how things work, and detailed examples (including various real life examples from the community)
 
 We are always ready to help on [Discord](https://discord.gg/uvYac5u)
 
