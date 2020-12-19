@@ -23,7 +23,7 @@ You can also pull a [docker image](https://github.com/NRCHKB/node-red-contrib-ho
 
 [**Documentation home page**](https://github.com/Shaquu) For more instructions, information about how things work, and detailed examples (including various real life examples from the community)
 
-We are always ready to help on [Discord](https://discord.gg/uvYac5u)
+[**Discord**](https://discord.gg/uvYac5u) Again, one of us is on Discord every day, always ready to help!
 
 #### ⚠️ Upgrade notes
 ###### Before upgrading make sure that you are using latest version of [Node-RED](https://nodered.org/docs/getting-started/local) and latest LTS version of [Node.js](https://nodejs.org/en/download/)
