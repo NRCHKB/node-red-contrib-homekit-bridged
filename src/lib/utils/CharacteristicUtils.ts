@@ -1,10 +1,14 @@
-module.exports = function (node) {
+import HAPServiceNodeType from '../types/HAPServiceNodeType'
+import { Service } from 'hap-nodejs'
+import HAPServiceConfigType from '../types/HAPServiceConfigType'
+
+module.exports = function (node: HAPServiceNodeType) {
     const HapNodeJS = require('hap-nodejs')
     const Characteristic = HapNodeJS.Characteristic
     const ServiceUtils = require('./ServiceUtils')(node)
 
-    const load = function (service, config) {
-        let characteristicProperties = {}
+    const load = function (service: Service, config: HAPServiceConfigType) {
+        let characteristicProperties: { [key: string]: any } = {}
 
         if (
             config.characteristicProperties &&
@@ -31,8 +35,8 @@ module.exports = function (node) {
         return characteristicProperties
     }
 
-    const subscribeAndGetSupported = function (service) {
-        const supported = []
+    const subscribeAndGetSupported = function (service: Service) {
+        const supported: string[] = []
 
         const allCharacteristics = service.characteristics.concat(
             service.optionalCharacteristics
@@ -45,7 +49,7 @@ module.exports = function (node) {
 
             supported.push(cKey)
 
-            // Listen to charateristic events and store the listerner functions
+            // Listen to characteristic events and store the listener functions
             // to be able to remove them later
             node.onCharacteristicGet = ServiceUtils.onCharacteristicGet
             node.onCharacteristicSet = ServiceUtils.onCharacteristicSet

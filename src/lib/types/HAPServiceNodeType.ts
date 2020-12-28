@@ -17,8 +17,12 @@ type HAPServiceNodeType = Node & {
     parentService: Service
     accessory: Accessory
     characteristicProperties: Record<string, unknown>
-    supported: []
+    supported: string[]
     publishTimers: PublishTimersType
+    topic_in: string
+    onCharacteristicGet: any
+    onCharacteristicSet: any
+    onCharacteristicChange: any
 }
 
 export default HAPServiceNodeType

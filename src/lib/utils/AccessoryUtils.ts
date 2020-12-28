@@ -1,24 +1,21 @@
-module.exports = function (node) {
+import HAPServiceNodeType from '../types/HAPServiceNodeType'
+import { Accessory, Service } from 'hap-nodejs'
+import AccessoryInformationType from '../types/AccessoryInformationType'
+
+module.exports = function (node: HAPServiceNodeType) {
     const debug = require('debug')('NRCHKB:AccessoryUtils')
     const HapNodeJS = require('hap-nodejs')
     const Accessory = HapNodeJS.Accessory
     const Service = HapNodeJS.Service
     const Characteristic = HapNodeJS.Characteristic
 
-    /**
-     * accessoryInformation
-     *  name
-     *  UUID
-     *  manufacturer
-     *  serialNo
-     *  model
-     *  firmwareRev
-     *  hardwareRev
-     *  softwareRev
-     */
-    const getOrCreate = function (bridge, accessoryInformation, subtypeUUID) {
-        let accessory = null
-        let services = []
+    const getOrCreate = function (
+        host: Accessory,
+        accessoryInformation: AccessoryInformationType,
+        subtypeUUID: string
+    ) {
+        let accessory: Accessory | undefined
+        let services: Service[] = []
 
         // create accessory object
         debug(
@@ -30,7 +27,7 @@ module.exports = function (node) {
         // Try to find an accessory which contains a service with the same
         // subtype. Since the UUID of the accessory might have changed the
         // subtype will be used instead.
-        accessory = bridge.bridgedAccessories.find((a) => {
+        accessory = host.bridgedAccessories.find((a) => {
             let service = a.services.find((s) => {
                 return s.subtype === subtypeUUID
             })
@@ -40,17 +37,23 @@ module.exports = function (node) {
 
         if (accessory) {
             // An accessory was found
-            let info = accessory.getService(Service.AccessoryInformation)
+            const accessoryInformationService =
+                accessory.getService(Service.AccessoryInformation) ||
+                accessory.addService(Service.AccessoryInformation)
 
             if (
-                info.getCharacteristic(Characteristic.Manufacturer).value !==
-                    accessoryInformation.manufacturer ||
-                info.getCharacteristic(Characteristic.Model).value !==
-                    accessoryInformation.model ||
-                info.getCharacteristic(Characteristic.Name).value !==
-                    accessoryInformation.name ||
-                info.getCharacteristic(Characteristic.SerialNumber).value !==
-                    accessoryInformation.serialNo
+                accessoryInformationService.getCharacteristic(
+                    Characteristic.Manufacturer
+                ).value !== accessoryInformation.manufacturer ||
+                accessoryInformationService.getCharacteristic(
+                    Characteristic.Model
+                ).value !== accessoryInformation.model ||
+                accessoryInformationService.getCharacteristic(
+                    Characteristic.Name
+                ).value !== accessoryInformation.name ||
+                accessoryInformationService.getCharacteristic(
+                    Characteristic.SerialNumber
+                ).value !== accessoryInformation.serialNo
             ) {
                 debug(
                     '... Manufacturer, Model, Name or Serial Number changed! ' +
@@ -64,14 +67,14 @@ module.exports = function (node) {
                             service.UUID !== Service.AccessoryInformation.UUID
                     )
                     .forEach((service) => {
-                        accessory.removeService(service)
+                        accessory?.removeService(service)
                         services.push(service)
                     })
 
                 // Remove old Accessory
-                bridge.removeBridgedAccessory(accessory, false)
+                host.removeBridgedAccessory(accessory, false)
                 accessory.destroy()
-                accessory = null
+                accessory = undefined
             } else {
                 debug('... found it! Updating it.')
             }
@@ -85,6 +88,8 @@ module.exports = function (node) {
             )
         }
 
+        let accessoryInformationService: Service | undefined
+
         if (!accessory) {
             // A new accessory will be created.
             accessory = new Accessory(
@@ -93,18 +98,21 @@ module.exports = function (node) {
             )
 
             // If the accessory is getting replaced then all of the old
-            // services (except AccessoryInformation) will be transfered to
+            // services (except AccessoryInformation) will be transferred to
             // the new accessory.
             services.forEach((service) => {
-                accessory.addService(service)
+                accessory?.addService(service)
             })
 
-            // Setting manufacurer data. Accoring to the HomekitADK specs this
+            accessoryInformationService =
+                accessory?.getService(Service.AccessoryInformation) ||
+                accessory?.addService(Service.AccessoryInformation)
+
+            // Setting manufacturer data. According to the HomekitADK specs this
             // data must persist throughout the lifetime of the accessory and
             // may not be changed.
-            accessory
-                .getService(Service.AccessoryInformation)
-                .setCharacteristic(
+            accessoryInformationService
+                ?.setCharacteristic(
                     Characteristic.Name,
                     accessoryInformation.name
                 )
@@ -127,56 +135,53 @@ module.exports = function (node) {
                 accessoryInformation.firmwareRev &&
                 accessoryInformation.firmwareRev.match(revisionRegex)
             ) {
-                accessory
-                    .getService(Service.AccessoryInformation)
-                    .setCharacteristic(
-                        Characteristic.FirmwareRevision,
-                        accessoryInformation.firmwareRev
-                    )
+                accessoryInformationService?.setCharacteristic(
+                    Characteristic.FirmwareRevision,
+                    accessoryInformation.firmwareRev
+                )
             }
 
             if (
                 accessoryInformation.hardwareRev &&
                 accessoryInformation.hardwareRev.match(revisionRegex)
             ) {
-                accessory
-                    .getService(Service.AccessoryInformation)
-                    .setCharacteristic(
-                        Characteristic.HardwareRevision,
-                        accessoryInformation.hardwareRev
-                    )
+                accessoryInformationService?.setCharacteristic(
+                    Characteristic.HardwareRevision,
+                    accessoryInformation.hardwareRev
+                )
             }
 
             if (
                 accessoryInformation.softwareRev &&
                 accessoryInformation.softwareRev.match(revisionRegex)
             ) {
-                accessory
-                    .getService(Service.AccessoryInformation)
-                    .setCharacteristic(
-                        Characteristic.SoftwareRevision,
-                        accessoryInformation.softwareRev
-                    )
+                accessoryInformationService?.setCharacteristic(
+                    Characteristic.SoftwareRevision,
+                    accessoryInformation.softwareRev
+                )
             }
 
             // Adding new accessory to the bridge.
-            bridge.addBridgedAccessories([accessory])
+            host.addBridgedAccessories([accessory!])
+        } else {
+            accessoryInformationService =
+                accessory?.getService(Service.AccessoryInformation) ||
+                accessory?.addService(Service.AccessoryInformation)
         }
 
-        accessory
-            .getService(Service.AccessoryInformation)
-            .setCharacteristic(Characteristic.Identify, true)
+        accessoryInformationService?.setCharacteristic(
+            Characteristic.Identify,
+            true
+        )
 
         debug(
-            'Bridge now has ' +
-                bridge.bridgedAccessories.length +
-                ' accessories.'
+            'Bridge now has ' + host.bridgedAccessories.length + ' accessories.'
         )
 
         return accessory
     }
 
-    const onIdentify = function (paired, callback) {
+    const onIdentify = function (paired: boolean, callback: () => any) {
         if (paired) {
             debug(
                 'Identify called on paired Accessory ' +
@@ -192,7 +197,9 @@ module.exports = function (node) {
         let nodes = node.childNodes
 
         for (let i = 0, len = nodes.length; i < len; i++) {
-            const topic = nodes[i].topic ? nodes[i].topic : nodes[i].topic_in
+            const topic = nodes[i].config.topic
+                ? nodes[i].config.topic
+                : nodes[i].topic_in
             const msg = {
                 payload: { Identify: 1 },
                 name: nodes[i].name,
@@ -215,7 +222,7 @@ module.exports = function (node) {
     }
 
     return {
-        getOrCreate: getOrCreate,
-        onIdentify: onIdentify,
+        getOrCreate,
+        onIdentify,
     }
 }

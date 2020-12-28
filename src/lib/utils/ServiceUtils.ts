@@ -1,6 +1,18 @@
 import HostType from '../types/HostType'
+import HAPServiceNodeType from '../types/HAPServiceNodeType'
+import {
+    Accessory,
+    Characteristic,
+    CharacteristicGetCallback,
+    CharacteristicSetCallback,
+    CharacteristicValue,
+    Nullable,
+    Service,
+    SessionIdentifier,
+} from 'hap-nodejs'
+import HAPServiceConfigType from '../types/HAPServiceConfigType'
 
-module.exports = function (node) {
+module.exports = function (node: HAPServiceNodeType) {
     const debug = require('debug')('NRCHKB:ServiceUtils')
     const HapNodeJS = require('hap-nodejs')
     const Service = HapNodeJS.Service
@@ -10,29 +22,39 @@ module.exports = function (node) {
 
     const NO_RESPONSE_MSG = 'NO_RESPONSE'
 
-    const onCharacteristicGet = function (callback) {
+    const onCharacteristicGet = function (
+        this: Characteristic,
+        callback?: CharacteristicGetCallback,
+        context?: any,
+        connectionID?: SessionIdentifier
+    ) {
         debug(
-            'onCharacteristicGet with status: ' +
-                this.status +
-                ' and value ' +
-                this.value +
-                ' and reachability is ' +
+            `onCharacteristicGet with status: ${this.status}, value: ${this.value}, reachability is ${node.accessory.reachable} 
+            with context ${context} on connection ${connectionID}`
+        )
+
+        if (callback) {
+            callback(
                 node.accessory.reachable
-        )
-        callback(
-            node.accessory.reachable === true
-                ? this.status
-                : new Error(NO_RESPONSE_MSG),
-            this.value
-        )
+                    ? this.status
+                    : new Error(NO_RESPONSE_MSG),
+                this.value
+            )
+        }
     }
 
     const onValueChange = function (
-        outputNumber,
-        { oldValue, newValue, context }
+        this: Characteristic,
+        outputNumber: number,
+        { oldValue, newValue, context }: any
     ) {
-        const topic = node.topic ? node.topic : node.topic_in
-        const msg = { payload: {}, hap: {}, name: node.name, topic: topic }
+        const topic = node.config.topic ? node.config.topic : node.topic_in
+        const msg: {
+            payload: { [key: string]: any }
+            hap: any
+            name?: string
+            topic: string
+        } = { payload: {}, hap: {}, name: node.name, topic: topic }
         const key = this.displayName.replace(/ /g, '').replace(/\./g, '_')
 
         msg.payload[key] = newValue
@@ -57,30 +79,34 @@ module.exports = function (node) {
 
         debug(node.name + ' received ' + key + ': ' + newValue)
 
-        if (context || node.hostNode.allowMessagePassthrough) {
+        if (context || node.hostNode.config.allowMessagePassthrough) {
             if (outputNumber === 0) {
                 node.send(msg)
             } else if (outputNumber === 1) {
+                // @ts-ignore
                 node.send([null, msg])
             }
         }
     }
 
     // eslint-disable-next-line no-unused-vars
-    const onCharacteristicSet = function (newValue, callback, context) {
+    const onCharacteristicSet = function (
+        this: Characteristic,
+        newValue: Nullable<CharacteristicValue | Error>,
+        callback?: CharacteristicSetCallback,
+        context?: any,
+        connectionID?: SessionIdentifier
+    ) {
         debug(
-            'onCharacteristicSet with status: ' +
-                this.status +
-                ' and value ' +
-                this.value +
-                ' and reachability is ' +
-                node.accessory.reachable
+            `onCharacteristicSet with status: ${this.status}, value: ${this.value}, reachability is ${node.accessory.reachable} 
+            with context ${context} on connection ${connectionID}`
         )
-        callback(
-            node.accessory.reachable === true
-                ? null
-                : new Error(NO_RESPONSE_MSG)
-        )
+
+        if (callback) {
+            callback(
+                node.accessory.reachable ? null : new Error(NO_RESPONSE_MSG)
+            )
+        }
 
         onValueChange.call(this, 1, {
             undefined,
@@ -89,7 +115,10 @@ module.exports = function (node) {
         })
     }
 
-    const onCharacteristicChange = function ({ oldValue, newValue, context }) {
+    const onCharacteristicChange = function (
+        this: Characteristic,
+        { oldValue, newValue, context }: any
+    ) {
         onValueChange.call(this, 0, {
             oldValue,
             newValue,
@@ -97,7 +126,7 @@ module.exports = function (node) {
         })
     }
 
-    const onInput = function (msg) {
+    const onInput = function (msg: Record<string, any>) {
         if (msg.hasOwnProperty('payload')) {
             // payload must be an object
             const type = typeof msg.payload
@@ -111,15 +140,15 @@ module.exports = function (node) {
             return
         }
 
-        const topic = node.topic ? node.topic : node.name
-        if (node.filter === true && msg.topic !== topic) {
+        const topic = node.config.topic ? node.config.topic : node.name
+        if (node.config.filter && msg.topic !== topic) {
             debug(
                 "msg.topic doesn't match configured value and filter is enabled. Dropping message."
             )
             return
         }
 
-        let context = null
+        let context: any = null
         if (msg.payload.hasOwnProperty('Context')) {
             context = msg.payload.Context
             delete msg.payload.Context
@@ -129,7 +158,7 @@ module.exports = function (node) {
 
         // iterate over characteristics to be written
         // eslint-disable-next-line no-unused-vars
-        Object.keys(msg.payload).map(function (key, index) {
+        Object.keys(msg.payload).map(function (key: string) {
             if (node.supported.indexOf(key) < 0) {
                 node.warn(
                     'Try one of these characteristics: ' +
@@ -139,7 +168,7 @@ module.exports = function (node) {
                 if (
                     (node.config.isParent &&
                         node.config.hostType == HostType.BRIDGE) ||
-                    node.parentNode?.hostType == HostType.BRIDGE
+                    node.hostNode?.hostType == HostType.BRIDGE
                 ) {
                     // updateReachability is only supported on bridged accessories
                     node.accessory.updateReachability(
@@ -164,7 +193,7 @@ module.exports = function (node) {
         })
     }
 
-    const onClose = function (removed, done) {
+    const onClose = function (removed: boolean, done: () => void) {
         const characteristics = node.service.characteristics.concat(
             node.service.optionalCharacteristics
         )
@@ -176,42 +205,37 @@ module.exports = function (node) {
             characteristic.removeListener('change', node.onCharacteristicChange)
         })
 
-        if (node.isParentNode) {
+        if (node.config.isParent) {
             // remove identify listener to prevent errors with undefined values
             node.accessory.removeListener('identify', node.onIdentify)
         }
 
         if (removed) {
             // This node has been deleted
-            if (node.isParentNode) {
+            if (node.config.isParent) {
                 // remove accessory from bridge
-                node.hostNode.bridge.removeBridgedAccessories([node.accessory])
+                node.hostNode.host.removeBridgedAccessories([node.accessory])
                 node.accessory.destroy()
             } else {
                 // only remove the service if it is not a parent
                 node.accessory.removeService(node.service)
                 node.parentService.removeLinkedService(node.service)
             }
-        } else {
-            // This node is being restarted
-            node.accessory = null
         }
 
         done()
     }
 
-    /**
-     * serviceInformation
-     *  name
-     *  UUID
-     *  serviceName
-     */
     const getOrCreate = function (
-        accessory,
-        serviceInformation,
-        parentService
+        accessory: Accessory,
+        serviceInformation: {
+            name: string
+            UUID: string
+            serviceName: string
+            config: HAPServiceConfigType
+        },
+        parentService: Service
     ) {
-        let service = null
         const newService = new Service[serviceInformation.serviceName](
             serviceInformation.name,
             serviceInformation.UUID
@@ -221,16 +245,18 @@ module.exports = function (node) {
         )
 
         // search for a service with the same subtype
-        service = accessory.services.find((service) => {
-            return newService.subtype === service.subtype
-        })
+        let service: Service | undefined = accessory.services.find(
+            (service) => {
+                return newService.subtype === service.subtype
+            }
+        )
 
         if (service && newService.UUID !== service.UUID) {
             // if the UUID and therefore the type changed, the whole service
             // will be replaced
             debug('... service type changed! Removing the old service.')
             accessory.removeService(service)
-            service = null
+            service = undefined
         }
 
         if (!service) {
@@ -265,7 +291,7 @@ module.exports = function (node) {
             if (serviceInformation.serviceName === 'CameraControl') {
                 //We don't add or link it since configureCameraSource do this already.
                 debug('... and adding service to accessory.')
-            } else {
+            } else if (service) {
                 debug('... and linking service to parent.')
                 parentService.addLinkedService(service)
             }
@@ -274,7 +300,11 @@ module.exports = function (node) {
         return service
     }
 
-    const configureCameraSource = function (accessory, service, config) {
+    const configureCameraSource = function (
+        accessory: Accessory,
+        service: Service,
+        config: HAPServiceConfigType
+    ) {
         if (config.cameraConfigSource) {
             debug('Configuring Camera Source')
 
@@ -283,6 +313,7 @@ module.exports = function (node) {
                     'Missing configuration for CameraControl: videoProcessor cannot be empty!'
                 )
             } else {
+                // Use of deprecated method to be replaced with new Camera API
                 accessory.configureCameraSource(
                     new CameraSource(service, config, node)
                 )
@@ -303,11 +334,12 @@ module.exports = function (node) {
             })
 
             const checkAndWait = () => {
-                const parentNode = node.RED.nodes.getNode(
+                const parentNode: HAPServiceNodeType = node.RED.nodes.getNode(
                     node.config.parentService
-                )
+                ) as HAPServiceNodeType
+
                 if (parentNode && parentNode.configured) {
-                    resolve()
+                    resolve(parentNode)
                 } else {
                     setTimeout(checkAndWait, 1000)
                 }
@@ -320,7 +352,11 @@ module.exports = function (node) {
         })
     }
 
-    const handleWaitForSetup = (config, msg, resolve) => {
+    const handleWaitForSetup = (
+        config: HAPServiceConfigType,
+        msg: Record<string, any>,
+        resolve: (newConfig: HAPServiceConfigType) => void
+    ) => {
         if (node.setupDone) {
             return
         }
