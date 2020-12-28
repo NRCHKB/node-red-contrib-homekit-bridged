@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   NRCHKB now supports Standalone Accessory mode (like in old times) #310
 
 ### Changed
--   Updated hap-nodejs to 0.8.3
+-   Updated hap-nodejs to 0.8.5
 -   Updated dependencies to latest versions
 -   TypeScript-ify code
 
