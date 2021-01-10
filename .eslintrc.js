@@ -26,7 +26,7 @@ module.exports = {
         'prettier/prettier': 'off',
         indent: ['error', 4],
         'linebreak-style': ['error', 'unix'],
-        quotes: ['error', 'single'],
+        quotes: ['error', 'single', { avoidEscape: true }],
         semi: ['error', 'never'],
         'no-prototype-builtins': 'off',
         '@typescript-eslint/no-this-alias': 'off',

@@ -2,7 +2,7 @@ import { Node } from 'node-red'
 
 // Print node.status (in UI) and to console and sidebar tab at once!
 class UnifiedLogger {
-    static error = (node: Node, text: string, error?: any) => {
+    static error = (node: Node, text: string, error?: string | Error): void => {
         node.status({
             fill: 'red',
             shape: 'ring',
