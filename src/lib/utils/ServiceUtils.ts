@@ -11,6 +11,7 @@ import {
     SessionIdentifier,
 } from 'hap-nodejs'
 import HAPServiceConfigType from '../types/HAPServiceConfigType'
+import { Session } from 'hap-nodejs/dist/lib/util/eventedhttp'
 
 module.exports = function (node: HAPServiceNodeType) {
     const debug = require('debug')('NRCHKB:ServiceUtils')
@@ -52,7 +53,8 @@ module.exports = function (node: HAPServiceNodeType) {
     const onValueChange = function (
         this: Characteristic,
         outputNumber: number,
-        { oldValue, newValue, context }: any
+        { oldValue, newValue, context }: any,
+        connectionID?: SessionIdentifier
     ) {
         const topic = node.config.topic ? node.config.topic : node.topic_in
         const msg: {
@@ -65,11 +67,21 @@ module.exports = function (node: HAPServiceNodeType) {
 
         msg.payload[key] = newValue
 
+        msg.hap = {}
+
         if (context) {
-            msg.hap = {
-                oldValue: oldValue,
-                newValue: newValue,
-                context: context,
+            msg.hap.oldValue = oldValue
+            msg.hap.newValue = newValue
+            msg.hap.context = context
+        }
+
+        if (connectionID) {
+            const session = Session.getSession(connectionID)
+            msg.hap.session = {
+                sessionID: session.sessionID,
+                username: session.username,
+                remoteAddress: session._connection._remoteAddress,
+                httpPort: session._connection._httpPort,
             }
         }
 
@@ -119,11 +131,16 @@ module.exports = function (node: HAPServiceNodeType) {
             }
         } catch (_) {}
 
-        onValueChange.call(this, 1, {
-            undefined,
-            newValue,
-            context,
-        })
+        onValueChange.call(
+            this,
+            1,
+            {
+                undefined,
+                newValue,
+                context,
+            },
+            connectionID
+        )
     }
 
     const onCharacteristicChange = function (
