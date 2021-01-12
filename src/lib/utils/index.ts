@@ -8,10 +8,10 @@ module.exports = function (node: HAPServiceNodeType) {
     const MdnsUtils = require('./MdnsUtils')()
 
     return {
-        ServiceUtils: ServiceUtils,
-        BridgeUtils: BridgeUtils,
-        AccessoryUtils: AccessoryUtils,
-        CharacteristicUtils: CharacteristicUtils,
-        MdnsUtils: MdnsUtils,
+        ServiceUtils,
+        BridgeUtils,
+        AccessoryUtils,
+        CharacteristicUtils,
+        MdnsUtils,
     }
 }

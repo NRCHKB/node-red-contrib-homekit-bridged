@@ -318,3 +318,5 @@ build/**/*.js
 !build/helper/preinstall.js
 
 *.d.ts
+
+.npm-upgrade.json

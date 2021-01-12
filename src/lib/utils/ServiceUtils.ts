@@ -29,17 +29,23 @@ module.exports = function (node: HAPServiceNodeType) {
         connectionID?: SessionIdentifier
     ) {
         debug(
-            `onCharacteristicGet with status: ${this.status}, value: ${this.value}, reachability is ${node.accessory.reachable} 
-            with context ${context} on connection ${connectionID}`
+            `onCharacteristicGet with status: ${this.status}, value: ${
+                this.value
+            }, reachability is ${node.accessory.reachable} 
+            with context ${JSON.stringify(
+                context
+            )} on connection ${connectionID}`
         )
 
         if (callback) {
-            callback(
-                node.accessory.reachable
-                    ? this.status
-                    : new Error(NO_RESPONSE_MSG),
-                this.value
-            )
+            try {
+                callback(
+                    node.accessory.reachable
+                        ? this.status
+                        : new Error(NO_RESPONSE_MSG),
+                    this.value
+                )
+            } catch (_) {}
         }
     }
 
@@ -98,15 +104,20 @@ module.exports = function (node: HAPServiceNodeType) {
         connectionID?: SessionIdentifier
     ) {
         debug(
-            `onCharacteristicSet with status: ${this.status}, value: ${this.value}, reachability is ${node.accessory.reachable} 
-            with context ${context} on connection ${connectionID}`
+            `onCharacteristicSet with status: ${this.status}, value: ${
+                this.value
+            }, reachability is ${node.accessory.reachable} 
+            with context ${JSON.stringify(
+                context
+            )} on connection ${connectionID}`
         )
-
-        if (callback) {
-            callback(
-                node.accessory.reachable ? null : new Error(NO_RESPONSE_MSG)
-            )
-        }
+        try {
+            if (callback) {
+                callback(
+                    node.accessory.reachable ? null : new Error(NO_RESPONSE_MSG)
+                )
+            }
+        } catch (_) {}
 
         onValueChange.call(this, 1, {
             undefined,
@@ -176,7 +187,7 @@ module.exports = function (node: HAPServiceNodeType) {
                     )
                 }
 
-                let characteristic = node.service.getCharacteristic(
+                const characteristic = node.service.getCharacteristic(
                     Characteristic[key]
                 )
 

@@ -1,14 +1,18 @@
 import HAPServiceNodeType from '../types/HAPServiceNodeType'
-import { Service } from 'hap-nodejs'
+import { Characteristic, CharacteristicProps, Service } from 'hap-nodejs'
 import HAPServiceConfigType from '../types/HAPServiceConfigType'
 
 module.exports = function (node: HAPServiceNodeType) {
-    const HapNodeJS = require('hap-nodejs')
-    const Characteristic = HapNodeJS.Characteristic
+    const debug = require('debug')('NRCHKB:CharacteristicUtils')
     const ServiceUtils = require('./ServiceUtils')(node)
 
-    const load = function (service: Service, config: HAPServiceConfigType) {
-        let characteristicProperties: { [key: string]: any } = {}
+    const load = function (
+        service: Service,
+        config: HAPServiceConfigType
+    ): { [key: string]: CharacteristicProps } {
+        let characteristicProperties: {
+            [key: string]: CharacteristicProps
+        } = {}
 
         if (
             config.characteristicProperties &&
@@ -19,14 +23,16 @@ module.exports = function (node: HAPServiceNodeType) {
             )
 
             // Configure custom characteristic properties
-            for (let key in characteristicProperties) {
+            for (const key in characteristicProperties) {
                 if (!characteristicProperties.hasOwnProperty(key)) continue
 
                 const characteristic = service.getCharacteristic(
+                    // @ts-ignore
                     Characteristic[key]
                 )
 
                 if (characteristic && characteristicProperties[key]) {
+                    debug(`Found Characteristic Properties for ${key}`)
                     characteristic.setProps(characteristicProperties[key])
                 }
             }
