@@ -15,7 +15,7 @@ module.exports = function (node: HAPServiceNodeType) {
         subtypeUUID: string
     ) {
         let accessory: Accessory | undefined
-        let services: Service[] = []
+        const services: Service[] = []
 
         // create accessory object
         debug(
@@ -28,7 +28,7 @@ module.exports = function (node: HAPServiceNodeType) {
         // subtype. Since the UUID of the accessory might have changed the
         // subtype will be used instead.
         accessory = host.bridgedAccessories.find((a) => {
-            let service = a.services.find((s) => {
+            const service = a.services.find((s) => {
                 return s.subtype === subtypeUUID
             })
 
@@ -194,7 +194,7 @@ module.exports = function (node: HAPServiceNodeType) {
             )
         }
 
-        let nodes = node.childNodes
+        const nodes = node.childNodes
 
         for (let i = 0, len = nodes.length; i < len; i++) {
             const topic = nodes[i].config.topic

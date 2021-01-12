@@ -2,6 +2,7 @@ import { NodeAPI } from 'node-red'
 import * as path from 'path'
 import semver from 'semver'
 import { HAPStorage } from 'hap-nodejs'
+import storage from 'node-persist'
 
 const debug = require('debug')('NRCHKB')
 
@@ -30,16 +31,27 @@ module.exports = (RED: NodeAPI) => {
     // Initialize our storage system
     if (RED.settings.available() && RED.settings.userDir) {
         debug('RED settings available')
+
+        const nrchkbStoragePath = path.resolve(RED.settings.userDir, 'nrchkb')
+        storage.init({ dir: nrchkbStoragePath }).then(() => {
+            // Initialize API
+            API.init()
+        })
+        debug('nrchkbStorage path set to ', nrchkbStoragePath)
+
         const hapStoragePath = path.resolve(
             RED.settings.userDir,
             'homekit-persist'
         )
         HAPStorage.setCustomStoragePath(hapStoragePath)
+
         debug('HAPStorage path set to ', hapStoragePath)
     } else {
         debug('RED settings not available')
     }
 
-    // Initialize API
-    API.init()
+    debug('Registering nrchkb type')
+    RED.nodes.registerType('nrchkb', function (this: any, config) {
+        RED.nodes.createNode(this, config)
+    })
 }
