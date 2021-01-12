@@ -12,13 +12,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [x.y.z]
 
 ### Fixed
--   There was a problem when mdsnConfig was empty #322
+-   There was a problem when mdnsConfig was empty #322
 -   Linked service throws error during setup if parent waits for the setup message (thanks @AlexOwl)
 
 ### Added
 -   More code tests
--   NRCHKB will verify if Node.js version criteria is met on start
--   NRCHKB now supports Standalone Accessory mode (like in old times) #310
+-   Verify if Node.js version criteria is met on start
+-   Support fo9r Standalone Accessory mode (like in old times) #310
+-   Support for Custom Characteristics #52
 
 ### Changed
 -   Updated hap-nodejs to 0.8.5
