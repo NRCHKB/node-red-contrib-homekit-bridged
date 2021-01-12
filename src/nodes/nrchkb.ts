@@ -47,7 +47,7 @@ module.exports = (RED: NodeAPI) => {
 
         debug('HAPStorage path set to ', hapStoragePath)
     } else {
-        throw new Error('RED settings not available')
+        debug('RED settings not available')
     }
 
     debug('Registering nrchkb type')
