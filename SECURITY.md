@@ -12,8 +12,8 @@ If vulnerability is a serious risk then please consider contacting us directly a
 
 | Version | Supported          |
 | ------- | ------------------ |
-| >= 0.6  | :white_check_mark: |
-| < 0.6   | :x:                |
+| >= 1.2.0  | :white_check_mark: |
+| < 1.2.0   | :x: limited               |
 
 ## Reporting a Vulnerability
 
@@ -48,3 +48,5 @@ In future release (possibly 1.X.Y) they will be forbidden programmatically.
 -   999-99-999
 -   123-45-678
 -   876-54-321
+
+Since 1.3 random Setup Code will be generated for new Bridge nodes (instead of default 111-11-111)
