@@ -34,6 +34,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Updated hap-nodejs to 0.8.5
 - Updated dependencies to latest versions
 - TypeScript-ify code
+- Generate random pin code for new Bridge nodes
 
 ## [1.2.0] - 2020.08.16
 
