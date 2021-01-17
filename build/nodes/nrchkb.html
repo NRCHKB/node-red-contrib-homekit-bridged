@@ -46,6 +46,10 @@
         return value ? /^(\d+\.)?(\d+\.)?(\.|\d+)$/.test(value) : true
     }
 
+    const hostNameValidator = function (value) {
+        return value ? /^[^.]{1,64}$/.test(value) : false
+    }
+
     const cameraConfigRequiredField = function (value) {
         return 'CameraControl' === this.serviceName ? (value || '').toString().trim() : true
     }

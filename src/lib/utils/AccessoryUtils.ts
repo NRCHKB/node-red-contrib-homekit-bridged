@@ -1,13 +1,15 @@
 import HAPServiceNodeType from '../types/HAPServiceNodeType'
 import { Accessory, Service } from 'hap-nodejs'
 import AccessoryInformationType from '../types/AccessoryInformationType'
+import { logger } from '../logger'
 
 module.exports = function (node: HAPServiceNodeType) {
-    const debug = require('debug')('NRCHKB:AccessoryUtils')
     const HapNodeJS = require('hap-nodejs')
     const Accessory = HapNodeJS.Accessory
     const Service = HapNodeJS.Service
     const Characteristic = HapNodeJS.Characteristic
+
+    const [logDebug] = logger('AccessoryUtils', node.config.name, node)
 
     const getOrCreate = function (
         host: Accessory,
@@ -18,10 +20,8 @@ module.exports = function (node: HAPServiceNodeType) {
         const services: Service[] = []
 
         // create accessory object
-        debug(
-            "Looking for accessory with service subtype '" +
-                subtypeUUID +
-                "'..."
+        logDebug(
+            `Looking for accessory with service subtype ${subtypeUUID} ...`
         )
 
         // Try to find an accessory which contains a service with the same
@@ -55,9 +55,8 @@ module.exports = function (node: HAPServiceNodeType) {
                     Characteristic.SerialNumber
                 ).value !== accessoryInformation.serialNo
             ) {
-                debug(
-                    '... Manufacturer, Model, Name or Serial Number changed! ' +
-                        'Replacing it.'
+                logDebug(
+                    '... Manufacturer, Model, Name or Serial Number changed! Replacing it.'
                 )
 
                 // Removing services from accessory and storing them for later
@@ -76,15 +75,11 @@ module.exports = function (node: HAPServiceNodeType) {
                 accessory.destroy()
                 accessory = undefined
             } else {
-                debug('... found it! Updating it.')
+                logDebug('... found it! Updating it.')
             }
         } else {
-            debug(
-                "... didn't find it. Adding new accessory with name '" +
-                    accessoryInformation.name +
-                    "' and UUID '" +
-                    accessoryInformation.UUID +
-                    "'"
+            logDebug(
+                `... didn't find it. Adding new accessory with name ${accessoryInformation.name} and UUID ${accessoryInformation.UUID}`
             )
         }
 
@@ -174,8 +169,8 @@ module.exports = function (node: HAPServiceNodeType) {
             true
         )
 
-        debug(
-            'Bridge now has ' + host.bridgedAccessories.length + ' accessories.'
+        logDebug(
+            `Bridge now has ${host.bridgedAccessories.length} accessories.`
         )
 
         return accessory
@@ -183,14 +178,12 @@ module.exports = function (node: HAPServiceNodeType) {
 
     const onIdentify = function (paired: boolean, callback: () => any) {
         if (paired) {
-            debug(
-                'Identify called on paired Accessory ' +
-                    node.accessory.displayName
+            logDebug(
+                `Identify called on paired Accessory ${node.accessory.displayName}`
             )
         } else {
-            debug(
-                'Identify called on unpaired Accessory ' +
-                    node.accessory.displayName
+            logDebug(
+                `Identify called on unpaired Accessory ${node.accessory.displayName}`
             )
         }
 

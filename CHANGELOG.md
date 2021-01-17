@@ -17,7 +17,9 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - There was a problem when mdnsConfig was
   empty [#322](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/322)
+- There was a problem when NRCHKB was updated without Node-RED restart [#363](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/363)
 - Linked service throws error during setup if parent waits for the setup message (thanks @AlexOwl)
+- . in Bridge name was causing it not being published without any feedback to user
 
 ### Added
 

@@ -18,9 +18,9 @@ const MdnsUtils = () => {
 
             const networkInterfaces = os.networkInterfaces()
 
-            Object.keys(networkInterfaces).forEach((ifaceArr) =>
-                networkInterfaces[ifaceArr].forEach((iface) =>
-                    availableInterfaces.push(iface.address)
+            Object.keys(networkInterfaces).forEach((key) =>
+                networkInterfaces[key].forEach((networkInterface) =>
+                    availableInterfaces.push(networkInterface.address)
                 )
             )
         }

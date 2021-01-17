@@ -1,15 +1,21 @@
 import HAPServiceNodeType from '../types/HAPServiceNodeType'
 import HostType from '../types/HostType'
+import { logger } from '../logger'
 
 module.exports = function () {
-    const debug = require('debug')('NRCHKB:BridgeUtils')
-
     // Publish accessory after the service has been added
     // BUT ONLY after 5 seconds with no new service have passed
     // otherwise, our bridge would get published too early during startup and
     // services being added after that point would be seen as "new" in iOS,
     // removing all parameters set (Rooms, Groups, Scenes...)
     const delayedPublish = function (node: HAPServiceNodeType) {
+        const [logDebug, logError] = logger(
+            'BridgeUtils',
+            node.config.name,
+
+            node
+        )
+
         if (!node.hostNode.published) {
             if (node.publishTimers[node.hostNode.id] !== undefined) {
                 clearTimeout(node.publishTimers[node.hostNode.id])
@@ -26,32 +32,18 @@ module.exports = function () {
                         const published = node.hostNode.publish()
 
                         if (published) {
-                            debug(
-                                hostTypeName +
-                                    " '" +
-                                    node.hostNode.name +
-                                    "' [" +
-                                    node.hostNode.id +
-                                    '] published'
+                            logDebug(
+                                `${hostTypeName} ${node.hostNode.name}:${node.hostNode.id} published`
                             )
                         } else {
-                            debug(
-                                hostTypeName +
-                                    " '" +
-                                    node.hostNode.name +
-                                    "' [" +
-                                    node.hostNode.id +
-                                    '] NOT published'
+                            logError(
+                                `${hostTypeName} ${node.hostNode.name}:${node.hostNode.id} not published`
                             )
                         }
                     }
-                } catch (err) {
-                    node.error(
-                        hostTypeName +
-                            ' [' +
-                            node.hostNode.id +
-                            '] publish failed due to: ' +
-                            err
+                } catch (error) {
+                    logError(
+                        `${hostTypeName} ${node.hostNode.name}:${node.hostNode.id} published failed due to ${error}`
                     )
 
                     node.status({

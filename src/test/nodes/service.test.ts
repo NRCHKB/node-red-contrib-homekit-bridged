@@ -3,9 +3,9 @@ import { describe, beforeEach, afterEach, it } from 'mocha'
 
 const helper = require('node-red-node-test-helper')
 
-const nrchkb = require('../../build/nodes/nrchkb')
-const homekitBridgeNode = require('../../build/nodes/bridge')
-const homekitServiceNode = require('../../build/nodes/service')
+const nrchkb = require('../../../build/nodes/nrchkb')
+const homekitBridgeNode = require('../../../build/nodes/bridge')
+const homekitServiceNode = require('../../../build/nodes/service')
 
 helper.init(require.resolve('node-red'))
 
