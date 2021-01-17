@@ -17,8 +17,6 @@ module.exports = (RED: NodeAPI) => {
 
         const [, , logTrace] = logger('HAPServiceNode', self.config.name, self)
 
-        console.log(self.config)
-
         if (self.config.isParent === undefined) {
             logTrace(
                 `nrchkbConfigCompatibilityOverride => self.config.isParent=${self.config.isParent} value changed to true`
