@@ -54,5 +54,9 @@ module.exports = (RED: NodeAPI) => {
     logDebug('Registering nrchkb type')
     RED.nodes.registerType('nrchkb', function (this: any, config) {
         RED.nodes.createNode(this, config)
+
+        // @ts-ignore
+        const plugins = RED.plugins.getByType('nrchkb-plugins')
+        console.log('plugins', plugins)
     })
 }
