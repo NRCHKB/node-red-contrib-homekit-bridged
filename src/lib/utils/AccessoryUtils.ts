@@ -1,7 +1,7 @@
 import HAPServiceNodeType from '../types/HAPServiceNodeType'
 import { Accessory, Service } from 'hap-nodejs'
 import AccessoryInformationType from '../types/AccessoryInformationType'
-import { logger } from '../logger'
+import logger from '@nrchkb/logger'
 
 module.exports = function (node: HAPServiceNodeType) {
     const HapNodeJS = require('hap-nodejs')
@@ -9,7 +9,7 @@ module.exports = function (node: HAPServiceNodeType) {
     const Service = HapNodeJS.Service
     const Characteristic = HapNodeJS.Characteristic
 
-    const [logDebug] = logger('AccessoryUtils', node.config.name, node)
+    const log = logger('AccessoryUtils', node.config.name, node)
 
     const getOrCreate = function (
         host: Accessory,
@@ -20,7 +20,7 @@ module.exports = function (node: HAPServiceNodeType) {
         const services: Service[] = []
 
         // create accessory object
-        logDebug(
+        log.debug(
             `Looking for accessory with service subtype ${subtypeUUID} ...`
         )
 
@@ -55,7 +55,7 @@ module.exports = function (node: HAPServiceNodeType) {
                     Characteristic.SerialNumber
                 ).value !== accessoryInformation.serialNo
             ) {
-                logDebug(
+                log.debug(
                     '... Manufacturer, Model, Name or Serial Number changed! Replacing it.'
                 )
 
@@ -75,10 +75,10 @@ module.exports = function (node: HAPServiceNodeType) {
                 accessory.destroy()
                 accessory = undefined
             } else {
-                logDebug('... found it! Updating it.')
+                log.debug('... found it! Updating it.')
             }
         } else {
-            logDebug(
+            log.debug(
                 `... didn't find it. Adding new accessory with name ${accessoryInformation.name} and UUID ${accessoryInformation.UUID}`
             )
         }
@@ -169,7 +169,7 @@ module.exports = function (node: HAPServiceNodeType) {
             true
         )
 
-        logDebug(
+        log.debug(
             `Bridge now has ${host.bridgedAccessories.length} accessories.`
         )
 
@@ -178,11 +178,11 @@ module.exports = function (node: HAPServiceNodeType) {
 
     const onIdentify = function (paired: boolean, callback: () => any) {
         if (paired) {
-            logDebug(
+            log.debug(
                 `Identify called on paired Accessory ${node.accessory.displayName}`
             )
         } else {
-            logDebug(
+            log.debug(
                 `Identify called on unpaired Accessory ${node.accessory.displayName}`
             )
         }

@@ -1,6 +1,6 @@
 import HAPServiceNodeType from '../types/HAPServiceNodeType'
 import HostType from '../types/HostType'
-import { logger } from '../logger'
+import logger from '@nrchkb/logger'
 
 module.exports = function () {
     // Publish accessory after the service has been added
@@ -9,7 +9,7 @@ module.exports = function () {
     // services being added after that point would be seen as "new" in iOS,
     // removing all parameters set (Rooms, Groups, Scenes...)
     const delayedPublish = function (node: HAPServiceNodeType) {
-        const [logDebug, logError] = logger(
+        const log = logger(
             'BridgeUtils',
             node.config.name,
 
@@ -32,17 +32,17 @@ module.exports = function () {
                         const published = node.hostNode.publish()
 
                         if (published) {
-                            logDebug(
+                            log.debug(
                                 `${hostTypeName} ${node.hostNode.name}:${node.hostNode.id} published`
                             )
                         } else {
-                            logError(
+                            log.error(
                                 `${hostTypeName} ${node.hostNode.name}:${node.hostNode.id} not published`
                             )
                         }
                     }
                 } catch (error) {
-                    logError(
+                    log.error(
                         `${hostTypeName} ${node.hostNode.name}:${node.hostNode.id} published failed due to ${error}`
                     )
 

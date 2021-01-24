@@ -1,10 +1,10 @@
 import HAPServiceNodeType from '../types/HAPServiceNodeType'
 import { Characteristic, CharacteristicProps, Service } from 'hap-nodejs'
 import HAPServiceConfigType from '../types/HAPServiceConfigType'
-import { logger } from '../logger'
+import logger from '@nrchkb/logger'
 
 module.exports = function (node: HAPServiceNodeType) {
-    const [logDebug] = logger('CharacteristicUtils', node.config.name, node)
+    const log = logger('CharacteristicUtils', node.config.name, node)
     const ServiceUtils = require('./ServiceUtils')(node)
 
     const load = function (
@@ -33,7 +33,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 )
 
                 if (characteristic && characteristicProperties[key]) {
-                    logDebug(`Found Characteristic Properties for ${key}`)
+                    log.debug(`Found Characteristic Properties for ${key}`)
                     characteristic.setProps(characteristicProperties[key])
                 }
             }

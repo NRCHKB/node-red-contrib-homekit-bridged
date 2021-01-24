@@ -1,11 +1,11 @@
 import { NodeAPI } from 'node-red'
-import { logger } from '../lib/logger'
+import logger from '@nrchkb/logger'
 
-const [logDebug] = logger('HAPServiceNode')
+const log = logger('HAPServiceNode')
 
 module.exports = (RED: NodeAPI) => {
     const HAPServiceNode = require('../lib/HAPServiceNode')(RED)
 
-    logDebug('Registering homekit-service type')
+    log.debug('Registering homekit-service type')
     RED.nodes.registerType('homekit-service', HAPServiceNode.preInit)
 }

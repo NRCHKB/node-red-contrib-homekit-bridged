@@ -29,9 +29,6 @@
       "bridge": "build/nodes/bridge.js",
       "standalone": "build/nodes/standalone.js",
       "service": "build/nodes/service.js"
-    },
-    "plugins": {
-      "example": "build/plugins/example.js"
     }
   },
   "author": {
@@ -45,14 +42,13 @@
   },
   "homepage": "https://github.com/NRCHKB/node-red-contrib-homekit-bridged#readme",
   "dependencies": {
-    "debug": "^4.3.1",
+    "@nrchkb/logger": "^1.0.0-dev.3",
     "hap-nodejs": "^0.8.5",
     "node-persist": "^3.1.0",
     "semver": "^7.3.4"
   },
   "devDependencies": {
     "@homebridge/ciao": "^1.1.2",
-    "@types/debug": "^4.1.5",
     "@types/mocha": "^8.2.0",
     "@types/node": "^10.17.50",
     "@types/node-persist": "^3.1.1",

@@ -6,12 +6,12 @@ import storage from 'node-persist'
 import CustomCharacteristicType from './types/CustomCharacteristicType'
 import HAPServiceNodeType from './types/HAPServiceNodeType'
 import HAPServiceConfigType from './types/HAPServiceConfigType'
-import { logger } from './logger'
+import logger from '@nrchkb/logger'
 
 const version = require('../../package.json').version.trim()
 
 module.exports = function (RED: NodeAPI) {
-    const [logDebug, logError] = logger('API')
+    const log = logger('API')
 
     // Service API response data
     const serviceData: {
@@ -20,7 +20,7 @@ module.exports = function (RED: NodeAPI) {
 
     // Service API
     const _initServiceAPI = () => {
-        logDebug('Initialize ServiceAPI')
+        log.debug('Initialize ServiceAPI')
 
         Object.values(Service)
             .filter((service) => service.prototype instanceof Service)
@@ -53,9 +53,9 @@ module.exports = function (RED: NodeAPI) {
 
     // NRCHKB Version API
     const _initNRCHKBVersionAPI = () => {
-        logDebug('Initialize NRCHKBVersionAPI')
+        log.debug('Initialize NRCHKBVersionAPI')
 
-        logDebug(`Running version: ${version}`)
+        log.debug(`Running version: ${version}`)
 
         const releaseVersionRegex = /(\d+)\.(\d+)\.(\d+)/
         const devVersionRegex = /(\d+)\.(\d+)\.(\d+)-dev\.(\d+)/
@@ -79,7 +79,7 @@ module.exports = function (RED: NodeAPI) {
                         '.' +
                         match[4]
                 } else {
-                    logDebug('Could not match dev version')
+                    log.debug('Could not match dev version')
                 }
             } catch (e) {
                 console.error(e)
@@ -91,17 +91,17 @@ module.exports = function (RED: NodeAPI) {
                 if (match) {
                     xyzVersion = match[0]
                 } else {
-                    logDebug('Could not match release version')
+                    log.debug('Could not match release version')
                 }
             } catch (e) {
                 console.error(e)
             }
         } else {
-            logDebug('Bad version format')
+            log.debug('Bad version format')
             xyzVersion = '0.0.0'
         }
 
-        logDebug(`Evaluated as: ${xyzVersion}`)
+        log.debug(`Evaluated as: ${xyzVersion}`)
 
         // Retrieve NRCHKB version
         RED.httpAdmin.get(
@@ -124,14 +124,14 @@ module.exports = function (RED: NodeAPI) {
                     if (Array.isArray(value)) {
                         return value
                     } else {
-                        logDebug(
+                        log.debug(
                             'customCharacteristics is not Array, returning empty value'
                         )
                         return []
                     }
                 })
                 .catch((error) => {
-                    logError(
+                    log.error(
                         `Failed to get customCharacteristics in nrchkbStorage due to ${error}`
                     )
                     return []
@@ -145,7 +145,7 @@ module.exports = function (RED: NodeAPI) {
         const refreshCustomCharacteristics = (
             customCharacteristics: CustomCharacteristicType[]
         ) => {
-            logDebug('Refreshing Custom Characteristics')
+            log.debug('Refreshing Custom Characteristics')
 
             const customCharacteristicKeys: string[] = []
 
@@ -153,7 +153,7 @@ module.exports = function (RED: NodeAPI) {
                 if (!!UUID && !!name) {
                     const key = characteristicNameToKey(name)
 
-                    logDebug(`Adding Custom Characteristic ${key}`)
+                    log.debug(`Adding Custom Characteristic ${key}`)
 
                     class CustomCharacteristic extends Characteristic {
                         static readonly UUID: string = UUID!
@@ -192,10 +192,12 @@ module.exports = function (RED: NodeAPI) {
             new Promise((resolve) => {
                 const isRedInitialized = () => {
                     try {
-                        RED.nodes.eachNode(() => {})
+                        RED.nodes.eachNode(() => {
+                            return
+                        })
                         resolve(true)
                     } catch (_) {
-                        logDebug('Waiting for RED to be initialized')
+                        log.debug('Waiting for RED to be initialized')
                         setTimeout(isRedInitialized, 1000)
                     }
                 }
@@ -245,7 +247,7 @@ module.exports = function (RED: NodeAPI) {
             })
         }
 
-        logDebug('Initialize NRCHKBCustomCharacteristicsAPI')
+        log.debug('Initialize NRCHKBCustomCharacteristicsAPI')
 
         getCustomCharacteristics().then((value) =>
             refreshCustomCharacteristics(value)
@@ -288,7 +290,7 @@ module.exports = function (RED: NodeAPI) {
 
     // Accessory API
     const _initAccessoryAPI = function () {
-        logDebug('Initialize AccessoryAPI')
+        log.debug('Initialize AccessoryAPI')
 
         // Prepare Accessory data once
         Object.keys(HapCategories)

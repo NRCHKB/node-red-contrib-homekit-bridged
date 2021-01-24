@@ -1,4 +1,4 @@
-import { logger } from '../logger'
+import logger from '@nrchkb/logger'
 
 const HapNodeJS = require('hap-nodejs')
 const uuid = HapNodeJS.uuid
@@ -9,7 +9,7 @@ const fs = require('fs')
 const ip = require('ip')
 const spawn = require('child_process').spawn
 
-const [logDebug, logError] = logger('CameraSource')
+const { debug, error } = logger('CameraSource')
 
 module.exports = {
     Camera: Camera,
@@ -152,7 +152,7 @@ Camera.prototype.configure = function (config, cameraControlService) {
             options
         )
     } else {
-        logError(
+        error(
             'Camera reconfigure on the fly is not yet supported. ' +
                 'Please restart node-red to apply all changes to the Camera.'
         )
@@ -181,18 +181,16 @@ Camera.prototype.handleSnapshotRequest = function (request, callback) {
     )
     let imageBuffer = Buffer.alloc(0)
 
-    logDebug('Snapshot from ' + this.name + ' at ' + resolution)
-    logDebug(
-        'ffmpeg ' + imageSource + ' -t 1 -s ' + resolution + ' -f image2 -'
-    )
+    debug('Snapshot from ' + this.name + ' at ' + resolution)
+    debug('ffmpeg ' + imageSource + ' -t 1 -s ' + resolution + ' -f image2 -')
 
     ffmpeg.stdout.on('data', function (data) {
         imageBuffer = Buffer.concat([imageBuffer, data])
     })
 
     ffmpeg.on('error', function (error) {
-        logError('An error occurs while making snapshot request')
-        logError(error)
+        error('An error occurs while making snapshot request')
+        error(error)
     })
 
     ffmpeg.on(
@@ -209,23 +207,23 @@ Camera.prototype.handleSnapshotRequest = function (request, callback) {
             }
 
             if (this.uploader !== 'disabled' && !this.cameraNode) {
-                logError('Node required for camera to send snapshot!')
+                error('Node required for camera to send snapshot!')
             } else if (this.uploader === 'path') {
                 const filePath =
                     __dirname + '/../../cameraSnapshots/' + new Date().getTime()
-                logDebug('Saving camera snapshot to: ' + filePath)
+                debug('Saving camera snapshot to: ' + filePath)
 
                 const self = this
 
                 fs.writeFile(filePath, imageBuffer, function (err) {
                     if (err) {
-                        return logError(
+                        return error(
                             'Camera snapshot file failed to save due to: ' + err
                         )
                     }
 
                     msg.payload['cameraSnapshot'] = filePath
-                    logDebug(
+                    debug(
                         'Camera snapshot file has been saved! Sending to output... ' +
                             JSON.stringify(msg)
                     )
@@ -233,7 +231,7 @@ Camera.prototype.handleSnapshotRequest = function (request, callback) {
                 })
             } else if (this.uploader === 'content') {
                 msg.payload['cameraSnapshot'] = imageBuffer
-                logDebug(
+                debug(
                     'Sending camera snapshot buffer to output...' +
                         JSON.stringify(msg)
                 )
@@ -322,7 +320,7 @@ Camera.prototype.handleStreamRequest = function (request) {
     if (sessionID) {
         let sessionIdentifier = uuid.unparse(sessionID)
 
-        logDebug('Request type: ' + requestType)
+        debug('Request type: ' + requestType)
 
         if (requestType === 'start') {
             const sessionInfo = this.pendingSessions[sessionIdentifier]
@@ -476,7 +474,7 @@ Camera.prototype.handleStreamRequest = function (request) {
                 let ffmpeg = spawn(this.videoProcessor, fcmd.split(' '), {
                     env: process.env,
                 })
-                logDebug(
+                debug(
                     'Start streaming video from ' +
                         this.name +
                         ' with ' +
@@ -487,27 +485,27 @@ Camera.prototype.handleStreamRequest = function (request) {
                         vbitrate +
                         'kBit'
                 )
-                logDebug('ffmpeg ' + fcmd)
+                debug('ffmpeg ' + fcmd)
 
                 ffmpeg.stderr.on(
                     'data',
                     function (data) {
-                        logDebug('ffmpeg data: ' + data.toString())
+                        debug('ffmpeg data: ' + data.toString())
                     }.bind(this)
                 )
 
                 let self = this
 
                 ffmpeg.on('error', function (error) {
-                    logError('An error occurred while making stream request')
-                    logError(error)
+                    error('An error occurred while making stream request')
+                    error(error)
                 })
 
                 ffmpeg.on('close', (code) => {
                     if (code == null || code === 0 || code === 255) {
-                        logDebug('Stopped streaming')
+                        debug('Stopped streaming')
                     } else {
-                        logError('ERROR: FFmpeg exited with code ' + code)
+                        error('ERROR: FFmpeg exited with code ' + code)
 
                         for (
                             let i = 0;
@@ -546,19 +544,19 @@ Camera.prototype._createStreamControllers = function (
 ) {
     let self = this
 
-    logDebug('Configuring services for Camera...')
+    debug('Configuring services for Camera...')
 
     self.services.push(cameraControlService)
-    logDebug('...added CameraControl Service')
+    debug('...added CameraControl Service')
 
     if (self.audio) {
-        logDebug('...audio available')
+        debug('...audio available')
     } else {
-        logDebug('...audio not available')
+        debug('...audio not available')
     }
 
-    logDebug('Creating Camera Stream Controllers: ' + maxStreams + ' - Started')
-    logDebug('Camera options: ' + JSON.stringify(options))
+    debug('Creating Camera Stream Controllers: ' + maxStreams + ' - Started')
+    debug('Camera options: ' + JSON.stringify(options))
 
     for (let i = 0; i < maxStreams; i++) {
         const streamController = new StreamController(i, options, self)
@@ -567,5 +565,5 @@ Camera.prototype._createStreamControllers = function (
         self.streamControllers.push(streamController)
     }
 
-    logDebug('Creating Camera Stream Controllers - Finished')
+    debug('Creating Camera Stream Controllers - Finished')
 }
