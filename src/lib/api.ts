@@ -204,6 +204,8 @@ module.exports = function (RED: NodeAPI) {
 
                 isRedInitialized()
             }).then(() => {
+                log.debug('RED initialized')
+
                 RED.nodes.eachNode((node) => {
                     if (node.type === 'homekit-service') {
                         const serviceNodeConfig = node as HAPServiceConfigType

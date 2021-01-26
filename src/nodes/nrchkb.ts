@@ -55,11 +55,11 @@ module.exports = (RED: NodeAPI) => {
 
     RED.nodes.registerType('nrchkb', function (this: any, config) {
         RED.nodes.createNode(this, config)
-
-        const plugins = RED.plugins.getByType('nrchkb-plugins')
-        log.debug(`${plugins.length} plugins registered`)
-        plugins.forEach((p) =>
-            log.trace(`{type: ${p.type}, id: ${p.id}, module: ${p.module}}`)
-        )
     })
+
+    const plugins = RED.plugins.getByType('nrchkb-plugins')
+    log.debug(`${plugins.length} plugins registered`)
+    plugins.forEach((p) =>
+        log.trace(`{type: ${p.type}, id: ${p.id}, module: ${p.module}}`)
+    )
 }
