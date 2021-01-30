@@ -70,14 +70,7 @@ module.exports = function (RED: NodeAPI) {
                 const match = devVersionRegex.exec(version)
 
                 if (match) {
-                    xyzVersion =
-                        0 +
-                        '.' +
-                        match[1] +
-                        match[2] +
-                        match[3] +
-                        '.' +
-                        match[4]
+                    xyzVersion = `0.${match[1]}${match[2]}${match[3]}.${match[4]}`
                 } else {
                     log.debug('Could not match dev version')
                 }
@@ -153,7 +146,16 @@ module.exports = function (RED: NodeAPI) {
                 if (!!UUID && !!name) {
                     const key = characteristicNameToKey(name)
 
-                    log.debug(`Adding Custom Characteristic ${key}`)
+                    log.debug(
+                        `Adding Custom Characteristic ${name} using key ${key}`
+                    )
+
+                    if (customCharacteristicKeys.includes(key)) {
+                        log.error(
+                            `Cannot add ${name}. Another Custom Characteristic already defined using key ${key}`
+                        )
+                        return
+                    }
 
                     class CustomCharacteristic extends Characteristic {
                         static readonly UUID: string = UUID!
