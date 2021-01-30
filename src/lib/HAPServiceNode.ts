@@ -4,7 +4,7 @@ import HAPServiceNodeType from './types/HAPServiceNodeType'
 import HAPHostNodeType from './types/HAPHostNodeType'
 import HostType from './types/HostType'
 import { uuid } from 'hap-nodejs'
-import { logger } from './logger'
+import { logger } from '@nrchkb/logger'
 
 module.exports = (RED: NodeAPI) => {
     /**
@@ -15,10 +15,10 @@ module.exports = (RED: NodeAPI) => {
     ) {
         const self = this
 
-        const [, , logTrace] = logger('HAPServiceNode', self.config.name, self)
+        const log = logger('HAPServiceNode', self.config.name, self)
 
         if (self.config.isParent === undefined) {
-            logTrace(
+            log.trace(
                 `nrchkbConfigCompatibilityOverride => self.config.isParent=${self.config.isParent} value changed to true`
             )
             // Services created in pre linked services era where working in 1.2 but due to more typescript in 1.3+ it started to cause some errors
@@ -27,7 +27,7 @@ module.exports = (RED: NodeAPI) => {
 
         if (self.config.hostType === undefined) {
             // When moving from 1.2 to 1.3 hostType is not defined on homekit-service
-            logTrace(
+            log.trace(
                 `nrchkbConfigCompatibilityOverride => self.config.hostType=${self.config.hostType} value changed to HostType.BRIDGE`
             )
             self.config.hostType = HostType.BRIDGE
@@ -42,7 +42,7 @@ module.exports = (RED: NodeAPI) => {
         self.config = config
         self.name = self.config.name
 
-        const [logDebug] = logger('HAPServiceNode', self.config.name, self)
+        const log = logger('HAPServiceNode', self.config.name, self)
 
         self.RED = RED
         self.publishTimers = {}
@@ -54,7 +54,7 @@ module.exports = (RED: NodeAPI) => {
 
         new Promise<HAPServiceConfigType>((resolve) => {
             if (self.config.waitForSetupMsg) {
-                logDebug(
+                log.debug(
                     'Waiting for Setup message. It should be of format {"payload":{"nrchkb":{"setup":{}}}}'
                 )
 
@@ -84,16 +84,12 @@ module.exports = (RED: NodeAPI) => {
         const self = this
         self.config = config
 
-        const [logDebug, logError] = logger(
-            'HAPServiceNode',
-            self.config.name,
-            self
-        )
+        const log = logger('HAPServiceNode', self.config.name, self)
 
         const ServiceUtils = require('./utils/ServiceUtils')(self)
 
         if (self.config.isParent) {
-            logDebug('Starting Parent Service')
+            log.debug('Starting Parent Service')
             configure.call(self)
             self.configured = true
         } else {
@@ -102,12 +98,12 @@ module.exports = (RED: NodeAPI) => {
 
             ServiceUtils.waitForParent()
                 .then(() => {
-                    logDebug(`Starting  ${serviceType} Service`)
+                    log.debug(`Starting  ${serviceType} Service`)
                     configure.call(self)
                     self.configured = true
                 })
                 .catch((error: any) => {
-                    logError(
+                    log.error(
                         `Error while starting ${serviceType} Service due to ${error}`
                     )
                 })
@@ -117,11 +113,7 @@ module.exports = (RED: NodeAPI) => {
     const configure = function (this: HAPServiceNodeType) {
         const self = this
 
-        const [logDebug, logError] = logger(
-            'HAPServiceNode',
-            self.config.name,
-            self
-        )
+        const log = logger('HAPServiceNode', self.config.name, self)
 
         const Utils = require('./utils')(self)
         const AccessoryUtils = Utils.AccessoryUtils
@@ -140,7 +132,7 @@ module.exports = (RED: NodeAPI) => {
             self.hostNode = RED.nodes.getNode(hostId) as HAPHostNodeType
 
             if (!self.hostNode) {
-                logError('Host Node not found', false)
+                log.error('Host Node not found', false)
                 throw Error('Host Node not found')
             }
 
@@ -153,14 +145,14 @@ module.exports = (RED: NodeAPI) => {
             ) as HAPServiceNodeType
 
             if (!parentNode) {
-                logError('Parent Node not assigned', false)
+                log.error('Parent Node not assigned', false)
                 throw Error('Parent Node not assigned')
             }
 
             self.parentService = parentNode.service
 
             if (!self.parentService) {
-                logError('Parent Service not assigned', false)
+                log.error('Parent Service not assigned', false)
                 throw Error('Parent Service not assigned')
             }
 
@@ -215,7 +207,7 @@ module.exports = (RED: NodeAPI) => {
             }
         } else {
             // We are using Standalone Accessory mode so no need to create new Accessory as we have "host" already
-            logDebug('Binding Service accessory as Standalone Accessory')
+            log.debug('Binding Service accessory as Standalone Accessory')
             self.accessory = self.hostNode.host
         }
 

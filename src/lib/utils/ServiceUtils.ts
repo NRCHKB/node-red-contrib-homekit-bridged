@@ -12,10 +12,10 @@ import {
 } from 'hap-nodejs'
 import HAPServiceConfigType from '../types/HAPServiceConfigType'
 import { Session } from 'hap-nodejs/dist/lib/util/eventedhttp'
-import { logger } from '../logger'
+import { logger } from '@nrchkb/logger'
 
 module.exports = function (node: HAPServiceNodeType) {
-    const [logDebug, logError] = logger('ServiceUtils', node.config.name, node)
+    const log = logger('ServiceUtils', node.config.name, node)
 
     const HapNodeJS = require('hap-nodejs')
     const Service = HapNodeJS.Service
@@ -31,7 +31,7 @@ module.exports = function (node: HAPServiceNodeType) {
         context?: any,
         connectionID?: SessionIdentifier
     ) {
-        logDebug(
+        log.debug(
             `onCharacteristicGet with status: ${this.status}, value: ${
                 this.value
             }, reachability is ${node.accessory.reachable} 
@@ -97,7 +97,7 @@ module.exports = function (node: HAPServiceNodeType) {
             node.status({})
         }, 3000)
 
-        logDebug(`${node.name} received ${key} : ${newValue}`)
+        log.debug(`${node.name} received ${key} : ${newValue}`)
 
         if (context || node.hostNode.config.allowMessagePassthrough) {
             if (outputNumber === 0) {
@@ -117,7 +117,7 @@ module.exports = function (node: HAPServiceNodeType) {
         context?: any,
         connectionID?: SessionIdentifier
     ) {
-        logDebug(
+        log.debug(
             `onCharacteristicSet with status: ${this.status}, value: ${
                 this.value
             }, reachability is ${node.accessory.reachable} 
@@ -162,17 +162,17 @@ module.exports = function (node: HAPServiceNodeType) {
             const type = typeof msg.payload
 
             if (type !== 'object') {
-                logError(`Invalid payload type: ${type}`)
+                log.error(`Invalid payload type: ${type}`)
                 return
             }
         } else {
-            logError('Invalid message (payload missing)')
+            log.error('Invalid message (payload missing)')
             return
         }
 
         const topic = node.config.topic ? node.config.topic : node.name
         if (node.config.filter && msg.topic !== topic) {
-            logDebug(
+            log.debug(
                 "msg.topic doesn't match configured value and filter is enabled. Dropping message."
             )
             return
@@ -190,7 +190,7 @@ module.exports = function (node: HAPServiceNodeType) {
         // eslint-disable-next-line no-unused-vars
         Object.keys(msg.payload).map(function (key: string) {
             if (node.supported.indexOf(key) < 0) {
-                logError(
+                log.error(
                     `Try one of these characteristics: ${node.supported.join(
                         ', '
                     )}`
@@ -267,7 +267,9 @@ module.exports = function (node: HAPServiceNodeType) {
             serviceInformation.name,
             serviceInformation.UUID
         )
-        logDebug(`Looking for service with UUID ${serviceInformation.UUID} ...`)
+        log.debug(
+            `Looking for service with UUID ${serviceInformation.UUID} ...`
+        )
 
         // search for a service with the same subtype
         let service: Service | undefined = accessory.services.find(
@@ -279,7 +281,7 @@ module.exports = function (node: HAPServiceNodeType) {
         if (service && newService.UUID !== service.UUID) {
             // if the UUID and therefore the type changed, the whole service
             // will be replaced
-            logDebug('... service type changed! Removing the old service.')
+            log.debug('... service type changed! Removing the old service.')
             accessory.removeService(service)
             service = undefined
         }
@@ -287,7 +289,7 @@ module.exports = function (node: HAPServiceNodeType) {
         if (!service) {
             // if no matching service was found or the type changed, then a new
             // service will be added
-            logDebug(
+            log.debug(
                 `... didn't find it. Adding new ${serviceInformation.serviceName} service.`
             )
 
@@ -304,7 +306,7 @@ module.exports = function (node: HAPServiceNodeType) {
         } else {
             // if a service with the same UUID and subtype was found it will
             // be updated and used
-            logDebug('... found it! Updating it.')
+            log.debug('... found it! Updating it.')
             service
                 .getCharacteristic(Characteristic.Name)
                 .setValue(serviceInformation.name)
@@ -313,9 +315,9 @@ module.exports = function (node: HAPServiceNodeType) {
         if (parentService) {
             if (serviceInformation.serviceName === 'CameraControl') {
                 //We don't add or link it since configureCameraSource do this already.
-                logDebug('... and adding service to accessory.')
+                log.debug('... and adding service to accessory.')
             } else if (service) {
-                logDebug('... and linking service to parent.')
+                log.debug('... and linking service to parent.')
                 parentService.addLinkedService(service)
             }
         }
@@ -329,10 +331,10 @@ module.exports = function (node: HAPServiceNodeType) {
         config: HAPServiceConfigType
     ) {
         if (config.cameraConfigSource) {
-            logDebug('Configuring Camera Source')
+            log.debug('Configuring Camera Source')
 
             if (!config.cameraConfigVideoProcessor) {
-                logError(
+                log.error(
                     'Missing configuration for CameraControl: videoProcessor cannot be empty!'
                 )
             } else {
@@ -342,12 +344,12 @@ module.exports = function (node: HAPServiceNodeType) {
                 )
             }
         } else {
-            logError('Missing configuration for CameraControl.')
+            log.error('Missing configuration for CameraControl.')
         }
     }
 
     const waitForParent = () => {
-        logDebug('Waiting for Parent Service')
+        log.debug('Waiting for Parent Service')
 
         return new Promise((resolve) => {
             node.status({
@@ -369,7 +371,7 @@ module.exports = function (node: HAPServiceNodeType) {
             }
             checkAndWait()
         }).catch((error) => {
-            logError(`Waiting for Parent Service failed due to: ${error}`)
+            log.error(`Waiting for Parent Service failed due to: ${error}`)
             throw error
         })
     }
@@ -399,7 +401,7 @@ module.exports = function (node: HAPServiceNodeType) {
 
             resolve(newConfig)
         } else {
-            logError(
+            log.error(
                 'Invalid message (required {"payload":{"nrchkb":{"setup":{}}}})'
             )
         }

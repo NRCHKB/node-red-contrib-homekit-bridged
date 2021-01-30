@@ -13,18 +13,14 @@ import {
 } from 'hap-nodejs'
 import HapCategories from './types/HapCategories'
 import { SemVer } from 'semver'
-import { logger } from './logger'
+import { logger } from '@nrchkb/logger'
 
 module.exports = (RED: NodeAPI, hostType: HostType) => {
     const MdnsUtils = require('./utils/MdnsUtils')()
 
     const init = function (this: HAPHostNodeType, config: HAPHostConfigType) {
         const self = this
-        const [logDebug, logError] = logger(
-            'HAPHostNode',
-            config.bridgeName,
-            self
-        )
+        const log = logger('HAPHostNode', config.bridgeName, self)
 
         self.hostType = hostType
         RED.nodes.createNode(self, config)
@@ -33,7 +29,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
         self.name = config.bridgeName
 
         if (!hostNameValidator(config.bridgeName)) {
-            logError('Host name is incorrect', false)
+            log.error('Host name is incorrect', false)
             throw Error('Host name is incorrect')
         }
 
@@ -84,7 +80,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
         const hostTypeName =
             self.hostType == HostType.BRIDGE ? 'Bridge' : 'Standalone Accessory'
 
-        logDebug(`Creating ${hostTypeName} with UUID ${hostUUID}`)
+        log.debug(`Creating ${hostTypeName} with UUID ${hostUUID}`)
 
         if (self.hostType == HostType.BRIDGE) {
             self.host = new Bridge(self.name, hostUUID)
@@ -94,11 +90,11 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
 
         self.publish = function () {
             if (self.hostType == HostType.BRIDGE) {
-                logDebug(
+                log.debug(
                     `Publishing ${hostTypeName} with pin code ${self.config.pinCode} and ${self.host.bridgedAccessories.length} accessories`
                 )
             } else {
-                logDebug(
+                log.debug(
                     `Publishing ${hostTypeName} with pin code ${self.config.pinCode}`
                 )
             }
@@ -107,7 +103,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                 (self.config.port && self.config.port == 1880) ||
                 (self.mdnsConfig?.port && self.mdnsConfig?.port == 1880)
             ) {
-                logError(
+                log.error(
                     `Cannot publish on ${hostTypeName} port 1880 as it is reserved for node-red`
                 )
                 self.published = false
@@ -145,9 +141,9 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
 
         self.host.on('identify', function (paired: any, callback: () => any) {
             if (paired) {
-                logDebug(`Identify called on paired ${hostTypeName}`)
+                log.debug(`Identify called on paired ${hostTypeName}`)
             } else {
-                logDebug(`Identify called on unpaired ${hostTypeName}`)
+                log.debug(`Identify called on unpaired ${hostTypeName}`)
             }
 
             callback()

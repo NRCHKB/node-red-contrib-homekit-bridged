@@ -1,12 +1,12 @@
 import { NodeAPI } from 'node-red'
 import HostType from '../lib/types/HostType'
-import { logger } from '../lib/logger'
+import { logger } from '@nrchkb/logger'
 
-const [logDebug] = logger('HAPHostNode')
+const log = logger('HAPHostNode')
 
 module.exports = (RED: NodeAPI) => {
     const HAPHostNode = require('../lib/HAPHostNode')(RED, HostType.STANDALONE)
 
-    logDebug('Registering homekit-standalone type')
+    log.debug('Registering homekit-standalone type')
     RED.nodes.registerType('homekit-standalone', HAPHostNode.init)
 }
