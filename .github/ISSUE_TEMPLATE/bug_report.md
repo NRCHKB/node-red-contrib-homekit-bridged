@@ -4,8 +4,9 @@ about: Create a report to help us improve
 title: "[Bug]: "
 labels: 'bug :bug:'
 assignees: ''
-
 ---
+
+NOTE: for setup help, general "how do I use this?", or other simple things, please use [Discussions](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/discussions). Issues are reserved for feature requests, bugs, and security issues in the code.
 
 **Describe the bug**
 A clear and concise description of what the bug is.
