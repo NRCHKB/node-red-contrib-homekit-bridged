@@ -11,7 +11,7 @@ import { logger } from '@nrchkb/logger'
 const version = require('../../package.json').version.trim()
 
 module.exports = function (RED: NodeAPI) {
-    const log = logger('API')
+    const log = logger('NRCHKB', 'API')
 
     // Service API response data
     const serviceData: {
@@ -161,17 +161,13 @@ module.exports = function (RED: NodeAPI) {
                         static readonly UUID: string = UUID!
 
                         constructor() {
-                            super(name!, CustomCharacteristic.UUID)
-
-                            const perms = props.perms || [
-                                Perms.PAIRED_READ,
-                                Perms.PAIRED_WRITE,
-                                Perms.NOTIFY,
-                            ]
-
-                            this.setProps({
+                            super(name!, CustomCharacteristic.UUID, {
                                 ...props,
-                                perms,
+                                perms: props.perms ?? [
+                                    Perms.PAIRED_READ,
+                                    Perms.PAIRED_WRITE,
+                                    Perms.NOTIFY,
+                                ],
                             })
 
                             this.value = this.getDefaultValue()

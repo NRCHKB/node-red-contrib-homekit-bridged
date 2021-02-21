@@ -3,19 +3,18 @@ import HAPServiceNodeType from '../types/HAPServiceNodeType'
 import {
     Accessory,
     Characteristic,
+    CharacteristicChange,
     CharacteristicGetCallback,
     CharacteristicSetCallback,
     CharacteristicValue,
-    Nullable,
     Service,
-    SessionIdentifier,
 } from 'hap-nodejs'
 import HAPServiceConfigType from '../types/HAPServiceConfigType'
-import { Session } from 'hap-nodejs/dist/lib/util/eventedhttp'
+import { HAPConnection } from 'hap-nodejs/dist/lib/util/eventedhttp'
 import { logger } from '@nrchkb/logger'
 
 module.exports = function (node: HAPServiceNodeType) {
-    const log = logger('ServiceUtils', node.config.name, node)
+    const log = logger('NRCHKB', 'ServiceUtils', node.config.name, node)
 
     const HapNodeJS = require('hap-nodejs')
     const Service = HapNodeJS.Service
@@ -27,24 +26,25 @@ module.exports = function (node: HAPServiceNodeType) {
 
     const onCharacteristicGet = function (
         this: Characteristic,
-        callback?: CharacteristicGetCallback,
-        context?: any,
-        connectionID?: SessionIdentifier
+        callback: CharacteristicGetCallback,
+        context: any,
+        connection?: HAPConnection
     ) {
         log.debug(
-            `onCharacteristicGet with status: ${this.status}, value: ${
+            `onCharacteristicGet with status: ${this.statusCode}, value: ${
                 this.value
-            }, reachability is ${node.accessory.reachable} 
-            with context ${JSON.stringify(
-                context
-            )} on connection ${connectionID}`
+            }, reachability is ${
+                node.accessory.reachable
+            } with context ${JSON.stringify(context)} on connection ${
+                connection?.sessionID
+            }`
         )
 
         if (callback) {
             try {
                 callback(
                     node.accessory.reachable
-                        ? this.status
+                        ? this.statusCode
                         : new Error(NO_RESPONSE_MSG),
                     this.value
                 )
@@ -56,7 +56,7 @@ module.exports = function (node: HAPServiceNodeType) {
         this: Characteristic,
         outputNumber: number,
         { oldValue, newValue, context }: any,
-        connectionID?: SessionIdentifier
+        connection?: HAPConnection
     ) {
         const topic = node.config.topic ? node.config.topic : node.topic_in
         const msg: {
@@ -77,13 +77,13 @@ module.exports = function (node: HAPServiceNodeType) {
             msg.hap.context = context
         }
 
-        if (connectionID) {
-            const session = Session.getSession(connectionID)
+        if (connection) {
             msg.hap.session = {
-                sessionID: session.sessionID,
-                username: session.username,
-                remoteAddress: session._connection._remoteAddress,
-                httpPort: session._connection._httpPort,
+                sessionID: connection.sessionID,
+                username: connection.username,
+                remoteAddress: connection.remoteAddress,
+                localAddress: connection.localAddress,
+                httpPort: connection.remotePort,
             }
         }
 
@@ -112,19 +112,20 @@ module.exports = function (node: HAPServiceNodeType) {
     // eslint-disable-next-line no-unused-vars
     const onCharacteristicSet = function (
         this: Characteristic,
-        newValue: Nullable<CharacteristicValue | Error>,
-        callback?: CharacteristicSetCallback,
-        context?: any,
-        connectionID?: SessionIdentifier
+        newValue: CharacteristicValue,
+        callback: CharacteristicSetCallback,
+        context: any,
+        connection?: HAPConnection
     ) {
         log.debug(
-            `onCharacteristicSet with status: ${this.status}, value: ${
+            `onCharacteristicSet with status: ${this.statusCode}, value: ${
                 this.value
             }, reachability is ${node.accessory.reachable} 
-            with context ${JSON.stringify(
-                context
-            )} on connection ${connectionID}`
+            with context ${JSON.stringify(context)} on connection ${
+                connection?.sessionID
+            }`
         )
+
         try {
             if (callback) {
                 callback(
@@ -141,19 +142,35 @@ module.exports = function (node: HAPServiceNodeType) {
                 newValue,
                 context,
             },
-            connectionID
+            connection
         )
     }
 
     const onCharacteristicChange = function (
         this: Characteristic,
-        { oldValue, newValue, context }: any
+        change: CharacteristicChange
     ) {
-        onValueChange.call(this, 0, {
-            oldValue,
-            newValue,
-            context,
-        })
+        const { oldValue, newValue, context, originator, reason } = change
+
+        log.debug(
+            `onCharacteristicChange with reason: ${reason}, oldValue: ${oldValue}, newValue: ${newValue}, reachability is ${
+                node.accessory.reachable
+            } 
+            with context ${JSON.stringify(context)} on connection ${
+                originator?.sessionID
+            }`
+        )
+
+        onValueChange.call(
+            this,
+            0,
+            {
+                oldValue,
+                newValue,
+                context,
+            },
+            originator
+        )
     }
 
     const onInput = function (msg: Record<string, any>) {

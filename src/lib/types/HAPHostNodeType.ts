@@ -1,12 +1,12 @@
 import { Node } from 'node-red'
 import HAPHostConfigType from './HAPHostConfigType'
 import { Accessory, Categories } from 'hap-nodejs'
-import MdnsConfigType from './MdnsConfigType'
 import HostType from './HostType'
+import { MulticastOptions } from 'bonjour-hap'
 
 type HAPHostNodeType = Node & {
     config: HAPHostConfigType
-    mdnsConfig: MdnsConfigType
+    mdnsConfig: MulticastOptions
     accessoryCategory: Categories
     published: boolean
     bridgeUsername: string

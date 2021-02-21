@@ -9,7 +9,7 @@ module.exports = function (node: HAPServiceNodeType) {
     const Service = HapNodeJS.Service
     const Characteristic = HapNodeJS.Characteristic
 
-    const log = logger('AccessoryUtils', node.config.name, node)
+    const log = logger('NRCHKB', 'AccessoryUtils', node.config.name, node)
 
     const getOrCreate = function (
         host: Accessory,

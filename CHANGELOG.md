@@ -17,7 +17,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - There was a problem when mdnsConfig was
   empty [#322](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/322)
-- There was a problem when NRCHKB was updated without Node-RED restart [#363](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/363)
+- There was a problem when NRCHKB was updated without Node-RED
+  restart [#363](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/363)
 - Linked service throws error during setup if parent waits for the setup message (thanks @AlexOwl)
 - . in Bridge name was causing it not being published without any feedback to user
 
@@ -28,12 +29,14 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Support fo9r Standalone Accessory mode (like in old
   times) [#310](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/310)
 - Support for Custom Characteristics [#52](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/52)
-- Add client IP address to onSet
+- Add client IP address to onSet/onChange output
   message (`msg.hap.session`) [#328](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/328)
+- As of new mdns advertiser available now there is a possibilty to choose which you want to use in Bridge Config: ciao (
+  new, improved but not yet proved) or (good old) bonjour. Default bonjour
 
 ### Changed
 
-- Updated hap-nodejs to 0.8.5
+- Updated hap-nodejs to 0.9.1
 - Updated dependencies to latest versions
 - TypeScript-ify code
 - Generate random pin code for new Bridge nodes

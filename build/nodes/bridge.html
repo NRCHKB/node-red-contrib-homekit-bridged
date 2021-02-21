@@ -8,6 +8,13 @@
         <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign">
     </div>
     <div class="form-row">
+        <label for="node-config-input-advertiser"><i class="fa fa-globe"></i> Advertiser</label>
+        <select id="node-config-input-advertiser">
+            <option value="bonjour-hap" selected="selected">BONJOUR</option>
+            <option value="ciao">CIAO</option>
+        </select>
+    </div>
+    <div class="form-row">
         <label>&nbsp;</label>
         <input type="checkbox" id="node-config-input-allowInsecureRequest" style="display: inline-block; width: auto; vertical-align: top;">
         <label for="node-config-input-allowInsecureRequest" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-shield"></i> Allow Insecure Request</label>
@@ -91,6 +98,7 @@
     <ul>
         <li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
         <li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Cannot be 1880 as it is reserved for node-red. Otherwise, leave empty.</li>
+        <li><strong>Advertiser</strong>: Which MDNS advertiser to use <em>ciao</em> (new, improved but not yet proved) or (good old) <em>bonjour</em>. Default <em>bonjour</em>.</li>
         <li><strong>Allow Insecure Request</strong>: Should we allow insecure request? Default false.</li>
         <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
         <li><strong>Firmware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
@@ -133,6 +141,14 @@
                 required: false,
                 validate: function (value) {
                     if (value) return RED.validators.port(value)
+                    else return true
+                },
+            },
+            advertiser: {
+                value: 'bonjour-hap',
+                required: false,
+                validate: function (value) {
+                    if (value) return value === 'bonjour-hap' || value === 'ciao'
                     else return true
                 },
             },

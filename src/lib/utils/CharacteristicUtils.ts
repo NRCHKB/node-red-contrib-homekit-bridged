@@ -4,7 +4,7 @@ import HAPServiceConfigType from '../types/HAPServiceConfigType'
 import { logger } from '@nrchkb/logger'
 
 module.exports = function (node: HAPServiceNodeType) {
-    const log = logger('CharacteristicUtils', node.config.name, node)
+    const log = logger('NRCHKB', 'CharacteristicUtils', node.config.name, node)
     const ServiceUtils = require('./ServiceUtils')(node)
 
     const load = function (

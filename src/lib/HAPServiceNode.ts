@@ -15,7 +15,7 @@ module.exports = (RED: NodeAPI) => {
     ) {
         const self = this
 
-        const log = logger('HAPServiceNode', self.config.name, self)
+        const log = logger('NRCHKB', 'HAPServiceNode', self.config.name, self)
 
         if (self.config.isParent === undefined) {
             log.trace(
@@ -42,7 +42,7 @@ module.exports = (RED: NodeAPI) => {
         self.config = config
         self.name = self.config.name
 
-        const log = logger('HAPServiceNode', self.config.name, self)
+        const log = logger('NRCHKB', 'HAPServiceNode', self.config.name, self)
 
         self.RED = RED
         self.publishTimers = {}
@@ -84,7 +84,7 @@ module.exports = (RED: NodeAPI) => {
         const self = this
         self.config = config
 
-        const log = logger('HAPServiceNode', self.config.name, self)
+        const log = logger('NRCHKB', 'HAPServiceNode', self.config.name, self)
 
         const ServiceUtils = require('./utils/ServiceUtils')(self)
 
@@ -113,7 +113,7 @@ module.exports = (RED: NodeAPI) => {
     const configure = function (this: HAPServiceNodeType) {
         const self = this
 
-        const log = logger('HAPServiceNode', self.config.name, self)
+        const log = logger('NRCHKB', 'HAPServiceNode', self.config.name, self)
 
         const Utils = require('./utils')(self)
         const AccessoryUtils = Utils.AccessoryUtils

@@ -3,9 +3,10 @@ import * as path from 'path'
 import semver from 'semver'
 import { HAPStorage } from 'hap-nodejs'
 import storage from 'node-persist'
-import { logger } from '@nrchkb/logger'
+import { logger, loggerSetup } from '@nrchkb/logger'
 
-const log = logger()
+loggerSetup({ timestampEnabled: 'NRCHKB' })
+const log = logger('NRCHKB')
 
 module.exports = (RED: NodeAPI) => {
     const requiredNodeVersion = '10.22.1'

@@ -9,12 +9,7 @@ module.exports = function () {
     // services being added after that point would be seen as "new" in iOS,
     // removing all parameters set (Rooms, Groups, Scenes...)
     const delayedPublish = function (node: HAPServiceNodeType) {
-        const log = logger(
-            'BridgeUtils',
-            node.config.name,
-
-            node
-        )
+        const log = logger('NRCHKB', 'BridgeUtils', node.config.name, node)
 
         if (!node.hostNode.published) {
             if (node.publishTimers[node.hostNode.id] !== undefined) {
@@ -32,19 +27,13 @@ module.exports = function () {
                         const published = node.hostNode.publish()
 
                         if (published) {
-                            log.debug(
-                                `${hostTypeName} ${node.hostNode.name}:${node.hostNode.id} published`
-                            )
+                            log.debug(`${hostTypeName} published`)
                         } else {
-                            log.error(
-                                `${hostTypeName} ${node.hostNode.name}:${node.hostNode.id} not published`
-                            )
+                            log.error(`${hostTypeName} not published`)
                         }
                     }
                 } catch (error) {
-                    log.error(
-                        `${hostTypeName} ${node.hostNode.name}:${node.hostNode.id} published failed due to ${error}`
-                    )
+                    log.error(`${hostTypeName} publish failed due to ${error}`)
 
                     node.status({
                         fill: 'red',

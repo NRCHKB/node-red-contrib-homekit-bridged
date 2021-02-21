@@ -8,19 +8,21 @@ import {
     Bridge,
     Categories,
     Characteristic,
+    MDNSAdvertiser,
     Service,
     uuid,
 } from 'hap-nodejs'
 import HapCategories from './types/HapCategories'
 import { SemVer } from 'semver'
 import { logger } from '@nrchkb/logger'
+import { MulticastOptions } from 'bonjour-hap'
 
 module.exports = (RED: NodeAPI, hostType: HostType) => {
     const MdnsUtils = require('./utils/MdnsUtils')()
 
     const init = function (this: HAPHostNodeType, config: HAPHostConfigType) {
         const self = this
-        const log = logger('HAPHostNode', config.bridgeName, self)
+        const log = logger('NRCHKB', 'HAPHostNode', config.bridgeName, self)
 
         self.hostType = hostType
         RED.nodes.createNode(self, config)
@@ -38,7 +40,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
         }
 
         if (config.customMdnsConfig) {
-            self.mdnsConfig = {}
+            self.mdnsConfig = {} as MulticastOptions
 
             if (MdnsUtils.checkMulticast(config.mdnsMulticast)) {
                 self.mdnsConfig.multicast = config.mdnsMulticast
@@ -113,10 +115,15 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             self.host.publish(
                 {
                     username: self.bridgeUsername,
-                    port: self.config.port,
+                    port:
+                        self.config.port && !isNaN(self.config.port)
+                            ? self.config.port
+                            : 0,
                     pincode: self.config.pinCode,
                     category: self.accessoryCategory,
                     mdns: self.mdnsConfig,
+                    advertiser:
+                        self.config.advertiser ?? MDNSAdvertiser.BONJOUR,
                 },
                 self.config.allowInsecureRequest
             )
