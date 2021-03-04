@@ -51,9 +51,9 @@ module.exports = function (RED: NodeAPI) {
         )
     }
 
-    // NRCHKB Version API
-    const _initNRCHKBVersionAPI = () => {
-        log.debug('Initialize NRCHKBVersionAPI')
+    // NRCHKB Info API
+    const _initNRCHKBInfoAPI = () => {
+        log.debug('Initialize NRCHKB Info API')
 
         log.debug(`Running version: ${version}`)
 
@@ -96,13 +96,18 @@ module.exports = function (RED: NodeAPI) {
 
         log.debug(`Evaluated as: ${xyzVersion}`)
 
+        const experimental = process.env.NRCHKB_EXPERIMENTAL === 'true'
+
+        log.debug(`Running experimental: ${experimental}`)
+
         // Retrieve NRCHKB version
         RED.httpAdmin.get(
-            '/nrchkb/version',
+            '/nrchkb/info',
             RED.auth.needsPermission('nrchkb.read'),
             (_req: express.Request, res: express.Response) => {
                 res.json({
                     version: xyzVersion,
+                    experimental,
                 })
             }
         )
@@ -311,9 +316,13 @@ module.exports = function (RED: NodeAPI) {
 
     const init = () => {
         _initServiceAPI()
-        _initNRCHKBVersionAPI()
+        _initNRCHKBInfoAPI()
         _initAccessoryAPI()
-        _initNRCHKBCustomCharacteristicsAPI()
+
+        // Experimental feature
+        if (process.env.NRCHKB_EXPERIMENTAL === 'true') {
+            _initNRCHKBCustomCharacteristicsAPI().then()
+        }
     }
 
     return {

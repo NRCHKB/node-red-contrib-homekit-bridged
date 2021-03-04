@@ -8,6 +8,10 @@ import { logger, loggerSetup } from '@nrchkb/logger'
 loggerSetup({ timestampEnabled: 'NRCHKB' })
 const log = logger('NRCHKB')
 
+if (process.env.NRCHKB_EXPERIMENTAL === 'true') {
+    log.error('Experimental features enabled')
+}
+
 module.exports = (RED: NodeAPI) => {
     const requiredNodeVersion = '10.22.1'
     const nodeVersion = process.version
@@ -52,9 +56,12 @@ module.exports = (RED: NodeAPI) => {
         log.debug('RED settings not available')
     }
 
-    log.debug('Registering nrchkb type')
+    // Experimental feature
+    if (process.env.NRCHKB_EXPERIMENTAL === 'true') {
+        log.debug('Registering nrchkb type')
 
-    RED.nodes.registerType('nrchkb', function (this: any, config) {
-        RED.nodes.createNode(this, config)
-    })
+        RED.nodes.registerType('nrchkb', function (this: any, config) {
+            RED.nodes.createNode(this, config)
+        })
+    }
 }

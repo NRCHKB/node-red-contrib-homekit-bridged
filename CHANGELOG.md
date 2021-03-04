@@ -28,7 +28,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Verify if Node.js version criteria is met on start
 - Support fo9r Standalone Accessory mode (like in old
   times) [#310](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/310)
-- Support for Custom Characteristics [#52](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/52)
+- (Experimental) Support for Custom Characteristics [#52](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/52)
 - Add client IP address to onSet/onChange output
   message (`msg.hap.session`) [#328](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/328)
 - As of new mdns advertiser available now there is a possibilty to choose which you want to use in Bridge Config: ciao (
