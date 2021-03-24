@@ -1,145 +1,4 @@
 <script type="text/javascript">
-    RED.validators.port = function (port) {
-        return port !== 1880 && port >= 1 && port <= 65535 && port === port.toString()
-    }
-
-    const isValueDefined = function (value) {
-        return 'undefined' === typeof value ? false : null !== value
-    }
-
-    let serviceTypes
-    let accessoryCategories
-    let nrchkbVersion = '0.0.0'
-    let nrchkbExperimental = false
-    let config = []
-
-    //HomeKit Service Types
-    $.getJSON('nrchkb/service/types', function (data) {
-        serviceTypes = data
-    })
-
-    //HomeKit Accessory Categories
-    $.getJSON('nrchkb/accessory/categories', function (data) {
-        accessoryCategories = data
-    })
-
-    //NRCHKB Info
-    $.ajax({
-        url: 'nrchkb/info',
-        dataType: 'json',
-        async: false,
-        success: function (data) {
-            nrchkbVersion = data.version
-            nrchkbExperimental = data.experimental
-
-            if (nrchkbExperimental) {
-                initExperimental()
-            }
-        },
-    })
-
-    const versionValidator = function (value) {
-        return value ? /^(\d+\.)?(\d+\.)?(\.|\d+)$/.test(value) : true
-    }
-
-    const hostNameValidator = function (value) {
-        return value ? /^[^.]{1,64}$/.test(value) : false
-    }
-
-    const cameraConfigRequiredField = function (value) {
-        return 'CameraControl' === this.serviceName ? (value || '').toString().trim() : true
-    }
-
-    const saveCustomCharacteristics = function (self) {
-        const customCharacteristics = []
-        const items = $("#node-input-customCharacteristics-container").editableList('items');
-
-        items.each(function () {
-            const item = $(this);
-            const name = item.find(".property-name").val();
-            const UUID = item.find(".property-uuid").val();
-            const format = item.find(".property-format").val();
-            const unit = item.find(".property-unit").val();
-            const perms = item.find(".property-perms").val();
-            const ev = item.find(".property-ev").prop('checked');
-            const description = item.find(".property-description").val();
-            const minValue = item.find(".property-minValue").val();
-            const maxValue = item.find(".property-maxValue").val();
-            const minStep = item.find(".property-minStep").val();
-            const maxLen = item.find(".property-maxLen").val();
-            const maxDataLen = item.find(".property-maxDataLen").val();
-            const validValues = item.find(".property-validValues").val();
-            const validValueRangesMin = item.find(".property-validValueRanges").slider("values", 0);
-            const validValueRangesMax = item.find(".property-validValueRanges").slider("values", 1);
-            const validValueRanges = validValueRangesMin && validValueRangesMax ? [validValueRangesMin, validValueRangesMax] : undefined
-            const adminOnlyAccess = item.find(".property-adminOnlyAccess").val();
-            customCharacteristics.push({
-                name,
-                UUID,
-                format,
-                unit,
-                perms,
-                ev,
-                description,
-                minValue,
-                maxValue,
-                minStep,
-                maxLen,
-                maxDataLen,
-                validValues,
-                validValueRanges,
-                adminOnlyAccess
-            });
-        });
-
-        self.customCharacteristics = customCharacteristics
-
-        $.ajax({
-            type: 'POST',
-            url: 'nrchkb/config',
-            dataType: 'json',
-            data: {customCharacteristics}
-        });
-    }
-
-    const uuidv4 = function () {
-        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
-    }
-
-    const getRandomIntInclusive = function (min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    }
-
-    const generatePinCode = function () {
-        const [a, b, c, d, e, f, g, h] = Array.from({length: 9}, () => getRandomIntInclusive(0, 9));
-        return `${a}${b}${c}-${d}${e}-${f}${g}${h}`
-    }
-</script>
-
-<script data-template-name="nrchkb" type="text/x-red">
-    <style>
-        ol#node-input-customCharacteristics-container .red-ui-typedInput-container {
-            flex:1;
-        }
-        .ui-slider .ui-slider-handle {
-            background: #ad1625;
-        }
-    </style>
-
-    <div class="form-row" style="margin-bottom:0;">
-        <label><i class="fa fa-list"></i> Custom Characteristics</label>
-    </div>
-
-    <div class="form-row node-input-customCharacteristics-container-row">
-        <ol id="node-input-customCharacteristics-container"></ol>
-    </div>
-</script>
-
-<script type="text/javascript">
     const initExperimental = function () {
         //NRCHKB Custom Characteristics
         $.ajax({
@@ -415,4 +274,145 @@
             }
         })
     }
+</script>
+
+<script type="text/javascript">
+    RED.validators.port = function (port) {
+        return port !== 1880 && port >= 1 && port <= 65535 && port === port.toString()
+    }
+
+    const isValueDefined = function (value) {
+        return 'undefined' === typeof value ? false : null !== value
+    }
+
+    let serviceTypes
+    let accessoryCategories
+    let nrchkbVersion = '0.0.0'
+    let nrchkbExperimental = false
+    let config = []
+
+    //HomeKit Service Types
+    $.getJSON('nrchkb/service/types', function (data) {
+        serviceTypes = data
+    })
+
+    //HomeKit Accessory Categories
+    $.getJSON('nrchkb/accessory/categories', function (data) {
+        accessoryCategories = data
+    })
+
+    //NRCHKB Info
+    $.ajax({
+        url: 'nrchkb/info',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+            nrchkbVersion = data.version
+            nrchkbExperimental = data.experimental
+
+            if (nrchkbExperimental) {
+                initExperimental()
+            }
+        },
+    })
+
+    const versionValidator = function (value) {
+        return value ? /^(\d+\.)?(\d+\.)?(\.|\d+)$/.test(value) : true
+    }
+
+    const hostNameValidator = function (value) {
+        return value ? /^[^.]{1,64}$/.test(value) : false
+    }
+
+    const cameraConfigRequiredField = function (value) {
+        return 'CameraControl' === this.serviceName ? (value || '').toString().trim() : true
+    }
+
+    const saveCustomCharacteristics = function (self) {
+        const customCharacteristics = []
+        const items = $("#node-input-customCharacteristics-container").editableList('items');
+
+        items.each(function () {
+            const item = $(this);
+            const name = item.find(".property-name").val();
+            const UUID = item.find(".property-uuid").val();
+            const format = item.find(".property-format").val();
+            const unit = item.find(".property-unit").val();
+            const perms = item.find(".property-perms").val();
+            const ev = item.find(".property-ev").prop('checked');
+            const description = item.find(".property-description").val();
+            const minValue = item.find(".property-minValue").val();
+            const maxValue = item.find(".property-maxValue").val();
+            const minStep = item.find(".property-minStep").val();
+            const maxLen = item.find(".property-maxLen").val();
+            const maxDataLen = item.find(".property-maxDataLen").val();
+            const validValues = item.find(".property-validValues").val();
+            const validValueRangesMin = item.find(".property-validValueRanges").slider("values", 0);
+            const validValueRangesMax = item.find(".property-validValueRanges").slider("values", 1);
+            const validValueRanges = validValueRangesMin && validValueRangesMax ? [validValueRangesMin, validValueRangesMax] : undefined
+            const adminOnlyAccess = item.find(".property-adminOnlyAccess").val();
+            customCharacteristics.push({
+                name,
+                UUID,
+                format,
+                unit,
+                perms,
+                ev,
+                description,
+                minValue,
+                maxValue,
+                minStep,
+                maxLen,
+                maxDataLen,
+                validValues,
+                validValueRanges,
+                adminOnlyAccess
+            });
+        });
+
+        self.customCharacteristics = customCharacteristics
+
+        $.ajax({
+            type: 'POST',
+            url: 'nrchkb/config',
+            dataType: 'json',
+            data: {customCharacteristics}
+        });
+    }
+
+    const uuidv4 = function () {
+        return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+    }
+
+    const getRandomIntInclusive = function (min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    const generatePinCode = function () {
+        const [a, b, c, d, e, f, g, h] = Array.from({length: 9}, () => getRandomIntInclusive(0, 9));
+        return `${a}${b}${c}-${d}${e}-${f}${g}${h}`
+    }
+</script>
+
+<script data-template-name="nrchkb" type="text/x-red">
+    <style>
+        ol#node-input-customCharacteristics-container .red-ui-typedInput-container {
+            flex:1;
+        }
+        .ui-slider .ui-slider-handle {
+            background: #ad1625;
+        }
+    </style>
+
+    <div class="form-row" style="margin-bottom:0;">
+        <label><i class="fa fa-list"></i> Custom Characteristics</label>
+    </div>
+
+    <div class="form-row node-input-customCharacteristics-container-row">
+        <ol id="node-input-customCharacteristics-container"></ol>
+    </div>
 </script>
