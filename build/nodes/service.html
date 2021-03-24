@@ -536,7 +536,7 @@
 
             selectHostType
                 .change(function() {
-                    if (selectHostType.val() == 0) {
+                    if (selectHostType.val() === 0) {
                         isAccessoryDiv.hide()
                         isOnBridgeDiv.show()
                         $("#node-input-accessoryId").val("_ADD_");
@@ -549,15 +549,21 @@
                 .change()
 
             const selectServiceName = $('#node-input-serviceName')
-            for (let key in serviceTypes) {
-                if (!serviceTypes.hasOwnProperty(key)) continue
 
-                selectServiceName.append(
-                    $('<option></option>')
-                        .val(key)
-                        .text(key),
-                )
-            }
+            Object.keys(serviceTypes).sort().forEach(function (key) {
+                const serviceOption = $('<option></option>')
+
+                serviceOption
+                    .val(key)
+                    .text(key)
+
+                if (serviceTypes[key].hasOwnProperty('nrchkbDisabledText')) {
+                    serviceOption.text(serviceTypes[key].nrchkbDisabledText)
+                    serviceOption.attr('disabled','disabled');
+                }
+
+                selectServiceName.append(serviceOption)
+            })
 
             let cameraConfiguration = $('#camera-configuration')
 

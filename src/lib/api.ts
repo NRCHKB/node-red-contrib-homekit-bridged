@@ -13,14 +13,43 @@ const version = require('../../package.json').version.trim()
 module.exports = function (RED: NodeAPI) {
     const log = logger('NRCHKB', 'API')
 
-    // Service API response data
-    const serviceData: {
-        [key: string]: SerializedService
-    } = {}
-
     // Service API
     const _initServiceAPI = () => {
         log.debug('Initialize ServiceAPI')
+
+        type ServiceData = {
+            [key: string]: Partial<SerializedService> & {
+                nrchkbDisabledText?: string
+            }
+        }
+
+        // Service API response data
+        const serviceData: ServiceData = {
+            BatteryService: {
+                nrchkbDisabledText:
+                    'BatteryService (deprecated, replaced by Battery)',
+            },
+            BridgeConfiguration: {
+                nrchkbDisabledText: 'BridgeConfiguration (deprecated, unused)',
+            },
+            BridgingState: {
+                nrchkbDisabledText: 'BridgingState (deprecated, unused)',
+            },
+            Relay: {
+                nrchkbDisabledText:
+                    'Relay (deprecated, replaced by CloudRelay)',
+            },
+            Slat: {
+                nrchkbDisabledText: 'Slat (deprecated, replaced by Slats)',
+            },
+            TimeInformation: {
+                nrchkbDisabledText: 'TimeInformation (deprecated, unused)',
+            },
+            TunneledBTLEAccessoryService: {
+                nrchkbDisabledText:
+                    'TunneledBTLEAccessoryService (deprecated, replaced by Tunnel)',
+            },
+        }
 
         Object.values(Service)
             .filter((service) => service.prototype instanceof Service)
@@ -29,17 +58,12 @@ module.exports = function (RED: NodeAPI) {
                 newService.displayName = service.name
                 return newService
             })
-            .sort((a, b) =>
-                a.displayName < b.displayName
-                    ? -1
-                    : a.displayName > b.displayName
-                    ? 1
-                    : 0
-            )
-            .forEach(
-                (serialized) =>
-                    (serviceData[serialized.displayName] = serialized)
-            )
+            .forEach((serialized) => {
+                serviceData[serialized.displayName] = {
+                    ...serviceData?.[serialized.displayName],
+                    ...serialized,
+                }
+            })
 
         // Retrieve Service Types
         RED.httpAdmin.get(
@@ -286,14 +310,14 @@ module.exports = function (RED: NodeAPI) {
         )
     }
 
-    // Accessory Categories API response data
-    const accessoryCategoriesData: {
-        [key: number]: string
-    } = {}
-
     // Accessory API
     const _initAccessoryAPI = function () {
         log.debug('Initialize AccessoryAPI')
+
+        // Accessory Categories API response data
+        const accessoryCategoriesData: {
+            [key: number]: string
+        } = {}
 
         // Prepare Accessory data once
         Object.keys(HapCategories)
