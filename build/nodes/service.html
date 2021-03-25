@@ -1,3 +1,4 @@
+<!--suppress EqualityComparisonWithCoercionJS -->
 <script data-template-name="homekit-service" type="text/x-red">
     <div class="form-row">
         <label for="node-config-input-isParent"><i class="fa fa-tasks"></i> Service Hierarchy</label>
@@ -537,7 +538,7 @@
 
             selectHostType
                 .change(function () {
-                    if (selectHostType.val() === 0) {
+                    if (selectHostType.val() == 0) {
                         isAccessoryDiv.hide()
                         isOnBridgeDiv.show()
                         $("#node-input-accessoryId").val("_ADD_");
