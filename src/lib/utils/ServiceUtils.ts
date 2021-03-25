@@ -71,12 +71,6 @@ module.exports = function (node: HAPServiceNodeType) {
 
         msg.hap = {}
 
-        if (context) {
-            msg.hap.oldValue = oldValue
-            msg.hap.newValue = newValue
-            msg.hap.context = context
-        }
-
         if (connection) {
             msg.hap.session = {
                 sessionID: connection.sessionID,
@@ -85,6 +79,15 @@ module.exports = function (node: HAPServiceNodeType) {
                 localAddress: connection.localAddress,
                 httpPort: connection.remotePort,
             }
+
+            msg.hap.context = {}
+        }
+
+        msg.hap.oldValue = oldValue
+        msg.hap.newValue = newValue
+
+        if (context) {
+            msg.hap.context = context
         }
 
         node.status({
