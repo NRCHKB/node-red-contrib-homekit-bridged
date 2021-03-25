@@ -82,7 +82,10 @@
                         const row3_properties = $('<div/>', {class: "properties"}).appendTo(row3_properties_accordion);
 
                         const formatRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
-                        $('<label/>', {class: "form-row", htmlFor: "property-format"}).text('Format *').appendTo(formatRow);
+                        $('<label/>', {
+                            class: "form-row",
+                            htmlFor: "property-format"
+                        }).text('Format *').appendTo(formatRow);
                         const formatInput = $('<select/>', {
                             class: "property-format",
                             required: "required"
@@ -114,7 +117,10 @@
                         unitSelect.val(props.unit)
 
                         const permsRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
-                        $('<label/>', {class: "form-row", htmlFor: "property-perms"}).text('Permissions').appendTo(permsRow)
+                        $('<label/>', {
+                            class: "form-row",
+                            htmlFor: "property-perms"
+                        }).text('Permissions').appendTo(permsRow)
                         const permsSelect = $('<select/>', {
                             class: "property-perms",
                             multiple: "multiple"
