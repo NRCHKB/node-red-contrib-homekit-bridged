@@ -3,9 +3,9 @@ import { describe, beforeEach, afterEach, it } from 'mocha'
 
 const helper = require('node-red-node-test-helper')
 
-const nrchkb = require('../../build/nodes/nrchkb')
-const homekitBridgeNode = require('../../build/nodes/bridge')
-const homekitServiceNode = require('../../build/nodes/service')
+const nrchkb = require('../../../build/nodes/nrchkb')
+const homekitBridgeNode = require('../../../build/nodes/bridge')
+const homekitServiceNode = require('../../../build/nodes/service')
 
 helper.init(require.resolve('node-red'))
 
@@ -119,11 +119,11 @@ describe('Service Node', function () {
                     const s1 = helper.getNode('s1')
 
                     s1.on('input', (msg: any) => {
-                        msg.should.have.property('On', true)
+                        msg.payload.should.have.property('On', true)
                         done()
                     })
 
-                    s1.receive({ On: true })
+                    s1.receive({ payload: { On: true } })
                 }
             )
             .catch((error: any) => {
@@ -140,11 +140,11 @@ describe('Service Node', function () {
                     const s1 = helper.getNode('s1')
 
                     s1.on('input', function (msg: any) {
-                        msg.should.have.property('On', false)
+                        msg.payload.should.have.property('On', false)
                         done()
                     })
 
-                    s1.receive({ On: false })
+                    s1.receive({ payload: { On: false } })
                 }
             )
             .catch((error: any) => {

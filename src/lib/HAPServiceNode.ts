@@ -4,11 +4,9 @@ import HAPServiceNodeType from './types/HAPServiceNodeType'
 import HAPHostNodeType from './types/HAPHostNodeType'
 import HostType from './types/HostType'
 import { uuid } from 'hap-nodejs'
-import UnifiedLogger from './utils/UnifiedLogger'
+import { logger } from '@nrchkb/logger'
 
 module.exports = (RED: NodeAPI) => {
-    const debug = require('debug')('NRCHKB:HAPServiceNode')
-
     /**
      * Config override when user created services in old NRCHKB version
      */
@@ -17,11 +15,11 @@ module.exports = (RED: NodeAPI) => {
     ) {
         const self = this
 
+        const log = logger('NRCHKB', 'HAPServiceNode', self.config.name, self)
+
         if (self.config.isParent === undefined) {
-            debug(
-                'nrchkbConfigCompatibilityOverride => self.config.isParent=' +
-                    self.config.isParent +
-                    ' value changed to true'
+            log.trace(
+                `nrchkbConfigCompatibilityOverride => self.config.isParent=${self.config.isParent} value changed to true`
             )
             // Services created in pre linked services era where working in 1.2 but due to more typescript in 1.3+ it started to cause some errors
             self.config.isParent = true
@@ -29,14 +27,10 @@ module.exports = (RED: NodeAPI) => {
 
         if (self.config.hostType === undefined) {
             // When moving from 1.2 to 1.3 hostType is not defined on homekit-service
-            if (self.config.isParent) {
-                debug(
-                    'nrchkbConfigCompatibilityOverride => self.config.hostType=' +
-                        self.config.hostType +
-                        ' value changed to HostType.BRIDGE'
-                )
-                self.config.hostType = HostType.BRIDGE
-            }
+            log.trace(
+                `nrchkbConfigCompatibilityOverride => self.config.hostType=${self.config.hostType} value changed to HostType.BRIDGE`
+            )
+            self.config.hostType = HostType.BRIDGE
         }
     }
 
@@ -46,17 +40,21 @@ module.exports = (RED: NodeAPI) => {
     ) {
         const self = this
         self.config = config
+        self.name = self.config.name
+
+        const log = logger('NRCHKB', 'HAPServiceNode', self.config.name, self)
+
         self.RED = RED
         self.publishTimers = {}
 
         nrchkbConfigCompatibilityOverride.call(self)
-        RED.nodes.createNode(self, config)
+        RED.nodes.createNode(self, self.config)
 
         const ServiceUtils = require('./utils/ServiceUtils')(self)
 
         new Promise<HAPServiceConfigType>((resolve) => {
-            if (config.waitForSetupMsg) {
-                debug(
+            if (self.config.waitForSetupMsg) {
+                log.debug(
                     'Waiting for Setup message. It should be of format {"payload":{"nrchkb":{"setup":{}}}}'
                 )
 
@@ -69,10 +67,10 @@ module.exports = (RED: NodeAPI) => {
                 })
 
                 self.handleWaitForSetup = (msg: Record<string, unknown>) =>
-                    ServiceUtils.handleWaitForSetup(config, msg, resolve)
+                    ServiceUtils.handleWaitForSetup(self.config, msg, resolve)
                 self.on('input', self.handleWaitForSetup)
             } else {
-                resolve(config)
+                resolve(self.config)
             }
         }).then((newConfig) => {
             init.call(self, newConfig)
@@ -86,35 +84,27 @@ module.exports = (RED: NodeAPI) => {
         const self = this
         self.config = config
 
+        const log = logger('NRCHKB', 'HAPServiceNode', self.config.name, self)
+
         const ServiceUtils = require('./utils/ServiceUtils')(self)
 
         if (self.config.isParent) {
-            debug('Starting Parent Service ' + config.name)
+            log.debug('Starting Parent Service')
             configure.call(self)
             self.configured = true
         } else {
+            const serviceType =
+                config.serviceName === 'CameraControl' ? 'Camera' : 'Linked'
+
             ServiceUtils.waitForParent()
                 .then(() => {
-                    debug(
-                        'Starting ' +
-                            (config.serviceName === 'CameraControl'
-                                ? 'Camera'
-                                : 'Linked') +
-                            ' Service ' +
-                            config.name
-                    )
+                    log.debug(`Starting  ${serviceType} Service`)
                     configure.call(self)
                     self.configured = true
                 })
                 .catch((error: any) => {
-                    UnifiedLogger.error(
-                        self,
-                        'Error while starting ' +
-                            (config.serviceName === 'CameraControl'
-                                ? 'Camera'
-                                : 'Linked') +
-                            ' Service',
-                        error
+                    log.error(
+                        `Error while starting ${serviceType} Service due to ${error}`
                     )
                 })
         }
@@ -122,6 +112,8 @@ module.exports = (RED: NodeAPI) => {
 
     const configure = function (this: HAPServiceNodeType) {
         const self = this
+
+        const log = logger('NRCHKB', 'HAPServiceNode', self.config.name, self)
 
         const Utils = require('./utils')(self)
         const AccessoryUtils = Utils.AccessoryUtils
@@ -140,7 +132,7 @@ module.exports = (RED: NodeAPI) => {
             self.hostNode = RED.nodes.getNode(hostId) as HAPHostNodeType
 
             if (!self.hostNode) {
-                UnifiedLogger.error(self, 'Host Node not found')
+                log.error('Host Node not found', false)
                 throw Error('Host Node not found')
             }
 
@@ -153,12 +145,14 @@ module.exports = (RED: NodeAPI) => {
             ) as HAPServiceNodeType
 
             if (!parentNode) {
+                log.error('Parent Node not assigned', false)
                 throw Error('Parent Node not assigned')
             }
 
             self.parentService = parentNode.service
 
             if (!self.parentService) {
+                log.error('Parent Service not assigned', false)
                 throw Error('Parent Service not assigned')
             }
 
@@ -176,22 +170,22 @@ module.exports = (RED: NodeAPI) => {
 
         // Look for existing Accessory or create a new one
         if (self.config.hostType == HostType.BRIDGE) {
-            // According to the HomeKit Accessory Protocol Specification the value
-            // of the fields Name, Manufacturer, Serial Number and Model must not
-            // change throughout the lifetime of an accessory. Because of that the
-            // accessory UUID will be generated based on that data to ensure that
-            // a new accessory will be created if any of those configuration values
-            // changes.
-            const accessoryUUID = uuid.generate(
-                'A' +
-                    self.id +
-                    self.name +
-                    self.config.manufacturer +
-                    self.config.serialNo +
-                    self.config.model
-            )
-
             if (self.config.isParent) {
+                // According to the HomeKit Accessory Protocol Specification the value
+                // of the fields Name, Manufacturer, Serial Number and Model must not
+                // change throughout the lifetime of an accessory. Because of that the
+                // accessory UUID will be generated based on that data to ensure that
+                // a new accessory will be created if any of those configuration values
+                // changes.
+                const accessoryUUID = uuid.generate(
+                    'A' +
+                        self.id +
+                        self.name +
+                        self.config.manufacturer +
+                        self.config.serialNo +
+                        self.config.model
+                )
+
                 self.accessory = AccessoryUtils.getOrCreate(
                     self.hostNode.host,
                     {
@@ -213,7 +207,7 @@ module.exports = (RED: NodeAPI) => {
             }
         } else {
             // We are using Standalone Accessory mode so no need to create new Accessory as we have "host" already
-            debug('Binding Service accessory as Standalone Accessory')
+            log.debug('Binding Service accessory as Standalone Accessory')
             self.accessory = self.hostNode.host
         }
 

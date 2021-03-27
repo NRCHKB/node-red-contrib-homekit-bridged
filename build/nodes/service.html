@@ -1,3 +1,4 @@
+<!--suppress EqualityComparisonWithCoercionJS -->
 <script data-template-name="homekit-service" type="text/x-red">
     <div class="form-row">
         <label for="node-config-input-isParent"><i class="fa fa-tasks"></i> Service Hierarchy</label>
@@ -286,6 +287,7 @@
 }
 </code></pre>
 </div>
+
 </script>
 
 <script type="text/javascript">
@@ -305,7 +307,7 @@
             bridge: {
                 value: '',
                 type: 'homekit-bridge',
-                validate: function(value) {
+                validate: function (value) {
                     if (this.isParent == true && this.hostType == 0) {
                         return isValueDefined(value) && value.length > 0
                     } else return true
@@ -314,7 +316,7 @@
             accessoryId: {
                 value: '',
                 type: 'homekit-standalone',
-                validate: function(value) {
+                validate: function (value) {
                     if (this.isParent == true && this.hostType == 1) {
                         return isValueDefined(value) && value.length > 0
                     } else return true
@@ -322,7 +324,7 @@
             },
             parentService: {
                 value: '',
-                validate: function(value) {
+                validate: function (value) {
                     if (this.isParent == false) {
                         return isValueDefined(value) && value.length > 0
                     } else return true
@@ -331,7 +333,7 @@
             name: {
                 value: '',
                 required: true,
-                validate: function(value) {
+                validate: function (value) {
                     return isValueDefined(value) && value.length > 0
                 },
             },
@@ -449,7 +451,7 @@
             },
             characteristicProperties: {
                 value: '{}',
-                validate: function(value) {
+                validate: function (value) {
                     if (value === undefined || value.length === 0) {
                         return true
                     }
@@ -473,7 +475,7 @@
         },
         inputs: 1,
         outputs: 2,
-        outputLabels: function(index) {
+        outputLabels: function (index) {
             if (index === 0) {
                 return 'onChange'
             }
@@ -490,13 +492,13 @@
         },
         icon: 'homekit.png',
         color: '#fcc127',
-        label: function() {
+        label: function () {
             return this.name || this.serviceName || 'Service'
         },
-        labelStyle: function() {
+        labelStyle: function () {
             return this.name ? 'node_label_italic' : ''
         },
-        oneditprepare: function() {
+        oneditprepare: function () {
             let node = this
             let isParentToggle = $('#node-config-input-isParent')
 
@@ -512,7 +514,7 @@
             const selectHostType = $('#node-config-input-hostType')
 
             isParentToggle
-                .change(function() {
+                .change(function () {
                     if (isParentToggle.val() === 'true') {
                         isLinkedDiv.fadeOut('fast')
                         isParentDiv.fadeIn('fast')
@@ -535,7 +537,7 @@
             let isAccessoryDiv = $('#isAccessory')
 
             selectHostType
-                .change(function() {
+                .change(function () {
                     if (selectHostType.val() == 0) {
                         isAccessoryDiv.hide()
                         isOnBridgeDiv.show()
@@ -549,27 +551,33 @@
                 .change()
 
             const selectServiceName = $('#node-input-serviceName')
-            for (let key in serviceTypes) {
-                if (!serviceTypes.hasOwnProperty(key)) continue
 
-                selectServiceName.append(
-                    $('<option></option>')
-                        .val(key)
-                        .text(key),
-                )
-            }
+            Object.keys(serviceTypes).sort().forEach(function (key) {
+                const serviceOption = $('<option></option>')
+
+                serviceOption
+                    .val(key)
+                    .text(key)
+
+                if (serviceTypes[key].hasOwnProperty('nrchkbDisabledText')) {
+                    serviceOption.text(serviceTypes[key].nrchkbDisabledText)
+                    serviceOption.attr('disabled', 'disabled');
+                }
+
+                selectServiceName.append(serviceOption)
+            })
 
             let cameraConfiguration = $('#camera-configuration')
 
             selectServiceName
                 .find('option')
-                .filter(function() {
+                .filter(function () {
                     return $(this).val() === node.serviceName
                 })
                 .attr('selected', true)
 
             selectServiceName
-                .change(function() {
+                .change(function () {
                     if (this.value === 'CameraControl') {
                         cameraConfiguration.fadeIn('fast')
                         node.outputs = 3
@@ -593,7 +601,7 @@
                 type: 'homekit-service',
             })
 
-            candidateNodes.forEach(function(n) {
+            candidateNodes.forEach(function (n) {
                 if (!n.name || n.name.length < 1 || !n.isParent) {
                     return
                 }
@@ -635,7 +643,7 @@
 
             selectParentService
                 .find('option')
-                .filter(function() {
+                .filter(function () {
                     return $(this).val() === node.parentService
                 })
                 .attr('selected', true)
@@ -644,7 +652,7 @@
 
             $("#node-input-accessoryId option[value='${n.accessoryId}']").attr("disabled", false);
 
-            candidateNodes.forEach(function(n) {
+            candidateNodes.forEach(function (n) {
                 if (n.id == node.id) {
                     return
                 }
@@ -665,7 +673,7 @@
                 }
             })
         },
-        oneditsave: function() {
+        oneditsave: function () {
             let node = this
 
             node.isParent = $('#node-config-input-isParent').val() === 'true'

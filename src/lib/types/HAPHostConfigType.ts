@@ -1,11 +1,12 @@
 import { NodeDef } from 'node-red'
 import { SemVer } from 'semver'
 import HapCategories from './HapCategories'
+import { MDNSAdvertiser } from 'hap-nodejs'
 
 type HAPHostConfigType = NodeDef & {
     bridgeName: string
     pinCode: string
-    port: number
+    port?: number
     allowInsecureRequest: boolean
     manufacturer: string
     model: string
@@ -23,6 +24,7 @@ type HAPHostConfigType = NodeDef & {
     mdnsReuseAddr: boolean
     allowMessagePassthrough: boolean
     accessoryCategory: HapCategories
+    advertiser: MDNSAdvertiser
 }
 
 export default HAPHostConfigType

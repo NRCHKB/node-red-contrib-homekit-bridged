@@ -1,4 +1,6 @@
-module.exports = function (node) {
+import HAPServiceNodeType from '../types/HAPServiceNodeType'
+
+module.exports = function (node: HAPServiceNodeType) {
     const ServiceUtils = require('./ServiceUtils')(node)
     const BridgeUtils = require('./BridgeUtils')()
     const AccessoryUtils = require('./AccessoryUtils')(node)
@@ -6,10 +8,10 @@ module.exports = function (node) {
     const MdnsUtils = require('./MdnsUtils')()
 
     return {
-        ServiceUtils: ServiceUtils,
-        BridgeUtils: BridgeUtils,
-        AccessoryUtils: AccessoryUtils,
-        CharacteristicUtils: CharacteristicUtils,
-        MdnsUtils: MdnsUtils,
+        ServiceUtils,
+        BridgeUtils,
+        AccessoryUtils,
+        CharacteristicUtils,
+        MdnsUtils,
     }
 }

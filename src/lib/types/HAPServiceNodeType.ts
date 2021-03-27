@@ -1,6 +1,6 @@
 import { Node, NodeAPI } from 'node-red'
 import HAPServiceConfigType from './HAPServiceConfigType'
-import { Accessory, Service } from 'hap-nodejs'
+import { Accessory, CharacteristicProps, Service } from 'hap-nodejs'
 import HAPHostNodeType from './HAPHostNodeType'
 import PublishTimersType from './PublishTimersType'
 
@@ -16,9 +16,13 @@ type HAPServiceNodeType = Node & {
     service: Service
     parentService: Service
     accessory: Accessory
-    characteristicProperties: Record<string, unknown>
-    supported: []
+    characteristicProperties: { [key: string]: CharacteristicProps }
+    supported: string[]
     publishTimers: PublishTimersType
+    topic_in: string
+    onCharacteristicGet: any
+    onCharacteristicSet: any
+    onCharacteristicChange: any
 }
 
 export default HAPServiceNodeType

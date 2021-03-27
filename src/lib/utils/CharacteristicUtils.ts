@@ -1,10 +1,19 @@
-module.exports = function (node) {
-    const HapNodeJS = require('hap-nodejs')
-    const Characteristic = HapNodeJS.Characteristic
+import HAPServiceNodeType from '../types/HAPServiceNodeType'
+import { Characteristic, CharacteristicProps, Service } from 'hap-nodejs'
+import HAPServiceConfigType from '../types/HAPServiceConfigType'
+import { logger } from '@nrchkb/logger'
+
+module.exports = function (node: HAPServiceNodeType) {
+    const log = logger('NRCHKB', 'CharacteristicUtils', node.config.name, node)
     const ServiceUtils = require('./ServiceUtils')(node)
 
-    const load = function (service, config) {
-        let characteristicProperties = {}
+    const load = function (
+        service: Service,
+        config: HAPServiceConfigType
+    ): { [key: string]: CharacteristicProps } {
+        let characteristicProperties: {
+            [key: string]: CharacteristicProps
+        } = {}
 
         if (
             config.characteristicProperties &&
@@ -15,14 +24,16 @@ module.exports = function (node) {
             )
 
             // Configure custom characteristic properties
-            for (let key in characteristicProperties) {
+            for (const key in characteristicProperties) {
                 if (!characteristicProperties.hasOwnProperty(key)) continue
 
                 const characteristic = service.getCharacteristic(
+                    // @ts-ignore
                     Characteristic[key]
                 )
 
                 if (characteristic && characteristicProperties[key]) {
+                    log.debug(`Found Characteristic Properties for ${key}`)
                     characteristic.setProps(characteristicProperties[key])
                 }
             }
@@ -31,8 +42,8 @@ module.exports = function (node) {
         return characteristicProperties
     }
 
-    const subscribeAndGetSupported = function (service) {
-        const supported = []
+    const subscribeAndGetSupported = function (service: Service) {
+        const supported: string[] = []
 
         const allCharacteristics = service.characteristics.concat(
             service.optionalCharacteristics
@@ -45,7 +56,7 @@ module.exports = function (node) {
 
             supported.push(cKey)
 
-            // Listen to charateristic events and store the listerner functions
+            // Listen to characteristic events and store the listener functions
             // to be able to remove them later
             node.onCharacteristicGet = ServiceUtils.onCharacteristicGet
             node.onCharacteristicSet = ServiceUtils.onCharacteristicSet

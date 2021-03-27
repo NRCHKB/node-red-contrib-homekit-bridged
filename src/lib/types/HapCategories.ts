@@ -11,14 +11,14 @@ enum HapCategories {
     THERMOSTAT = 9,
     SENSOR = 10,
     ALARM_SYSTEM = 11,
-    SECURITY_SYSTEM = 11,
+    SECURITY_SYSTEM = 11, //Added to conform to HAP naming
     DOOR = 12,
     WINDOW = 13,
     WINDOW_COVERING = 14,
     PROGRAMMABLE_SWITCH = 15,
     RANGE_EXTENDER = 16,
     CAMERA = 17,
-    IP_CAMERA = 17,
+    IP_CAMERA = 17, //Added to conform to HAP naming
     VIDEO_DOORBELL = 18,
     AIR_PURIFIER = 19,
     AIR_HEATER = 20,
@@ -33,7 +33,7 @@ enum HapCategories {
     FAUCET = 29,
     SHOWER_HEAD = 30,
     TELEVISION = 31,
-    TARGET_CONTROLLER = 32,
+    TARGET_CONTROLLER = 32, // Remote Control
     ROUTER = 33,
     AUDIO_RECEIVER = 34,
     TV_SET_TOP_BOX = 35,

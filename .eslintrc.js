@@ -8,7 +8,6 @@ module.exports = {
     },
     extends: [
         'plugin:@typescript-eslint/recommended',
-        'prettier/@typescript-eslint',
         'plugin:prettier/recommended',
         'prettier',
     ],
@@ -26,11 +25,12 @@ module.exports = {
         'prettier/prettier': 'off',
         indent: ['error', 4],
         'linebreak-style': ['error', 'unix'],
-        quotes: ['error', 'single'],
+        quotes: ['error', 'single', { avoidEscape: true }],
         semi: ['error', 'never'],
         'no-prototype-builtins': 'off',
         '@typescript-eslint/no-this-alias': 'off',
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
     },
 }
