@@ -218,7 +218,7 @@
         "bridge": "",
         "parentService": "8088a797.e1a7c",
         "name": "Battery",
-        "serviceName": "BatteryService",
+        "serviceName": "Battery",
         "topic": "Air Quality",
         "filter": false,
         "manufacturer": "Default Manufacturer",
