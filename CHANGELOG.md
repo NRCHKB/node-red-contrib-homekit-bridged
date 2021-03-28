@@ -11,6 +11,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1]
+
+### Fixed
+
+- Fix allowMessagePassthrough=false not working for messages from Home.app
+
 ## [1.3.0]
 
 ### Fixed
@@ -28,7 +34,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Verify if Node.js version criteria is met on start
 - Support fo9r Standalone Accessory mode (like in old
   times) [#310](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/310)
-- (Experimental) Support for Custom Characteristics [#52](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/52)
+- (Experimental) Support for Custom
+  Characteristics [#52](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/52)
 - Add client IP address to onSet/onChange output
   message (`msg.hap.session`) [#328](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/328)
 - As of new mdns advertiser available now there is a possibilty to choose which you want to use in Bridge Config: ciao (
