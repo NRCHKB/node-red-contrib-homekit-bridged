@@ -102,7 +102,7 @@ module.exports = function (node: HAPServiceNodeType) {
 
         log.debug(`${node.name} received ${key} : ${newValue}`)
 
-        if (context || node.hostNode.config.allowMessagePassthrough) {
+        if (connection || context || node.hostNode.config.allowMessagePassthrough) {
             if (outputNumber === 0) {
                 node.send(msg)
             } else if (outputNumber === 1) {
