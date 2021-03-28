@@ -1,3 +1,4 @@
+<!--suppress EqualityComparisonWithCoercionJS -->
 <script data-template-name="homekit-service" type="text/x-red">
     <div class="form-row">
         <label for="node-config-input-isParent"><i class="fa fa-tasks"></i> Service Hierarchy</label>
@@ -17,36 +18,53 @@
     </div>
 
     <div id="isParent">
-        <div class="form-row" style="height: 34px;">
-            <label for="node-input-bridge">
-          <i class="fa fa-rocket"></i>
-          Bridge</label>
-            <input id="node-input-bridge">
+        <div class="form-row">
+            <label for="node-config-input-hostType"><i class="fa fa-tasks"></i> Host Type</label>
+            <select id="node-config-input-hostType" style="width: 70%">
+                <option value="0" selected="selected">Bridge</option>
+                <option value="1">Accessory</option>
+            </select>
         </div>
-        <div class="form-row">
-            <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
-            <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
+        <div id="isOnBridge">
+            <div class="form-row" style="height: 34px;">
+                <label for="node-input-bridge">
+              <i class="fa fa-rocket"></i>
+              Bridge</label>
+                <input id="node-input-bridge">
+            </div>
+            <div class="form-row">
+                <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
+                <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
+            </div>
+            <div class="form-row">
+                <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
+                <input type="text" id="node-input-serialNo" placeholder="Serial Number">
+            </div>
+            <div class="form-row">
+                <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
+                <input type="text" id="node-input-model" placeholder="Model">
+            </div>
+            <div class="form-row">
+                <label for="node-input-firmwareRev"><i class="fa fa-wrench"></i> Firmware Revision</label>
+                <input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision">
+            </div>
+            <div class="form-row">
+                <label for="node-input-hardwareRev"><i class="fa fa-wrench"></i> Hardware Revision</label>
+                <input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision">
+            </div>
+            <div class="form-row">
+                <label for="node-input-softwareRev"><i class="fa fa-wrench"></i> Software Revision</label>
+                <input type="text" id="node-input-softwareRev" placeholder="Software Revision">
+            </div>
         </div>
-        <div class="form-row">
-            <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
-            <input type="text" id="node-input-serialNo" placeholder="Serial Number">
+        <div id="isAccessory">
+            <div class="form-row" style="height: 34px;">
+                <label for="node-input-accessoryId">
+              <i class="fa fa-rocket"></i>
+              Accessory</label>
+                <input id="node-input-accessoryId">
+            </div>
         </div>
-        <div class="form-row">
-            <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
-            <input type="text" id="node-input-model" placeholder="Model">
-        </div>
-        <div class="form-row">
-        	<label for="node-input-firmwareRev"><i class="fa fa-wrench"></i> Firmware Revision</label>
-        	<input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision">
-    	</div>
-        <div class="form-row">
-        	<label for="node-input-hardwareRev"><i class="fa fa-wrench"></i> Hardware Revision</label>
-        	<input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision">
-    	</div>
-        <div class="form-row">
-        	<label for="node-input-softwareRev"><i class="fa fa-wrench"></i> Software Revision</label>
-        	<input type="text" id="node-input-softwareRev" placeholder="Software Revision">
-    	</div>
     </div>
 
     <div id="isLinked" style="display: none;">
@@ -269,29 +287,44 @@
 }
 </code></pre>
 </div>
+
 </script>
 
 <script type="text/javascript">
     RED.nodes.registerType('homekit-service', {
-        category: 'advanced',
+        category: "Apple HomeKit",
         paletteLabel: 'homekit',
         defaults: {
             isParent: {
                 value: 'false',
                 required: true,
             },
+            hostType: {
+                // 0 is Bridge, 1 is Accessory
+                value: 0,
+                required: true,
+            },
             bridge: {
                 value: '',
                 type: 'homekit-bridge',
-                validate: function(value) {
-                    if (this.isParent == true) {
+                validate: function (value) {
+                    if (this.isParent == true && this.hostType == 0) {
+                        return isValueDefined(value) && value.length > 0
+                    } else return true
+                },
+            },
+            accessoryId: {
+                value: '',
+                type: 'homekit-standalone',
+                validate: function (value) {
+                    if (this.isParent == true && this.hostType == 1) {
                         return isValueDefined(value) && value.length > 0
                     } else return true
                 },
             },
             parentService: {
                 value: '',
-                validate: function(value) {
+                validate: function (value) {
                     if (this.isParent == false) {
                         return isValueDefined(value) && value.length > 0
                     } else return true
@@ -300,7 +333,7 @@
             name: {
                 value: '',
                 required: true,
-                validate: function(value) {
+                validate: function (value) {
                     return isValueDefined(value) && value.length > 0
                 },
             },
@@ -418,7 +451,7 @@
             },
             characteristicProperties: {
                 value: '{}',
-                validate: function(value) {
+                validate: function (value) {
                     if (value === undefined || value.length === 0) {
                         return true
                     }
@@ -442,7 +475,7 @@
         },
         inputs: 1,
         outputs: 2,
-        outputLabels: function(index) {
+        outputLabels: function (index) {
             if (index === 0) {
                 return 'onChange'
             }
@@ -459,13 +492,13 @@
         },
         icon: 'homekit.png',
         color: '#fcc127',
-        label: function() {
+        label: function () {
             return this.name || this.serviceName || 'Service'
         },
-        labelStyle: function() {
+        labelStyle: function () {
             return this.name ? 'node_label_italic' : ''
         },
-        oneditprepare: function() {
+        oneditprepare: function () {
             let node = this
             let isParentToggle = $('#node-config-input-isParent')
 
@@ -478,40 +511,73 @@
             let isLinkedDiv = $('#isLinked')
             let isParentDiv = $('#isParent')
 
+            const selectHostType = $('#node-config-input-hostType')
+
             isParentToggle
-                .change(function() {
+                .change(function () {
                     if (isParentToggle.val() === 'true') {
                         isLinkedDiv.fadeOut('fast')
                         isParentDiv.fadeIn('fast')
                     } else {
                         isParentDiv.fadeOut('fast')
                         isLinkedDiv.fadeIn('fast')
+                        selectHostType.val("_ADD_")
+                    }
+                })
+                .change()
+
+            if (node.hostType) {
+                selectHostType.val(node.hostType)
+            } else {
+                // Make sure that host type is selected when upgrading nrchkb
+                selectHostType.val(0)
+            }
+
+            let isOnBridgeDiv = $('#isOnBridge')
+            let isAccessoryDiv = $('#isAccessory')
+
+            selectHostType
+                .change(function () {
+                    if (selectHostType.val() == 0) {
+                        isAccessoryDiv.hide()
+                        isOnBridgeDiv.show()
+                        $("#node-input-accessoryId").val("_ADD_");
+                    } else {
+                        isOnBridgeDiv.hide()
+                        isAccessoryDiv.show()
+                        $("#node-input-bridge").val("_ADD_");
                     }
                 })
                 .change()
 
             const selectServiceName = $('#node-input-serviceName')
-            for (let key in serviceTypes) {
-                if (!serviceTypes.hasOwnProperty(key)) continue
 
-                selectServiceName.append(
-                    $('<option></option>')
-                        .val(key)
-                        .text(key),
-                )
-            }
+            Object.keys(serviceTypes).sort().forEach(function (key) {
+                const serviceOption = $('<option></option>')
+
+                serviceOption
+                    .val(key)
+                    .text(key)
+
+                if (serviceTypes[key].hasOwnProperty('nrchkbDisabledText')) {
+                    serviceOption.text(serviceTypes[key].nrchkbDisabledText)
+                    serviceOption.attr('disabled', 'disabled');
+                }
+
+                selectServiceName.append(serviceOption)
+            })
 
             let cameraConfiguration = $('#camera-configuration')
 
             selectServiceName
                 .find('option')
-                .filter(function() {
+                .filter(function () {
                     return $(this).val() === node.serviceName
                 })
                 .attr('selected', true)
 
             selectServiceName
-                .change(function() {
+                .change(function () {
                     if (this.value === 'CameraControl') {
                         cameraConfiguration.fadeIn('fast')
                         node.outputs = 3
@@ -529,11 +595,13 @@
 
             const selectParentService = $('#node-input-parentService')
 
+            const inSubflow = !!RED.nodes.subflow(node.z)
+
             const candidateNodes = RED.nodes.filterNodes({
                 type: 'homekit-service',
             })
-            const inSubflow = !!RED.nodes.subflow(node.z)
-            candidateNodes.forEach(function(n) {
+
+            candidateNodes.forEach(function (n) {
                 if (!n.name || n.name.length < 1 || !n.isParent) {
                     return
                 }
@@ -563,31 +631,59 @@
 
                 const value = n.id
                 const text = n.name + ' (' + sublabel + ')'
+                const hostType = n.hostType
 
                 selectParentService.append(
                     $('<option></option>')
                         .val(value)
-                        .text(text),
+                        .text(text)
+                        .attr("hostType", hostType),
                 )
             })
 
             selectParentService
                 .find('option')
-                .filter(function() {
+                .filter(function () {
                     return $(this).val() === node.parentService
                 })
                 .attr('selected', true)
+
             selectParentService.change()
+
+            $("#node-input-accessoryId option[value='${n.accessoryId}']").attr("disabled", false);
+
+            candidateNodes.forEach(function (n) {
+                if (n.id == node.id) {
+                    return
+                }
+
+                if (n.hostType == 0) {
+                    return
+                }
+
+                if (n.accessoryId) {
+                    if (n.accessoryId == node.accessoryId) {
+                        // Same accessory cannot be used twice!
+                        $("#node-input-accessoryId").val("_ADD_");
+                    }
+
+                    const accessoryOption = $("#node-input-accessoryId option[value='" + n.accessoryId + "']");
+                    accessoryOption.attr("disabled", true);
+                    accessoryOption.text(accessoryOption.text() + " already used by " + n.name)
+                }
+            })
         },
-        oneditsave: function() {
+        oneditsave: function () {
             let node = this
 
             node.isParent = $('#node-config-input-isParent').val() === 'true'
+            node.hostType = $('#node-config-input-hostType').val()
+
 
             if (!node.isParent) {
-                node.parentService = $(
-                    '#node-input-parentService option:selected',
-                ).val()
+                const selectedParentService = $('#node-input-parentService option:selected')
+                node.parentService = selectedParentService.val()
+                node.hostType = selectedParentService.attr("hostType")
             }
 
             node.serviceName = $(

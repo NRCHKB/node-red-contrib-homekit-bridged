@@ -2,60 +2,60 @@ import * as net from 'net'
 import * as os from 'os'
 
 const MdnsUtils = () => {
-    let availableInterfaces: string []
-    
-    const checkIp = function(value: string) {
+    let availableInterfaces: string[]
+
+    const checkIp = function (value: string) {
         return value.length > 0 && net.isIP(value)
     }
-    
-    const checkInterface = function(value: string) {
+
+    const checkInterface = function (value: string) {
         if (value.length < 1) {
             return false
         }
-        
+
         if (!availableInterfaces) {
             availableInterfaces = []
-            
+
             const networkInterfaces = os.networkInterfaces()
-            
-            Object.keys(networkInterfaces).forEach(ifaceArr =>
-                networkInterfaces[ifaceArr].forEach(iface =>
-                    availableInterfaces.push(iface.address),
-                ),
+
+            Object.keys(networkInterfaces).forEach((key) =>
+                networkInterfaces[key].forEach((networkInterface) =>
+                    availableInterfaces.push(networkInterface.address)
+                )
             )
         }
-        
+
         return availableInterfaces.indexOf(value) > -1
     }
-    
-    const checkMulticast = function(value: any) {
+
+    const checkMulticast = function (value: any) {
         return checkBoolean(value)
     }
-    
-    const checkPort = function(value: string) {
+
+    const checkPort = function (value: string) {
         return value.length > 0 && checkNumber(value)
     }
-    
-    const checkLoopback = function(value: any) {
+
+    const checkLoopback = function (value: any) {
         return checkBoolean(value)
     }
-    
-    const checkReuseAddr = function(value: any) {
+
+    const checkReuseAddr = function (value: any) {
         return checkBoolean(value)
     }
-    
-    const checkTtl = function(value: string) {
+
+    const checkTtl = function (value: string) {
         if (value.length > 0 && checkNumber(value)) {
             const ttlInt = parseInt(value)
             return ttlInt >= 0 && ttlInt <= 255
         } else return false
     }
-    
-    const checkBoolean = function(value: any) {
+
+    const checkBoolean = function (value: any) {
         return typeof value === 'boolean'
     }
-    
-    const checkNumber = function(value: any) {
+
+    const checkNumber = function (value: any) {
         return !isNaN(value)
     }
 

@@ -284,6 +284,22 @@ Insert this node right after your homekit node:
 
 This will filter out all messages with their payload property hap.context not set, which means they are events that have been sent to homekit via node-red, not via the Home app.
 
+#### How to gain access to experimental features?
+
+Start node-red with `NRCHKB_EXPERIMENTAL=true` env variable.
+
+###### On Unix 
+
+```bash
+NRCHKB_EXPERIMENTAL=true node-red
+```
+
+###### On Windows
+```bash
+set NRCHKB_EXPERIMENTAL=true
+node-red
+```
+
 ## Contributors
 
 #### Big thanks to [all who have contributed to the project](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/graphs/contributors).

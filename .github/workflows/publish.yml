@@ -30,9 +30,10 @@ jobs:
           registry-url: https://registry.npmjs.org/
           always-auth: true
       - name: Extract PACKAGE_VERSION
-        run: echo ::set-env name=PACKAGE_VERSION::$(node -p -e "require('./package.json').version")
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
       - name: Publish
-        if: contains(env.PACKAGE_VERSION, 'dev') != true
+        if: contains(steps.package-version.outputs.current-version, 'dev') != true
         run: |
           npm i -g yarn
           yarn install --frozen-lockfile
@@ -51,9 +52,10 @@ jobs:
           node-version: 10
           registry-url: https://npm.pkg.github.com/
       - name: Extract PACKAGE_VERSION
-        run: echo ::set-env name=PACKAGE_VERSION::$(node -p -e "require('./package.json').version")
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
       - name: Publish
-        if: contains(env.PACKAGE_VERSION, 'dev') != true
+        if: contains(steps.package-version.outputs.current-version, 'dev') != true
         run: |
           yarn install --frozen-lockfile
           yarn build

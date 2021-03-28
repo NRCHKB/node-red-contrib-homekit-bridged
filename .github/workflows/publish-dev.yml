@@ -14,6 +14,7 @@ jobs:
         with:
           node-version: 10
       - run: |
+          npm i -g yarn
           yarn install --frozen-lockfile
           yarn build
           yarn test
@@ -29,10 +30,17 @@ jobs:
           registry-url: https://registry.npmjs.org/
           always-auth: true
       - name: Extract PACKAGE_VERSION
-        run: echo ::set-env name=PACKAGE_VERSION::$(node -p -e "require('./package.json').version")
-      - name: Publish
-        if: contains(env.PACKAGE_VERSION, 'dev') == true
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+      - name: Prepare Discord notification messages
+        id: discord-prepare
         run: |
+         echo ::set-output name=DISCORD_MSG_DEV_ANN::'{"title":"New dev version `${{ steps.package-version.outputs.current-version }}` has been released.","description":"Changelog is available [here](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/commits/dev/CHANGELOG.md)","url":"https://github.com/NRCHKB/node-red-contrib-homekit-bridged/tree/dev","color":9371648,"fields":[{"name":"How to install","value":"1. Stop node-red\n2. Backup `~/.node-red` folder\n3. `cd ~/.node-red`\n4. `npm i node-red-contrib-homekit-bridged@${{ steps.package-version.outputs.current-version }}`\n5. Start node-red"}]}' 
+         echo ::set-output name=DISCORD_MSG_ERROR::'{"title":"Dev version `${{ steps.package-version.outputs.current-version }}` failed to be released.","description":"Changelog is available [here](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/commits/dev/CHANGELOG.md)","url":"https://github.com/NRCHKB/node-red-contrib-homekit-bridged/tree/dev","color":9371648,"fields":[{"name":"How to install","value":"1. Stop node-red\n2. Backup `~/.node-red` folder\n3. `cd ~/.node-red`\n4. `npm i node-red-contrib-homekit-bridged@${{ steps.package-version.outputs.current-version }}`\n5. Start node-red"}]}' 
+      - name: Publish
+        if: contains(steps.package-version.outputs.current-version, 'dev') == true
+        run: |
+          npm i -g yarn
           yarn install --frozen-lockfile
           yarn build
           npm publish --tag dev
@@ -41,5 +49,11 @@ jobs:
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEV_ANN }}
-          DISCORD_EMBEDS: toJSON("{"embed":{"title":"New dev version `${{ env.PACKAGE_VERSION }}` has been released.","description":"Changelog available [here](https:\/\/github.com\/NRCHKB\/node-red-contrib-homekit-bridged\/commits\/dev\/CHANGELOG.md)","url":"https:\/\/github.com\/NRCHKB\/node-red-contrib-homekit-bridged\/tree\/dev","color":9371648,"fields":[{"name":"How to install","value":"1. Stop node-red\n2. Backup `~\/.node-red` folder\n3. `cd ~\/.node-red`\n4. `npm i node-red-contrib-homekit-bridged@${{ env.PACKAGE_VERSION }}`\n5. Start node-red"}]}}")
-        uses: Ilshidur/action-discord@master
+          DISCORD_EMBEDS: ${{ steps.discord-prepare.outputs.DISCORD_MSG_DEV_ANN }}
+        uses: Shaquu/action-discord@master
+      - name: Discord error notification
+        if: ${{ failure() }}
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_ERROR }}
+          DISCORD_EMBEDS: ${{ steps.discord-prepare.outputs.DISCORD_MSG_ERROR }}
+        uses: Shaquu/action-discord@master
