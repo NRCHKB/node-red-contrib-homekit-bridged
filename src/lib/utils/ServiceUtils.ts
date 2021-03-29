@@ -65,7 +65,7 @@ module.exports = function (node: HAPServiceNodeType) {
             name?: string
             topic: string
         } = { payload: {}, hap: {}, name: node.name, topic: topic }
-        const key = this.displayName.replace(/ /g, '').replace(/\./g, '_')
+        const key = this.constructor.name
 
         msg.payload[key] = newValue
 
