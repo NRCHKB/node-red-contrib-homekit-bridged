@@ -49,10 +49,8 @@ module.exports = function (node: HAPServiceNodeType) {
             service.optionalCharacteristics
         )
 
-        allCharacteristics.map(function (characteristic) {
-            const cKey = characteristic.displayName
-                .replace(/ /g, '')
-                .replace(/\./g, '_')
+        allCharacteristics.map((characteristic) => {
+            const cKey = characteristic.constructor.name
 
             supported.push(cKey)
 

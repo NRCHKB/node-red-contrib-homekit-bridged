@@ -102,7 +102,11 @@ module.exports = function (node: HAPServiceNodeType) {
 
         log.debug(`${node.name} received ${key} : ${newValue}`)
 
-        if (connection || context || node.hostNode.config.allowMessagePassthrough) {
+        if (
+            connection ||
+            context ||
+            node.hostNode.config.allowMessagePassthrough
+        ) {
             if (outputNumber === 0) {
                 node.send(msg)
             } else if (outputNumber === 1) {
@@ -208,7 +212,7 @@ module.exports = function (node: HAPServiceNodeType) {
 
         // iterate over characteristics to be written
         // eslint-disable-next-line no-unused-vars
-        Object.keys(msg.payload).map(function (key: string) {
+        Object.keys(msg.payload).map((key: string) => {
             if (node.supported.indexOf(key) < 0) {
                 log.error(
                     `Try one of these characteristics: ${node.supported.join(
