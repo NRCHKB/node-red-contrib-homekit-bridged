@@ -168,16 +168,18 @@ module.exports = function (node: HAPServiceNodeType) {
             }`
         )
 
-        onValueChange.call(
-            this,
-            0,
-            {
-                oldValue,
-                newValue,
-                context,
-            },
-            originator
-        )
+        if (oldValue != newValue) {
+            onValueChange.call(
+                this,
+                0,
+                {
+                    oldValue,
+                    newValue,
+                    context,
+                },
+                originator
+            )
+        }
     }
 
     const onInput = function (msg: Record<string, any>) {
