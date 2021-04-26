@@ -3,6 +3,7 @@ import HAPServiceConfigType from './HAPServiceConfigType'
 import { Accessory, CharacteristicProps, Service } from 'hap-nodejs'
 import HAPHostNodeType from './HAPHostNodeType'
 import PublishTimersType from './PublishTimersType'
+import { FlowType } from './FlowType'
 
 type HAPServiceNodeType = Node & {
     config: HAPServiceConfigType
@@ -23,6 +24,8 @@ type HAPServiceNodeType = Node & {
     onCharacteristicGet: any
     onCharacteristicSet: any
     onCharacteristicChange: any
+    _flow: FlowType
+    _alias: string
 }
 
 export default HAPServiceNodeType
