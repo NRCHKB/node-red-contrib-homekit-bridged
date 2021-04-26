@@ -2,7 +2,7 @@
     {
         "id": "b3b5156e.cdf988",
         "type": "group",
-        "z": "60b06629.a2ebd",
+        "z": "eeb8b00c.2c18c",
         "name": "Air Quality with Battery: input only sensor",
         "style": {
             "stroke": "#999999",
@@ -20,8 +20,8 @@
             "560fc866.6de558",
             "61e113b2.dbb714"
         ],
-        "x": 14,
-        "y": 299,
+        "x": 94,
+        "y": 239,
         "w": 758,
         "h": 208,
         "info": "# Air Quality Sensor\n\nThis sensor will inject random values for all of the air quality metrics available in the HomeKit spec. It will also inject random values for a linked battery service.\n\nWatch the input and Home app to learn how to see how things are working."
@@ -29,10 +29,12 @@
     {
         "id": "8088a797.e1a7c",
         "type": "homekit-service",
-        "z": "60b06629.a2ebd",
+        "z": "eeb8b00c.2c18c",
         "g": "b3b5156e.cdf988",
         "isParent": true,
+        "hostType": "0",
         "bridge": "409001a1.3e7a78",
+        "accessoryId": "",
         "parentService": "",
         "name": "Air Quality",
         "serviceName": "AirQualitySensor",
@@ -65,10 +67,11 @@
         "cameraConfigDebug": false,
         "cameraConfigSnapshotOutput": "disabled",
         "cameraConfigInterfaceName": "",
-        "characteristicProperties": "{\n    \"AirQuality\":true,\n    \"PM2_5Density\":true,\n    \"PM10Density\":true\n}",
+        "characteristicProperties": "{    \"AirQuality\":true,    \"PM2_5Density\":true,    \"PM10Density\":true}",
+        "waitForSetupMsg": false,
         "outputs": 2,
-        "x": 670,
-        "y": 340,
+        "x": 750,
+        "y": 280,
         "wires": [
             [],
             []
@@ -77,7 +80,7 @@
     {
         "id": "a70b3192.dfb4f",
         "type": "inject",
-        "z": "60b06629.a2ebd",
+        "z": "eeb8b00c.2c18c",
         "g": "b3b5156e.cdf988",
         "name": "Air quality random",
         "props": [
@@ -92,8 +95,8 @@
         "topic": "",
         "payload": "{}",
         "payloadType": "json",
-        "x": 150,
-        "y": 340,
+        "x": 230,
+        "y": 280,
         "wires": [
             [
                 "560fc866.6de558"
@@ -103,7 +106,7 @@
     {
         "id": "d5708f5.036c87",
         "type": "inject",
-        "z": "60b06629.a2ebd",
+        "z": "eeb8b00c.2c18c",
         "g": "b3b5156e.cdf988",
         "name": "Battery random",
         "props": [
@@ -118,8 +121,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 140,
-        "y": 440,
+        "x": 220,
+        "y": 380,
         "wires": [
             [
                 "90b692e4.b9f6c"
@@ -129,7 +132,7 @@
     {
         "id": "90b692e4.b9f6c",
         "type": "function",
-        "z": "60b06629.a2ebd",
+        "z": "eeb8b00c.2c18c",
         "g": "b3b5156e.cdf988",
         "name": "Batt",
         "func": "// Define random battery level\nconst level = Math.floor(Math.random() * Math.floor(100))\nvar newMsg = {\n    payload: {\n        \"BatteryLevel\": level\n    }\n};\n\n// Show \"Low Battery\" if less than 10%\nif (level < 10)newMsg.payload.StatusLowBattery = 1;\nelse newMsg.payload.StatusLowBattery = 0;\n\n// Show \"Charging\" if greater than 60%\nif (level > 60) newMsg.payload.ChargingState = 1;\nelse newMsg.payload.ChargingState = 0;\n\nreturn newMsg;",
@@ -137,8 +140,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 390,
-        "y": 440,
+        "x": 470,
+        "y": 380,
         "wires": [
             [
                 "5cd5342a.cfd72c"
@@ -148,7 +151,7 @@
     {
         "id": "54bfafbc.396898",
         "type": "inject",
-        "z": "60b06629.a2ebd",
+        "z": "eeb8b00c.2c18c",
         "g": "b3b5156e.cdf988",
         "name": "NO RESPONSE",
         "props": [
@@ -163,8 +166,8 @@
         "topic": "",
         "payload": "{\"AirQuality\":\"NO_RESPONSE\"}",
         "payloadType": "json",
-        "x": 420,
-        "y": 380,
+        "x": 500,
+        "y": 320,
         "wires": [
             [
                 "8088a797.e1a7c"
@@ -174,7 +177,7 @@
     {
         "id": "560fc866.6de558",
         "type": "function",
-        "z": "60b06629.a2ebd",
+        "z": "eeb8b00c.2c18c",
         "g": "b3b5156e.cdf988",
         "name": "Random values",
         "func": "var newMsg = {\n    \"payload\":{\n        \"AirQuality\":Math.floor(Math.random() * Math.floor(5)),\n        \"PM2_5Density\":Math.floor(Math.random() * Math.floor(1000)),\n        \"PM10Density\":Math.floor(Math.random() * Math.floor(1000)),\n        \"OzoneDensity\":Math.floor(Math.random() * Math.floor(1000)),\n        \"NitrogenDioxideDensity\":Math.floor(Math.random() * Math.floor(1000)),\n        \"SulphurDioxideDensity\": Math.floor(Math.random() * Math.floor(1000))\n    }\n}\n\n\n\nreturn newMsg;",
@@ -182,8 +185,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 420,
-        "y": 340,
+        "x": 500,
+        "y": 280,
         "wires": [
             [
                 "8088a797.e1a7c"
@@ -193,7 +196,7 @@
     {
         "id": "61e113b2.dbb714",
         "type": "group",
-        "z": "60b06629.a2ebd",
+        "z": "eeb8b00c.2c18c",
         "g": "b3b5156e.cdf988",
         "name": "LINKED",
         "style": {
@@ -204,21 +207,23 @@
         "nodes": [
             "5cd5342a.cfd72c"
         ],
-        "x": 574,
-        "y": 399,
+        "x": 654,
+        "y": 339,
         "w": 172,
         "h": 82
     },
     {
         "id": "5cd5342a.cfd72c",
         "type": "homekit-service",
-        "z": "60b06629.a2ebd",
+        "z": "eeb8b00c.2c18c",
         "g": "61e113b2.dbb714",
         "isParent": false,
+        "hostType": "0",
         "bridge": "",
+        "accessoryId": "",
         "parentService": "8088a797.e1a7c",
         "name": "Battery",
-        "serviceName": "BatteryService",
+        "serviceName": "Battery",
         "topic": "Air Quality",
         "filter": false,
         "manufacturer": "Default Manufacturer",
@@ -249,9 +254,10 @@
         "cameraConfigSnapshotOutput": "disabled",
         "cameraConfigInterfaceName": "",
         "characteristicProperties": "{}",
+        "waitForSetupMsg": false,
         "outputs": 2,
-        "x": 660,
-        "y": 440,
+        "x": 740,
+        "y": 380,
         "wires": [
             [],
             []
@@ -260,7 +266,6 @@
     {
         "id": "409001a1.3e7a78",
         "type": "homekit-bridge",
-        "z": "",
         "bridgeName": "Demo 1",
         "pinCode": "153-10-538",
         "port": "",

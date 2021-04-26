@@ -1,2121 +1,2141 @@
 [
-    {
-        "id": "2c464315.51c50c",
-        "type": "group",
-        "z": "60b06629.a2ebd",
-        "name": "Fan Full Example: input from device, output to device",
-        "style": {
-            "stroke": "#999999",
-            "fill": "none",
-            "label": true,
-            "label-position": "nw",
-            "color": "#a4a4a4"
-        },
-        "nodes": [
-            "b7778e52.220a5",
-            "fd8aff55.91d41",
-            "c717b796.0735b8",
-            "f56a2f96.509c1",
-            "d945ba75.897998"
-        ],
-        "x": 14,
-        "y": 1619,
-        "w": 752,
-        "h": 182,
-        "info": "# Fan V2\n\nThis example shows a fan. The inputs from node red are to turn the fan on, off, or set \"No Response\".\n\nThe outputs going to \"Fan output\" will show:\n\nOn / off state <br/>\nRotation speed<br/>\nSwing mode on / off (oscillate) <br/>\nRotation direction (clockwise/counterclockwise)"
-    },
-    {
-        "id": "b7778e52.220a5",
-        "type": "debug",
-        "z": "60b06629.a2ebd",
-        "g": "2c464315.51c50c",
-        "name": "Fan output",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "x": 650,
-        "y": 1660,
-        "wires": []
-    },
-    {
-        "id": "fd8aff55.91d41",
-        "type": "homekit-service",
-        "z": "60b06629.a2ebd",
-        "g": "2c464315.51c50c",
-        "isParent": true,
-        "bridge": "409001a1.3e7a78",
-        "parentService": "",
-        "name": "Fan V2",
-        "serviceName": "Fanv2",
-        "topic": "",
-        "filter": false,
-        "manufacturer": "Default Manufacturer",
-        "model": "Default Model",
-        "serialNo": "Default Serial Number",
-        "firmwareRev": "1.0.0",
-        "hardwareRev": "1.0.0",
-        "softwareRev": "1.0.0",
-        "cameraConfigVideoProcessor": "ffmpeg",
-        "cameraConfigSource": "",
-        "cameraConfigStillImageSource": "",
-        "cameraConfigMaxStreams": 2,
-        "cameraConfigMaxWidth": 1280,
-        "cameraConfigMaxHeight": 720,
-        "cameraConfigMaxFPS": 10,
-        "cameraConfigMaxBitrate": 300,
-        "cameraConfigVideoCodec": "libx264",
-        "cameraConfigAudioCodec": "libfdk_aac",
-        "cameraConfigAudio": false,
-        "cameraConfigPacketSize": 1316,
-        "cameraConfigVerticalFlip": false,
-        "cameraConfigHorizontalFlip": false,
-        "cameraConfigMapVideo": "0:0",
-        "cameraConfigMapAudio": "0:1",
-        "cameraConfigVideoFilter": "scale=1280:720",
-        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
-        "cameraConfigDebug": false,
-        "cameraConfigSnapshotOutput": "disabled",
-        "cameraConfigInterfaceName": "",
-        "characteristicProperties": "{\n    \"RotationSpeed\":true,\n    \"RotationDirection\":true,\n    \"SwingMode\":true\n}",
-        "outputs": 2,
-        "x": 420,
-        "y": 1660,
-        "wires": [
-            [
-                "b7778e52.220a5"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "c717b796.0735b8",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "2c464315.51c50c",
-        "name": "NO RESPONSE",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"Active\":\"NO_RESPONSE\"}",
-        "payloadType": "json",
-        "x": 140,
-        "y": 1760,
-        "wires": [
-            [
-                "fd8aff55.91d41"
-            ]
-        ]
-    },
-    {
-        "id": "f56a2f96.509c1",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "2c464315.51c50c",
-        "name": "ON",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"Active\":true}",
-        "payloadType": "json",
-        "x": 120,
-        "y": 1660,
-        "wires": [
-            [
-                "fd8aff55.91d41"
-            ]
-        ]
-    },
-    {
-        "id": "d945ba75.897998",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "2c464315.51c50c",
-        "name": "OFF",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"Active\":false}",
-        "payloadType": "json",
-        "x": 120,
-        "y": 1700,
-        "wires": [
-            [
-                "fd8aff55.91d41"
-            ]
-        ]
-    },
-    {
-        "id": "409001a1.3e7a78",
-        "type": "homekit-bridge",
-        "z": "",
-        "bridgeName": "Demo 1",
-        "pinCode": "153-10-538",
-        "port": "",
-        "allowInsecureRequest": false,
-        "manufacturer": "NRCHKB",
-        "model": "Demo",
-        "serialNo": "1.1.2",
-        "customMdnsConfig": false,
-        "mdnsMulticast": true,
-        "mdnsInterface": "",
-        "mdnsPort": "",
-        "mdnsIp": "",
-        "mdnsTtl": "",
-        "mdnsLoopback": true,
-        "mdnsReuseAddr": true,
-        "allowMessagePassthrough": true
-    },
-    {
-        "id": "384e0889.1fdae",
-        "type": "group",
-        "z": "60b06629.a2ebd",
-        "name": "Color Bulb: input from device, output to device",
-        "style": {
-            "stroke": "#999999",
-            "fill": "none",
-            "label": true,
-            "label-position": "nw",
-            "color": "#a4a4a4"
-        },
-        "nodes": [
-            "d838176b.dbaf7",
-            "7bf880d4.3cd4d",
-            "ee1452a5.08edd",
-            "c6ed2a2a.90a01",
-            "8cdfae2b.2f2ce8",
-            "1758401b.6c62e8"
-        ],
-        "x": 14,
-        "y": 659,
-        "w": 752,
-        "h": 162,
-        "info": "# Color Bulb\n\nThis is a color bulb. It accepts and sends out Hue, Saturation, Value, and On/off state.\n\nHue is the color\n\nSaturation is how deep the color is\n\nValue is brightness\n\nOn is power state"
-    },
-    {
-        "id": "d838176b.dbaf7",
-        "type": "debug",
-        "z": "60b06629.a2ebd",
-        "g": "384e0889.1fdae",
-        "name": "Color light output",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "x": 630,
-        "y": 780,
-        "wires": []
-    },
-    {
-        "id": "7bf880d4.3cd4d",
-        "type": "homekit-service",
-        "z": "60b06629.a2ebd",
-        "g": "384e0889.1fdae",
-        "isParent": true,
-        "bridge": "409001a1.3e7a78",
-        "parentService": "",
-        "name": "Color",
-        "serviceName": "Lightbulb",
-        "topic": "",
-        "filter": false,
-        "manufacturer": "Garrett",
-        "model": "Color",
-        "serialNo": "42",
-        "firmwareRev": "1.2",
-        "hardwareRev": "1.0.0",
-        "softwareRev": "1.0.0",
-        "cameraConfigVideoProcessor": "ffmpeg",
-        "cameraConfigSource": "",
-        "cameraConfigStillImageSource": "",
-        "cameraConfigMaxStreams": 2,
-        "cameraConfigMaxWidth": 1280,
-        "cameraConfigMaxHeight": 720,
-        "cameraConfigMaxFPS": 10,
-        "cameraConfigMaxBitrate": 300,
-        "cameraConfigVideoCodec": "libx264",
-        "cameraConfigAudioCodec": "libfdk_aac",
-        "cameraConfigAudio": false,
-        "cameraConfigPacketSize": 1316,
-        "cameraConfigVerticalFlip": false,
-        "cameraConfigHorizontalFlip": false,
-        "cameraConfigMapVideo": "0:0",
-        "cameraConfigMapAudio": "0:1",
-        "cameraConfigVideoFilter": "scale=1280:720",
-        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
-        "cameraConfigDebug": false,
-        "cameraConfigSnapshotOutput": "disabled",
-        "cameraConfigInterfaceName": "",
-        "characteristicProperties": "{\n    \"Brightness\":true,\n    \"Hue\":true,\n    \"Saturation\":true\n}",
-        "outputs": 2,
-        "x": 410,
-        "y": 780,
-        "wires": [
-            [
-                "d838176b.dbaf7"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "ee1452a5.08edd",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "384e0889.1fdae",
-        "name": "NO RESPONSE",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"On\":\"NO_RESPONSE\"}",
-        "payloadType": "json",
-        "x": 340,
-        "y": 700,
-        "wires": [
-            [
-                "7bf880d4.3cd4d"
-            ]
-        ]
-    },
-    {
-        "id": "c6ed2a2a.90a01",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "384e0889.1fdae",
-        "name": "ON",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"On\":true}",
-        "payloadType": "json",
-        "x": 110,
-        "y": 700,
-        "wires": [
-            [
-                "7bf880d4.3cd4d"
-            ]
-        ]
-    },
-    {
-        "id": "8cdfae2b.2f2ce8",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "384e0889.1fdae",
-        "name": "Reset HSV",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"Brightness\":50,\"Hue\":50,\"Saturation\":50}",
-        "payloadType": "json",
-        "x": 120,
-        "y": 780,
-        "wires": [
-            [
-                "7bf880d4.3cd4d"
-            ]
-        ]
-    },
-    {
-        "id": "1758401b.6c62e8",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "384e0889.1fdae",
-        "name": "OFF",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"On\":false}",
-        "payloadType": "json",
-        "x": 110,
-        "y": 740,
-        "wires": [
-            [
-                "7bf880d4.3cd4d"
-            ]
-        ]
-    },
-    {
-        "id": "3a57bebe.a3b222",
-        "type": "group",
-        "z": "60b06629.a2ebd",
-        "name": "Dimmable Bulb: input from device, output to device",
-        "style": {
-            "stroke": "#999999",
-            "fill": "none",
-            "label": true,
-            "label-position": "nw",
-            "color": "#a4a4a4"
-        },
-        "nodes": [
-            "459254fe.49c72c",
-            "379657db.a99df8",
-            "52a07047.03ce7",
-            "253b3550.729caa",
-            "b9bc7f3d.51acf"
-        ],
-        "x": 14,
-        "y": 519,
-        "w": 752,
-        "h": 122,
-        "info": "# Dimmable Bulb\n\nThis is a dimmable bulb. The Characteristic Properties enable brightness. It is a white bulb which can be adjusted from 0 to 100% brightness."
-    },
-    {
-        "id": "459254fe.49c72c",
-        "type": "homekit-service",
-        "z": "60b06629.a2ebd",
-        "g": "3a57bebe.a3b222",
-        "isParent": true,
-        "bridge": "409001a1.3e7a78",
-        "parentService": "",
-        "name": "Dimmable",
-        "serviceName": "Lightbulb",
-        "topic": "",
-        "filter": false,
-        "manufacturer": "Garrett",
-        "model": "Dummy",
-        "serialNo": "Default Serial Number",
-        "firmwareRev": "1.1.9",
-        "hardwareRev": "1.0.0",
-        "softwareRev": "1.0.0",
-        "cameraConfigVideoProcessor": "ffmpeg",
-        "cameraConfigSource": "",
-        "cameraConfigStillImageSource": "",
-        "cameraConfigMaxStreams": 2,
-        "cameraConfigMaxWidth": 1280,
-        "cameraConfigMaxHeight": 720,
-        "cameraConfigMaxFPS": 10,
-        "cameraConfigMaxBitrate": 300,
-        "cameraConfigVideoCodec": "libx264",
-        "cameraConfigAudioCodec": "libfdk_aac",
-        "cameraConfigAudio": false,
-        "cameraConfigPacketSize": 1316,
-        "cameraConfigVerticalFlip": false,
-        "cameraConfigHorizontalFlip": false,
-        "cameraConfigMapVideo": "0:0",
-        "cameraConfigMapAudio": "0:1",
-        "cameraConfigVideoFilter": "scale=1280:720",
-        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
-        "cameraConfigDebug": false,
-        "cameraConfigSnapshotOutput": "disabled",
-        "cameraConfigInterfaceName": "",
-        "characteristicProperties": "{\n    \"Brightness\":true\n}",
-        "outputs": 2,
-        "x": 380,
-        "y": 600,
-        "wires": [
-            [
-                "379657db.a99df8"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "379657db.a99df8",
-        "type": "debug",
-        "z": "60b06629.a2ebd",
-        "g": "3a57bebe.a3b222",
-        "name": "Dimmable light output",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "x": 620,
-        "y": 600,
-        "wires": []
-    },
-    {
-        "id": "52a07047.03ce7",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "3a57bebe.a3b222",
-        "name": "NO RESPONSE",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"On\":\"NO_RESPONSE\"}",
-        "payloadType": "json",
-        "x": 320,
-        "y": 560,
-        "wires": [
-            [
-                "459254fe.49c72c"
-            ]
-        ]
-    },
-    {
-        "id": "253b3550.729caa",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "3a57bebe.a3b222",
-        "name": "ON",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"On\":true}",
-        "payloadType": "json",
-        "x": 110,
-        "y": 560,
-        "wires": [
-            [
-                "459254fe.49c72c"
-            ]
-        ]
-    },
-    {
-        "id": "b9bc7f3d.51acf",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "3a57bebe.a3b222",
-        "name": "OFF",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"On\":false}",
-        "payloadType": "json",
-        "x": 110,
-        "y": 600,
-        "wires": [
-            [
-                "459254fe.49c72c"
-            ]
-        ]
-    },
-    {
-        "id": "60e44fde.c914f8",
-        "type": "group",
-        "z": "60b06629.a2ebd",
-        "name": "Air Purifier: input power state, output commands device",
-        "style": {
-            "stroke": "#999999",
-            "fill": "none",
-            "label": true,
-            "label-position": "nw",
-            "color": "#a4a4a4"
-        },
-        "nodes": [
-            "8dea49.4a770db8",
-            "5302e4aa.1b466c",
-            "bfe1c73d.c165a8",
-            "9739d842.a402f",
-            "87048a6e.df64e8",
-            "db412cea.4a62f8",
-            "46418e19.aa6d6",
-            "664dadf9.85d0d4",
-            "d7cd8a56.628178",
-            "3de34c4c.1871a4",
-            "ee8894e4.f1855"
-        ],
-        "x": 14,
-        "y": 119,
-        "w": 822,
-        "h": 162,
-        "info": "Turning the device on or off will send:\n`{\"Active\":[0, 1]}`\n\nAfter changing power state, the device will be \"Turning on\" or \"Turning off\" until a current state is sent of:\n`{\"CurrentAirPurifierState\":[0, 1, 2]}`\n0: off <br/>\n1: idle <br/>\n2: on <br/>\n\nThere will be a slider in the home app for sending `RotationSpeed`\n\nThere will be a switch on Home app for \"Oscillate\" which sends:\n`{\"SwingMode\":[0,1]}`\n\nChanging mode to manual to auto will send payload:\n`{\"TargetAirPurifierState\":[0, 1]}`\n\nChild lock will send \n`{\"LockPhysicalControls\": [0, 1]}`\n\n"
-    },
-    {
-        "id": "8dea49.4a770db8",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "60e44fde.c914f8",
-        "name": "off",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"CurrentAirPurifierState\":0}",
-        "payloadType": "json",
-        "x": 110,
-        "y": 160,
-        "wires": [
-            [
-                "5302e4aa.1b466c"
-            ]
-        ]
-    },
-    {
-        "id": "5302e4aa.1b466c",
-        "type": "homekit-service",
-        "z": "60b06629.a2ebd",
-        "g": "60e44fde.c914f8",
-        "isParent": true,
-        "bridge": "409001a1.3e7a78",
-        "parentService": "",
-        "name": "Air purifier",
-        "serviceName": "AirPurifier",
-        "topic": "",
-        "filter": false,
-        "manufacturer": "Purity",
-        "model": "Air",
-        "serialNo": "23",
-        "firmwareRev": "1.0.0",
-        "hardwareRev": "1.0.0",
-        "softwareRev": "1.0.0",
-        "cameraConfigVideoProcessor": "ffmpeg",
-        "cameraConfigSource": "",
-        "cameraConfigStillImageSource": "",
-        "cameraConfigMaxStreams": 2,
-        "cameraConfigMaxWidth": 1280,
-        "cameraConfigMaxHeight": 720,
-        "cameraConfigMaxFPS": 10,
-        "cameraConfigMaxBitrate": 300,
-        "cameraConfigVideoCodec": "libx264",
-        "cameraConfigAudioCodec": "libfdk_aac",
-        "cameraConfigAudio": false,
-        "cameraConfigPacketSize": 1316,
-        "cameraConfigVerticalFlip": false,
-        "cameraConfigHorizontalFlip": false,
-        "cameraConfigMapVideo": "0:0",
-        "cameraConfigMapAudio": "0:1",
-        "cameraConfigVideoFilter": "scale=1280:720",
-        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
-        "cameraConfigDebug": false,
-        "cameraConfigSnapshotOutput": "disabled",
-        "cameraConfigInterfaceName": "",
-        "characteristicProperties": "{\n    \"SwingMode\":true,\n    \"RotationSpeed\":true,\n    \"LockPhysicalControls\":true\n}",
-        "outputs": 2,
-        "x": 290,
-        "y": 160,
-        "wires": [
-            [
-                "bfe1c73d.c165a8",
-                "9739d842.a402f"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "bfe1c73d.c165a8",
-        "type": "debug",
-        "z": "60b06629.a2ebd",
-        "g": "60e44fde.c914f8",
-        "name": "Purifier output",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "x": 420,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "9739d842.a402f",
-        "type": "function",
-        "z": "60b06629.a2ebd",
-        "g": "60e44fde.c914f8",
-        "name": "on/off",
-        "func": "if (msg.hap !== undefined && msg.hap.context !== undefined){\n    if (msg.payload.Active === 1){\n        return [msg,null];\n    }\n    if (msg.payload.Active === 0){\n        return [null,msg];\n    }\n}\nreturn;",
-        "outputs": 2,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 450,
-        "y": 160,
-        "wires": [
-            [
-                "664dadf9.85d0d4",
-                "d7cd8a56.628178"
-            ],
-            [
-                "3de34c4c.1871a4"
-            ]
-        ],
-        "outputLabels": [
-            "On",
-            "Off"
-        ]
-    },
-    {
-        "id": "87048a6e.df64e8",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "60e44fde.c914f8",
-        "name": "idle",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"CurrentAirPurifierState\":1}",
-        "payloadType": "json",
-        "x": 110,
-        "y": 200,
-        "wires": [
-            [
-                "5302e4aa.1b466c"
-            ]
-        ]
-    },
-    {
-        "id": "db412cea.4a62f8",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "60e44fde.c914f8",
-        "name": "on",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"CurrentAirPurifierState\":2}",
-        "payloadType": "json",
-        "x": 110,
-        "y": 240,
-        "wires": [
-            [
-                "5302e4aa.1b466c"
-            ]
-        ]
-    },
-    {
-        "id": "46418e19.aa6d6",
-        "type": "link in",
-        "z": "60b06629.a2ebd",
-        "g": "60e44fde.c914f8",
-        "name": "",
-        "links": [
-            "ee8894e4.f1855"
-        ],
-        "x": 235,
-        "y": 240,
-        "wires": [
-            [
-                "5302e4aa.1b466c"
-            ]
-        ]
-    },
-    {
-        "id": "664dadf9.85d0d4",
-        "type": "trigger",
-        "z": "60b06629.a2ebd",
-        "g": "60e44fde.c914f8",
-        "name": "5 sec to idle",
-        "op1": "",
-        "op2": "{\"CurrentAirPurifierState\":1}",
-        "op1type": "nul",
-        "op2type": "json",
-        "duration": "5",
-        "extend": false,
-        "units": "s",
-        "reset": "",
-        "bytopic": "all",
-        "topic": "topic",
-        "outputs": 1,
-        "x": 650,
-        "y": 160,
-        "wires": [
-            [
-                "ee8894e4.f1855"
-            ]
-        ]
-    },
-    {
-        "id": "d7cd8a56.628178",
-        "type": "trigger",
-        "z": "60b06629.a2ebd",
-        "g": "60e44fde.c914f8",
-        "name": "10 sec to on",
-        "op1": "",
-        "op2": "{\"CurrentAirPurifierState\":2}",
-        "op1type": "nul",
-        "op2type": "json",
-        "duration": "10",
-        "extend": false,
-        "units": "s",
-        "reset": "",
-        "bytopic": "all",
-        "topic": "topic",
-        "outputs": 1,
-        "x": 650,
-        "y": 200,
-        "wires": [
-            [
-                "ee8894e4.f1855"
-            ]
-        ]
-    },
-    {
-        "id": "3de34c4c.1871a4",
-        "type": "trigger",
-        "z": "60b06629.a2ebd",
-        "g": "60e44fde.c914f8",
-        "name": "5 sec to off",
-        "op1": "",
-        "op2": "{\"CurrentAirPurifierState\":0}",
-        "op1type": "nul",
-        "op2type": "json",
-        "duration": "5",
-        "extend": false,
-        "units": "s",
-        "reset": "",
-        "bytopic": "all",
-        "topic": "topic",
-        "outputs": 1,
-        "x": 650,
-        "y": 240,
-        "wires": [
-            [
-                "ee8894e4.f1855"
-            ]
-        ]
-    },
-    {
-        "id": "ee8894e4.f1855",
-        "type": "link out",
-        "z": "60b06629.a2ebd",
-        "g": "60e44fde.c914f8",
-        "name": "",
-        "links": [
-            "46418e19.aa6d6"
-        ],
-        "x": 795,
-        "y": 200,
-        "wires": []
-    },
-    {
-        "id": "6eaa9b9e.282734",
-        "type": "group",
-        "z": "60b06629.a2ebd",
-        "name": "CO plus CO2 Sensor: input only sensor",
-        "style": {
-            "stroke": "#999999",
-            "fill": "none",
-            "label": true,
-            "label-position": "nw",
-            "color": "#a4a4a4"
-        },
-        "nodes": [
-            "2e6738a6.ef5dd8",
-            "79889759.8219c",
-            "7f53465b.356a68",
-            "97aff586.786ff8",
-            "659ff3da.236404",
-            "e6105066.f8911",
-            "b433a780.665a7",
-            "d4b30334.a19e58",
-            "b0eeeb34.2dde8"
-        ],
-        "x": 14,
-        "y": 1059,
-        "w": 752,
-        "h": 282,
-        "info": "# Combined Sensor\nThis is a sensor which will display both Carbon Monoxide (poisonous, deadly gas) and Carbon Dioxide (what humans exhale) levels.\n\n# CO Sensor\n\nThere are three inputs to this example, one for each level of Carbon Monoxide in the air. Options are:\n\n**0 ppm:** this will assume no CO in the air <br/>\n**Low level:** this will assume a level between 1 and 35 ppm, inclusive. This level is generally assumed to not cause problems in healthy adults <br/>\n**Dangerous level:** this will assume a level between 35 and 5000, inclusive; this will also trigger an alert in Home app\n\n## IF YOU HAVE A CARBON MONOXIDE DETECTOR EVER READING ABOVE 35 PPM, PLEASE EVACUATE THE AREA AND SEEK FRESH AIR IMMEDIATELY TO AVOID RISK OF DEATH ##\n\n# CO2 Sensor\n\nThere are three inputs to this example, one for each level of Carbon Dioxide in the air. Options are:\n\n**0 ppm:** this will assume no CO2 in the air <br/>\n**CO2 Level:** this will assume a level between 1 and 100,000 ppm, inclusive <br/>\n**Dangerous level:** this will assume a level between 1,000 and 100,000, inclusive\n\n"
-    },
-    {
-        "id": "2e6738a6.ef5dd8",
-        "type": "homekit-service",
-        "z": "60b06629.a2ebd",
-        "g": "6eaa9b9e.282734",
-        "isParent": true,
-        "bridge": "409001a1.3e7a78",
-        "parentService": "",
-        "name": "CO detector",
-        "serviceName": "CarbonMonoxideSensor",
-        "topic": "",
-        "filter": false,
-        "manufacturer": "MONOxide",
-        "model": "1",
-        "serialNo": "2",
-        "firmwareRev": "2",
-        "hardwareRev": "2",
-        "softwareRev": "1.0.0",
-        "cameraConfigVideoProcessor": "ffmpeg",
-        "cameraConfigSource": "",
-        "cameraConfigStillImageSource": "",
-        "cameraConfigMaxStreams": 2,
-        "cameraConfigMaxWidth": 1280,
-        "cameraConfigMaxHeight": 720,
-        "cameraConfigMaxFPS": 10,
-        "cameraConfigMaxBitrate": 300,
-        "cameraConfigVideoCodec": "libx264",
-        "cameraConfigAudioCodec": "libfdk_aac",
-        "cameraConfigAudio": false,
-        "cameraConfigPacketSize": 1316,
-        "cameraConfigVerticalFlip": false,
-        "cameraConfigHorizontalFlip": false,
-        "cameraConfigMapVideo": "0:0",
-        "cameraConfigMapAudio": "0:1",
-        "cameraConfigVideoFilter": "scale=1280:720",
-        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
-        "cameraConfigDebug": false,
-        "cameraConfigSnapshotOutput": "disabled",
-        "cameraConfigInterfaceName": "",
-        "characteristicProperties": "{\n    \"CarbonMonoxideLevel\":{\n        \"maxValue\":5000\n    },\n    \"CarbonMonoxidePeakLevel\":{\n        \"maxValue\":5000\n    },\n    \"CarbonDioxideLevel\":true,\n    \"CarbonDioxidePeakLevel\":true\n}",
-        "outputs": 2,
-        "x": 670,
-        "y": 1100,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "79889759.8219c",
-        "type": "function",
-        "z": "60b06629.a2ebd",
-        "g": "6eaa9b9e.282734",
-        "name": "Carbon DIoxide",
-        "func": "if(msg.payload === 0){\n    context.set('lastPeak',0);\n    newMsg = {\n        payload: {\n            \"CarbonDioxideLevel\":0\n        }\n    }\n    return newMsg;\n}\n\n// Initialize vars\nvar CurrentLevel = 0;\nvar lastPeak = context.get('lastPeak');\n\n// Set random level\nif(msg.payload === \"CO2\"){\n    CurrentLevel = Math.floor(Math.random() * (100000 - 1 + 1) + 1);\n}\n\n\n// Formulate output message\nvar newMsg = {\n    payload: {\n        \"CarbonDioxideLevel\" : CurrentLevel\n    }\n};\n\n// Set new peak level\nif(CurrentLevel > lastPeak){\n    lastPeak = CurrentLevel;\n    context.set('lastPeak',CurrentLevel);\n    newMsg.payload.CarbonDioxidePeakLevel = CurrentLevel;\n}\n\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is deployed.\ncontext.set('lastPeak',0);",
-        "finalize": "",
-        "x": 380,
-        "y": 1260,
-        "wires": [
-            [
-                "2e6738a6.ef5dd8"
-            ]
-        ]
-    },
-    {
-        "id": "7f53465b.356a68",
-        "type": "function",
-        "z": "60b06629.a2ebd",
-        "g": "6eaa9b9e.282734",
-        "name": "Carbon MONoxide",
-        "func": "// Reset all values to 0 if 0ppm input\nif(msg.payload === 0){\n    context.set('lastPeak',0);\n    newMsg = {\n        payload: {\n            \"CarbonMonoxideLevel\":0,\n            \"CarbonMonoxidePeakLevel\":0,\n            \"CarbonMonoxideDetected\":0\n        }\n    };\n    return newMsg;\n}\n\n// Initialize vars\nvar CurrentLevel = 0;\nvar lastPeak = context.get('lastPeak');\n\n// Set random Low or Dangerous levels\nif(msg.payload === \"Low\"){\n    CurrentLevel = Math.floor(Math.random() * (35 - 1 + 1) + 1);\n}\nif(msg.payload === \"Danger\"){\n    CurrentLevel = Math.floor(Math.random() * (5000 - 35 + 1) + 35);\n}\n\n// Formulate output message\nvar newMsg = {\n    payload: {\n        \"CarbonMonoxideLevel\" : CurrentLevel,\n        \"CarbonMonoxideDetected\" : 0\n    }\n};\n\n// Set new peak level\nif(CurrentLevel > lastPeak){\n    lastPeak = CurrentLevel;\n    context.set('lastPeak',CurrentLevel);\n    newMsg.payload.CarbonMonoxidePeakLevel = CurrentLevel;\n}\n\n// Set warning if dangerous\nif (CurrentLevel >= 35) {\n    newMsg.payload.CarbonMonoxideDetected = 1;\n} \n\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 390,
-        "y": 1140,
-        "wires": [
-            [
-                "2e6738a6.ef5dd8"
-            ]
-        ]
-    },
-    {
-        "id": "97aff586.786ff8",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "6eaa9b9e.282734",
-        "name": "NO RESPONSE",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"CarbonMonoxideLevel\":\"NO_RESPONSE\"}",
-        "payloadType": "json",
-        "x": 400,
-        "y": 1100,
-        "wires": [
-            [
-                "2e6738a6.ef5dd8"
-            ]
-        ]
-    },
-    {
-        "id": "659ff3da.236404",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "6eaa9b9e.282734",
-        "name": "Clear CO2 Peak",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "0",
-        "payloadType": "num",
-        "x": 140,
-        "y": 1260,
-        "wires": [
-            [
-                "79889759.8219c"
-            ]
-        ]
-    },
-    {
-        "id": "e6105066.f8911",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "6eaa9b9e.282734",
-        "name": "0 ppm",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "0",
-        "payloadType": "num",
-        "x": 130,
-        "y": 1100,
-        "wires": [
-            [
-                "7f53465b.356a68"
-            ]
-        ]
-    },
-    {
-        "id": "b433a780.665a7",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "6eaa9b9e.282734",
-        "name": "CO2 Level",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "CO2",
-        "payloadType": "str",
-        "x": 120,
-        "y": 1300,
-        "wires": [
-            [
-                "79889759.8219c"
-            ]
-        ]
-    },
-    {
-        "id": "d4b30334.a19e58",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "6eaa9b9e.282734",
-        "name": "Low level",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "Low",
-        "payloadType": "str",
-        "x": 140,
-        "y": 1140,
-        "wires": [
-            [
-                "7f53465b.356a68"
-            ]
-        ]
-    },
-    {
-        "id": "b0eeeb34.2dde8",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "6eaa9b9e.282734",
-        "name": "Danger level",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "Danger",
-        "payloadType": "str",
-        "x": 150,
-        "y": 1180,
-        "wires": [
-            [
-                "7f53465b.356a68"
-            ]
-        ]
-    },
-    {
-        "id": "a875cc7.a4c42b",
-        "type": "group",
-        "z": "60b06629.a2ebd",
-        "name": "Contact Sensor: input only sensor",
-        "style": {
-            "stroke": "#999999",
-            "fill": "none",
-            "label": true,
-            "label-position": "nw",
-            "color": "#a4a4a4"
-        },
-        "nodes": [
-            "a5194c26.18c628",
-            "2f9bc0d.42a73c",
-            "dfca0b2d.8b8e8",
-            "d74a610c.09a36",
-            "c15b6468.ae2eb8",
-            "6f7bc7fa.7f4f6",
-            "99b55eb3.e31bf8",
-            "508d9ccf.29e404"
-        ],
-        "x": 14,
-        "y": 1359,
-        "w": 752,
-        "h": 242,
-        "info": "# Contact Sensor\n\nThe contact sensor has one inject node to Open the sensor (door, window, etc). Once open, a ten second timer will run then set it back to closed.\n\nAdditional inputs are for \"No Response\", \"Tampered\", and \"Battery\". Note that this battery will not show a battery level but only a good/low battery status."
-    },
-    {
-        "id": "a5194c26.18c628",
-        "type": "homekit-service",
-        "z": "60b06629.a2ebd",
-        "g": "a875cc7.a4c42b",
-        "isParent": true,
-        "bridge": "409001a1.3e7a78",
-        "parentService": "",
-        "name": "Contact Sensor",
-        "serviceName": "ContactSensor",
-        "topic": "",
-        "filter": false,
-        "manufacturer": "Full Contact",
-        "model": "Door",
-        "serialNo": "Sensor",
-        "firmwareRev": "1.0.0",
-        "hardwareRev": "1.0.0",
-        "softwareRev": "1.0.0",
-        "cameraConfigVideoProcessor": "ffmpeg",
-        "cameraConfigSource": "",
-        "cameraConfigStillImageSource": "",
-        "cameraConfigMaxStreams": 2,
-        "cameraConfigMaxWidth": 1280,
-        "cameraConfigMaxHeight": 720,
-        "cameraConfigMaxFPS": 10,
-        "cameraConfigMaxBitrate": 300,
-        "cameraConfigVideoCodec": "libx264",
-        "cameraConfigAudioCodec": "libfdk_aac",
-        "cameraConfigAudio": false,
-        "cameraConfigPacketSize": 1316,
-        "cameraConfigVerticalFlip": false,
-        "cameraConfigHorizontalFlip": false,
-        "cameraConfigMapVideo": "0:0",
-        "cameraConfigMapAudio": "0:1",
-        "cameraConfigVideoFilter": "scale=1280:720",
-        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
-        "cameraConfigDebug": false,
-        "cameraConfigSnapshotOutput": "disabled",
-        "cameraConfigInterfaceName": "",
-        "characteristicProperties": "{\n    \"StatusTampered\":true,\n    \"StatusLowBattery\":true\n}",
-        "outputs": 2,
-        "x": 660,
-        "y": 1400,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "2f9bc0d.42a73c",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "a875cc7.a4c42b",
-        "name": "Tampered",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"StatusTampered\":1}",
-        "payloadType": "json",
-        "x": 120,
-        "y": 1520,
-        "wires": [
-            [
-                "a5194c26.18c628"
-            ]
-        ]
-    },
-    {
-        "id": "dfca0b2d.8b8e8",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "a875cc7.a4c42b",
-        "name": "Clear tampered",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"StatusTampered\":0}",
-        "payloadType": "json",
-        "x": 140,
-        "y": 1560,
-        "wires": [
-            [
-                "a5194c26.18c628"
-            ]
-        ]
-    },
-    {
-        "id": "d74a610c.09a36",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "a875cc7.a4c42b",
-        "name": "Low batt",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"StatusLowBattery\":1}",
-        "payloadType": "json",
-        "x": 480,
-        "y": 1520,
-        "wires": [
-            [
-                "a5194c26.18c628"
-            ]
-        ]
-    },
-    {
-        "id": "c15b6468.ae2eb8",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "a875cc7.a4c42b",
-        "name": "Good batt",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"StatusLowBattery\":0}",
-        "payloadType": "json",
-        "x": 480,
-        "y": 1560,
-        "wires": [
-            [
-                "a5194c26.18c628"
-            ]
-        ]
-    },
-    {
-        "id": "6f7bc7fa.7f4f6",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "a875cc7.a4c42b",
-        "name": "NO RESPONSE",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"ContactSensorState\":\"NO_RESPONSE\"}",
-        "payloadType": "json",
-        "x": 140,
-        "y": 1460,
-        "wires": [
-            [
-                "a5194c26.18c628"
-            ]
-        ]
-    },
-    {
-        "id": "99b55eb3.e31bf8",
-        "type": "trigger",
-        "z": "60b06629.a2ebd",
-        "g": "a875cc7.a4c42b",
-        "name": "10 Sec open",
-        "op1": "",
-        "op2": "{\"ContactSensorState\":0}",
-        "op1type": "pay",
-        "op2type": "json",
-        "duration": "10",
-        "extend": false,
-        "units": "s",
-        "reset": "",
-        "bytopic": "all",
-        "topic": "topic",
-        "outputs": 1,
-        "x": 350,
-        "y": 1400,
-        "wires": [
-            [
-                "a5194c26.18c628"
-            ]
-        ]
-    },
-    {
-        "id": "508d9ccf.29e404",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "a875cc7.a4c42b",
-        "name": "Open",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": "1",
-        "topic": "",
-        "payload": "{\"ContactSensorState\":1}",
-        "payloadType": "json",
-        "x": 110,
-        "y": 1400,
-        "wires": [
-            [
-                "99b55eb3.e31bf8"
-            ]
-        ]
-    },
-    {
-        "id": "ab48426e.25466",
-        "type": "group",
-        "z": "60b06629.a2ebd",
-        "name": "CO2 Sensor: input only sensor",
-        "style": {
-            "stroke": "#999999",
-            "fill": "none",
-            "label": true,
-            "label-position": "nw",
-            "color": "#a4a4a4"
-        },
-        "nodes": [
-            "88892b4.8a61bd8",
-            "3611c654.8a42f2",
-            "62cafcb0.8ade9c",
-            "a0171cdb.f209b",
-            "6f7de764.a6a688",
-            "8758b463.afb0f",
-            "69e8161b.74b7a",
-            "40010b09.c73cdc"
-        ],
-        "x": 14,
-        "y": 839,
-        "w": 752,
-        "h": 202,
-        "info": "# CO2 Sensor\n\nThere are three inputs to this example, one for each level of Carbon Dioxide in the air. Options are:\n\n**0 ppm:** this will assume no CO2 <br/>\n**Safe level:** this will assume a level between 1 and 999 ppm, inclusive <br/>\n**Dangerous level:** this will assume a level between 1,000 and 100,000, inclusive; this will also trigger an alert"
-    },
-    {
-        "id": "88892b4.8a61bd8",
-        "type": "homekit-service",
-        "z": "60b06629.a2ebd",
-        "g": "ab48426e.25466",
-        "isParent": true,
-        "bridge": "409001a1.3e7a78",
-        "parentService": "",
-        "name": "CO2 Sensor",
-        "serviceName": "CarbonDioxideSensor",
-        "topic": "",
-        "filter": false,
-        "manufacturer": "Default Manufacturer",
-        "model": "Carbon",
-        "serialNo": "Default Serial Number",
-        "firmwareRev": "22",
-        "hardwareRev": "11",
-        "cameraConfigVideoProcessor": "",
-        "cameraConfigSource": "",
-        "cameraConfigStillImageSource": "",
-        "cameraConfigMaxStreams": "",
-        "cameraConfigMaxWidth": "",
-        "cameraConfigMaxHeight": "",
-        "cameraConfigMaxFPS": "",
-        "cameraConfigMaxBitrate": "",
-        "cameraConfigVideoCodec": "",
-        "cameraConfigAudioCodec": "",
-        "cameraConfigAudio": false,
-        "cameraConfigPacketSize": "",
-        "cameraConfigVerticalFlip": false,
-        "cameraConfigHorizontalFlip": false,
-        "cameraConfigMapVideo": "",
-        "cameraConfigMapAudio": "",
-        "cameraConfigVideoFilter": "",
-        "cameraConfigAdditionalCommandLine": "",
-        "cameraConfigDebug": false,
-        "cameraConfigSnapshotOutput": "disabled",
-        "cameraConfigInterfaceName": "",
-        "characteristicProperties": "{\n    \"CarbonDioxideLevel\" : true,\n    \"CarbonDioxidePeakLevel\": true,\n    \"StatusActive\" : true\n}",
-        "outputs": 2,
-        "x": 670,
-        "y": 880,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "3611c654.8a42f2",
-        "type": "function",
-        "z": "60b06629.a2ebd",
-        "g": "ab48426e.25466",
-        "name": "Random values, peak value",
-        "func": "// Reset all values to 0 if 0ppm input\nif(msg.payload === 0){\n    context.set('lastPeak',0);\n    newMsg = {\n        payload: {\n            \"CarbonDioxideLevel\":0,\n            \"CarbonDioxidePeakLevel\":0,\n            \"CarbonDioxideDetected\":0\n        }\n    };\n    return newMsg;\n}\n\n// Initialize vars\nvar CurrentLevel = 0;\nvar lastPeak = context.get('lastPeak');\n\n// Set random safe or dangerous levels\nif(msg.payload === \"Safe\"){\n    CurrentLevel = Math.floor(Math.random() * (999 - 1 + 1) + 1);\n}\nif(msg.payload === \"Danger\"){\n    CurrentLevel = Math.floor(Math.random() * (100000 - 1000 + 1) + 1000);\n}\n\n// Formulate output message\nvar newMsg = {\n    payload: {\n        \"CarbonDioxideLevel\" : CurrentLevel,\n        \"CarbonDioxideDetected\" : 0\n    }\n};\n\n// Set new peak level\nif(CurrentLevel > lastPeak){\n    lastPeak = CurrentLevel;\n    context.set('lastPeak',CurrentLevel);\n    newMsg.payload.CarbonDioxidePeakLevel = CurrentLevel;\n}\n\n// Set warning if dangerous\nif (CurrentLevel >= 1000) {\n    newMsg.payload.CarbonDioxideDetected = 1;\n} \n\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is deployed.\ncontext.set('lastPeak',0);\n",
-        "finalize": "",
-        "x": 400,
-        "y": 880,
-        "wires": [
-            [
-                "88892b4.8a61bd8"
-            ]
-        ]
-    },
-    {
-        "id": "62cafcb0.8ade9c",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "ab48426e.25466",
-        "name": "Active",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"StatusActive\":true}",
-        "payloadType": "json",
-        "x": 470,
-        "y": 920,
-        "wires": [
-            [
-                "88892b4.8a61bd8"
-            ]
-        ]
-    },
-    {
-        "id": "a0171cdb.f209b",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "ab48426e.25466",
-        "name": "Inactive",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"StatusActive\":false}",
-        "payloadType": "json",
-        "x": 470,
-        "y": 960,
-        "wires": [
-            [
-                "88892b4.8a61bd8"
-            ]
-        ]
-    },
-    {
-        "id": "6f7de764.a6a688",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "ab48426e.25466",
-        "name": "NO RESPONSE",
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"CarbonDioxideLevel\":\"NO_RESPONSE\"}",
-        "payloadType": "json",
-        "x": 440,
-        "y": 1000,
-        "wires": [
-            [
-                "88892b4.8a61bd8"
-            ]
-        ]
-    },
-    {
-        "id": "8758b463.afb0f",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "ab48426e.25466",
-        "name": "0 ppm",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "0",
-        "payloadType": "num",
-        "x": 110,
-        "y": 880,
-        "wires": [
-            [
-                "3611c654.8a42f2"
-            ]
-        ]
-    },
-    {
-        "id": "69e8161b.74b7a",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "ab48426e.25466",
-        "name": "Safe Level",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "Safe",
-        "payloadType": "str",
-        "x": 120,
-        "y": 920,
-        "wires": [
-            [
-                "3611c654.8a42f2"
-            ]
-        ]
-    },
-    {
-        "id": "40010b09.c73cdc",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "ab48426e.25466",
-        "name": "Dangerous level",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "Danger",
-        "payloadType": "str",
-        "x": 140,
-        "y": 960,
-        "wires": [
-            [
-                "3611c654.8a42f2"
-            ]
-        ]
-    },
-    {
-        "id": "b3b5156e.cdf988",
-        "type": "group",
-        "z": "60b06629.a2ebd",
-        "name": "Air Quality with Battery: input only sensor",
-        "style": {
-            "stroke": "#999999",
-            "fill": "none",
-            "label": true,
-            "label-position": "nw",
-            "color": "#a4a4a4"
-        },
-        "nodes": [
-            "8088a797.e1a7c",
-            "a70b3192.dfb4f",
-            "d5708f5.036c87",
-            "90b692e4.b9f6c",
-            "54bfafbc.396898",
-            "560fc866.6de558",
-            "61e113b2.dbb714"
-        ],
-        "x": 14,
-        "y": 299,
-        "w": 758,
-        "h": 208,
-        "info": "# Air Quality Sensor\n\nThis sensor will inject random values for all of the air quality metrics available in the HomeKit spec. It will also inject random values for a linked battery service.\n\nWatch the input and Home app to learn how to see how things are working."
-    },
-    {
-        "id": "8088a797.e1a7c",
-        "type": "homekit-service",
-        "z": "60b06629.a2ebd",
-        "g": "b3b5156e.cdf988",
-        "isParent": true,
-        "bridge": "409001a1.3e7a78",
-        "parentService": "",
-        "name": "Air Quality",
-        "serviceName": "AirQualitySensor",
-        "topic": "",
-        "filter": false,
-        "manufacturer": "Quality",
-        "model": "Battery",
-        "serialNo": "777",
-        "firmwareRev": "8.3",
-        "hardwareRev": "2.1",
-        "softwareRev": "1.0.0",
-        "cameraConfigVideoProcessor": "ffmpeg",
-        "cameraConfigSource": "",
-        "cameraConfigStillImageSource": "",
-        "cameraConfigMaxStreams": 2,
-        "cameraConfigMaxWidth": 1280,
-        "cameraConfigMaxHeight": 720,
-        "cameraConfigMaxFPS": 10,
-        "cameraConfigMaxBitrate": 300,
-        "cameraConfigVideoCodec": "libx264",
-        "cameraConfigAudioCodec": "libfdk_aac",
-        "cameraConfigAudio": false,
-        "cameraConfigPacketSize": 1316,
-        "cameraConfigVerticalFlip": false,
-        "cameraConfigHorizontalFlip": false,
-        "cameraConfigMapVideo": "0:0",
-        "cameraConfigMapAudio": "0:1",
-        "cameraConfigVideoFilter": "scale=1280:720",
-        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
-        "cameraConfigDebug": false,
-        "cameraConfigSnapshotOutput": "disabled",
-        "cameraConfigInterfaceName": "",
-        "characteristicProperties": "{\n    \"AirQuality\":true,\n    \"PM2_5Density\":true,\n    \"PM10Density\":true\n}",
-        "outputs": 2,
-        "x": 670,
-        "y": 340,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "a70b3192.dfb4f",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "b3b5156e.cdf988",
-        "name": "Air quality random",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "15",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "5",
-        "topic": "",
-        "payload": "{}",
-        "payloadType": "json",
-        "x": 150,
-        "y": 340,
-        "wires": [
-            [
-                "560fc866.6de558"
-            ]
-        ]
-    },
-    {
-        "id": "d5708f5.036c87",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "b3b5156e.cdf988",
-        "name": "Battery random",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "30",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "5",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 140,
-        "y": 440,
-        "wires": [
-            [
-                "90b692e4.b9f6c"
-            ]
-        ]
-    },
-    {
-        "id": "90b692e4.b9f6c",
-        "type": "function",
-        "z": "60b06629.a2ebd",
-        "g": "b3b5156e.cdf988",
-        "name": "Batt",
-        "func": "// Define random battery level\nconst level = Math.floor(Math.random() * Math.floor(100))\nvar newMsg = {\n    payload: {\n        \"BatteryLevel\": level\n    }\n};\n\n// Show \"Low Battery\" if less than 10%\nif (level < 10)newMsg.payload.StatusLowBattery = 1;\nelse newMsg.payload.StatusLowBattery = 0;\n\n// Show \"Charging\" if greater than 60%\nif (level > 60) newMsg.payload.ChargingState = 1;\nelse newMsg.payload.ChargingState = 0;\n\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 390,
-        "y": 440,
-        "wires": [
-            [
-                "5cd5342a.cfd72c"
-            ]
-        ]
-    },
-    {
-        "id": "54bfafbc.396898",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "b3b5156e.cdf988",
-        "name": "NO RESPONSE",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"AirQuality\":\"NO_RESPONSE\"}",
-        "payloadType": "json",
-        "x": 420,
-        "y": 380,
-        "wires": [
-            [
-                "8088a797.e1a7c"
-            ]
-        ]
-    },
-    {
-        "id": "560fc866.6de558",
-        "type": "function",
-        "z": "60b06629.a2ebd",
-        "g": "b3b5156e.cdf988",
-        "name": "Random values",
-        "func": "var newMsg = {\n    \"payload\":{\n        \"AirQuality\":Math.floor(Math.random() * Math.floor(5)),\n        \"PM2_5Density\":Math.floor(Math.random() * Math.floor(1000)),\n        \"PM10Density\":Math.floor(Math.random() * Math.floor(1000)),\n        \"OzoneDensity\":Math.floor(Math.random() * Math.floor(1000)),\n        \"NitrogenDioxideDensity\":Math.floor(Math.random() * Math.floor(1000)),\n        \"SulphurDioxideDensity\": Math.floor(Math.random() * Math.floor(1000))\n    }\n}\n\n\n\nreturn newMsg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 420,
-        "y": 340,
-        "wires": [
-            [
-                "8088a797.e1a7c"
-            ]
-        ]
-    },
-    {
-        "id": "61e113b2.dbb714",
-        "type": "group",
-        "z": "60b06629.a2ebd",
-        "g": "b3b5156e.cdf988",
-        "name": "LINKED",
-        "style": {
-            "stroke": "#0070c0",
-            "fill": "#bfdbef",
-            "label": true
-        },
-        "nodes": [
-            "5cd5342a.cfd72c"
-        ],
-        "x": 574,
-        "y": 399,
-        "w": 172,
-        "h": 82
-    },
-    {
-        "id": "5cd5342a.cfd72c",
-        "type": "homekit-service",
-        "z": "60b06629.a2ebd",
-        "g": "61e113b2.dbb714",
-        "isParent": false,
-        "bridge": "",
-        "parentService": "8088a797.e1a7c",
-        "name": "Battery",
-        "serviceName": "BatteryService",
-        "topic": "Air Quality",
-        "filter": false,
-        "manufacturer": "Default Manufacturer",
-        "model": "Default Model",
-        "serialNo": "Default Serial Number",
-        "firmwareRev": "1.0.0",
-        "hardwareRev": "1.0.0",
-        "softwareRev": "1.0.0",
-        "cameraConfigVideoProcessor": "ffmpeg",
-        "cameraConfigSource": "",
-        "cameraConfigStillImageSource": "",
-        "cameraConfigMaxStreams": 2,
-        "cameraConfigMaxWidth": 1280,
-        "cameraConfigMaxHeight": 720,
-        "cameraConfigMaxFPS": 10,
-        "cameraConfigMaxBitrate": 300,
-        "cameraConfigVideoCodec": "libx264",
-        "cameraConfigAudioCodec": "libfdk_aac",
-        "cameraConfigAudio": false,
-        "cameraConfigPacketSize": 1316,
-        "cameraConfigVerticalFlip": false,
-        "cameraConfigHorizontalFlip": false,
-        "cameraConfigMapVideo": "0:0",
-        "cameraConfigMapAudio": "0:1",
-        "cameraConfigVideoFilter": "scale=1280:720",
-        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
-        "cameraConfigDebug": false,
-        "cameraConfigSnapshotOutput": "disabled",
-        "cameraConfigInterfaceName": "",
-        "characteristicProperties": "{}",
-        "outputs": 2,
-        "x": 660,
-        "y": 440,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "c869b0a5.e4def8",
-        "type": "group",
-        "z": "60b06629.a2ebd",
-        "name": "Fan Simplified: input from device, output to device",
-        "style": {
-            "stroke": "#999999",
-            "fill": "none",
-            "label": true,
-            "label-position": "nw",
-            "color": "#a4a4a4"
-        },
-        "nodes": [
-            "dadd634c.ae2258",
-            "753e3777.49a1d",
-            "992f4930.012aa",
-            "2497a466.aa0e84",
-            "c53b76fb.7a3cc8",
-            "6c9646ee.1f3a18",
-            "1e42a8f3.cf008f"
-        ],
-        "x": 14,
-        "y": 1819,
-        "w": 752,
-        "h": 202,
-        "info": "# Fan Simple\n\nThis example is for a 3-speed fan.\n\nSpeeds are: <br/>\nLow = 33<br/>\nMedium = 66<br/>\nHigh = 99<br/>\n\nValues outside of this are restricted and will not work. The home app will \"snap\" to these values. Siri will respond to \"set fan to low/medium/high\" with the corresponding value."
-    },
-    {
-        "id": "dadd634c.ae2258",
-        "type": "debug",
-        "z": "60b06629.a2ebd",
-        "g": "c869b0a5.e4def8",
-        "name": "Fan output",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 650,
-        "y": 1860,
-        "wires": []
-    },
-    {
-        "id": "753e3777.49a1d",
-        "type": "homekit-service",
-        "z": "60b06629.a2ebd",
-        "g": "c869b0a5.e4def8",
-        "isParent": true,
-        "bridge": "409001a1.3e7a78",
-        "parentService": "",
-        "name": "Fan Speeds",
-        "serviceName": "Fan",
-        "topic": "",
-        "filter": false,
-        "manufacturer": "Gman",
-        "model": "Default Model",
-        "serialNo": "CRX1",
-        "firmwareRev": "1.0.0",
-        "hardwareRev": "1.0.0",
-        "softwareRev": "1.0.0",
-        "cameraConfigVideoProcessor": "ffmpeg",
-        "cameraConfigSource": "",
-        "cameraConfigStillImageSource": "",
-        "cameraConfigMaxStreams": 2,
-        "cameraConfigMaxWidth": 1280,
-        "cameraConfigMaxHeight": 720,
-        "cameraConfigMaxFPS": 10,
-        "cameraConfigMaxBitrate": 300,
-        "cameraConfigVideoCodec": "libx264",
-        "cameraConfigAudioCodec": "libfdk_aac",
-        "cameraConfigAudio": false,
-        "cameraConfigPacketSize": 1316,
-        "cameraConfigVerticalFlip": false,
-        "cameraConfigHorizontalFlip": false,
-        "cameraConfigMapVideo": "0:0",
-        "cameraConfigMapAudio": "0:1",
-        "cameraConfigVideoFilter": "scale=1280:720",
-        "cameraConfigAdditionalCommandLine": "-tune zerolatency",
-        "cameraConfigDebug": false,
-        "cameraConfigSnapshotOutput": "disabled",
-        "cameraConfigInterfaceName": "",
-        "characteristicProperties": "{\n    \"RotationSpeed\": {\n        \"minValue\":0,\n        \"maxValue\":99,\n        \"minStep\":33\n    }\n}",
-        "outputs": 2,
-        "x": 430,
-        "y": 1860,
-        "wires": [
-            [
-                "dadd634c.ae2258"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "992f4930.012aa",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "c869b0a5.e4def8",
-        "name": "NO RESPONSE",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"On\":\"NO_RESPONSE\"}",
-        "payloadType": "json",
-        "x": 380,
-        "y": 1940,
-        "wires": [
-            [
-                "753e3777.49a1d"
-            ]
-        ]
-    },
-    {
-        "id": "2497a466.aa0e84",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "c869b0a5.e4def8",
-        "name": "OFF",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"On\":false}",
-        "payloadType": "json",
-        "x": 110,
-        "y": 1860,
-        "wires": [
-            [
-                "753e3777.49a1d"
-            ]
-        ]
-    },
-    {
-        "id": "c53b76fb.7a3cc8",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "c869b0a5.e4def8",
-        "name": "Low",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"On\":true,\"RotationSpeed\":33}",
-        "payloadType": "json",
-        "x": 110,
-        "y": 1900,
-        "wires": [
-            [
-                "753e3777.49a1d"
-            ]
-        ]
-    },
-    {
-        "id": "6c9646ee.1f3a18",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "c869b0a5.e4def8",
-        "name": "Medium",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"On\":true,\"RotationSpeed\":66}",
-        "payloadType": "json",
-        "x": 120,
-        "y": 1940,
-        "wires": [
-            [
-                "753e3777.49a1d"
-            ]
-        ]
-    },
-    {
-        "id": "1e42a8f3.cf008f",
-        "type": "inject",
-        "z": "60b06629.a2ebd",
-        "g": "c869b0a5.e4def8",
-        "name": "High",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "{\"On\":true,\"RotationSpeed\":99}",
-        "payloadType": "json",
-        "x": 110,
-        "y": 1980,
-        "wires": [
-            [
-                "753e3777.49a1d"
-            ]
-        ]
-    }
+  {
+    "id": "2c464315.51c50c",
+    "type": "group",
+    "z": "eeb8b00c.2c18c",
+    "name": "Fan Full Example: input from device, output to device",
+    "style": {
+      "stroke": "#999999",
+      "fill": "none",
+      "label": true,
+      "label-position": "nw",
+      "color": "#a4a4a4"
+    },
+    "nodes": [
+      "b7778e52.220a5",
+      "fd8aff55.91d41",
+      "c717b796.0735b8",
+      "f56a2f96.509c1",
+      "d945ba75.897998"
+    ],
+    "x": 94,
+    "y": 1559,
+    "w": 752,
+    "h": 182,
+    "info": "# Fan V2\n\nThis example shows a fan. The inputs from node red are to turn the fan on, off, or set \"No Response\".\n\nThe outputs going to \"Fan output\" will show:\n\nOn / off state <br/>\nRotation speed<br/>\nSwing mode on / off (oscillate) <br/>\nRotation direction (clockwise/counterclockwise)"
+  },
+  {
+    "id": "b7778e52.220a5",
+    "type": "debug",
+    "z": "eeb8b00c.2c18c",
+    "g": "2c464315.51c50c",
+    "name": "Fan output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 730,
+    "y": 1600,
+    "wires": []
+  },
+  {
+    "id": "fd8aff55.91d41",
+    "type": "homekit-service",
+    "z": "eeb8b00c.2c18c",
+    "g": "2c464315.51c50c",
+    "isParent": true,
+    "bridge": "409001a1.3e7a78",
+    "parentService": "",
+    "name": "Fan V2",
+    "serviceName": "Fanv2",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Default Manufacturer",
+    "model": "Default Model",
+    "serialNo": "Default Serial Number",
+    "firmwareRev": "1.0.0",
+    "hardwareRev": "1.0.0",
+    "softwareRev": "1.0.0",
+    "cameraConfigVideoProcessor": "ffmpeg",
+    "cameraConfigSource": "",
+    "cameraConfigStillImageSource": "",
+    "cameraConfigMaxStreams": 2,
+    "cameraConfigMaxWidth": 1280,
+    "cameraConfigMaxHeight": 720,
+    "cameraConfigMaxFPS": 10,
+    "cameraConfigMaxBitrate": 300,
+    "cameraConfigVideoCodec": "libx264",
+    "cameraConfigAudioCodec": "libfdk_aac",
+    "cameraConfigAudio": false,
+    "cameraConfigPacketSize": 1316,
+    "cameraConfigVerticalFlip": false,
+    "cameraConfigHorizontalFlip": false,
+    "cameraConfigMapVideo": "0:0",
+    "cameraConfigMapAudio": "0:1",
+    "cameraConfigVideoFilter": "scale=1280:720",
+    "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+    "cameraConfigDebug": false,
+    "cameraConfigSnapshotOutput": "disabled",
+    "cameraConfigInterfaceName": "",
+    "characteristicProperties": "{\n    \"RotationSpeed\":true,\n    \"RotationDirection\":true,\n    \"SwingMode\":true\n}",
+    "outputs": 2,
+    "x": 500,
+    "y": 1600,
+    "wires": [
+      [
+        "b7778e52.220a5"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "c717b796.0735b8",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "2c464315.51c50c",
+    "name": "NO RESPONSE",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"Active\":\"NO_RESPONSE\"}",
+    "payloadType": "json",
+    "x": 220,
+    "y": 1700,
+    "wires": [
+      [
+        "fd8aff55.91d41"
+      ]
+    ]
+  },
+  {
+    "id": "f56a2f96.509c1",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "2c464315.51c50c",
+    "name": "ON",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"Active\":true}",
+    "payloadType": "json",
+    "x": 200,
+    "y": 1600,
+    "wires": [
+      [
+        "fd8aff55.91d41"
+      ]
+    ]
+  },
+  {
+    "id": "d945ba75.897998",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "2c464315.51c50c",
+    "name": "OFF",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"Active\":false}",
+    "payloadType": "json",
+    "x": 200,
+    "y": 1640,
+    "wires": [
+      [
+        "fd8aff55.91d41"
+      ]
+    ]
+  },
+  {
+    "id": "409001a1.3e7a78",
+    "type": "homekit-bridge",
+    "bridgeName": "Demo 1",
+    "pinCode": "153-10-538",
+    "port": "",
+    "allowInsecureRequest": false,
+    "manufacturer": "NRCHKB",
+    "model": "Demo",
+    "serialNo": "1.1.2",
+    "customMdnsConfig": false,
+    "mdnsMulticast": true,
+    "mdnsInterface": "",
+    "mdnsPort": "",
+    "mdnsIp": "",
+    "mdnsTtl": "",
+    "mdnsLoopback": true,
+    "mdnsReuseAddr": true,
+    "allowMessagePassthrough": true
+  },
+  {
+    "id": "384e0889.1fdae",
+    "type": "group",
+    "z": "eeb8b00c.2c18c",
+    "name": "Color Bulb: input from device, output to device",
+    "style": {
+      "stroke": "#999999",
+      "fill": "none",
+      "label": true,
+      "label-position": "nw",
+      "color": "#a4a4a4"
+    },
+    "nodes": [
+      "d838176b.dbaf7",
+      "7bf880d4.3cd4d",
+      "ee1452a5.08edd",
+      "c6ed2a2a.90a01",
+      "8cdfae2b.2f2ce8",
+      "1758401b.6c62e8"
+    ],
+    "x": 94,
+    "y": 599,
+    "w": 752,
+    "h": 162,
+    "info": "# Color Bulb\n\nThis is a color bulb. It accepts and sends out Hue, Saturation, Value, and On/off state.\n\nHue is the color\n\nSaturation is how deep the color is\n\nValue is brightness\n\nOn is power state"
+  },
+  {
+    "id": "d838176b.dbaf7",
+    "type": "debug",
+    "z": "eeb8b00c.2c18c",
+    "g": "384e0889.1fdae",
+    "name": "Color light output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 710,
+    "y": 720,
+    "wires": []
+  },
+  {
+    "id": "7bf880d4.3cd4d",
+    "type": "homekit-service",
+    "z": "eeb8b00c.2c18c",
+    "g": "384e0889.1fdae",
+    "isParent": true,
+    "hostType": "0",
+    "bridge": "409001a1.3e7a78",
+    "accessoryId": "",
+    "parentService": "",
+    "name": "Color",
+    "serviceName": "Lightbulb",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Garrett",
+    "model": "Color",
+    "serialNo": "42",
+    "firmwareRev": "1.2",
+    "hardwareRev": "1.0.0",
+    "softwareRev": "1.0.0",
+    "cameraConfigVideoProcessor": "ffmpeg",
+    "cameraConfigSource": "",
+    "cameraConfigStillImageSource": "",
+    "cameraConfigMaxStreams": 2,
+    "cameraConfigMaxWidth": 1280,
+    "cameraConfigMaxHeight": 720,
+    "cameraConfigMaxFPS": 10,
+    "cameraConfigMaxBitrate": 300,
+    "cameraConfigVideoCodec": "libx264",
+    "cameraConfigAudioCodec": "libfdk_aac",
+    "cameraConfigAudio": false,
+    "cameraConfigPacketSize": 1316,
+    "cameraConfigVerticalFlip": false,
+    "cameraConfigHorizontalFlip": false,
+    "cameraConfigMapVideo": "0:0",
+    "cameraConfigMapAudio": "0:1",
+    "cameraConfigVideoFilter": "scale=1280:720",
+    "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+    "cameraConfigDebug": false,
+    "cameraConfigSnapshotOutput": "disabled",
+    "cameraConfigInterfaceName": "",
+    "characteristicProperties": "{    \"Brightness\":true,    \"Hue\":true,    \"Saturation\":true}",
+    "waitForSetupMsg": false,
+    "outputs": 2,
+    "x": 490,
+    "y": 720,
+    "wires": [
+      [
+        "d838176b.dbaf7"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "ee1452a5.08edd",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "384e0889.1fdae",
+    "name": "NO RESPONSE",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"On\":\"NO_RESPONSE\"}",
+    "payloadType": "json",
+    "x": 420,
+    "y": 640,
+    "wires": [
+      [
+        "7bf880d4.3cd4d"
+      ]
+    ]
+  },
+  {
+    "id": "c6ed2a2a.90a01",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "384e0889.1fdae",
+    "name": "ON",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"On\":true}",
+    "payloadType": "json",
+    "x": 190,
+    "y": 640,
+    "wires": [
+      [
+        "7bf880d4.3cd4d"
+      ]
+    ]
+  },
+  {
+    "id": "8cdfae2b.2f2ce8",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "384e0889.1fdae",
+    "name": "Reset HSV",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"Brightness\":50,\"Hue\":50,\"Saturation\":50}",
+    "payloadType": "json",
+    "x": 200,
+    "y": 720,
+    "wires": [
+      [
+        "7bf880d4.3cd4d"
+      ]
+    ]
+  },
+  {
+    "id": "1758401b.6c62e8",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "384e0889.1fdae",
+    "name": "OFF",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"On\":false}",
+    "payloadType": "json",
+    "x": 190,
+    "y": 680,
+    "wires": [
+      [
+        "7bf880d4.3cd4d"
+      ]
+    ]
+  },
+  {
+    "id": "3a57bebe.a3b222",
+    "type": "group",
+    "z": "eeb8b00c.2c18c",
+    "name": "Dimmable Bulb: input from device, output to device",
+    "style": {
+      "stroke": "#999999",
+      "fill": "none",
+      "label": true,
+      "label-position": "nw",
+      "color": "#a4a4a4"
+    },
+    "nodes": [
+      "459254fe.49c72c",
+      "379657db.a99df8",
+      "52a07047.03ce7",
+      "253b3550.729caa",
+      "b9bc7f3d.51acf"
+    ],
+    "x": 94,
+    "y": 459,
+    "w": 752,
+    "h": 122,
+    "info": "# Dimmable Bulb\n\nThis is a dimmable bulb. The Characteristic Properties enable brightness. It is a white bulb which can be adjusted from 0 to 100% brightness."
+  },
+  {
+    "id": "459254fe.49c72c",
+    "type": "homekit-service",
+    "z": "eeb8b00c.2c18c",
+    "g": "3a57bebe.a3b222",
+    "isParent": true,
+    "hostType": "0",
+    "bridge": "409001a1.3e7a78",
+    "accessoryId": "",
+    "parentService": "",
+    "name": "Dimmable",
+    "serviceName": "Lightbulb",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Garrett",
+    "model": "Dummy",
+    "serialNo": "Default Serial Number",
+    "firmwareRev": "1.1.9",
+    "hardwareRev": "1.0.0",
+    "softwareRev": "1.0.0",
+    "cameraConfigVideoProcessor": "ffmpeg",
+    "cameraConfigSource": "",
+    "cameraConfigStillImageSource": "",
+    "cameraConfigMaxStreams": 2,
+    "cameraConfigMaxWidth": 1280,
+    "cameraConfigMaxHeight": 720,
+    "cameraConfigMaxFPS": 10,
+    "cameraConfigMaxBitrate": 300,
+    "cameraConfigVideoCodec": "libx264",
+    "cameraConfigAudioCodec": "libfdk_aac",
+    "cameraConfigAudio": false,
+    "cameraConfigPacketSize": 1316,
+    "cameraConfigVerticalFlip": false,
+    "cameraConfigHorizontalFlip": false,
+    "cameraConfigMapVideo": "0:0",
+    "cameraConfigMapAudio": "0:1",
+    "cameraConfigVideoFilter": "scale=1280:720",
+    "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+    "cameraConfigDebug": false,
+    "cameraConfigSnapshotOutput": "disabled",
+    "cameraConfigInterfaceName": "",
+    "characteristicProperties": "{    \"Brightness\":true}",
+    "waitForSetupMsg": false,
+    "outputs": 2,
+    "x": 460,
+    "y": 540,
+    "wires": [
+      [
+        "379657db.a99df8"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "379657db.a99df8",
+    "type": "debug",
+    "z": "eeb8b00c.2c18c",
+    "g": "3a57bebe.a3b222",
+    "name": "Dimmable light output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 700,
+    "y": 540,
+    "wires": []
+  },
+  {
+    "id": "52a07047.03ce7",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "3a57bebe.a3b222",
+    "name": "NO RESPONSE",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"On\":\"NO_RESPONSE\"}",
+    "payloadType": "json",
+    "x": 400,
+    "y": 500,
+    "wires": [
+      [
+        "459254fe.49c72c"
+      ]
+    ]
+  },
+  {
+    "id": "253b3550.729caa",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "3a57bebe.a3b222",
+    "name": "ON",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"On\":true}",
+    "payloadType": "json",
+    "x": 190,
+    "y": 500,
+    "wires": [
+      [
+        "459254fe.49c72c"
+      ]
+    ]
+  },
+  {
+    "id": "b9bc7f3d.51acf",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "3a57bebe.a3b222",
+    "name": "OFF",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"On\":false}",
+    "payloadType": "json",
+    "x": 190,
+    "y": 540,
+    "wires": [
+      [
+        "459254fe.49c72c"
+      ]
+    ]
+  },
+  {
+    "id": "60e44fde.c914f8",
+    "type": "group",
+    "z": "eeb8b00c.2c18c",
+    "name": "Air Purifier: input power state, output commands device",
+    "style": {
+      "stroke": "#999999",
+      "fill": "none",
+      "label": true,
+      "label-position": "nw",
+      "color": "#a4a4a4"
+    },
+    "nodes": [
+      "8dea49.4a770db8",
+      "5302e4aa.1b466c",
+      "bfe1c73d.c165a8",
+      "9739d842.a402f",
+      "87048a6e.df64e8",
+      "db412cea.4a62f8",
+      "46418e19.aa6d6",
+      "664dadf9.85d0d4",
+      "d7cd8a56.628178",
+      "3de34c4c.1871a4",
+      "ee8894e4.f1855"
+    ],
+    "x": 94,
+    "y": 59,
+    "w": 822,
+    "h": 162,
+    "info": "Turning the device on or off will send:\n`{\"Active\":[0, 1]}`\n\nAfter changing power state, the device will be \"Turning on\" or \"Turning off\" until a current state is sent of:\n`{\"CurrentAirPurifierState\":[0, 1, 2]}`\n0: off <br/>\n1: idle <br/>\n2: on <br/>\n\nThere will be a slider in the home app for sending `RotationSpeed`\n\nThere will be a switch on Home app for \"Oscillate\" which sends:\n`{\"SwingMode\":[0,1]}`\n\nChanging mode to manual to auto will send payload:\n`{\"TargetAirPurifierState\":[0, 1]}`\n\nChild lock will send \n`{\"LockPhysicalControls\": [0, 1]}`\n\n"
+  },
+  {
+    "id": "8dea49.4a770db8",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "60e44fde.c914f8",
+    "name": "off",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"CurrentAirPurifierState\":0}",
+    "payloadType": "json",
+    "x": 190,
+    "y": 100,
+    "wires": [
+      [
+        "5302e4aa.1b466c"
+      ]
+    ]
+  },
+  {
+    "id": "5302e4aa.1b466c",
+    "type": "homekit-service",
+    "z": "eeb8b00c.2c18c",
+    "g": "60e44fde.c914f8",
+    "isParent": true,
+    "bridge": "409001a1.3e7a78",
+    "parentService": "",
+    "name": "Air purifier",
+    "serviceName": "AirPurifier",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Purity",
+    "model": "Air",
+    "serialNo": "23",
+    "firmwareRev": "1.0.0",
+    "hardwareRev": "1.0.0",
+    "softwareRev": "1.0.0",
+    "cameraConfigVideoProcessor": "ffmpeg",
+    "cameraConfigSource": "",
+    "cameraConfigStillImageSource": "",
+    "cameraConfigMaxStreams": 2,
+    "cameraConfigMaxWidth": 1280,
+    "cameraConfigMaxHeight": 720,
+    "cameraConfigMaxFPS": 10,
+    "cameraConfigMaxBitrate": 300,
+    "cameraConfigVideoCodec": "libx264",
+    "cameraConfigAudioCodec": "libfdk_aac",
+    "cameraConfigAudio": false,
+    "cameraConfigPacketSize": 1316,
+    "cameraConfigVerticalFlip": false,
+    "cameraConfigHorizontalFlip": false,
+    "cameraConfigMapVideo": "0:0",
+    "cameraConfigMapAudio": "0:1",
+    "cameraConfigVideoFilter": "scale=1280:720",
+    "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+    "cameraConfigDebug": false,
+    "cameraConfigSnapshotOutput": "disabled",
+    "cameraConfigInterfaceName": "",
+    "characteristicProperties": "{\n    \"SwingMode\":true,\n    \"RotationSpeed\":true,\n    \"LockPhysicalControls\":true\n}",
+    "outputs": 2,
+    "x": 370,
+    "y": 100,
+    "wires": [
+      [
+        "bfe1c73d.c165a8",
+        "9739d842.a402f"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "bfe1c73d.c165a8",
+    "type": "debug",
+    "z": "eeb8b00c.2c18c",
+    "g": "60e44fde.c914f8",
+    "name": "Purifier output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "x": 500,
+    "y": 180,
+    "wires": []
+  },
+  {
+    "id": "9739d842.a402f",
+    "type": "function",
+    "z": "eeb8b00c.2c18c",
+    "g": "60e44fde.c914f8",
+    "name": "on/off",
+    "func": "if (msg.hap !== undefined && msg.hap.context !== undefined){\n    if (msg.payload.Active === 1){\n        return [msg,null];\n    }\n    if (msg.payload.Active === 0){\n        return [null,msg];\n    }\n}\nreturn;",
+    "outputs": 2,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 530,
+    "y": 100,
+    "wires": [
+      [
+        "664dadf9.85d0d4",
+        "d7cd8a56.628178"
+      ],
+      [
+        "3de34c4c.1871a4"
+      ]
+    ],
+    "outputLabels": [
+      "On",
+      "Off"
+    ]
+  },
+  {
+    "id": "87048a6e.df64e8",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "60e44fde.c914f8",
+    "name": "idle",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"CurrentAirPurifierState\":1}",
+    "payloadType": "json",
+    "x": 190,
+    "y": 140,
+    "wires": [
+      [
+        "5302e4aa.1b466c"
+      ]
+    ]
+  },
+  {
+    "id": "db412cea.4a62f8",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "60e44fde.c914f8",
+    "name": "on",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"CurrentAirPurifierState\":2}",
+    "payloadType": "json",
+    "x": 190,
+    "y": 180,
+    "wires": [
+      [
+        "5302e4aa.1b466c"
+      ]
+    ]
+  },
+  {
+    "id": "46418e19.aa6d6",
+    "type": "link in",
+    "z": "eeb8b00c.2c18c",
+    "g": "60e44fde.c914f8",
+    "name": "",
+    "links": [
+      "ee8894e4.f1855"
+    ],
+    "x": 315,
+    "y": 180,
+    "wires": [
+      [
+        "5302e4aa.1b466c"
+      ]
+    ]
+  },
+  {
+    "id": "664dadf9.85d0d4",
+    "type": "trigger",
+    "z": "eeb8b00c.2c18c",
+    "g": "60e44fde.c914f8",
+    "name": "5 sec to idle",
+    "op1": "",
+    "op2": "{\"CurrentAirPurifierState\":1}",
+    "op1type": "nul",
+    "op2type": "json",
+    "duration": "5",
+    "extend": false,
+    "units": "s",
+    "reset": "",
+    "bytopic": "all",
+    "topic": "topic",
+    "outputs": 1,
+    "x": 730,
+    "y": 100,
+    "wires": [
+      [
+        "ee8894e4.f1855"
+      ]
+    ]
+  },
+  {
+    "id": "d7cd8a56.628178",
+    "type": "trigger",
+    "z": "eeb8b00c.2c18c",
+    "g": "60e44fde.c914f8",
+    "name": "10 sec to on",
+    "op1": "",
+    "op2": "{\"CurrentAirPurifierState\":2}",
+    "op1type": "nul",
+    "op2type": "json",
+    "duration": "10",
+    "extend": false,
+    "units": "s",
+    "reset": "",
+    "bytopic": "all",
+    "topic": "topic",
+    "outputs": 1,
+    "x": 730,
+    "y": 140,
+    "wires": [
+      [
+        "ee8894e4.f1855"
+      ]
+    ]
+  },
+  {
+    "id": "3de34c4c.1871a4",
+    "type": "trigger",
+    "z": "eeb8b00c.2c18c",
+    "g": "60e44fde.c914f8",
+    "name": "5 sec to off",
+    "op1": "",
+    "op2": "{\"CurrentAirPurifierState\":0}",
+    "op1type": "nul",
+    "op2type": "json",
+    "duration": "5",
+    "extend": false,
+    "units": "s",
+    "reset": "",
+    "bytopic": "all",
+    "topic": "topic",
+    "outputs": 1,
+    "x": 730,
+    "y": 180,
+    "wires": [
+      [
+        "ee8894e4.f1855"
+      ]
+    ]
+  },
+  {
+    "id": "ee8894e4.f1855",
+    "type": "link out",
+    "z": "eeb8b00c.2c18c",
+    "g": "60e44fde.c914f8",
+    "name": "",
+    "links": [
+      "46418e19.aa6d6"
+    ],
+    "x": 875,
+    "y": 140,
+    "wires": []
+  },
+  {
+    "id": "6eaa9b9e.282734",
+    "type": "group",
+    "z": "eeb8b00c.2c18c",
+    "name": "CO plus CO2 Sensor: input only sensor",
+    "style": {
+      "stroke": "#999999",
+      "fill": "none",
+      "label": true,
+      "label-position": "nw",
+      "color": "#a4a4a4"
+    },
+    "nodes": [
+      "2e6738a6.ef5dd8",
+      "79889759.8219c",
+      "7f53465b.356a68",
+      "97aff586.786ff8",
+      "659ff3da.236404",
+      "e6105066.f8911",
+      "b433a780.665a7",
+      "d4b30334.a19e58",
+      "b0eeeb34.2dde8"
+    ],
+    "x": 94,
+    "y": 999,
+    "w": 752,
+    "h": 282,
+    "info": "# Combined Sensor\nThis is a sensor which will display both Carbon Monoxide (poisonous, deadly gas) and Carbon Dioxide (what humans exhale) levels.\n\n# CO Sensor\n\nThere are three inputs to this example, one for each level of Carbon Monoxide in the air. Options are:\n\n**0 ppm:** this will assume no CO in the air <br/>\n**Low level:** this will assume a level between 1 and 35 ppm, inclusive. This level is generally assumed to not cause problems in healthy adults <br/>\n**Dangerous level:** this will assume a level between 35 and 5000, inclusive; this will also trigger an alert in Home app\n\n## IF YOU HAVE A CARBON MONOXIDE DETECTOR EVER READING ABOVE 35 PPM, PLEASE EVACUATE THE AREA AND SEEK FRESH AIR IMMEDIATELY TO AVOID RISK OF DEATH ##\n\n# CO2 Sensor\n\nThere are three inputs to this example, one for each level of Carbon Dioxide in the air. Options are:\n\n**0 ppm:** this will assume no CO2 in the air <br/>\n**CO2 Level:** this will assume a level between 1 and 100,000 ppm, inclusive <br/>\n**Dangerous level:** this will assume a level between 1,000 and 100,000, inclusive\n\n"
+  },
+  {
+    "id": "2e6738a6.ef5dd8",
+    "type": "homekit-service",
+    "z": "eeb8b00c.2c18c",
+    "g": "6eaa9b9e.282734",
+    "isParent": true,
+    "hostType": "0",
+    "bridge": "409001a1.3e7a78",
+    "accessoryId": "",
+    "parentService": "",
+    "name": "CO detector",
+    "serviceName": "CarbonMonoxideSensor",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "MONOxide",
+    "model": "1",
+    "serialNo": "2",
+    "firmwareRev": "2",
+    "hardwareRev": "2",
+    "softwareRev": "1.0.0",
+    "cameraConfigVideoProcessor": "ffmpeg",
+    "cameraConfigSource": "",
+    "cameraConfigStillImageSource": "",
+    "cameraConfigMaxStreams": 2,
+    "cameraConfigMaxWidth": 1280,
+    "cameraConfigMaxHeight": 720,
+    "cameraConfigMaxFPS": 10,
+    "cameraConfigMaxBitrate": 300,
+    "cameraConfigVideoCodec": "libx264",
+    "cameraConfigAudioCodec": "libfdk_aac",
+    "cameraConfigAudio": false,
+    "cameraConfigPacketSize": 1316,
+    "cameraConfigVerticalFlip": false,
+    "cameraConfigHorizontalFlip": false,
+    "cameraConfigMapVideo": "0:0",
+    "cameraConfigMapAudio": "0:1",
+    "cameraConfigVideoFilter": "scale=1280:720",
+    "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+    "cameraConfigDebug": false,
+    "cameraConfigSnapshotOutput": "disabled",
+    "cameraConfigInterfaceName": "",
+    "characteristicProperties": "{    \"CarbonMonoxideLevel\":{        \"maxValue\":5000    },    \"CarbonMonoxidePeakLevel\":{        \"maxValue\":5000    },    \"CarbonDioxideLevel\":true,    \"CarbonDioxidePeakLevel\":true}",
+    "waitForSetupMsg": false,
+    "outputs": 2,
+    "x": 750,
+    "y": 1040,
+    "wires": [
+      [],
+      []
+    ]
+  },
+  {
+    "id": "79889759.8219c",
+    "type": "function",
+    "z": "eeb8b00c.2c18c",
+    "g": "6eaa9b9e.282734",
+    "name": "Carbon DIoxide",
+    "func": "if(msg.payload === 0){\n    context.set('lastPeak',0);\n    newMsg = {\n        payload: {\n            \"CarbonDioxideLevel\":0\n        }\n    }\n    return newMsg;\n}\n\n// Initialize vars\nvar CurrentLevel = 0;\nvar lastPeak = context.get('lastPeak');\n\n// Set random level\nif(msg.payload === \"CO2\"){\n    CurrentLevel = Math.floor(Math.random() * (100000 - 1 + 1) + 1);\n}\n\n\n// Formulate output message\nvar newMsg = {\n    payload: {\n        \"CarbonDioxideLevel\" : CurrentLevel\n    }\n};\n\n// Set new peak level\nif(CurrentLevel > lastPeak){\n    lastPeak = CurrentLevel;\n    context.set('lastPeak',CurrentLevel);\n    newMsg.payload.CarbonDioxidePeakLevel = CurrentLevel;\n}\n\nreturn newMsg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "// Code added here will be run once\n// whenever the node is deployed.\ncontext.set('lastPeak',0);",
+    "finalize": "",
+    "x": 460,
+    "y": 1200,
+    "wires": [
+      [
+        "2e6738a6.ef5dd8"
+      ]
+    ]
+  },
+  {
+    "id": "7f53465b.356a68",
+    "type": "function",
+    "z": "eeb8b00c.2c18c",
+    "g": "6eaa9b9e.282734",
+    "name": "Carbon MONoxide",
+    "func": "// Reset all values to 0 if 0ppm input\nif(msg.payload === 0){\n    context.set('lastPeak',0);\n    newMsg = {\n        payload: {\n            \"CarbonMonoxideLevel\":0,\n            \"CarbonMonoxidePeakLevel\":0,\n            \"CarbonMonoxideDetected\":0\n        }\n    };\n    return newMsg;\n}\n\n// Initialize vars\nvar CurrentLevel = 0;\nvar lastPeak = context.get('lastPeak');\n\n// Set random Low or Dangerous levels\nif(msg.payload === \"Low\"){\n    CurrentLevel = Math.floor(Math.random() * (35 - 1 + 1) + 1);\n}\nif(msg.payload === \"Danger\"){\n    CurrentLevel = Math.floor(Math.random() * (5000 - 35 + 1) + 35);\n}\n\n// Formulate output message\nvar newMsg = {\n    payload: {\n        \"CarbonMonoxideLevel\" : CurrentLevel,\n        \"CarbonMonoxideDetected\" : 0\n    }\n};\n\n// Set new peak level\nif(CurrentLevel > lastPeak){\n    lastPeak = CurrentLevel;\n    context.set('lastPeak',CurrentLevel);\n    newMsg.payload.CarbonMonoxidePeakLevel = CurrentLevel;\n}\n\n// Set warning if dangerous\nif (CurrentLevel >= 35) {\n    newMsg.payload.CarbonMonoxideDetected = 1;\n} \n\nreturn newMsg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 470,
+    "y": 1080,
+    "wires": [
+      [
+        "2e6738a6.ef5dd8"
+      ]
+    ]
+  },
+  {
+    "id": "97aff586.786ff8",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "6eaa9b9e.282734",
+    "name": "NO RESPONSE",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"CarbonMonoxideLevel\":\"NO_RESPONSE\"}",
+    "payloadType": "json",
+    "x": 480,
+    "y": 1040,
+    "wires": [
+      [
+        "2e6738a6.ef5dd8"
+      ]
+    ]
+  },
+  {
+    "id": "659ff3da.236404",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "6eaa9b9e.282734",
+    "name": "Clear CO2 Peak",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "0",
+    "payloadType": "num",
+    "x": 220,
+    "y": 1200,
+    "wires": [
+      [
+        "79889759.8219c"
+      ]
+    ]
+  },
+  {
+    "id": "e6105066.f8911",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "6eaa9b9e.282734",
+    "name": "0 ppm",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "0",
+    "payloadType": "num",
+    "x": 210,
+    "y": 1040,
+    "wires": [
+      [
+        "7f53465b.356a68"
+      ]
+    ]
+  },
+  {
+    "id": "b433a780.665a7",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "6eaa9b9e.282734",
+    "name": "CO2 Level",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "CO2",
+    "payloadType": "str",
+    "x": 200,
+    "y": 1240,
+    "wires": [
+      [
+        "79889759.8219c"
+      ]
+    ]
+  },
+  {
+    "id": "d4b30334.a19e58",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "6eaa9b9e.282734",
+    "name": "Low level",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "Low",
+    "payloadType": "str",
+    "x": 220,
+    "y": 1080,
+    "wires": [
+      [
+        "7f53465b.356a68"
+      ]
+    ]
+  },
+  {
+    "id": "b0eeeb34.2dde8",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "6eaa9b9e.282734",
+    "name": "Danger level",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "Danger",
+    "payloadType": "str",
+    "x": 230,
+    "y": 1120,
+    "wires": [
+      [
+        "7f53465b.356a68"
+      ]
+    ]
+  },
+  {
+    "id": "a875cc7.a4c42b",
+    "type": "group",
+    "z": "eeb8b00c.2c18c",
+    "name": "Contact Sensor: input only sensor",
+    "style": {
+      "stroke": "#999999",
+      "fill": "none",
+      "label": true,
+      "label-position": "nw",
+      "color": "#a4a4a4"
+    },
+    "nodes": [
+      "a5194c26.18c628",
+      "2f9bc0d.42a73c",
+      "dfca0b2d.8b8e8",
+      "d74a610c.09a36",
+      "c15b6468.ae2eb8",
+      "6f7bc7fa.7f4f6",
+      "99b55eb3.e31bf8",
+      "508d9ccf.29e404"
+    ],
+    "x": 94,
+    "y": 1299,
+    "w": 752,
+    "h": 242,
+    "info": "# Contact Sensor\n\nThe contact sensor has one inject node to Open the sensor (door, window, etc). Once open, a ten second timer will run then set it back to closed.\n\nAdditional inputs are for \"No Response\", \"Tampered\", and \"Battery\". Note that this battery will not show a battery level but only a good/low battery status."
+  },
+  {
+    "id": "a5194c26.18c628",
+    "type": "homekit-service",
+    "z": "eeb8b00c.2c18c",
+    "g": "a875cc7.a4c42b",
+    "isParent": true,
+    "hostType": "0",
+    "bridge": "409001a1.3e7a78",
+    "accessoryId": "",
+    "parentService": "",
+    "name": "Contact Sensor",
+    "serviceName": "ContactSensor",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Full Contact",
+    "model": "Door",
+    "serialNo": "Sensor",
+    "firmwareRev": "1.0.0",
+    "hardwareRev": "1.0.0",
+    "softwareRev": "1.0.0",
+    "cameraConfigVideoProcessor": "ffmpeg",
+    "cameraConfigSource": "",
+    "cameraConfigStillImageSource": "",
+    "cameraConfigMaxStreams": 2,
+    "cameraConfigMaxWidth": 1280,
+    "cameraConfigMaxHeight": 720,
+    "cameraConfigMaxFPS": 10,
+    "cameraConfigMaxBitrate": 300,
+    "cameraConfigVideoCodec": "libx264",
+    "cameraConfigAudioCodec": "libfdk_aac",
+    "cameraConfigAudio": false,
+    "cameraConfigPacketSize": 1316,
+    "cameraConfigVerticalFlip": false,
+    "cameraConfigHorizontalFlip": false,
+    "cameraConfigMapVideo": "0:0",
+    "cameraConfigMapAudio": "0:1",
+    "cameraConfigVideoFilter": "scale=1280:720",
+    "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+    "cameraConfigDebug": false,
+    "cameraConfigSnapshotOutput": "disabled",
+    "cameraConfigInterfaceName": "",
+    "characteristicProperties": "{    \"StatusTampered\":true,    \"StatusLowBattery\":true}",
+    "waitForSetupMsg": false,
+    "outputs": 2,
+    "x": 740,
+    "y": 1340,
+    "wires": [
+      [],
+      []
+    ]
+  },
+  {
+    "id": "2f9bc0d.42a73c",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "a875cc7.a4c42b",
+    "name": "Tampered",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"StatusTampered\":1}",
+    "payloadType": "json",
+    "x": 200,
+    "y": 1460,
+    "wires": [
+      [
+        "a5194c26.18c628"
+      ]
+    ]
+  },
+  {
+    "id": "dfca0b2d.8b8e8",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "a875cc7.a4c42b",
+    "name": "Clear tampered",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"StatusTampered\":0}",
+    "payloadType": "json",
+    "x": 220,
+    "y": 1500,
+    "wires": [
+      [
+        "a5194c26.18c628"
+      ]
+    ]
+  },
+  {
+    "id": "d74a610c.09a36",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "a875cc7.a4c42b",
+    "name": "Low batt",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"StatusLowBattery\":1}",
+    "payloadType": "json",
+    "x": 560,
+    "y": 1460,
+    "wires": [
+      [
+        "a5194c26.18c628"
+      ]
+    ]
+  },
+  {
+    "id": "c15b6468.ae2eb8",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "a875cc7.a4c42b",
+    "name": "Good batt",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"StatusLowBattery\":0}",
+    "payloadType": "json",
+    "x": 560,
+    "y": 1500,
+    "wires": [
+      [
+        "a5194c26.18c628"
+      ]
+    ]
+  },
+  {
+    "id": "6f7bc7fa.7f4f6",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "a875cc7.a4c42b",
+    "name": "NO RESPONSE",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"ContactSensorState\":\"NO_RESPONSE\"}",
+    "payloadType": "json",
+    "x": 220,
+    "y": 1400,
+    "wires": [
+      [
+        "a5194c26.18c628"
+      ]
+    ]
+  },
+  {
+    "id": "99b55eb3.e31bf8",
+    "type": "trigger",
+    "z": "eeb8b00c.2c18c",
+    "g": "a875cc7.a4c42b",
+    "name": "10 Sec open",
+    "op1": "",
+    "op2": "{\"ContactSensorState\":0}",
+    "op1type": "pay",
+    "op2type": "json",
+    "duration": "10",
+    "extend": false,
+    "units": "s",
+    "reset": "",
+    "bytopic": "all",
+    "topic": "topic",
+    "outputs": 1,
+    "x": 430,
+    "y": 1340,
+    "wires": [
+      [
+        "a5194c26.18c628"
+      ]
+    ]
+  },
+  {
+    "id": "508d9ccf.29e404",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "a875cc7.a4c42b",
+    "name": "Open",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": "1",
+    "topic": "",
+    "payload": "{\"ContactSensorState\":1}",
+    "payloadType": "json",
+    "x": 190,
+    "y": 1340,
+    "wires": [
+      [
+        "99b55eb3.e31bf8"
+      ]
+    ]
+  },
+  {
+    "id": "ab48426e.25466",
+    "type": "group",
+    "z": "eeb8b00c.2c18c",
+    "name": "CO2 Sensor: input only sensor",
+    "style": {
+      "stroke": "#999999",
+      "fill": "none",
+      "label": true,
+      "label-position": "nw",
+      "color": "#a4a4a4"
+    },
+    "nodes": [
+      "88892b4.8a61bd8",
+      "3611c654.8a42f2",
+      "62cafcb0.8ade9c",
+      "a0171cdb.f209b",
+      "6f7de764.a6a688",
+      "8758b463.afb0f",
+      "69e8161b.74b7a",
+      "40010b09.c73cdc"
+    ],
+    "x": 94,
+    "y": 779,
+    "w": 752,
+    "h": 202,
+    "info": "# CO2 Sensor\n\nThere are three inputs to this example, one for each level of Carbon Dioxide in the air. Options are:\n\n**0 ppm:** this will assume no CO2 <br/>\n**Safe level:** this will assume a level between 1 and 999 ppm, inclusive <br/>\n**Dangerous level:** this will assume a level between 1,000 and 100,000, inclusive; this will also trigger an alert"
+  },
+  {
+    "id": "88892b4.8a61bd8",
+    "type": "homekit-service",
+    "z": "eeb8b00c.2c18c",
+    "g": "ab48426e.25466",
+    "isParent": true,
+    "hostType": "0",
+    "bridge": "409001a1.3e7a78",
+    "accessoryId": "",
+    "parentService": "",
+    "name": "CO2 Sensor",
+    "serviceName": "CarbonDioxideSensor",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Default Manufacturer",
+    "model": "Carbon",
+    "serialNo": "Default Serial Number",
+    "firmwareRev": "22",
+    "hardwareRev": "11",
+    "softwareRev": "",
+    "cameraConfigVideoProcessor": "",
+    "cameraConfigSource": "",
+    "cameraConfigStillImageSource": "",
+    "cameraConfigMaxStreams": "",
+    "cameraConfigMaxWidth": "",
+    "cameraConfigMaxHeight": "",
+    "cameraConfigMaxFPS": "",
+    "cameraConfigMaxBitrate": "",
+    "cameraConfigVideoCodec": "",
+    "cameraConfigAudioCodec": "",
+    "cameraConfigAudio": false,
+    "cameraConfigPacketSize": "",
+    "cameraConfigVerticalFlip": false,
+    "cameraConfigHorizontalFlip": false,
+    "cameraConfigMapVideo": "",
+    "cameraConfigMapAudio": "",
+    "cameraConfigVideoFilter": "",
+    "cameraConfigAdditionalCommandLine": "",
+    "cameraConfigDebug": false,
+    "cameraConfigSnapshotOutput": "disabled",
+    "cameraConfigInterfaceName": "",
+    "characteristicProperties": "{    \"CarbonDioxideLevel\" : true,    \"CarbonDioxidePeakLevel\": true,    \"StatusActive\" : true}",
+    "waitForSetupMsg": false,
+    "outputs": 2,
+    "x": 750,
+    "y": 820,
+    "wires": [
+      [],
+      []
+    ]
+  },
+  {
+    "id": "3611c654.8a42f2",
+    "type": "function",
+    "z": "eeb8b00c.2c18c",
+    "g": "ab48426e.25466",
+    "name": "Random values, peak value",
+    "func": "// Reset all values to 0 if 0ppm input\nif(msg.payload === 0){\n    context.set('lastPeak',0);\n    newMsg = {\n        payload: {\n            \"CarbonDioxideLevel\":0,\n            \"CarbonDioxidePeakLevel\":0,\n            \"CarbonDioxideDetected\":0\n        }\n    };\n    return newMsg;\n}\n\n// Initialize vars\nvar CurrentLevel = 0;\nvar lastPeak = context.get('lastPeak');\n\n// Set random safe or dangerous levels\nif(msg.payload === \"Safe\"){\n    CurrentLevel = Math.floor(Math.random() * (999 - 1 + 1) + 1);\n}\nif(msg.payload === \"Danger\"){\n    CurrentLevel = Math.floor(Math.random() * (100000 - 1000 + 1) + 1000);\n}\n\n// Formulate output message\nvar newMsg = {\n    payload: {\n        \"CarbonDioxideLevel\" : CurrentLevel,\n        \"CarbonDioxideDetected\" : 0\n    }\n};\n\n// Set new peak level\nif(CurrentLevel > lastPeak){\n    lastPeak = CurrentLevel;\n    context.set('lastPeak',CurrentLevel);\n    newMsg.payload.CarbonDioxidePeakLevel = CurrentLevel;\n}\n\n// Set warning if dangerous\nif (CurrentLevel >= 1000) {\n    newMsg.payload.CarbonDioxideDetected = 1;\n} \n\nreturn newMsg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "// Code added here will be run once\n// whenever the node is deployed.\ncontext.set('lastPeak',0);\n",
+    "finalize": "",
+    "x": 480,
+    "y": 820,
+    "wires": [
+      [
+        "88892b4.8a61bd8"
+      ]
+    ]
+  },
+  {
+    "id": "62cafcb0.8ade9c",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "ab48426e.25466",
+    "name": "Active",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"StatusActive\":true}",
+    "payloadType": "json",
+    "x": 550,
+    "y": 860,
+    "wires": [
+      [
+        "88892b4.8a61bd8"
+      ]
+    ]
+  },
+  {
+    "id": "a0171cdb.f209b",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "ab48426e.25466",
+    "name": "Inactive",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"StatusActive\":false}",
+    "payloadType": "json",
+    "x": 550,
+    "y": 900,
+    "wires": [
+      [
+        "88892b4.8a61bd8"
+      ]
+    ]
+  },
+  {
+    "id": "6f7de764.a6a688",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "ab48426e.25466",
+    "name": "NO RESPONSE",
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"CarbonDioxideLevel\":\"NO_RESPONSE\"}",
+    "payloadType": "json",
+    "x": 520,
+    "y": 940,
+    "wires": [
+      [
+        "88892b4.8a61bd8"
+      ]
+    ]
+  },
+  {
+    "id": "8758b463.afb0f",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "ab48426e.25466",
+    "name": "0 ppm",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "0",
+    "payloadType": "num",
+    "x": 190,
+    "y": 820,
+    "wires": [
+      [
+        "3611c654.8a42f2"
+      ]
+    ]
+  },
+  {
+    "id": "69e8161b.74b7a",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "ab48426e.25466",
+    "name": "Safe Level",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "Safe",
+    "payloadType": "str",
+    "x": 200,
+    "y": 860,
+    "wires": [
+      [
+        "3611c654.8a42f2"
+      ]
+    ]
+  },
+  {
+    "id": "40010b09.c73cdc",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "ab48426e.25466",
+    "name": "Dangerous level",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "Danger",
+    "payloadType": "str",
+    "x": 220,
+    "y": 900,
+    "wires": [
+      [
+        "3611c654.8a42f2"
+      ]
+    ]
+  },
+  {
+    "id": "b3b5156e.cdf988",
+    "type": "group",
+    "z": "eeb8b00c.2c18c",
+    "name": "Air Quality with Battery: input only sensor",
+    "style": {
+      "stroke": "#999999",
+      "fill": "none",
+      "label": true,
+      "label-position": "nw",
+      "color": "#a4a4a4"
+    },
+    "nodes": [
+      "8088a797.e1a7c",
+      "a70b3192.dfb4f",
+      "d5708f5.036c87",
+      "90b692e4.b9f6c",
+      "54bfafbc.396898",
+      "560fc866.6de558",
+      "61e113b2.dbb714"
+    ],
+    "x": 94,
+    "y": 239,
+    "w": 758,
+    "h": 208,
+    "info": "# Air Quality Sensor\n\nThis sensor will inject random values for all of the air quality metrics available in the HomeKit spec. It will also inject random values for a linked battery service.\n\nWatch the input and Home app to learn how to see how things are working."
+  },
+  {
+    "id": "8088a797.e1a7c",
+    "type": "homekit-service",
+    "z": "eeb8b00c.2c18c",
+    "g": "b3b5156e.cdf988",
+    "isParent": true,
+    "hostType": "0",
+    "bridge": "409001a1.3e7a78",
+    "accessoryId": "",
+    "parentService": "",
+    "name": "Air Quality",
+    "serviceName": "AirQualitySensor",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Quality",
+    "model": "Battery",
+    "serialNo": "777",
+    "firmwareRev": "8.3",
+    "hardwareRev": "2.1",
+    "softwareRev": "1.0.0",
+    "cameraConfigVideoProcessor": "ffmpeg",
+    "cameraConfigSource": "",
+    "cameraConfigStillImageSource": "",
+    "cameraConfigMaxStreams": 2,
+    "cameraConfigMaxWidth": 1280,
+    "cameraConfigMaxHeight": 720,
+    "cameraConfigMaxFPS": 10,
+    "cameraConfigMaxBitrate": 300,
+    "cameraConfigVideoCodec": "libx264",
+    "cameraConfigAudioCodec": "libfdk_aac",
+    "cameraConfigAudio": false,
+    "cameraConfigPacketSize": 1316,
+    "cameraConfigVerticalFlip": false,
+    "cameraConfigHorizontalFlip": false,
+    "cameraConfigMapVideo": "0:0",
+    "cameraConfigMapAudio": "0:1",
+    "cameraConfigVideoFilter": "scale=1280:720",
+    "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+    "cameraConfigDebug": false,
+    "cameraConfigSnapshotOutput": "disabled",
+    "cameraConfigInterfaceName": "",
+    "characteristicProperties": "{    \"AirQuality\":true,    \"PM2_5Density\":true,    \"PM10Density\":true}",
+    "waitForSetupMsg": false,
+    "outputs": 2,
+    "x": 750,
+    "y": 280,
+    "wires": [
+      [],
+      []
+    ]
+  },
+  {
+    "id": "a70b3192.dfb4f",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "b3b5156e.cdf988",
+    "name": "Air quality random",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "15",
+    "crontab": "",
+    "once": true,
+    "onceDelay": "5",
+    "topic": "",
+    "payload": "{}",
+    "payloadType": "json",
+    "x": 230,
+    "y": 280,
+    "wires": [
+      [
+        "560fc866.6de558"
+      ]
+    ]
+  },
+  {
+    "id": "d5708f5.036c87",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "b3b5156e.cdf988",
+    "name": "Battery random",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "30",
+    "crontab": "",
+    "once": true,
+    "onceDelay": "5",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 220,
+    "y": 380,
+    "wires": [
+      [
+        "90b692e4.b9f6c"
+      ]
+    ]
+  },
+  {
+    "id": "90b692e4.b9f6c",
+    "type": "function",
+    "z": "eeb8b00c.2c18c",
+    "g": "b3b5156e.cdf988",
+    "name": "Batt",
+    "func": "// Define random battery level\nconst level = Math.floor(Math.random() * Math.floor(100))\nvar newMsg = {\n    payload: {\n        \"BatteryLevel\": level\n    }\n};\n\n// Show \"Low Battery\" if less than 10%\nif (level < 10)newMsg.payload.StatusLowBattery = 1;\nelse newMsg.payload.StatusLowBattery = 0;\n\n// Show \"Charging\" if greater than 60%\nif (level > 60) newMsg.payload.ChargingState = 1;\nelse newMsg.payload.ChargingState = 0;\n\nreturn newMsg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 470,
+    "y": 380,
+    "wires": [
+      [
+        "5cd5342a.cfd72c"
+      ]
+    ]
+  },
+  {
+    "id": "54bfafbc.396898",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "b3b5156e.cdf988",
+    "name": "NO RESPONSE",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"AirQuality\":\"NO_RESPONSE\"}",
+    "payloadType": "json",
+    "x": 500,
+    "y": 320,
+    "wires": [
+      [
+        "8088a797.e1a7c"
+      ]
+    ]
+  },
+  {
+    "id": "560fc866.6de558",
+    "type": "function",
+    "z": "eeb8b00c.2c18c",
+    "g": "b3b5156e.cdf988",
+    "name": "Random values",
+    "func": "var newMsg = {\n    \"payload\":{\n        \"AirQuality\":Math.floor(Math.random() * Math.floor(5)),\n        \"PM2_5Density\":Math.floor(Math.random() * Math.floor(1000)),\n        \"PM10Density\":Math.floor(Math.random() * Math.floor(1000)),\n        \"OzoneDensity\":Math.floor(Math.random() * Math.floor(1000)),\n        \"NitrogenDioxideDensity\":Math.floor(Math.random() * Math.floor(1000)),\n        \"SulphurDioxideDensity\": Math.floor(Math.random() * Math.floor(1000))\n    }\n}\n\n\n\nreturn newMsg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "x": 500,
+    "y": 280,
+    "wires": [
+      [
+        "8088a797.e1a7c"
+      ]
+    ]
+  },
+  {
+    "id": "61e113b2.dbb714",
+    "type": "group",
+    "z": "eeb8b00c.2c18c",
+    "g": "b3b5156e.cdf988",
+    "name": "LINKED",
+    "style": {
+      "stroke": "#0070c0",
+      "fill": "#bfdbef",
+      "label": true
+    },
+    "nodes": [
+      "5cd5342a.cfd72c"
+    ],
+    "x": 654,
+    "y": 339,
+    "w": 172,
+    "h": 82
+  },
+  {
+    "id": "5cd5342a.cfd72c",
+    "type": "homekit-service",
+    "z": "eeb8b00c.2c18c",
+    "g": "61e113b2.dbb714",
+    "isParent": false,
+    "bridge": "",
+    "accessoryId": "",
+    "parentService": "8088a797.e1a7c",
+    "name": "Battery",
+    "serviceName": "Battery",
+    "topic": "Air Quality",
+    "filter": false,
+    "manufacturer": "Default Manufacturer",
+    "model": "Default Model",
+    "serialNo": "Default Serial Number",
+    "firmwareRev": "1.0.0",
+    "hardwareRev": "1.0.0",
+    "softwareRev": "1.0.0",
+    "cameraConfigVideoProcessor": "ffmpeg",
+    "cameraConfigSource": "",
+    "cameraConfigStillImageSource": "",
+    "cameraConfigMaxStreams": 2,
+    "cameraConfigMaxWidth": 1280,
+    "cameraConfigMaxHeight": 720,
+    "cameraConfigMaxFPS": 10,
+    "cameraConfigMaxBitrate": 300,
+    "cameraConfigVideoCodec": "libx264",
+    "cameraConfigAudioCodec": "libfdk_aac",
+    "cameraConfigAudio": false,
+    "cameraConfigPacketSize": 1316,
+    "cameraConfigVerticalFlip": false,
+    "cameraConfigHorizontalFlip": false,
+    "cameraConfigMapVideo": "0:0",
+    "cameraConfigMapAudio": "0:1",
+    "cameraConfigVideoFilter": "scale=1280:720",
+    "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+    "cameraConfigDebug": false,
+    "cameraConfigSnapshotOutput": "disabled",
+    "cameraConfigInterfaceName": "",
+    "characteristicProperties": "{}",
+    "waitForSetupMsg": false,
+    "outputs": 2,
+    "x": 740,
+    "y": 380,
+    "wires": [
+      [],
+      []
+    ]
+  },
+  {
+    "id": "c869b0a5.e4def8",
+    "type": "group",
+    "z": "eeb8b00c.2c18c",
+    "name": "Fan Simplified: input from device, output to device",
+    "style": {
+      "stroke": "#999999",
+      "fill": "none",
+      "label": true,
+      "label-position": "nw",
+      "color": "#a4a4a4"
+    },
+    "nodes": [
+      "dadd634c.ae2258",
+      "753e3777.49a1d",
+      "992f4930.012aa",
+      "2497a466.aa0e84",
+      "c53b76fb.7a3cc8",
+      "6c9646ee.1f3a18",
+      "1e42a8f3.cf008f"
+    ],
+    "x": 94,
+    "y": 1759,
+    "w": 752,
+    "h": 202,
+    "info": "# Fan Simple\n\nThis example is for a 3-speed fan.\n\nSpeeds are: <br/>\nLow = 33<br/>\nMedium = 66<br/>\nHigh = 99<br/>\n\nValues outside of this are restricted and will not work. The home app will \"snap\" to these values. Siri will respond to \"set fan to low/medium/high\" with the corresponding value."
+  },
+  {
+    "id": "dadd634c.ae2258",
+    "type": "debug",
+    "z": "eeb8b00c.2c18c",
+    "g": "c869b0a5.e4def8",
+    "name": "Fan output",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 730,
+    "y": 1800,
+    "wires": []
+  },
+  {
+    "id": "753e3777.49a1d",
+    "type": "homekit-service",
+    "z": "eeb8b00c.2c18c",
+    "g": "c869b0a5.e4def8",
+    "isParent": true,
+    "bridge": "409001a1.3e7a78",
+    "parentService": "",
+    "name": "Fan Speeds",
+    "serviceName": "Fan",
+    "topic": "",
+    "filter": false,
+    "manufacturer": "Gman",
+    "model": "Default Model",
+    "serialNo": "CRX1",
+    "firmwareRev": "1.0.0",
+    "hardwareRev": "1.0.0",
+    "softwareRev": "1.0.0",
+    "cameraConfigVideoProcessor": "ffmpeg",
+    "cameraConfigSource": "",
+    "cameraConfigStillImageSource": "",
+    "cameraConfigMaxStreams": 2,
+    "cameraConfigMaxWidth": 1280,
+    "cameraConfigMaxHeight": 720,
+    "cameraConfigMaxFPS": 10,
+    "cameraConfigMaxBitrate": 300,
+    "cameraConfigVideoCodec": "libx264",
+    "cameraConfigAudioCodec": "libfdk_aac",
+    "cameraConfigAudio": false,
+    "cameraConfigPacketSize": 1316,
+    "cameraConfigVerticalFlip": false,
+    "cameraConfigHorizontalFlip": false,
+    "cameraConfigMapVideo": "0:0",
+    "cameraConfigMapAudio": "0:1",
+    "cameraConfigVideoFilter": "scale=1280:720",
+    "cameraConfigAdditionalCommandLine": "-tune zerolatency",
+    "cameraConfigDebug": false,
+    "cameraConfigSnapshotOutput": "disabled",
+    "cameraConfigInterfaceName": "",
+    "characteristicProperties": "{\n    \"RotationSpeed\": {\n        \"minValue\":0,\n        \"maxValue\":99,\n        \"minStep\":33\n    }\n}",
+    "outputs": 2,
+    "x": 510,
+    "y": 1800,
+    "wires": [
+      [
+        "dadd634c.ae2258"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "992f4930.012aa",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "c869b0a5.e4def8",
+    "name": "NO RESPONSE",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"On\":\"NO_RESPONSE\"}",
+    "payloadType": "json",
+    "x": 460,
+    "y": 1880,
+    "wires": [
+      [
+        "753e3777.49a1d"
+      ]
+    ]
+  },
+  {
+    "id": "2497a466.aa0e84",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "c869b0a5.e4def8",
+    "name": "OFF",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"On\":false}",
+    "payloadType": "json",
+    "x": 190,
+    "y": 1800,
+    "wires": [
+      [
+        "753e3777.49a1d"
+      ]
+    ]
+  },
+  {
+    "id": "c53b76fb.7a3cc8",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "c869b0a5.e4def8",
+    "name": "Low",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"On\":true,\"RotationSpeed\":33}",
+    "payloadType": "json",
+    "x": 190,
+    "y": 1840,
+    "wires": [
+      [
+        "753e3777.49a1d"
+      ]
+    ]
+  },
+  {
+    "id": "6c9646ee.1f3a18",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "c869b0a5.e4def8",
+    "name": "Medium",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"On\":true,\"RotationSpeed\":66}",
+    "payloadType": "json",
+    "x": 200,
+    "y": 1880,
+    "wires": [
+      [
+        "753e3777.49a1d"
+      ]
+    ]
+  },
+  {
+    "id": "1e42a8f3.cf008f",
+    "type": "inject",
+    "z": "eeb8b00c.2c18c",
+    "g": "c869b0a5.e4def8",
+    "name": "High",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"On\":true,\"RotationSpeed\":99}",
+    "payloadType": "json",
+    "x": 190,
+    "y": 1920,
+    "wires": [
+      [
+        "753e3777.49a1d"
+      ]
+    ]
+  }
 ]
