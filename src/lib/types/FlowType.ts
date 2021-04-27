@@ -1,6 +1,6 @@
 enum FlowTypeType {
     Subflow = 'subflow',
-    Flow = 'flow'
+    Flow = 'flow',
 }
 
 type FlowType = {

@@ -167,13 +167,13 @@ module.exports = (RED: NodeAPI) => {
         self.name = self.config.name
 
         // Find a unique identifier for the current service
-        if(
-            self.hasOwnProperty('_flow') && 
-            self.hasOwnProperty('_alias') && 
-            self._flow.hasOwnProperty('TYPE') && 
+        if (
+            self.hasOwnProperty('_flow') &&
+            self.hasOwnProperty('_alias') &&
+            self._flow.hasOwnProperty('TYPE') &&
             FlowTypeType.Subflow == self._flow.TYPE
         ) {
-            // For subflows, use the service node identifier from the subflow template 
+            // For subflows, use the service node identifier from the subflow template
             // plus the full path from the subflow node identifier to the subflow.
             self.uniqueIdentifier = self._alias + '/' + self._flow.path
         } else {
