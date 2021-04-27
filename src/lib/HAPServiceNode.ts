@@ -167,7 +167,6 @@ module.exports = (RED: NodeAPI) => {
         self.name = self.config.name
 
         // Find a unique identifier for the current service
-        let uniqueIdentifier
         if(
             self.hasOwnProperty('_flow') && 
             self.hasOwnProperty('_alias') && 
@@ -176,14 +175,14 @@ module.exports = (RED: NodeAPI) => {
         ) {
             // For subflows, use the service node identifier from the subflow template 
             // plus the full path from the subflow node identifier to the subflow.
-            uniqueIdentifier = self._alias + '/' + self._flow.path
+            self.uniqueIdentifier = self._alias + '/' + self._flow.path
         } else {
             // For top level flows, use the node identifier
-            uniqueIdentifier = self.id
+            self.uniqueIdentifier = self.id
         }
 
-        // Generate UUID from node id
-        const subtypeUUID = uuid.generate(uniqueIdentifier)
+        // Generate UUID from unique identifier
+        const subtypeUUID = uuid.generate(self.uniqueIdentifier)
 
         // Look for existing Accessory or create a new one
         if (self.config.hostType == HostType.BRIDGE) {
@@ -196,7 +195,7 @@ module.exports = (RED: NodeAPI) => {
                 // changes.
                 const accessoryUUID = uuid.generate(
                     'A' +
-                        uniqueIdentifier +
+                        self.uniqueIdentifier +
                         self.name +
                         self.config.manufacturer +
                         self.config.serialNo +

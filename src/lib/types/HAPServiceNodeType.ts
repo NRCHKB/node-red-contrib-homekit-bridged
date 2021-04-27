@@ -1,11 +1,11 @@
-import { Node, NodeAPI } from 'node-red'
+import NodeType from './NodeType'
+import { NodeAPI } from 'node-red'
 import HAPServiceConfigType from './HAPServiceConfigType'
 import { Accessory, CharacteristicProps, Service } from 'hap-nodejs'
 import HAPHostNodeType from './HAPHostNodeType'
 import PublishTimersType from './PublishTimersType'
-import { FlowType } from './FlowType'
 
-type HAPServiceNodeType = Node & {
+type HAPServiceNodeType = NodeType & {
     config: HAPServiceConfigType
     RED: NodeAPI
     setupDone: boolean
@@ -24,8 +24,7 @@ type HAPServiceNodeType = Node & {
     onCharacteristicGet: any
     onCharacteristicSet: any
     onCharacteristicChange: any
-    _flow: FlowType
-    _alias: string
+    uniqueIdentifier: string
 }
 
 export default HAPServiceNodeType
