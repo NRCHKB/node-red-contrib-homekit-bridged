@@ -71,9 +71,9 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             }
         }
 
-        self.accessoryCategory = ((self.hostType == HostType.BRIDGE
+        self.accessoryCategory = (self.hostType == HostType.BRIDGE
             ? HapCategories.BRIDGE
-            : self.config.accessoryCategory) as unknown) as Categories
+            : self.config.accessoryCategory) as unknown as Categories
 
         self.published = false
         self.bridgeUsername = macify(self.id)
@@ -185,7 +185,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             )
     }
 
-    const macify = (nodeId: string) => {
+    const macify = (nodeId: string): string => {
         if (nodeId) {
             const noDecimalStr = nodeId.replace('.', '')
             const paddedStr = noDecimalStr.padEnd(12, '0')
