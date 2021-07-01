@@ -224,9 +224,9 @@ module.exports = function (node: HAPServiceNodeType) {
             } else {
                 if (
                     (node.config.isParent &&
-                        node.config.hostType === HostType.BRIDGE) ||
+                        node.config.hostType == HostType.BRIDGE) ||
                     (!node.config.isParent &&
-                        node.hostNode.hostType === HostType.BRIDGE)
+                        node.hostNode.hostType == HostType.BRIDGE)
                 ) {
                     // updateReachability is only supported on bridged accessories
                     node.accessory.updateReachability(

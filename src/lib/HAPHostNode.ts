@@ -185,7 +185,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             )
     }
 
-    const macify = (nodeId: string) => {
+    const macify = (nodeId: string): string => {
         if (nodeId) {
             const noDecimalStr = nodeId.replace('.', '')
             const paddedStr = noDecimalStr.padEnd(12, '0')

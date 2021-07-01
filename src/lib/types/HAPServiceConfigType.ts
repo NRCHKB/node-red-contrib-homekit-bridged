@@ -3,6 +3,8 @@ import CameraConfigType from './CameraConfigType'
 
 type HAPServiceConfigType = NodeDef & {
     isParent: boolean
+    // hostType is number but browser js is passing it as string which may cause same comparison issues
+    // values are BRIDGE = 0, STANDALONE = 1
     hostType: number
     bridge: string
     accessoryId: string
