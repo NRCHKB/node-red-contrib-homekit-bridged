@@ -198,7 +198,7 @@ Camera.prototype.handleSnapshotRequest = function (request, callback) {
 
     ffmpeg.on(
         'close',
-        // eslint-disable-next-line no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         function (code) {
             let msg
 
