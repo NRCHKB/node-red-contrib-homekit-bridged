@@ -26,6 +26,9 @@
             </select>
         </div>
         <div id="isOnBridge">
+            <div id="isBridgeInSubflow" class="alert alert-warning" role="alert">
+              Read more <b><a href="#" id="bridgeInSubflowNotice">here</a></b> about adding Bridge in a Subflow.
+            </div>
             <div class="form-row" style="height: 34px;">
                 <label for="node-input-bridge">
               <i class="fa fa-rocket"></i>
@@ -534,13 +537,23 @@
             }
 
             let isOnBridgeDiv = $('#isOnBridge')
+            let isBridgeInSubflow = $('#isBridgeInSubflow')
             let isAccessoryDiv = $('#isAccessory')
+
+            const inSubflow = !!RED.nodes.subflow(node.z)
 
             selectHostType
                 .change(function () {
                     if (selectHostType.val() == 0) {
                         isAccessoryDiv.hide()
                         isOnBridgeDiv.show()
+
+                        if (inSubflow) {
+                            isBridgeInSubflow.show()
+                        } else {
+                            isBridgeInSubflow.hide()
+                        }
+
                         $("#node-input-accessoryId").val("_ADD_");
                     } else {
                         isOnBridgeDiv.hide()
@@ -594,8 +607,6 @@
             })
 
             const selectParentService = $('#node-input-parentService')
-
-            const inSubflow = !!RED.nodes.subflow(node.z)
 
             const candidateNodes = RED.nodes.filterNodes({
                 type: 'homekit-service',
@@ -671,6 +682,30 @@
                     accessoryOption.attr("disabled", true);
                     accessoryOption.text(accessoryOption.text() + " already used by " + n.name)
                 }
+            })
+
+            isBridgeInSubflow.find('#bridgeInSubflowNotice').on("click", function () {
+                $('<div>')
+                    .css({maxHeight: '80%'})
+                    .html("<ul>" +
+                        "<li>If a Bridge is created within the Flow, then each Service node in a Subflow will be added to the existing (single) Bridge.</li>" +
+                        "<li>If a Bridge is created within the Subflow, a new Bridge will be created for each Subflow instance.</li>" +
+                        "<li>If a Standalone Accessory is being used, it is recommended to set it up completly within the Subflow editor. This will add a new Standalone Accessory for each Subflow instance in your Flow.</li>" +
+                        "<li>Visit our <b><a href=\"https://nrchkb.github.io/wiki/introduction/service-node/#bridge\">wiki</a></b> for more informations.</li>" +
+                        "</ul>")
+                    .dialog({
+                        draggable: true,
+                        modal: true,
+                        resizable: false,
+                        width: 'auto',
+                        title: 'Important Notice',
+                        minHeight: 75,
+                        buttons: {
+                            Close: function () {
+                                $(this).dialog('destroy')
+                            }
+                        }
+                    })
             })
         },
         oneditsave: function () {
