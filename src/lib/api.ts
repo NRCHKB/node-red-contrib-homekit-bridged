@@ -186,13 +186,27 @@ module.exports = function (RED: NodeAPI) {
                         return
                     }
 
+                    const validatedProps = props
+                    if (validatedProps.validValues?.length === 0) {
+                        validatedProps.validValues = undefined
+                    }
+                    if (
+                        !validatedProps.validValueRanges?.[0] ||
+                        !validatedProps.validValueRanges?.[1]
+                    ) {
+                        validatedProps.validValueRanges = undefined
+                    }
+                    if (validatedProps.adminOnlyAccess?.length === 0) {
+                        validatedProps.adminOnlyAccess = undefined
+                    }
+
                     class CustomCharacteristic extends Characteristic {
                         static readonly UUID: string = UUID!
 
                         constructor() {
                             super(name!, CustomCharacteristic.UUID, {
-                                ...props,
-                                perms: props.perms ?? [
+                                ...validatedProps,
+                                perms: validatedProps.perms ?? [
                                     Perms.PAIRED_READ,
                                     Perms.PAIRED_WRITE,
                                     Perms.NOTIFY,
