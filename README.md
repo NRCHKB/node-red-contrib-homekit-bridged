@@ -300,6 +300,17 @@ set NRCHKB_EXPERIMENTAL=true
 node-red
 ```
 
+#### How can I migrate my installation to another server?
+Moving to a new server is fairly simple, and only takes a few of steps,
+1. Install Node-RED on your new server
+2. Shut down Node-RED on the old server
+3. Changed to the `.node-red` directory on the new server and run `npm install node-red-contrib-homekit-bridged` (and any other node modules you use in your flows)
+4. Copy over `homekit-persist` from the `.node-red` directory on the old server to the `.node-red` directory on the new server
+5. Copy over `flows_<old machine's hostname>.json` from the `.node-red` directory on the old server to the `.node-red` directory on the new server
+6. Rename the `flows_<old machine's hostname>.json` to `flows.json` on the new server.
+7. Edit the `settings.js` file on the new server, and uncomment the line `flowFile: 'flows.json'
+8. (Re)Start Node-RED on your new server.
+
 ## Contributors
 
 #### Big thanks to [all who have contributed to the project](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/graphs/contributors).
