@@ -13,16 +13,25 @@ if (process.env.NRCHKB_EXPERIMENTAL === 'true') {
 }
 
 module.exports = (RED: NodeAPI) => {
-    const requiredNodeVersion = '10.22.1'
+    const deprecatedMinimalNodeVersion = '10.22.1'
+    const minimalNodeVersion = '12.0.0'
     const nodeVersion = process.version
 
-    if (semver.gte(nodeVersion, requiredNodeVersion)) {
+    if (semver.gte(nodeVersion, deprecatedMinimalNodeVersion)) {
         log.debug(
-            `Node.js version requirement met. Required ${requiredNodeVersion}. Installed ${nodeVersion}`
+            `Node.js version requirement met. Required >=${deprecatedMinimalNodeVersion}. Installed ${nodeVersion}`
         )
+        if (semver.lt(nodeVersion, minimalNodeVersion)) {
+            log.error(
+                'Node.js version requirement met but will be deprecated in Node-RED 2.0.0'
+            )
+            log.error(
+                `Recommended >=${minimalNodeVersion}. Installed ${nodeVersion}. Consider upgrading.`
+            )
+        }
     } else {
         throw RangeError(
-            `Node.js version requirement not met. Required ${requiredNodeVersion}. Installed ${nodeVersion}`
+            `Node.js version requirement not met. Required >=${deprecatedMinimalNodeVersion}. Installed ${nodeVersion}`
         )
     }
 

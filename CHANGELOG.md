@@ -20,6 +20,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   compatibility #393 - thanks @kevinkub
 - Fixed Custom MDNS Configuration not showing in UI for Standalone Accessory
 
+### Added
+
+- Notice during app launch: Node.js 10 will be deprecated in Node-RED 2.0.0
+
 ### Changed
 
 - Changed `BatteryService` to `Battery` in demo examples as `BatteryService` is deprecated #381 - thanks @crxporter
