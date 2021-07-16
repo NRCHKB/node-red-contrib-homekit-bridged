@@ -24,6 +24,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Changed `BatteryService` to `Battery` in demo examples as `BatteryService` is deprecated #381 - thanks @crxporter
 
+## [1.3.6]
+
+### Fixed
+
+- nrchkb complaining about validValues #52
+
 ## [1.3.5]
 
 ### Fixed
