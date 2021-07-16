@@ -15,8 +15,8 @@ Join us on our Discord server (click on the logo below)!
 ## Intro
 
 node-red-contrib-homekit-bridged (aka NRCHKB) is a Node-RED nodes pack to simulate Apple HomeKit devices. The goal is to
-emulate native HomeKit devices as closely as possible. We rely on community support - please read throught the README
-for the basics then head over to the [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for
+emulate native HomeKit devices as closely as possible. We rely on community support - please read through the README for
+the basics then head over to the [wiki page](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for
 details and examples. If you're still stuck please open an issue, we are glad to help.
 
 These nodes allow the creation of fully customizable accessories for use in devices
@@ -55,7 +55,7 @@ needed to get started, thanks to [Raymond Mouthaan](https://github.com/RaymondMo
 ### Bridge
 
 The Bridge node is a configuration node (means it will be not visible in a flow like other nodes) which will be added
-from within the service node. It creates the _bridge_ that HomeKit application sees, i.e. the device that is added to
+from within the service node. It creates the _bridge_ that HomeKit application sees, i.e., the device that is added to
 the Apple Home app by the user. All accessories behind a bridge node will be added automatically.
 
 <details><summary>Configuration fields:</summary>
@@ -67,7 +67,7 @@ the Apple Home app by the user. All accessories behind a bridge node will be add
 - **Allow Insecure Request**: Should we allow insecure request? Default false.
 - **Manufacturer, Model, Serial Number**: Can be anything you want.
 - **Name**: Can be anything you want.
-- **Allow Message Passthrough**: If you allow then message from node input will be send to node output.
+- **Allow Message Passthrough**: If you allow then message from node input will be sent to node output.
 - **Custom MDNS Configuration**: Check if you would like to use custom MDNS configuration.
     - **Multicast**: Use udp multicasting. Optional. Default true.
     - **Multicast Interface IP**: Explicitly specify a network interface. Optional. Defaults to all.
@@ -126,13 +126,13 @@ the [wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki) for 
     - **Debug**: Show the output of ffmpeg in the log, default _false_.
     - **Snapshot Output**: Choose how to output camera snapshot:
         - **Disabled**: there will be no output
-        - **Path**: file will be saved and path will be send to output, _msg.payload.cameraSnapshot_ contains path value
+        - **Path**: file will be saved and path will be sent to output, _msg.payload.cameraSnapshot_ contains path value
           stored as a string.
-        - **Content**: file content will be send to output, _msg.payload.cameraSnapshot_ contains Buffer object {"
+        - **Content**: file content will be sent to output, _msg.payload.cameraSnapshot_ contains Buffer object {"
           type":"Buffer","data":[]}.
     - **Interface Name**: Selects the IP address of a given network interface. The default is to select the first
       available, and that may not be the same IP address that ffmpeg will use. A mismatch will cause the iOS device to
-      discard the video stream..
+      discard the video stream.
 - **Characteristic Properties**: Customise the properties of
   characteristics. [Characteristics wiki](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Characteristics)
 
@@ -163,8 +163,9 @@ Characteristics_ updates from a paired iOS device.
 Currently, there are two main and one conditional output port for homekit-service in node-red.
 
 1. onChange, is fired when a value has been changed, this is the most recommended to use for most cases.
-2. onSet, is fired every time a value has been set (even to the same value as before), it is used to capture repeated
-   input like Television remote buttons.
+2. events, is fired every time a value has been set (even to the same value as before), it is used to capture repeated
+   input like Television remote buttons. It also will be fired when user's app is polling data
+   as `msg.hap.event='refresh'`
 3. camera snapshot, is enabled only for CameraController Service and is used to retrieve camera snapshot data
 
 ## Supported Types
@@ -352,7 +353,7 @@ node-red
 - [Shaquu](https://github.com/Shaquu) - leading the current efforts to fix bugs and add features
 - [crxporter](https://github.com/crxporter) - a lot of work on the documentation and new features design
 - [Oliver Rahner](https://github.com/oliverrahner) - reworked the code to add a bridged mode
-  - [read his story](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Credits#oliver-rahner-explains-his-work)
+    - [read his story](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/wiki/Credits#oliver-rahner-explains-his-work)
 - [Marius Schmeding](https://github.com/mschm/node-red-contrib-homekit) - original implementation of HAP-NodeJS into
   Node-RED
 

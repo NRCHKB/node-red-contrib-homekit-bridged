@@ -24,6 +24,28 @@ module.exports = function (node: HAPServiceNodeType) {
 
     const NO_RESPONSE_MSG = 'NO_RESPONSE'
 
+    const prepareHapData = (context: any, connection?: HAPConnection) => {
+        const hap: { [key: string]: any } = {}
+
+        if (connection) {
+            hap.session = {
+                sessionID: connection.sessionID,
+                username: connection.username,
+                remoteAddress: connection.remoteAddress,
+                localAddress: connection.localAddress,
+                httpPort: connection.remotePort,
+            }
+
+            hap.context = {}
+        }
+
+        if (context) {
+            hap.context = context
+        }
+
+        return hap
+    }
+
     const onCharacteristicGet = function (
         this: Characteristic,
         callback: CharacteristicGetCallback,
@@ -39,6 +61,30 @@ module.exports = function (node: HAPServiceNodeType) {
                 connection?.sessionID
             }`
         )
+
+        const topic = node.config.topic ? node.config.topic : node.topic_in
+        const msg: {
+            payload: any
+            hap: any
+            name?: string
+            topic: string
+        } = { payload: {}, hap: {}, name: node.name, topic: topic }
+
+        msg.hap = prepareHapData(context, connection)
+        msg.hap.oldValue = this.value
+        msg.hap.event = 'refresh'
+
+        const statusId = node.setStatus({
+            fill: 'grey',
+            shape: 'dot',
+            text: `event: ${msg.hap.event}`,
+        })
+
+        setTimeout(function () {
+            node.clearStatus(statusId)
+        }, 3000)
+
+        node.send([{}, msg])
 
         if (callback) {
             try {
@@ -69,35 +115,18 @@ module.exports = function (node: HAPServiceNodeType) {
 
         msg.payload[key] = newValue
 
-        msg.hap = {}
-
-        if (connection) {
-            msg.hap.session = {
-                sessionID: connection.sessionID,
-                username: connection.username,
-                remoteAddress: connection.remoteAddress,
-                localAddress: connection.localAddress,
-                httpPort: connection.remotePort,
-            }
-
-            msg.hap.context = {}
-        }
-
+        msg.hap = prepareHapData(context, connection)
         msg.hap.oldValue = oldValue
         msg.hap.newValue = newValue
 
-        if (context) {
-            msg.hap.context = context
-        }
-
-        node.status({
+        const statusId = node.setStatus({
             fill: 'yellow',
             shape: 'dot',
             text: key + ': ' + newValue,
         })
 
         setTimeout(function () {
-            node.status({})
+            node.clearStatus(statusId)
         }, 3000)
 
         log.debug(`${node.name} received ${key} : ${newValue}`)
@@ -383,7 +412,7 @@ module.exports = function (node: HAPServiceNodeType) {
         log.debug('Waiting for Parent Service')
 
         return new Promise((resolve) => {
-            node.status({
+            node.setStatus({
                 fill: 'blue',
                 shape: 'dot',
                 text: 'Waiting for Parent Service',

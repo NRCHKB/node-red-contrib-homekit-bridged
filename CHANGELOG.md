@@ -24,6 +24,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Notice during app launch: Node.js 10 will be deprecated in Node-RED 2.0.0
+- Output Home.app refresh event #392
 
 ### Changed
 
@@ -86,7 +87,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   Characteristics [#52](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/52)
 - Add client IP address to onSet/onChange output
   message (`msg.hap.session`) [#328](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/328)
-- As of new mdns advertiser available now there is a possibilty to choose which you want to use in Bridge Config: ciao (
+- As of new mdns advertiser available now there is a possibility to choose which you want to use in Bridge Config:
+  ciao (
   new, improved but not yet proved) or (good old) bonjour. Default bonjour
 
 ### Changed
@@ -180,7 +182,7 @@ this [notice](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/16
 - Corrections regarding issue [#12](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/12) so that
   changes can be deployed without restarting node-red
 - Automatically creating a new service and replacing the old one if the service type changed
-- Automatically replacing an accessory with a new one if the accessory information changes (e.g. Name, Manufacturer,
+- Automatically replacing an accessory with a new one if the accessory information changes (e.g., Name, Manufacturer,
   ...)
 - Video Filter value in Camera Control is now
   optional [#194](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/194) (can be empty, before it was
@@ -213,7 +215,7 @@ this [notice](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/16
 ### Added
 
 - Added greenkeeper
-- Added setting to Bidge configuration called Allow Message Passthrough
+- Added setting to Bridge configuration called Allow Message Passthrough
 
 ### Changed
 
@@ -234,7 +236,6 @@ this [notice](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/16
 ### Added
 
 - CHANGELOG page introduction
-- travis autodeploy to npm on pushed tags
 - Change from "characteristic-change" to "set" to listen to HAP-NodeJS events
 - Sorted Service Type list in UI
 - Camera support (RTSP, Video Doorbell and others)
@@ -242,7 +243,7 @@ this [notice](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/16
 - HAP-NodeJS version changed to latest (0.5.0)
 - Added Accessory Category field for Parent Service
 - More code refactoring
-- Newest HomeKit Docs uploaded
+- The Newest HomeKit Docs uploaded
 - Security hints
 - And more...
 
@@ -250,9 +251,9 @@ this [notice](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/16
 
 - MIT license
 - Better node-red tests
-- Pretiefied and linted code!
+- Prettified and linted code!
 - Support for node 8 and 10 only
-- Github Actions for automatic tests and publish
+- GitHub Actions for automatic tests and publish
 - And more...
 
 ### Fixed
