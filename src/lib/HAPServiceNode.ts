@@ -40,6 +40,19 @@ module.exports = (RED: NodeAPI) => {
         config: HAPServiceConfigType
     ) {
         const self = this
+
+        self.lastStatusId = 0
+        self.setStatus = (status) => {
+            self.status(status)
+            self.lastStatusId = new Date().getTime()
+            return self.lastStatusId
+        }
+        self.clearStatus = (statusId) => {
+            if (statusId === self.lastStatusId) {
+                self.setStatus({})
+            }
+        }
+
         self.config = config
         self.name = self.config.name
 
@@ -61,7 +74,7 @@ module.exports = (RED: NodeAPI) => {
 
                 self.setupDone = false
 
-                self.status({
+                self.setStatus({
                     fill: 'blue',
                     shape: 'dot',
                     text: 'Waiting for Setup',
@@ -250,7 +263,7 @@ module.exports = (RED: NodeAPI) => {
 
         // The pinCode should be shown to the user until interaction with iOS
         // client starts
-        self.status({
+        self.setStatus({
             fill: 'yellow',
             shape: 'ring',
             text: self.hostNode.config.pinCode,

@@ -19,6 +19,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Implemented static accessoryUUIDs for subflows Enables the use of nrchkb nodes in subflows with backwards
   compatibility #393 - thanks @kevinkub
 - Fixed Custom MDNS Configuration not showing in UI for Standalone Accessory
+- Stop components from clearing other component's node.status call
 
 ### Added
 
@@ -191,7 +192,7 @@ this [notice](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/16
 - After Service selection in node configuration Category will be automatically set to default for Service
 - Interface Name for Camera Service configuration
 - Support for new TV Remote services
-- Now first output is for onChange, second for onSet and third for camera
+- Now first output is for onChange, second for events (old onSet) and third for camera
   snapshot. [#200](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/200)
 - Sponsor Button on repository page
 
@@ -200,7 +201,7 @@ this [notice](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/16
 - Accessory Category in node configuration moved under Service selection
 - Clarify NO_RESPONSE in README
 - Update node-red version in dependencies
-- Camera Service source code to match newest improvements in homebridge-camera-ffmpeg
+- Camera Service source code to match the newest improvements in homebridge-camera-ffmpeg
 - Update to latest HAP-NodeJS
 - Removed unnecessary accessory category from service node
 - Removed fields Manufacturer, Serial Number and Model from linked service nodes

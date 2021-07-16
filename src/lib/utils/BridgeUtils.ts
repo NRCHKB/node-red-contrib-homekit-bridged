@@ -35,7 +35,7 @@ module.exports = function () {
                 } catch (error) {
                     log.error(`${hostTypeName} publish failed due to ${error}`)
 
-                    node.status({
+                    node.setStatus({
                         fill: 'red',
                         shape: 'ring',
                         text: 'Error while publishing ' + hostTypeName,

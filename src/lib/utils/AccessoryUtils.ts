@@ -200,14 +200,14 @@ module.exports = function (node: HAPServiceNodeType) {
                 topic: topic,
             }
 
-            nodes[i].status({
+            const statusId = nodes[i].setStatus({
                 fill: 'yellow',
                 shape: 'dot',
                 text: 'Identify : 1',
             })
 
             setTimeout(function () {
-                nodes[i].status({})
+                nodes[i].clearStatus(statusId)
             }, 3000)
 
             nodes[i].send([msg, msg])
