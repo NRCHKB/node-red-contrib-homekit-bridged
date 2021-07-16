@@ -90,10 +90,9 @@
     </div>
     <hr>
 </script>
-
 <script data-help-name="homekit-standalone" type="text/x-red">
     <h3 id="toc_4">Bridge</h3>
-    <p>The Bridge node is a configuration node, specifying the <em>bridge</em> that iOS sees, i.e. the device that is manually being added by the user. All accessories behind a bridge noded are then automatically added by iOS.
+    <p>The Bridge node is a configuration node, specifying the <em>bridge</em> that iOS sees, i.e. the device that is manually being added by the user. All accessories behind a bridge node are then automatically added by iOS.
     </p>
     <ul>
         <li><strong>Accessory Category</strong>: What kind of category is this Accessory, default <em>OTHER</em></li>
@@ -118,7 +117,6 @@
         </ul>
     </ul>
 </script>
-
 <script type="text/javascript">
     RED.nodes.registerType('homekit-standalone', {
         category: 'config',
@@ -240,14 +238,14 @@
             let mdnsConfiguration = $('#mdns-configuration')
 
             customMdnsConfigCheckbox
-                .change(function () {
-                    if (node.checked) {
+                .on('click', function () {
+                    if (this.checked) {
                         mdnsConfiguration.fadeIn('fast')
                     } else {
                         mdnsConfiguration.fadeOut('fast')
                     }
                 })
-                .change()
+                .trigger('click')
 
             const selectCategoryName = $("#node-config-input-accessoryCategory");
 
@@ -264,7 +262,7 @@
                 .filter(function () {
                     return $(this).val() === node.accessoryCategory;
                 })
-                .attr("selected", true);
+                .attr("selected", 'true');
         },
     })
 </script>

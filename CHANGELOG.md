@@ -11,14 +11,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
-## [1.4.0-dev.1]
+## [1.4.0-dev.3]
 
 ### Fixed
 
 - Fixed customCharacteristics incorrect refresh in UI
 - Implemented static accessoryUUIDs for subflows Enables the use of nrchkb nodes in subflows with backwards
   compatibility #393 - thanks @kevinkub
+- Fixed Custom MDNS Configuration not showing in UI for Standalone Accessory
 
 ### Changed
 
