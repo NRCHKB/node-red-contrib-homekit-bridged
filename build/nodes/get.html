@@ -1,0 +1,119 @@
+<!--suppress EqualityComparisonWithCoercionJS -->
+<script data-template-name="homekit-get" type="text/x-red">
+    <div class="form-row">
+        <label for="node-input-name">
+          <i class="fa fa-tag"></i>
+          Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+            <label for="node-input-serviceNode">
+              <i class="fa fa-cog"></i>
+              Service Node</label>
+            <select id="node-input-serviceNode">
+              <option value="">Choose...</option>
+          </select>
+        </div>
+</script>
+
+<script data-help-name="homekit-get" type="text/x-red">
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('homekit-get', {
+        category: "Apple HomeKit",
+        paletteLabel: 'get',
+        defaults: {
+            serviceNodeId: {
+                value: '',
+                required: true
+            },
+            name: {
+                value: ''
+            },
+            outputs: {
+                value: 1,
+            }
+        },
+        inputs: 1,
+        outputs: 1,
+        outputLabels: function (index) {
+            if (index === 0) {
+                return 'serialized service'
+            }
+
+            return ''
+        },
+        icon: 'homekit.png',
+        color: '#fcc127',
+        label: function () {
+            return this.name || 'Get'
+        },
+        labelStyle: function () {
+            return this.name ? 'node_label_italic' : ''
+        },
+        oneditprepare: function () {
+            const node = this
+            const selectServiceNode = $('#node-input-serviceNode')
+
+            const candidateNodes = RED.nodes.filterNodes({
+                type: 'homekit-service',
+            })
+
+            const inSubflow = !!RED.nodes.subflow(node.z)
+
+            candidateNodes.forEach(function (n) {
+                if (!n.name || (n.name.length && n.name.length < 1)) {
+                    return
+                }
+
+                if (n.id === node.id) {
+                    return
+                }
+
+                if (inSubflow) {
+                    if (n.z !== node.z) {
+                        return
+                    }
+                } else {
+                    if (!!RED.nodes.subflow(n.z)) {
+                        return
+                    }
+                }
+
+                let sublabel
+                let tab = RED.nodes.workspace(n.z)
+                if (tab) {
+                    sublabel = tab.label || tab.id
+                } else {
+                    tab = RED.nodes.subflow(n.z)
+                    sublabel = 'subflow : ' + tab.name
+                }
+
+                const value = n.id
+                const text = n.name + ' (' + sublabel + ')'
+
+                selectServiceNode.append(
+                    $('<option></option>')
+                        .val(value)
+                        .text(text)
+                )
+            })
+
+            selectServiceNode
+                .find('option')
+                .filter(function () {
+                    return $(this).val() === node.serviceNodeId
+                })
+                .attr('selected', 'true')
+                .change()
+        },
+        oneditsave: function () {
+            let node = this
+
+            const selectServiceNode = $('#node-input-serviceNode')
+            node.serviceNodeId = selectServiceNode.val()
+        },
+    })
+</script>
+

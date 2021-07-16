@@ -158,8 +158,8 @@ module.exports = function (node: HAPServiceNodeType) {
                 this.value
             }, reachability is ${node.accessory.reachable} 
             with context ${JSON.stringify(context)} on connection ${
-    connection?.sessionID
-}`
+                connection?.sessionID
+            }`
         )
 
         try {
@@ -193,8 +193,8 @@ module.exports = function (node: HAPServiceNodeType) {
                 node.accessory.reachable
             } 
             with context ${JSON.stringify(context)} on connection ${
-    originator?.sessionID
-}`
+                originator?.sessionID
+            }`
         )
 
         if (oldValue != newValue) {
