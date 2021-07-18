@@ -69,6 +69,9 @@ module.exports = function (node: HAPServiceNodeType) {
             name?: string
             topic: string
         } = { payload: {}, hap: {}, name: node.name, topic: topic }
+        const key = this.constructor.name
+
+        msg.payload[key] = this.value
 
         msg.hap = prepareHapData(context, connection)
         msg.hap.oldValue = this.value
@@ -84,7 +87,7 @@ module.exports = function (node: HAPServiceNodeType) {
             node.clearStatus(statusId)
         }, 3000)
 
-        node.send([{}, msg])
+        node.send([null, msg])
 
         if (callback) {
             try {
@@ -139,7 +142,6 @@ module.exports = function (node: HAPServiceNodeType) {
             if (outputNumber === 0) {
                 node.send(msg)
             } else if (outputNumber === 1) {
-                // @ts-ignore
                 node.send([null, msg])
             }
         }
