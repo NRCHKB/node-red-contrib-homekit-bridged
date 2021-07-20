@@ -2,7 +2,7 @@ name: Feature request
 description: Create a bug report to help us improve"
 title: "[Feature]: "
 labels: ["enhancement :+1:"]
-asignees:
+assignees:
   - shaquu
   - crxporter
 body:
