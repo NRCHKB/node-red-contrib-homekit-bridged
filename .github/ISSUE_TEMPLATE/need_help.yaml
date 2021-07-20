@@ -1,0 +1,51 @@
+name: Need help
+description: Click it if you need help
+title: "[Help needed]: "
+labels: ["question"]
+assignees:
+  - crxporter
+body:
+  - type: markdown
+    attributes:
+      value: '## If you need help with your setup please consider using [Discussions](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/discussions)'
+  - type: markdown
+    attributes:
+      value: '### Additional live help is available on our [Discord channel](https://discord.gg/uvYac5u)'
+  - type: input
+    id: NRCHKBPluginVersion
+    attributes:
+      label: Your Current NRCHKB Plugin Version
+      description: Find version number in Pallet Manager
+      placeholder: ex. 1.3.6
+    validations:
+      required: false
+  - type: input
+    id: OS
+    attributes:
+      label: Operating System
+      description: Raspberry pi, Docker, Ubuntu, etc.
+      placeholder: ex. Raspberry pi Buster
+    validations:
+      required: false
+  - type: textarea
+    id: neel_help
+    attributes:
+      label: How can we help?
+      description: "Please describe what you are struggling with:"
+      placeholder: Tell us what you want!
+      value: "Ask your question here, drag screenshots or drawings here if they help."
+    validations:
+      required: true
+  - type: textarea
+    id: extra_info
+    attributes:
+      label: Any more details?
+      value: "If this is specific to some hardware or specific software version, please explain here."
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Any code or functions to add?
+      description: Please copy and paste any relevant code. This will be automatically formatted into code, so no need for backticks.
+      render: shell
