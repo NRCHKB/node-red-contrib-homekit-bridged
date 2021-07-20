@@ -10,7 +10,7 @@ body:
       value: '## If you need help with your setup please consider using [Discussions](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/discussions)'
   - type: markdown
     attributes:
-      value: '### Additional live help is available on our [Discord channel](https://discord.gg/uvYac5u)'
+      value: 'Additional live help is available on our [Discord channel](https://discord.gg/uvYac5u)'
   - type: input
     id: NRCHKBPluginVersion
     attributes:
@@ -51,4 +51,4 @@ body:
       render: shell
   - type: markdown
     attributes:
-      value: '## One more request to please consider using [Discussions](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/discussions) or visiting our [Discord channel](https://discord.gg/uvYac5u)'
+      value: '## One more request to please consider using [Discussions](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/discussions).'
