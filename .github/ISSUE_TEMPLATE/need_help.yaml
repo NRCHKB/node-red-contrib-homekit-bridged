@@ -49,3 +49,6 @@ body:
       label: Any code or functions to add?
       description: Please copy and paste any relevant code. This will be automatically formatted into code, so no need for backticks.
       render: shell
+  - type: markdown
+    attributes:
+      value: '## One more request to please consider using [Discussions](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/discussions) or visiting our [Discord channel](https://discord.gg/uvYac5u)'
