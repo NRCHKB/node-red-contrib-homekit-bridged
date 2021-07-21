@@ -1,0 +1,58 @@
+name: Feature request
+description: If you have an idea for a new feature
+title: "[Feature]: "
+labels: ["enhancement :+1:"]
+assignees:
+  - shaquu
+  - crxporter
+body:
+  - type: markdown
+    attributes:
+      value:
+        We love new ideas!
+  - type: input
+    id: NRCHKBPluginVersion
+    attributes:
+      label: Your Current NRCHKB Plugin Version
+      description: Find version number in Pallet Manager
+      placeholder: ex. 1.3.6
+    validations:
+      required: false
+  - type: input
+    id: OS
+    attributes:
+      label: Operating System
+      description: Raspberry pi, Docker, Ubuntu, etc.
+      placeholder: ex. Raspberry pi Buster
+    validations:
+      required: false
+  - type: textarea
+    id: feature_description
+    attributes:
+      label: What is your idea?
+      description: "Please describe your feature here:"
+      placeholder: Tell us what you want!
+      value: "Please describe your idea, drag screenshots or drawings here if they help your explanation."
+    validations:
+      required: true
+  - type: textarea
+    id: extra_info
+    attributes:
+      label: Any more details?
+      value: "If this is specific to some hardware or specific software version, please explain here."
+    validations:
+      required: false
+  - type: textarea
+    id: other
+    attributes:
+      label: Additional comments?
+      placeholder: expected
+      value: Additional comments here, if any.
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Any code or functions to add?
+      description: Please copy and paste any relevant code. This will be automatically formatted into code, so no need for backticks.
+      render: shell
