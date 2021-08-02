@@ -1,10 +1,18 @@
 import path from 'path'
 import storage, { InitOptions } from 'node-persist'
 import { StorageType } from './types/storage/StorageType'
-import {CharacteristicEventTypes, SerializedAccessory, SerializedService} from 'hap-nodejs'
+import {
+    CharacteristicEventTypes,
+    SerializedAccessory,
+    SerializedService,
+} from 'hap-nodejs'
 import { logger } from '@nrchkb/logger'
-import {SerializedHostType} from './types/storage/SerializedHostType'
-import { v4 as uuidv4, validate as uuidValidate, version as uuidVersion } from 'uuid'
+import { SerializedHostType } from './types/storage/SerializedHostType'
+import {
+    v4 as uuidv4,
+    validate as uuidValidate,
+    version as uuidVersion,
+} from 'uuid'
 
 type EventCallback = {
     event: CharacteristicEventTypes
@@ -15,7 +23,7 @@ export class Storage {
     private static customStoragePath: string
     private static storageInitialized = false
 
-    private static memoryStorage: {[key: string]: any} = {}
+    private static memoryStorage: { [key: string]: any } = {}
 
     private static log = logger('NRCHKB', 'Storage')
 

@@ -11,10 +11,13 @@ import {
     Service,
 } from 'hap-nodejs'
 import HAPServiceConfigType from '../types/HAPServiceConfigType'
-import {HAPConnection, HAPUsername,} from 'hap-nodejs/dist/lib/util/eventedhttp'
-import {logger} from '@nrchkb/logger'
-import {SessionIdentifier} from 'hap-nodejs/dist/types'
-import {Storage} from '../Storage'
+import {
+    HAPConnection,
+    HAPUsername,
+} from 'hap-nodejs/dist/lib/util/eventedhttp'
+import { logger } from '@nrchkb/logger'
+import { SessionIdentifier } from 'hap-nodejs/dist/types'
+import { Storage } from '../Storage'
 
 module.exports = function (node: HAPServiceNodeType) {
     const log = logger('NRCHKB', 'ServiceUtils2', node.config.name, node)
@@ -57,7 +60,7 @@ module.exports = function (node: HAPServiceNodeType) {
     const output = function (
         this: Characteristic,
         event: CharacteristicEventTypes | HAPServiceNodeEvent,
-        {oldValue, newValue, context}: any,
+        { oldValue, newValue, context }: any,
         connection?: HAPConnection
     ) {
         log.debug(
@@ -69,7 +72,7 @@ module.exports = function (node: HAPServiceNodeType) {
             topic: node.config.topic ? node.config.topic : node.topic_in,
         }
 
-        const eventObject = typeof event === 'object' ? event : {name: event}
+        const eventObject = typeof event === 'object' ? event : { name: event }
 
         msg.payload = {}
         msg.hap = {
@@ -99,12 +102,16 @@ module.exports = function (node: HAPServiceNodeType) {
             {
                 fill: 'yellow',
                 shape: 'dot',
-                text: `[${eventObject.name}] ${key}${newValue ? `: ${newValue}` : ''}`,
+                text: `[${eventObject.name}] ${key}${
+                    newValue ? `: ${newValue}` : ''
+                }`,
             },
             3000
         )
 
-        log.debug(`${node.name} received ${eventObject.name} ${key}: ${newValue}`)
+        log.debug(
+            `${node.name} received ${eventObject.name} ${key}: ${newValue}`
+        )
 
         if (
             connection ||
@@ -136,25 +143,26 @@ module.exports = function (node: HAPServiceNodeType) {
                                 : new Error(NO_RESPONSE_MSG),
                             newValue
                         )
-                    } catch (_) {
-                    }
+                    } catch (_) {}
                 }
 
                 output.call(
                     characteristic,
-                    {name: CharacteristicEventTypes.GET},
-                    {oldValue, newValue, context},
+                    { name: CharacteristicEventTypes.GET },
+                    { oldValue, newValue, context },
                     connection
                 )
-            }
+            },
         })
 
-        log.debug(`Registered callback ${callbackID} for Characteristic ${characteristic.displayName}`)
+        log.debug(
+            `Registered callback ${callbackID} for Characteristic ${characteristic.displayName}`
+        )
 
         output.call(
             this,
-            {name: CharacteristicEventTypes.GET, context: {callbackID}},
-            {oldValue, context},
+            { name: CharacteristicEventTypes.GET, context: { callbackID } },
+            { oldValue, context },
             connection
         )
     }
@@ -173,13 +181,12 @@ module.exports = function (node: HAPServiceNodeType) {
                     node.accessory.reachable ? null : new Error(NO_RESPONSE_MSG)
                 )
             }
-        } catch (_) {
-        }
+        } catch (_) {}
 
         output.call(
             this,
             CharacteristicEventTypes.SET,
-            {oldValue: undefined, newValue, context},
+            { oldValue: undefined, newValue, context },
             connection
         )
     }
@@ -188,13 +195,13 @@ module.exports = function (node: HAPServiceNodeType) {
         this: Characteristic,
         change: CharacteristicChange
     ) {
-        const {oldValue, newValue, context, originator, reason} = change
+        const { oldValue, newValue, context, originator, reason } = change
 
         if (oldValue != newValue) {
             output.call(
                 this,
-                {name: CharacteristicEventTypes.CHANGE, context: {reason}},
-                {oldValue, newValue, context},
+                { name: CharacteristicEventTypes.CHANGE, context: { reason } },
+                { oldValue, newValue, context },
                 originator
             )
         }
@@ -240,12 +247,12 @@ module.exports = function (node: HAPServiceNodeType) {
                     const eventCallback = Storage.loadCallback(callbackID)
 
                     if (eventCallback) {
-                        log.debug(`Calling ${eventCallback.event} callback ${callbackID}`)
+                        log.debug(
+                            `Calling ${eventCallback.event} callback ${callbackID}`
+                        )
                         eventCallback.callback(callbackValue)
                     } else {
-                        log.error(
-                            `Callback ${callbackID} timeout`
-                        )
+                        log.error(`Callback ${callbackID} timeout`)
                     }
                 } else {
                     log.error(
@@ -264,9 +271,7 @@ module.exports = function (node: HAPServiceNodeType) {
                         node.hostNode.hostType == HostType.BRIDGE)
                 ) {
                     // updateReachability is only supported on bridged accessories
-                    node.accessory.updateReachability(
-                        value !== NO_RESPONSE_MSG
-                    )
+                    node.accessory.updateReachability(value !== NO_RESPONSE_MSG)
                 }
 
                 const characteristic = node.service.getCharacteristic(
@@ -274,11 +279,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(
-                        value,
-                        undefined,
-                        context
-                    )
+                    characteristic.setValue(value, undefined, context)
                 } else {
                     characteristic.setValue(value)
                 }

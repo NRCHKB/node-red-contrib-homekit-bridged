@@ -6,7 +6,7 @@ import CustomCharacteristicType from './types/CustomCharacteristicType'
 import HAPServiceNodeType from './types/HAPServiceNodeType'
 import HAPServiceConfigType from './types/HAPServiceConfigType'
 import { logger } from '@nrchkb/logger'
-import {Storage} from './Storage'
+import { Storage } from './Storage'
 
 const version = require('../../package.json').version.trim()
 
