@@ -4,17 +4,20 @@ import {
     Accessory,
     Characteristic,
     CharacteristicChange,
+    CharacteristicEventTypes,
     CharacteristicGetCallback,
     CharacteristicSetCallback,
     CharacteristicValue,
     Service,
 } from 'hap-nodejs'
 import HAPServiceConfigType from '../types/HAPServiceConfigType'
-import { HAPConnection } from 'hap-nodejs/dist/lib/util/eventedhttp'
-import { logger } from '@nrchkb/logger'
+import {HAPConnection, HAPUsername,} from 'hap-nodejs/dist/lib/util/eventedhttp'
+import {logger} from '@nrchkb/logger'
+import {SessionIdentifier} from 'hap-nodejs/dist/types'
+import {Storage} from '../Storage'
 
 module.exports = function (node: HAPServiceNodeType) {
-    const log = logger('NRCHKB', 'ServiceUtils', node.config.name, node)
+    const log = logger('NRCHKB', 'ServiceUtils2', node.config.name, node)
 
     const HapNodeJS = require('hap-nodejs')
     const Service = HapNodeJS.Service
@@ -24,11 +27,64 @@ module.exports = function (node: HAPServiceNodeType) {
 
     const NO_RESPONSE_MSG = 'NO_RESPONSE'
 
-    const prepareHapData = (context: any, connection?: HAPConnection) => {
-        const hap: { [key: string]: any } = {}
+    type HAPServiceNodeEvent = {
+        name: CharacteristicEventTypes // Event type
+        context?: {
+            callbackID?: string
+            reason?: string
+        } & {} // Additional event data provided by event caller
+    }
+
+    type HAPServiceMessage = {
+        payload?: { [key: string]: any }
+        hap?: {
+            oldValue?: any
+            newValue?: any
+            context?: any
+            event?: HAPServiceNodeEvent
+            session?: {
+                sessionID?: SessionIdentifier
+                username?: HAPUsername
+                remoteAddress?: string
+                localAddress?: string
+                httpPort?: number
+            }
+        }
+        name?: string
+        topic?: string
+    }
+
+    const output = function (
+        this: Characteristic,
+        event: CharacteristicEventTypes | HAPServiceNodeEvent,
+        {oldValue, newValue, context}: any,
+        connection?: HAPConnection
+    ) {
+        log.debug(
+            `${event} event, oldValue: ${oldValue}, newValue: ${newValue}, connection ${connection?.sessionID}`
+        )
+
+        const msg: HAPServiceMessage = {
+            name: node.name,
+            topic: node.config.topic ? node.config.topic : node.topic_in,
+        }
+
+        const eventObject = typeof event === 'object' ? event : {name: event}
+
+        msg.payload = {}
+        msg.hap = {
+            oldValue,
+            newValue,
+            event: eventObject,
+            context,
+        }
+
+        const key = this.constructor.name
+
+        msg.payload[key] = newValue
 
         if (connection) {
-            hap.session = {
+            msg.hap.session = {
                 sessionID: connection.sessionID,
                 username: connection.username,
                 remoteAddress: connection.remoteAddress,
@@ -36,14 +92,27 @@ module.exports = function (node: HAPServiceNodeType) {
                 httpPort: connection.remotePort,
             }
 
-            hap.context = {}
+            msg.hap.context ??= {}
         }
 
-        if (context) {
-            hap.context = context
-        }
+        node.setStatus(
+            {
+                fill: 'yellow',
+                shape: 'dot',
+                text: `[${eventObject.name}] ${key}${newValue ? `: ${newValue}` : ''}`,
+            },
+            3000
+        )
 
-        return hap
+        log.debug(`${node.name} received ${eventObject.name} ${key}: ${newValue}`)
+
+        if (
+            connection ||
+            context ||
+            node.hostNode.config.allowMessagePassthrough
+        ) {
+            node.send(msg)
+        }
     }
 
     const onCharacteristicGet = function (
@@ -52,72 +121,42 @@ module.exports = function (node: HAPServiceNodeType) {
         context: any,
         connection?: HAPConnection
     ) {
-        log.debug(
-            `onCharacteristicGet with status: ${this.statusCode}, value: ${
-                this.value
-            }, reachability is ${
-                node.accessory.reachable
-            } with context ${JSON.stringify(context)} on connection ${
-                connection?.sessionID
-            }`
-        )
+        const characteristic = this
+        const oldValue = characteristic.value
 
-        if (callback) {
-            try {
-                callback(
-                    node.accessory.reachable
-                        ? this.statusCode
-                        : new Error(NO_RESPONSE_MSG),
-                    this.value
+        const callbackID = Storage.saveCallback({
+            event: CharacteristicEventTypes.GET,
+            callback: (value?: any) => {
+                const newValue = value ?? characteristic.value
+                if (callback) {
+                    try {
+                        callback(
+                            node.accessory.reachable
+                                ? characteristic.statusCode
+                                : new Error(NO_RESPONSE_MSG),
+                            newValue
+                        )
+                    } catch (_) {
+                    }
+                }
+
+                output.call(
+                    characteristic,
+                    {name: CharacteristicEventTypes.GET},
+                    {oldValue, newValue, context},
+                    connection
                 )
-            } catch (_) {}
-        }
-    }
-
-    const onValueChange = function (
-        this: Characteristic,
-        outputNumber: number,
-        { oldValue, newValue, context }: any,
-        connection?: HAPConnection
-    ) {
-        const topic = node.config.topic ? node.config.topic : node.topic_in
-        const msg: {
-            payload: { [key: string]: any }
-            hap: any
-            name?: string
-            topic: string
-        } = { payload: {}, hap: {}, name: node.name, topic: topic }
-        const key = this.constructor.name
-
-        msg.payload[key] = newValue
-
-        msg.hap = prepareHapData(context, connection)
-        msg.hap.oldValue = oldValue
-        msg.hap.newValue = newValue
-
-        const statusId = node.setStatus({
-            fill: 'yellow',
-            shape: 'dot',
-            text: key + ': ' + newValue,
+            }
         })
 
-        setTimeout(function () {
-            node.clearStatus(statusId)
-        }, 3000)
+        log.debug(`Registered callback ${callbackID} for Characteristic ${characteristic.displayName}`)
 
-        log.debug(`${node.name} received ${key} : ${newValue}`)
-
-        if (
-            connection ||
-            context ||
-            node.hostNode.config.allowMessagePassthrough
-        ) {
-            if (outputNumber === 0) {
-                node.send(msg)
-            } else if (outputNumber === 1) {
-                node.send([null, msg])
-            }
-        }
+        output.call(
+            this,
+            {name: CharacteristicEventTypes.GET, context: {callbackID}},
+            {oldValue, context},
+            connection
+        )
     }
 
     // eslint-disable-next-line no-unused-vars
@@ -128,31 +167,19 @@ module.exports = function (node: HAPServiceNodeType) {
         context: any,
         connection?: HAPConnection
     ) {
-        log.debug(
-            `onCharacteristicSet with status: ${this.statusCode}, value: ${
-                this.value
-            }, reachability is ${node.accessory.reachable} 
-            with context ${JSON.stringify(context)} on connection ${
-    connection?.sessionID
-}`
-        )
-
         try {
             if (callback) {
                 callback(
                     node.accessory.reachable ? null : new Error(NO_RESPONSE_MSG)
                 )
             }
-        } catch (_) {}
+        } catch (_) {
+        }
 
-        onValueChange.call(
+        output.call(
             this,
-            1,
-            {
-                undefined,
-                newValue,
-                context,
-            },
+            CharacteristicEventTypes.SET,
+            {oldValue: undefined, newValue, context},
             connection
         )
     }
@@ -161,33 +188,20 @@ module.exports = function (node: HAPServiceNodeType) {
         this: Characteristic,
         change: CharacteristicChange
     ) {
-        const { oldValue, newValue, context, originator, reason } = change
-
-        log.debug(
-            `onCharacteristicChange with reason: ${reason}, oldValue: ${oldValue}, newValue: ${newValue}, reachability is ${
-                node.accessory.reachable
-            } 
-            with context ${JSON.stringify(context)} on connection ${
-    originator?.sessionID
-}`
-        )
+        const {oldValue, newValue, context, originator, reason} = change
 
         if (oldValue != newValue) {
-            onValueChange.call(
+            output.call(
                 this,
-                0,
-                {
-                    oldValue,
-                    newValue,
-                    context,
-                },
+                {name: CharacteristicEventTypes.CHANGE, context: {reason}},
+                {oldValue, newValue, context},
                 originator
             )
         }
     }
 
-    const onInput = function (msg: Record<string, any>) {
-        if (msg.hasOwnProperty('payload')) {
+    const onInput = function (msg: HAPServiceMessage) {
+        if (msg.payload) {
             // payload must be an object
             const type = typeof msg.payload
 
@@ -209,23 +223,40 @@ module.exports = function (node: HAPServiceNodeType) {
         }
 
         let context: any = null
-        if (msg.payload.hasOwnProperty('Context')) {
+        if (msg.payload.Context) {
             context = msg.payload.Context
             delete msg.payload.Context
         }
 
-        node.topic_in = msg.topic ? msg.topic : ''
+        node.topic_in = msg.topic ?? ''
 
         // iterate over characteristics to be written
         // eslint-disable-next-line no-unused-vars
         Object.keys(msg.payload).map((key: string) => {
             if (node.supported.indexOf(key) < 0) {
-                log.error(
-                    `Try one of these characteristics: ${node.supported.join(
-                        ', '
-                    )}`
-                )
+                if (Storage.uuid4Validate(key)) {
+                    const callbackID = key
+                    const callbackValue = msg.payload?.[key]
+                    const eventCallback = Storage.loadCallback(callbackID)
+
+                    if (eventCallback) {
+                        log.debug(`Calling ${eventCallback.event} callback ${callbackID}`)
+                        eventCallback.callback(callbackValue)
+                    } else {
+                        log.error(
+                            `Callback ${callbackID} timeout`
+                        )
+                    }
+                } else {
+                    log.error(
+                        `Try one of these characteristics: ${node.supported.join(
+                            ', '
+                        )}`
+                    )
+                }
             } else {
+                const value = msg.payload?.[key]
+
                 if (
                     (node.config.isParent &&
                         node.config.hostType == HostType.BRIDGE) ||
@@ -234,7 +265,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 ) {
                     // updateReachability is only supported on bridged accessories
                     node.accessory.updateReachability(
-                        msg.payload[key] !== NO_RESPONSE_MSG
+                        value !== NO_RESPONSE_MSG
                     )
                 }
 
@@ -244,12 +275,12 @@ module.exports = function (node: HAPServiceNodeType) {
 
                 if (context !== null) {
                     characteristic.setValue(
-                        msg.payload[key],
+                        value,
                         undefined,
                         context
                     )
                 } else {
-                    characteristic.setValue(msg.payload[key])
+                    characteristic.setValue(value)
                 }
             }
         })

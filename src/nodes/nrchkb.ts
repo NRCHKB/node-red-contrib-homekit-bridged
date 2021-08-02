@@ -2,8 +2,8 @@ import { NodeAPI } from 'node-red'
 import * as path from 'path'
 import semver from 'semver'
 import { HAPStorage } from 'hap-nodejs'
-import storage from 'node-persist'
 import { logger, loggerSetup } from '@nrchkb/logger'
+import { Storage } from '../lib/Storage'
 
 loggerSetup({ timestampEnabled: 'NRCHKB' })
 const log = logger('NRCHKB')
@@ -37,19 +37,23 @@ module.exports = (RED: NodeAPI) => {
 
     const API = require('../lib/api')(RED)
 
+    let rootFolder: string
+
     // Initialize our storage system
     if (RED.settings.available() && RED.settings.userDir) {
         log.debug('RED settings available')
+        rootFolder = RED.settings.userDir
+    } else {
+        log.error('RED settings not available')
+        rootFolder = path.join(require('os').homedir(), '.node-red')
+    }
 
-        const nrchkbStoragePath = path.resolve(RED.settings.userDir, 'nrchkb')
-        storage.init({ dir: nrchkbStoragePath }).then(() => {
-            // Initialize API
-            API.init()
-        })
-        log.debug(`nrchkbStorage path set to ${nrchkbStoragePath}`)
+    Storage.init(rootFolder, 'nrchkb').then(() => {
+        log.debug(`nrchkb storage path set to ${Storage.storagePath()}`)
+        API.init()
 
         const hapStoragePath = path.resolve(
-            RED.settings.userDir,
+            rootFolder!,
             'homekit-persist'
         )
 
@@ -61,16 +65,14 @@ module.exports = (RED: NodeAPI) => {
             log.error('node-red restart highly recommended')
             log.trace(error)
         }
-    } else {
-        log.debug('RED settings not available')
-    }
 
-    // Experimental feature
-    if (process.env.NRCHKB_EXPERIMENTAL === 'true') {
-        log.debug('Registering nrchkb type')
+        // Experimental feature
+        if (process.env.NRCHKB_EXPERIMENTAL === 'true') {
+            log.debug('Registering nrchkb type')
 
-        RED.nodes.registerType('nrchkb', function (this: any, config) {
-            RED.nodes.createNode(this, config)
-        })
-    }
+            RED.nodes.registerType('nrchkb', function (this: any, config) {
+                RED.nodes.createNode(this, config)
+            })
+        }
+    })
 }

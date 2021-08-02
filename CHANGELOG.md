@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.4.0-dev.5]
+## [1.4.0-dev.6]
 
 ### Fixed
 
@@ -24,7 +24,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Notice during app launch: Node.js 10 will be deprecated in Node-RED 2.0.0
-- Output Home.app refresh event #392
+- Event output in service version 2 which is available in NRCHKB_EXPERIMENTAL (requested in #392)
 - Get node to fetch Serialized Service #210
 
 ### Changed
@@ -195,7 +195,7 @@ this [notice](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/16
 - After Service selection in node configuration Category will be automatically set to default for Service
 - Interface Name for Camera Service configuration
 - Support for new TV Remote services
-- Now first output is for onChange, second for events (old onSet) and third for camera
+- Now first output is for onChange, second for onSet and third for camera
   snapshot. [#200](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/200)
 - Sponsor Button on repository page
 
