@@ -56,9 +56,14 @@
             const node = this
             const selectServiceNode = $('#node-input-serviceNode')
 
-            const candidateNodes = RED.nodes.filterNodes({
-                type: 'homekit-service',
-            })
+            const candidateNodes = [
+                ...RED.nodes.filterNodes({
+                    type: 'homekit-service',
+                }),
+                ...RED.nodes.filterNodes({
+                    type: 'homekit-service2',
+                })
+            ]
 
             const inSubflow = !!RED.nodes.subflow(node.z)
 

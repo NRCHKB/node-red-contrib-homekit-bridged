@@ -608,9 +608,14 @@
 
             const selectParentService = $('#node-input-parentService')
 
-            const candidateNodes = RED.nodes.filterNodes({
-                type: 'homekit-service',
-            })
+            const candidateNodes = [
+                ...RED.nodes.filterNodes({
+                    type: 'homekit-service',
+                }),
+                ...RED.nodes.filterNodes({
+                    type: 'homekit-service2',
+                })
+            ]
 
             candidateNodes.forEach(function (n) {
                 if (!n.name || n.name.length < 1 || !n.isParent) {
