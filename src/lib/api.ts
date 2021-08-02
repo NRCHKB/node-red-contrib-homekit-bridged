@@ -255,6 +255,7 @@ module.exports = function (RED: NodeAPI) {
                         ) as HAPServiceNodeType
 
                         if (
+                            serviceNode &&
                             serviceNode.characteristicProperties &&
                             serviceNode.service
                         ) {

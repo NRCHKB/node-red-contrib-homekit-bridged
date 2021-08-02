@@ -20,7 +20,16 @@ module.exports = function (node: HAPServiceNodeType) {
             config.characteristicProperties.length > 0
         ) {
             characteristicProperties = JSON.parse(
-                config.characteristicProperties
+                config.characteristicProperties.replace(
+                    /\${(.*?)}/,
+                    (_, envName) =>
+                        node.RED.util.evaluateNodeProperty(
+                            envName,
+                            'env',
+                            node,
+                            {}
+                        )
+                )
             )
 
             // Configure custom characteristic properties
