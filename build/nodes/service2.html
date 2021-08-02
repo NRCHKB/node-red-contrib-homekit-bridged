@@ -203,6 +203,11 @@
         <label for="node-input-waitForSetupMsg"><i class="fa fa-bug"></i> Wait for Setup message</label>
         <input type="checkbox" id="node-input-waitForSetupMsg">
     </div>
+
+    <div class="form-row">
+        <label for="node-input-useEventCallback"><i class="fa fa-code-fork"></i> Use Event callback</label>
+        <input type="checkbox" id="node-input-useEventCallback">
+    </div>
 </script>
 
 <script data-help-name="homekit-service2" type="text/x-red">
@@ -255,6 +260,7 @@
    </ul>
    <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
    <li><strong>Wait for Setup message</strong>: If yes then Service node will wait for a input message with appropriate payload.</li>
+   <li><strong>Use Event callback</strong>: If yes then Service node will wait for a callback message to respond to get event.</li>
 </ul>
 <h2 id="toc_6">Input Messages</h2>
 <p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
@@ -471,6 +477,9 @@ if (nrchkbExperimental) {
                 },
             },
             waitForSetupMsg: {
+                value: false
+            },
+            useEventCallback: {
                 value: false
             },
             outputs: {

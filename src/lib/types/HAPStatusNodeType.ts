@@ -2,12 +2,12 @@ import NodeType from './NodeType'
 import { NodeAPI } from 'node-red'
 import StatusUtilType from './StatusUtilType'
 import HAPServiceNodeType from './HAPServiceNodeType'
-import HAPGetConfigType from './HAPGetConfigType'
+import HAPStatusConfigType from './HAPStatusConfigType'
 
-type HAPGetNodeType = NodeType & {
-    config: HAPGetConfigType
+type HAPStatusNodeType = NodeType & {
+    config: HAPStatusConfigType
     RED: NodeAPI
     serviceNode?: HAPServiceNodeType
 } & StatusUtilType
 
-export default HAPGetNodeType
+export default HAPStatusNodeType

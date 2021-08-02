@@ -1,5 +1,5 @@
 <!--suppress EqualityComparisonWithCoercionJS -->
-<script data-template-name="homekit-get" type="text/x-red">
+<script data-template-name="homekit-status" type="text/x-red">
     <div class="form-row">
         <label for="node-input-name">
           <i class="fa fa-tag"></i>
@@ -16,13 +16,13 @@
         </div>
 </script>
 
-<script data-help-name="homekit-get" type="text/x-red">
+<script data-help-name="homekit-status" type="text/x-red">
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('homekit-get', {
+    RED.nodes.registerType('homekit-status', {
         category: "Apple HomeKit",
-        paletteLabel: 'get',
+        paletteLabel: 'status',
         defaults: {
             serviceNodeId: {
                 value: '',

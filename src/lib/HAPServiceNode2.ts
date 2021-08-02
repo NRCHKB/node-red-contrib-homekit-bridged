@@ -1,6 +1,6 @@
 import { NodeAPI } from 'node-red'
-import HAPServiceConfigType from './types/HAPServiceConfigType'
-import HAPServiceNodeType from './types/HAPServiceNodeType'
+import HAPService2ConfigType from './types/HAPService2ConfigType'
+import HAPService2NodeType from './types/HAPService2NodeType'
 import HAPHostNodeType from './types/HAPHostNodeType'
 import HostType from './types/HostType'
 import { uuid } from 'hap-nodejs'
@@ -12,7 +12,7 @@ module.exports = (RED: NodeAPI) => {
      * Config override when user created services in old NRCHKB version
      */
     const nrchkbConfigCompatibilityOverride = function (
-        this: HAPServiceNodeType
+        this: HAPService2NodeType
     ) {
         const self = this
 
@@ -36,8 +36,8 @@ module.exports = (RED: NodeAPI) => {
     }
 
     const preInit = function (
-        this: HAPServiceNodeType,
-        config: HAPServiceConfigType
+        this: HAPService2NodeType,
+        config: HAPService2ConfigType
     ) {
         const self = this
 
@@ -66,7 +66,7 @@ module.exports = (RED: NodeAPI) => {
 
         const ServiceUtils = require('./utils/ServiceUtils2')(self)
 
-        new Promise<HAPServiceConfigType>((resolve) => {
+        new Promise<HAPService2ConfigType>((resolve) => {
             if (self.config.waitForSetupMsg) {
                 log.debug(
                     'Waiting for Setup message. It should be of format {"payload":{"nrchkb":{"setup":{}}}}'
@@ -92,8 +92,8 @@ module.exports = (RED: NodeAPI) => {
     }
 
     const init = function (
-        this: HAPServiceNodeType,
-        config: HAPServiceConfigType
+        this: HAPService2NodeType,
+        config: HAPService2ConfigType
     ) {
         const self = this
         self.config = config
@@ -124,7 +124,7 @@ module.exports = (RED: NodeAPI) => {
         }
     }
 
-    const configure = function (this: HAPServiceNodeType) {
+    const configure = function (this: HAPService2NodeType) {
         const self = this
 
         const log = logger('NRCHKB', 'HAPServiceNode2', self.config.name, self)
@@ -137,7 +137,7 @@ module.exports = (RED: NodeAPI) => {
         )
         const ServiceUtils = require('./utils/ServiceUtils2')(self)
 
-        let parentNode: HAPServiceNodeType
+        let parentNode: HAPService2NodeType
 
         if (self.config.isParent) {
             const hostId =
@@ -158,7 +158,7 @@ module.exports = (RED: NodeAPI) => {
             // Retrieve parent service node
             parentNode = RED.nodes.getNode(
                 self.config.parentService
-            ) as HAPServiceNodeType
+            ) as HAPService2NodeType
 
             if (!parentNode) {
                 log.error('Parent Node not assigned', false)

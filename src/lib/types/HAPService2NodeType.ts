@@ -1,14 +1,14 @@
 import NodeType from './NodeType'
 import { NodeAPI } from 'node-red'
+import HAPService2ConfigType from './HAPService2ConfigType'
 import { Accessory, CharacteristicProps, Service } from 'hap-nodejs'
 import HAPHostNodeType from './HAPHostNodeType'
 import PublishTimersType from './PublishTimersType'
 import StatusUtilType from './StatusUtilType'
-import HAPServiceConfigType from './HAPServiceConfigType'
-import HAPService2NodeType from './HAPService2NodeType'
+import HAPServiceNodeType from './HAPServiceNodeType'
 
-type HAPServiceNodeType = NodeType & {
-    config: HAPServiceConfigType
+type HAPService2NodeType = NodeType & {
+    config: HAPService2ConfigType
     RED: NodeAPI
     setupDone: boolean
     configured: boolean
@@ -29,4 +29,4 @@ type HAPServiceNodeType = NodeType & {
     uniqueIdentifier: string
 } & StatusUtilType
 
-export default HAPServiceNodeType
+export default HAPService2NodeType

@@ -1,17 +1,17 @@
 import { NodeAPI } from 'node-red'
 import { logger } from '@nrchkb/logger'
-import HAPGetNodeType from '../lib/types/HAPGetNodeType'
-import HAPGetConfigType from '../lib/types/HAPGetConfigType'
+import HAPStatusNodeType from '../lib/types/HAPStatusNodeType'
+import HAPStatusConfigType from '../lib/types/HAPStatusConfigType'
 import HAPServiceNodeType from '../lib/types/HAPServiceNodeType'
 import { Service } from 'hap-nodejs'
 
-const log = logger('NRCHKB', 'HAPGetNode')
+const log = logger('NRCHKB', 'HAPStatusNode')
 
 module.exports = (RED: NodeAPI) => {
-    log.debug('Registering homekit-get type')
+    log.debug('Registering homekit-status type')
     RED.nodes.registerType(
-        'homekit-get',
-        function (this: HAPGetNodeType, config: HAPGetConfigType) {
+        'homekit-status',
+        function (this: HAPStatusNodeType, config: HAPStatusConfigType) {
             const self = this
             self.config = config
             RED.nodes.createNode(self, config)

@@ -1,5 +1,5 @@
 import HostType from '../types/HostType'
-import HAPServiceNodeType from '../types/HAPServiceNodeType'
+import HAPService2NodeType from '../types/HAPService2NodeType'
 import {
     Accessory,
     Characteristic,
@@ -10,7 +10,7 @@ import {
     CharacteristicValue,
     Service,
 } from 'hap-nodejs'
-import HAPServiceConfigType from '../types/HAPServiceConfigType'
+import HAPService2ConfigType from '../types/HAPService2ConfigType'
 import {
     HAPConnection,
     HAPUsername,
@@ -19,7 +19,7 @@ import { logger } from '@nrchkb/logger'
 import { SessionIdentifier } from 'hap-nodejs/dist/types'
 import { Storage } from '../Storage'
 
-module.exports = function (node: HAPServiceNodeType) {
+module.exports = function (node: HAPService2NodeType) {
     const log = logger('NRCHKB', 'ServiceUtils2', node.config.name, node)
 
     const HapNodeJS = require('hap-nodejs')
@@ -63,17 +63,16 @@ module.exports = function (node: HAPServiceNodeType) {
         { oldValue, newValue, context }: any,
         connection?: HAPConnection
     ) {
+        const eventObject = typeof event === 'object' ? event : { name: event }
+
         log.debug(
-            `${event} event, oldValue: ${oldValue}, newValue: ${newValue}, connection ${connection?.sessionID}`
+            `${eventObject.name} event, oldValue: ${oldValue}, newValue: ${newValue}, connection ${connection?.sessionID}`
         )
 
         const msg: HAPServiceMessage = {
             name: node.name,
             topic: node.config.topic ? node.config.topic : node.topic_in,
         }
-
-        const eventObject = typeof event === 'object' ? event : { name: event }
-
         msg.payload = {}
         msg.hap = {
             oldValue,
@@ -103,7 +102,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 fill: 'yellow',
                 shape: 'dot',
                 text: `[${eventObject.name}] ${key}${
-                    newValue ? `: ${newValue}` : ''
+                    newValue != undefined ? `: ${newValue}` : ''
                 }`,
             },
             3000
@@ -131,40 +130,46 @@ module.exports = function (node: HAPServiceNodeType) {
         const characteristic = this
         const oldValue = characteristic.value
 
-        const callbackID = Storage.saveCallback({
-            event: CharacteristicEventTypes.GET,
-            callback: (value?: any) => {
-                const newValue = value ?? characteristic.value
-                if (callback) {
-                    try {
-                        callback(
-                            node.accessory.reachable
-                                ? characteristic.statusCode
-                                : new Error(NO_RESPONSE_MSG),
-                            newValue
-                        )
-                    } catch (_) {}
-                }
+        const delayedCallback = (value?: any) => {
+            const newValue = value ?? characteristic.value
+            if (callback) {
+                try {
+                    callback(
+                        node.accessory.reachable
+                            ? characteristic.statusCode
+                            : new Error(NO_RESPONSE_MSG),
+                        newValue
+                    )
+                } catch (_) {}
+            }
 
-                output.call(
-                    characteristic,
-                    { name: CharacteristicEventTypes.GET },
-                    { oldValue, newValue, context },
-                    connection
-                )
-            },
-        })
+            output.call(
+                characteristic,
+                { name: CharacteristicEventTypes.GET },
+                { oldValue, newValue, context },
+                connection
+            )
+        }
 
-        log.debug(
-            `Registered callback ${callbackID} for Characteristic ${characteristic.displayName}`
-        )
+        if (node.config.useEventCallback) {
+            const callbackID = Storage.saveCallback({
+                event: CharacteristicEventTypes.GET,
+                callback: delayedCallback,
+            })
 
-        output.call(
-            this,
-            { name: CharacteristicEventTypes.GET, context: { callbackID } },
-            { oldValue, context },
-            connection
-        )
+            log.debug(
+                `Registered callback ${callbackID} for Characteristic ${characteristic.displayName}`
+            )
+
+            output.call(
+                this,
+                { name: CharacteristicEventTypes.GET, context: { callbackID } },
+                { oldValue, context },
+                connection
+            )
+        } else {
+            delayedCallback()
+        }
     }
 
     // eslint-disable-next-line no-unused-vars
@@ -241,7 +246,10 @@ module.exports = function (node: HAPServiceNodeType) {
         // eslint-disable-next-line no-unused-vars
         Object.keys(msg.payload).map((key: string) => {
             if (node.supported.indexOf(key) < 0) {
-                if (Storage.uuid4Validate(key)) {
+                if (
+                    node.config.useEventCallback &&
+                    Storage.uuid4Validate(key)
+                ) {
                     const callbackID = key
                     const callbackValue = msg.payload?.[key]
                     const eventCallback = Storage.loadCallback(callbackID)
@@ -326,7 +334,7 @@ module.exports = function (node: HAPServiceNodeType) {
             name: string
             UUID: string
             serviceName: string
-            config: HAPServiceConfigType
+            config: HAPService2ConfigType
         },
         parentService: Service
     ) {
@@ -395,7 +403,7 @@ module.exports = function (node: HAPServiceNodeType) {
     const configureCameraSource = function (
         accessory: Accessory,
         service: Service,
-        config: HAPServiceConfigType
+        config: HAPService2ConfigType
     ) {
         if (config.cameraConfigSource) {
             log.debug('Configuring Camera Source')
@@ -426,9 +434,9 @@ module.exports = function (node: HAPServiceNodeType) {
             })
 
             const checkAndWait = () => {
-                const parentNode: HAPServiceNodeType = node.RED.nodes.getNode(
+                const parentNode: HAPService2NodeType = node.RED.nodes.getNode(
                     node.config.parentService
-                ) as HAPServiceNodeType
+                ) as HAPService2NodeType
 
                 if (parentNode && parentNode.configured) {
                     resolve(parentNode)
@@ -444,9 +452,9 @@ module.exports = function (node: HAPServiceNodeType) {
     }
 
     const handleWaitForSetup = (
-        config: HAPServiceConfigType,
+        config: HAPService2ConfigType,
         msg: Record<string, any>,
-        resolve: (newConfig: HAPServiceConfigType) => void
+        resolve: (newConfig: HAPService2ConfigType) => void
     ) => {
         if (node.setupDone) {
             return

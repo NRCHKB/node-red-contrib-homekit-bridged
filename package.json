@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-homekit-bridged",
-  "version": "1.4.0-dev.7",
+  "version": "1.4.0-dev.8",
   "description": "Node-RED nodes to simulate Apple HomeKit devices.",
   "main": "build/nodes/nrchkb.js",
   "scripts": {
@@ -32,7 +32,7 @@
       "standalone": "build/nodes/standalone.js",
       "service": "build/nodes/service.js",
       "service2": "build/nodes/service2.js",
-      "get": "build/nodes/get.js"
+      "status": "build/nodes/status.js"
     }
   },
   "author": {
