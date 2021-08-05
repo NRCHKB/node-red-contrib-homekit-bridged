@@ -20,6 +20,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   compatibility #393 - thanks @kevinkub
 - Fixed Custom MDNS Configuration not showing in UI for Standalone Accessory
 - Stop components from clearing other component's node.status call
+- Add missing advertiser selector in UI for Standalone Accessory
 
 ### Added
 
