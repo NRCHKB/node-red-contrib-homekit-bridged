@@ -2,8 +2,6 @@
 
 Do you need setup help? have a great idea? want to shoot the breeze with fellow users? [Join us on our Discord server!](https://discord.gg/uvYac5u)
 
-[![NRCHKB Discord](https://discordapp.com/api/guilds/586065987267330068/widget.png?style=banner2)](https://discord.gg/uvYac5u)
-
 # Super GIF
 
 This is a collection of nodes which can be used to imitate HomeKit devices inside of Node-RED. Messages coming into these nodes are able to set device states and status in Apple's iOS and MacOS Home apps. Commands from Home apps (or Siri) will be passed from these nodes into your Node-RED flows.
@@ -28,5 +26,7 @@ You can also pull a [docker image](https://github.com/NRCHKB/node-red-contrib-ho
 #### ⚠️ Upgrade notes
 ###### Before upgrading make sure that you are using latest version of [Node-RED](https://nodered.org/docs/getting-started/local) and latest LTS version of [Node.js](https://nodejs.org/en/download/)
 ###### Upgrading from versions 0.X to 1.X is a breaking change, all devices will be reset in the Home app. Please review the [release notes](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/releases/tag/v1.0.1) thoroughly before updating!
+
+[![NRCHKB Discord](https://discordapp.com/api/guilds/586065987267330068/widget.png?style=banner2)](https://discord.gg/uvYac5u)
 
 [![Build Status](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged.svg?branch=master)](https://travis-ci.org/NRCHKB/node-red-contrib-homekit-bridged) [![codebeat badge](https://codebeat.co/badges/3bbdea35-c2ab-4273-b5d7-de6c4c9c1971)](https://codebeat.co/projects/github-com-nrchkb-node-red-contrib-homekit-bridged-master) [![Known Vulnerabilities](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged/badge.svg?targetFile=package.json)](https://snyk.io/test/github/NRCHKB/node-red-contrib-homekit-bridged?targetFile=package.json)
