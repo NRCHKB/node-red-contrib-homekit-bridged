@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.4.0-dev.11]
+## [1.4.0-dev.12]
 
 ### Fixed
 
@@ -33,6 +33,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 
 - Changed `BatteryService` to `Battery` in demo examples as `BatteryService` is deprecated #381 - thanks @crxporter
+- Readme rework - thanks @crxporter
 
 ## [1.3.6]
 
