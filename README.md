@@ -6,6 +6,8 @@
 
 <img src="https://github.com/NRCHKB/NRCHKB.github.io/raw/master/static/images/presentation/demonstration.gif" alt="NRCHKB Demonstration" align="right"/>
 
+### About this Contrib
+
 This is a collection of nodes which can be used to imitate HomeKit devices inside of Node-RED. Messages coming into these nodes are able to set device states and status in Apple's iOS and MacOS Home apps. Commands from Home apps (or Siri) will be passed from these nodes into your Node-RED flows.
 
 ### Easy Install
