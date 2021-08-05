@@ -16,6 +16,7 @@ import HapCategories from './types/HapCategories'
 import { SemVer } from 'semver'
 import { logger } from '@nrchkb/logger'
 import { MulticastOptions } from 'bonjour-hap'
+import NRCHKBError from './NRCHKBError'
 
 module.exports = (RED: NodeAPI, hostType: HostType) => {
     const MdnsUtils = require('./utils/MdnsUtils')()
@@ -32,7 +33,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
 
         if (!hostNameValidator(config.bridgeName)) {
             log.error('Host name is incorrect', false)
-            throw Error('Host name is incorrect')
+            return new NRCHKBError('Host name is incorrect')
         }
 
         if (semver.parse(config.firmwareRev) == null) {
@@ -76,7 +77,14 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             : self.config.accessoryCategory) as unknown as Categories
 
         self.published = false
-        self.bridgeUsername = macify(self.id)
+
+        try {
+            self.bridgeUsername = macify(self.id)
+        } catch (error) {
+            log.error(error)
+            return error
+        }
+
         const hostUUID = uuid.generate(self.id)
 
         const hostTypeName =
@@ -195,12 +203,12 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             if (match) {
                 return match.join(':').substr(0, 17).toUpperCase()
             } else {
-                throw Error(
+                throw new NRCHKBError(
                     `match failed in macify process for padded string ${paddedStr}`
                 )
             }
         } else {
-            throw Error('nodeId cannot be empty in macify process')
+            throw new NRCHKBError('nodeId cannot be empty in macify process')
         }
     }
 

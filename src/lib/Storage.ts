@@ -13,6 +13,7 @@ import {
     validate as uuidValidate,
     version as uuidVersion,
 } from 'uuid'
+import NRCHKBError from './NRCHKBError'
 
 type EventCallback = {
     event: CharacteristicEventTypes
@@ -29,7 +30,7 @@ export class Storage {
 
     static storagePath(): string {
         if (!Storage.storageInitialized) {
-            throw new Error('Storage path was not initialized!')
+            throw new NRCHKBError('Storage path was not initialized!')
         }
 
         return Storage.customStoragePath

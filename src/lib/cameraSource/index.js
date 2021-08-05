@@ -41,7 +41,7 @@ Camera.prototype.configure = function (config, cameraControlService) {
     this.interfaceName = config.cameraConfigInterfaceName
 
     if (!config.cameraConfigSource) {
-        throw new Error('Missing source for camera.')
+        throw new NRCHKBError('Missing source for camera.')
     }
 
     if (this.interfaceName !== '') {
@@ -50,7 +50,7 @@ Camera.prototype.configure = function (config, cameraControlService) {
                 this.interfaceName
             )
         ) {
-            throw new Error('Incorrect interface name for camera.')
+            throw new NRCHKBError('Incorrect interface name for camera.')
         }
     }
 

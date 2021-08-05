@@ -6,6 +6,7 @@ import HostType from './types/HostType'
 import { uuid } from 'hap-nodejs'
 import { logger } from '@nrchkb/logger'
 import { FlowTypeType } from './types/FlowType'
+import NRCHKBError from './NRCHKBError'
 
 module.exports = (RED: NodeAPI) => {
     /**
@@ -86,9 +87,13 @@ module.exports = (RED: NodeAPI) => {
             } else {
                 resolve(self.config)
             }
-        }).then((newConfig) => {
-            init.call(self, newConfig)
         })
+            .then((newConfig) => {
+                init.call(self, newConfig)
+            })
+            .catch((error: any) => {
+                log.error(`Error while starting Service due to ${error}`)
+            })
     }
 
     const init = function (
@@ -149,7 +154,7 @@ module.exports = (RED: NodeAPI) => {
 
             if (!self.hostNode) {
                 log.error('Host Node not found', false)
-                throw Error('Host Node not found')
+                throw new NRCHKBError('Host Node not found')
             }
 
             self.childNodes = []
@@ -162,14 +167,14 @@ module.exports = (RED: NodeAPI) => {
 
             if (!parentNode) {
                 log.error('Parent Node not assigned', false)
-                throw Error('Parent Node not assigned')
+                throw new NRCHKBError('Parent Node not assigned')
             }
 
             self.parentService = parentNode.service
 
             if (!self.parentService) {
                 log.error('Parent Service not assigned', false)
-                throw Error('Parent Service not assigned')
+                throw new NRCHKBError('Parent Service not assigned')
             }
 
             self.hostNode = parentNode.hostNode

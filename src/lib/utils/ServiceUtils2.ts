@@ -18,6 +18,7 @@ import {
 import { logger } from '@nrchkb/logger'
 import { SessionIdentifier } from 'hap-nodejs/dist/types'
 import { Storage } from '../Storage'
+import NRCHKBError from '../NRCHKBError'
 
 module.exports = function (node: HAPService2NodeType) {
     const log = logger('NRCHKB', 'ServiceUtils2', node.config.name, node)
@@ -447,7 +448,7 @@ module.exports = function (node: HAPService2NodeType) {
             checkAndWait()
         }).catch((error) => {
             log.error(`Waiting for Parent Service failed due to: ${error}`)
-            throw error
+            throw new NRCHKBError(error)
         })
     }
 
