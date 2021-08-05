@@ -2,7 +2,7 @@
 
 Do you need setup help? have a great idea? want to shoot the breeze with fellow users? [Join us on our Discord server!](https://discord.gg/uvYac5u)
 
-# Super GIF
+![nrchkb demostration](https://github.com/NRCHKB/NRCHKB.github.io/raw/master/static/images/presentation/demonstration.gif)
 
 This is a collection of nodes which can be used to imitate HomeKit devices inside of Node-RED. Messages coming into these nodes are able to set device states and status in Apple's iOS and MacOS Home apps. Commands from Home apps (or Siri) will be passed from these nodes into your Node-RED flows.
 
@@ -17,9 +17,9 @@ You can also pull a [docker image](https://github.com/NRCHKB/node-red-contrib-ho
 
 ### Getting Started
 
-[**Example flows**](www.DuckDuckGo.com) For a quick start, we recommend checking out the flows which are included with the plugin, they can be imported using the Node-RED hamburger menu after install. 
+[**Example flows**](https://nrchkb.github.io/wiki/examples/) For a quick start, we recommend checking out the flows which are included with the plugin, they can be imported using the Node-RED hamburger menu after install. 
 
-[**Documentation home page**](https://github.com/Shaquu) For more instructions, information about how things work, and detailed examples (including various real life examples from the community)
+[**Documentation home page**](https://nrchkb.github.io/wiki/introduction/quick-start/) For more instructions, information about how things work, and detailed examples (including various real life examples from the community)
 
 [**Discord**](https://discord.gg/uvYac5u) Again, one of us is on Discord every day, always ready to help!
 
