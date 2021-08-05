@@ -15,7 +15,7 @@ Then select `Install` tab in the palette. Search for and install this node (`nod
 
 ### Docker Install
 
-You can also pull a [docker image](https://github.com/NRCHKB/node-red-contrib-homekit-docker) containing everything needed to get started, thanks to [Raymond Mouthaan](https://github.com/RaymondMouthaan).
+You can also pull a [docker image](https://github.com/NRCHKB/node-red-contrib-homekit-docker) containing everything needed to get started.
 
 ### Getting Started
 
