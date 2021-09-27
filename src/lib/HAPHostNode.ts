@@ -80,7 +80,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
 
         try {
             self.bridgeUsername = macify(self.id)
-        } catch (error) {
+        } catch (error: any) {
             log.error(error)
             return error
         }

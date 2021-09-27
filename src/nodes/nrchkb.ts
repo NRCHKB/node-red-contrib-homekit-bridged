@@ -57,7 +57,7 @@ module.exports = (RED: NodeAPI) => {
         try {
             HAPStorage.setCustomStoragePath(hapStoragePath)
             log.debug(`HAPStorage path set to ${hapStoragePath}`)
-        } catch (error) {
+        } catch (error: any) {
             log.debug('HAPStorage already initialized')
             log.error('node-red restart highly recommended')
             log.trace(error)

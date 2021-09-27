@@ -43,7 +43,7 @@ module.exports = (RED: NodeAPI) => {
                 self.serviceNode = RED.nodes.getNode(
                     self.config.serviceNodeId
                 ) as HAPServiceNodeType
-            } catch (error) {
+            } catch (error: any) {
                 log.error(error)
             }
 

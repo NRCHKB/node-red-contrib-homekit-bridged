@@ -1,9 +1,9 @@
 enum StorageType {
-    SERVICE = 'service', //FFU
-    ACCESSORY = 'accessory', //FFU
-    HOST = 'host', //FFU
+    SERVICE = 'service', // For Future Use
+    ACCESSORY = 'accessory', // For Future Use
+    HOST = 'host', // For Future Use
     CUSTOM_CHARACTERISTICS = 'customCharacteristics',
-    OTHER = 'other', //FFU
+    OTHER = 'other', // For Future Use
 }
 
 export { StorageType }
