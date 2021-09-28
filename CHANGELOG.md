@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.4.0-dev.15]
+## [1.4.0-dev.16]
 
 ### Fixed
 
@@ -26,7 +26,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Notice during app launch: Node.js 10 will be deprecated in Node-RED 2.0.0
-- Event output in Service 2 which is available in NRCHKB_EXPERIMENTAL #392
+- Event output in Service 2 which is available in NRCHKB_EXPERIMENTAL #392 #437
 - Status node to fetch Serialized Service #210
 - Support for environment variables in characteristic properties #217
 
@@ -37,6 +37,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Changed `BatteryService` to `Battery` in demo examples as `BatteryService` is deprecated #381 - thanks @crxporter
 - Readme rework - thanks @crxporter
 - More descriptive error when incorrect Characteristic has been used in msg.payload
+- Add msg.hap.allChars to service nodes #438
 
 ## [1.3.6]
 
