@@ -1,11 +1,21 @@
 import NodeType from './NodeType'
 import { NodeAPI } from 'node-red'
 import HAPService2ConfigType from './HAPService2ConfigType'
-import { Accessory, CharacteristicProps, Service } from 'hap-nodejs'
+import {
+    Accessory,
+    Characteristic,
+    CharacteristicChange,
+    CharacteristicGetCallback,
+    CharacteristicProps,
+    CharacteristicSetCallback,
+    CharacteristicValue,
+    Service,
+} from 'hap-nodejs'
 import HAPHostNodeType from './HAPHostNodeType'
 import PublishTimersType from './PublishTimersType'
 import StatusUtilType from './StatusUtilType'
 import HAPServiceNodeType from './HAPServiceNodeType'
+import { HAPConnection } from 'hap-nodejs/dist/lib/util/eventedhttp'
 
 type HAPService2NodeType = NodeType & {
     config: HAPService2ConfigType
@@ -23,9 +33,23 @@ type HAPService2NodeType = NodeType & {
     supported: string[]
     publishTimers: PublishTimersType
     topic_in: string
-    onCharacteristicGet: any
-    onCharacteristicSet: any
-    onCharacteristicChange: any
+    onCharacteristicGet: (
+        this: Characteristic,
+        callback: CharacteristicGetCallback,
+        context: any,
+        connection?: HAPConnection
+    ) => void
+    onCharacteristicSet: (
+        this: Characteristic,
+        newValue: CharacteristicValue,
+        callback: CharacteristicSetCallback,
+        context: any,
+        connection?: HAPConnection
+    ) => void
+    onCharacteristicChange: (
+        this: Characteristic,
+        change: CharacteristicChange
+    ) => void
     uniqueIdentifier: string
 } & StatusUtilType
 

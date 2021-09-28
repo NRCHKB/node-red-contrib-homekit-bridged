@@ -52,6 +52,7 @@ module.exports = function (node: HAPService2NodeType) {
                 localAddress?: string
                 httpPort?: number
             }
+            allChars: { [key: string]: any }
         }
         name?: string
         topic?: string
@@ -59,6 +60,7 @@ module.exports = function (node: HAPService2NodeType) {
 
     const output = function (
         this: Characteristic,
+        allCharacteristics: Characteristic[],
         event: CharacteristicEventTypes | HAPServiceNodeEvent,
         { oldValue, newValue }: any,
         connection?: HAPConnection
@@ -78,6 +80,13 @@ module.exports = function (node: HAPService2NodeType) {
             oldValue,
             newValue,
             event: eventObject,
+            allChars: allCharacteristics.reduce<{ [key: string]: any }>(
+                (allChars, singleChar) => {
+                    allChars[singleChar.displayName] = singleChar.value
+                    return allChars
+                },
+                {}
+            ),
         }
 
         const key = this.constructor.name
@@ -109,105 +118,113 @@ module.exports = function (node: HAPService2NodeType) {
             `${node.name} received ${eventObject.name} ${key}: ${newValue}`
         )
 
-        if (
-            connection ||
-            context ||
-            node.hostNode.config.allowMessagePassthrough
-        ) {
+        if (connection || node.hostNode.config.allowMessagePassthrough) {
             node.send(msg)
         }
     }
 
-    const onCharacteristicGet = function (
-        this: Characteristic,
-        callback: CharacteristicGetCallback,
-        context: any,
-        connection?: HAPConnection
-    ) {
-        const characteristic = this
-        const oldValue = characteristic.value
+    const onCharacteristicGet = (allCharacteristics: Characteristic[]) =>
+        function (
+            this: Characteristic,
+            callback: CharacteristicGetCallback,
+            _context: any,
+            connection?: HAPConnection
+        ) {
+            const characteristic = this
+            const oldValue = characteristic.value
 
-        const delayedCallback = (value?: any) => {
-            const newValue = value ?? characteristic.value
-            if (callback) {
-                try {
-                    callback(
-                        node.accessory.reachable
-                            ? characteristic.statusCode
-                            : new Error(NO_RESPONSE_MSG),
-                        newValue
-                    )
-                } catch (_) {}
-            }
+            const delayedCallback = (value?: any) => {
+                const newValue = value ?? characteristic.value
+                if (callback) {
+                    try {
+                        callback(
+                            node.accessory.reachable
+                                ? characteristic.statusCode
+                                : new Error(NO_RESPONSE_MSG),
+                            newValue
+                        )
+                    } catch (_) {}
+                }
 
-            output.call(
-                characteristic,
-                { name: CharacteristicEventTypes.GET },
-                { oldValue, newValue, context },
-                connection
-            )
-        }
-
-        if (node.config.useEventCallback) {
-            const callbackID = Storage.saveCallback({
-                event: CharacteristicEventTypes.GET,
-                callback: delayedCallback,
-            })
-
-            log.debug(
-                `Registered callback ${callbackID} for Characteristic ${characteristic.displayName}`
-            )
-
-            output.call(
-                this,
-                { name: CharacteristicEventTypes.GET, context: { callbackID } },
-                { oldValue, context },
-                connection
-            )
-        } else {
-            delayedCallback()
-        }
-    }
-
-    // eslint-disable-next-line no-unused-vars
-    const onCharacteristicSet = function (
-        this: Characteristic,
-        newValue: CharacteristicValue,
-        callback: CharacteristicSetCallback,
-        context: any,
-        connection?: HAPConnection
-    ) {
-        try {
-            if (callback) {
-                callback(
-                    node.accessory.reachable ? null : new Error(NO_RESPONSE_MSG)
+                output.call(
+                    characteristic,
+                    allCharacteristics,
+                    { name: CharacteristicEventTypes.GET },
+                    { oldValue, newValue },
+                    connection
                 )
             }
-        } catch (_) {}
 
-        output.call(
-            this,
-            CharacteristicEventTypes.SET,
-            { oldValue: undefined, newValue, context },
-            connection
-        )
-    }
+            if (node.config.useEventCallback) {
+                const callbackID = Storage.saveCallback({
+                    event: CharacteristicEventTypes.GET,
+                    callback: delayedCallback,
+                })
 
-    const onCharacteristicChange = function (
-        this: Characteristic,
-        change: CharacteristicChange
-    ) {
-        const { oldValue, newValue, context, originator, reason } = change
+                log.debug(
+                    `Registered callback ${callbackID} for Characteristic ${characteristic.displayName}`
+                )
 
-        if (oldValue != newValue) {
+                output.call(
+                    this,
+                    allCharacteristics,
+                    {
+                        name: CharacteristicEventTypes.GET,
+                        context: { callbackID },
+                    },
+                    { oldValue },
+                    connection
+                )
+            } else {
+                delayedCallback()
+            }
+        }
+
+    // eslint-disable-next-line no-unused-vars
+    const onCharacteristicSet = (allCharacteristics: Characteristic[]) =>
+        function (
+            this: Characteristic,
+            newValue: CharacteristicValue,
+            callback: CharacteristicSetCallback,
+            _context: any,
+            connection?: HAPConnection
+        ) {
+            try {
+                if (callback) {
+                    callback(
+                        node.accessory.reachable
+                            ? null
+                            : new Error(NO_RESPONSE_MSG)
+                    )
+                }
+            } catch (_) {}
+
             output.call(
                 this,
-                { name: CharacteristicEventTypes.CHANGE, context: { reason } },
-                { oldValue, newValue, context },
-                originator
+                allCharacteristics,
+                CharacteristicEventTypes.SET,
+                { oldValue: undefined, newValue },
+                connection
             )
         }
-    }
+
+    const onCharacteristicChange = (allCharacteristics: Characteristic[]) =>
+        function (this: Characteristic, change: CharacteristicChange) {
+            const { oldValue, newValue, context, originator, reason } = change
+
+            if (oldValue != newValue) {
+                output.call(
+                    this,
+                    allCharacteristics,
+                    {
+                        name: CharacteristicEventTypes.CHANGE,
+                        context: { reason },
+                    },
+                    { oldValue, newValue, context },
+                    originator
+                )
+            }
+        }
 
     const onInput = function (msg: HAPServiceMessage) {
         if (msg.payload) {

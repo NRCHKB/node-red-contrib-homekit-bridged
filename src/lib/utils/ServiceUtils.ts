@@ -77,6 +77,7 @@ module.exports = function (node: HAPServiceNodeType) {
 
     const onValueChange = function (
         this: Characteristic,
+        allCharacteristics: Characteristic[],
         outputNumber: number,
         { oldValue, newValue, context }: any,
         connection?: HAPConnection
@@ -93,6 +94,14 @@ module.exports = function (node: HAPServiceNodeType) {
         msg.payload[key] = newValue
 
         msg.hap = prepareHapData(context, connection)
+        msg.hap.allChars = allCharacteristics.reduce<{ [key: string]: any }>(
+            (allChars, singleChar) => {
+                allChars[singleChar.displayName] = singleChar.value
+                return allChars
+            },
+            {}
+        )
+
         msg.hap.oldValue = oldValue
         msg.hap.newValue = newValue
 
@@ -122,70 +131,73 @@ module.exports = function (node: HAPServiceNodeType) {
     }
 
     // eslint-disable-next-line no-unused-vars
-    const onCharacteristicSet = function (
-        this: Characteristic,
-        newValue: CharacteristicValue,
-        callback: CharacteristicSetCallback,
-        context: any,
-        connection?: HAPConnection
-    ) {
-        log.debug(
-            `onCharacteristicSet with status: ${this.statusCode}, value: ${
-                this.value
-            }, reachability is ${node.accessory.reachable} 
+    const onCharacteristicSet = (allCharacteristics: Characteristic[]) =>
+        function (
+            this: Characteristic,
+            newValue: CharacteristicValue,
+            callback: CharacteristicSetCallback,
+            context: any,
+            connection?: HAPConnection
+        ) {
+            log.debug(
+                `onCharacteristicSet with status: ${this.statusCode}, value: ${
+                    this.value
+                }, reachability is ${node.accessory.reachable} 
             with context ${JSON.stringify(context)} on connection ${
-                connection?.sessionID
-            }`
-        )
+                    connection?.sessionID
+                }`
+            )
 
-        try {
-            if (callback) {
-                callback(
-                    node.accessory.reachable ? null : new Error(NO_RESPONSE_MSG)
-                )
-            }
-        } catch (_) {}
+            try {
+                if (callback) {
+                    callback(
+                        node.accessory.reachable
+                            ? null
+                            : new Error(NO_RESPONSE_MSG)
+                    )
+                }
+            } catch (_) {}
 
-        onValueChange.call(
-            this,
-            1,
-            {
-                undefined,
-                newValue,
-                context,
-            },
-            connection
-        )
-    }
-
-    const onCharacteristicChange = function (
-        this: Characteristic,
-        change: CharacteristicChange
-    ) {
-        const { oldValue, newValue, context, originator, reason } = change
-
-        log.debug(
-            `onCharacteristicChange with reason: ${reason}, oldValue: ${oldValue}, newValue: ${newValue}, reachability is ${
-                node.accessory.reachable
-            } 
-            with context ${JSON.stringify(context)} on connection ${
-                originator?.sessionID
-            }`
-        )
-
-        if (oldValue != newValue) {
             onValueChange.call(
                 this,
-                0,
+                allCharacteristics,
+                1,
                 {
-                    oldValue,
+                    undefined,
                     newValue,
                     context,
                 },
-                originator
+                connection
             )
         }
-    }
+
+    const onCharacteristicChange = (allCharacteristics: Characteristic[]) =>
+        function (this: Characteristic, change: CharacteristicChange) {
+            const { oldValue, newValue, context, originator, reason } = change
+
+            log.debug(
+                `onCharacteristicChange with reason: ${reason}, oldValue: ${oldValue}, newValue: ${newValue}, reachability is ${
+                    node.accessory.reachable
+                } 
+            with context ${JSON.stringify(context)} on connection ${
+                    originator?.sessionID
+                }`
+            )
+
+            if (oldValue != newValue) {
+                onValueChange.call(
+                    this,
+                    allCharacteristics,
+                    0,
+                    {
+                        oldValue,
+                        newValue,
+                        context,
+                    },
+                    originator
+                )
+            }
+        }
 
     const onInput = function (msg: Record<string, any>) {
         if (msg.hasOwnProperty('payload')) {
