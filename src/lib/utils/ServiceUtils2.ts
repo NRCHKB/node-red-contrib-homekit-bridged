@@ -44,7 +44,6 @@ module.exports = function (node: HAPService2NodeType) {
         hap?: {
             oldValue?: any
             newValue?: any
-            context?: any
             event?: HAPServiceNodeEvent
             session?: {
                 sessionID?: SessionIdentifier
@@ -61,7 +60,7 @@ module.exports = function (node: HAPService2NodeType) {
     const output = function (
         this: Characteristic,
         event: CharacteristicEventTypes | HAPServiceNodeEvent,
-        { oldValue, newValue, context }: any,
+        { oldValue, newValue }: any,
         connection?: HAPConnection
     ) {
         const eventObject = typeof event === 'object' ? event : { name: event }
@@ -79,7 +78,6 @@ module.exports = function (node: HAPService2NodeType) {
             oldValue,
             newValue,
             event: eventObject,
-            context,
         }
 
         const key = this.constructor.name
@@ -94,8 +92,6 @@ module.exports = function (node: HAPService2NodeType) {
                 localAddress: connection.localAddress,
                 httpPort: connection.remotePort,
             }
-
-            msg.hap.context ??= {}
         }
 
         node.setStatus(
