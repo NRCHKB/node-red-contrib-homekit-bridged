@@ -77,7 +77,6 @@ module.exports = function (node: HAPService2NodeType) {
         }
         msg.payload = {}
         msg.hap = {
-            oldValue,
             newValue,
             event: eventObject,
             allChars: allCharacteristics.reduce<{ [key: string]: any }>(
@@ -87,6 +86,10 @@ module.exports = function (node: HAPService2NodeType) {
                 },
                 {}
             ),
+        }
+
+        if (oldValue) {
+            msg.hap.oldValue = oldValue
         }
 
         const key = this.constructor.name
@@ -203,7 +206,7 @@ module.exports = function (node: HAPService2NodeType) {
                 this,
                 allCharacteristics,
                 CharacteristicEventTypes.SET,
-                { oldValue: undefined, newValue },
+                { newValue },
                 connection
             )
         }

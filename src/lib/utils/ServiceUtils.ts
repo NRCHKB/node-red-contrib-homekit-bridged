@@ -102,7 +102,10 @@ module.exports = function (node: HAPServiceNodeType) {
             {}
         )
 
-        msg.hap.oldValue = oldValue
+        if (oldValue) {
+            msg.hap.oldValue = oldValue
+        }
+
         msg.hap.newValue = newValue
 
         const statusId = node.setStatus({
@@ -163,7 +166,6 @@ module.exports = function (node: HAPServiceNodeType) {
                 allCharacteristics,
                 1,
                 {
-                    undefined,
                     newValue,
                     context,
                 },

@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.4.0-dev.16]
+## [1.4.0-dev.17]
 
 ### Fixed
 
@@ -22,6 +22,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Stop components from clearing other component's node.status call
 - Add missing advertiser selector in UI for Standalone Accessory
 - Not naming the host node causes a crash #424
+- Do not output oldValue for onSet as it does not have access to old value
 
 ### Added
 
