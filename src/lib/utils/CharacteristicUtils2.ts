@@ -65,12 +65,15 @@ module.exports = function (node: HAPService2NodeType) {
 
             // Listen to characteristic events and store the listener functions
             // to be able to remove them later
-            node.onCharacteristicGet =
-                ServiceUtils.onCharacteristicGet(allCharacteristics)
-            node.onCharacteristicSet =
-                ServiceUtils.onCharacteristicSet(allCharacteristics)
-            node.onCharacteristicChange =
-                ServiceUtils.onCharacteristicChange(allCharacteristics)
+            node.onCharacteristicGet = ServiceUtils.onCharacteristicGet(
+                service.characteristics
+            )
+            node.onCharacteristicSet = ServiceUtils.onCharacteristicSet(
+                service.characteristics
+            )
+            node.onCharacteristicChange = ServiceUtils.onCharacteristicChange(
+                service.characteristics
+            )
             characteristic.on('get', node.onCharacteristicGet)
             characteristic.on('set', node.onCharacteristicSet)
             characteristic.on('change', node.onCharacteristicChange)
