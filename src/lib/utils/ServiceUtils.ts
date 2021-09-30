@@ -102,7 +102,7 @@ module.exports = function (node: HAPServiceNodeType) {
             {}
         )
 
-        if (oldValue) {
+        if (oldValue !== undefined) {
             msg.hap.oldValue = oldValue
         }
 
