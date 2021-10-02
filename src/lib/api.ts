@@ -342,7 +342,7 @@ module.exports = function (RED: NodeAPI) {
             .sort()
             .filter((x) => parseInt(x) >= 0)
             .forEach((key) => {
-                const keyNumber = key as unknown as number
+                const keyNumber = (key as unknown) as number
                 accessoryCategoriesData[keyNumber] = HapCategories[keyNumber]
             })
 

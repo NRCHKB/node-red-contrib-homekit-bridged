@@ -21,7 +21,7 @@ module.exports = function (node: HAPServiceNodeType) {
         ) {
             characteristicProperties = JSON.parse(
                 config.characteristicProperties.replace(
-                    /\${(.*?)}/,
+                    /\${(.*?)}/g,
                     (_, envName) =>
                         node.RED.util.evaluateNodeProperty(
                             envName,
@@ -31,6 +31,11 @@ module.exports = function (node: HAPServiceNodeType) {
                         )
                 )
             )
+
+            log.trace('Evaluating value:')
+            log.trace(config.characteristicProperties)
+            log.trace('Evaluated as:')
+            log.trace(JSON.stringify(characteristicProperties))
 
             // Configure custom characteristic properties
             for (const key in characteristicProperties) {
