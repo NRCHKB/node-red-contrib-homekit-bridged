@@ -128,7 +128,7 @@ module.exports = function (node: HAPServiceNodeType) {
             if (outputNumber === 0) {
                 node.send(msg)
             } else if (outputNumber === 1) {
-                node.send([null, msg])
+                node.send([null!, msg])
             }
         }
     }
