@@ -1,3 +1,19 @@
+<style>
+    .alert {
+        position: relative;
+        padding: .75rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+        margin-right: 60px;
+    }
+    .alert-warning {
+        color: #856404;
+        background-color: #fff3cd;
+        border-color: #ffeeba;
+    }
+</style>
+
 <script type="text/javascript">
     const initExperimental = function () {
         //NRCHKB Custom Characteristics
@@ -376,7 +392,7 @@
             });
         });
 
-        self.customCharacteristics = customCharacteristics
+        config.customCharacteristics = customCharacteristics
 
         $.ajax({
             type: 'POST',

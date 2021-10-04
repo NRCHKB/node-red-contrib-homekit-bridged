@@ -157,6 +157,7 @@ module.exports = function (node: HAPServiceNodeType) {
             }
 
             // Adding new accessory to the bridge.
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             host.addBridgedAccessories([accessory!])
         } else {
             accessoryInformationService =
@@ -199,14 +200,14 @@ module.exports = function (node: HAPServiceNodeType) {
                 topic: topic,
             }
 
-            nodes[i].status({
+            const statusId = nodes[i].setStatus({
                 fill: 'yellow',
                 shape: 'dot',
                 text: 'Identify : 1',
             })
 
             setTimeout(function () {
-                nodes[i].status({})
+                nodes[i].clearStatus(statusId)
             }, 3000)
 
             nodes[i].send([msg, msg])

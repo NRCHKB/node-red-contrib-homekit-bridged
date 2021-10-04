@@ -1,4 +1,5 @@
 // hap-nodejs declared this as const enum which makes it difficult to iterate key-value
+// Known category values. Category is a hint to iOS clients about what "type" of Accessory this represents, for UI only.
 enum HapCategories {
     OTHER = 1,
     BRIDGE = 2,

@@ -2,11 +2,11 @@ import { NodeAPI } from 'node-red'
 import express from 'express'
 import HapCategories from './types/HapCategories'
 import { Characteristic, Perms, SerializedService, Service } from 'hap-nodejs'
-import storage from 'node-persist'
 import CustomCharacteristicType from './types/CustomCharacteristicType'
 import HAPServiceNodeType from './types/HAPServiceNodeType'
 import HAPServiceConfigType from './types/HAPServiceConfigType'
 import { logger } from '@nrchkb/logger'
+import { Storage } from './Storage'
 
 const version = require('../../package.json').version.trim()
 
@@ -140,8 +140,7 @@ module.exports = function (RED: NodeAPI) {
     // NRCHKB Custom Characteristics API
     const _initNRCHKBCustomCharacteristicsAPI = async () => {
         const getCustomCharacteristics = () => {
-            return storage
-                .get('customCharacteristics')
+            return Storage.loadCustomCharacteristics()
                 .then((value) => {
                     if (Array.isArray(value)) {
                         return value
@@ -201,9 +200,11 @@ module.exports = function (RED: NodeAPI) {
                     }
 
                     class CustomCharacteristic extends Characteristic {
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                         static readonly UUID: string = UUID!
 
                         constructor() {
+                            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                             super(name!, CustomCharacteristic.UUID, {
                                 ...validatedProps,
                                 perms: validatedProps.perms ?? [
@@ -254,6 +255,7 @@ module.exports = function (RED: NodeAPI) {
                         ) as HAPServiceNodeType
 
                         if (
+                            serviceNode &&
                             serviceNode.characteristicProperties &&
                             serviceNode.service
                         ) {
@@ -312,14 +314,16 @@ module.exports = function (RED: NodeAPI) {
             async (req: express.Request, res: express.Response) => {
                 const customCharacteristics: CustomCharacteristicType[] =
                     req.body.customCharacteristics || []
-                await storage.setItem(
-                    'customCharacteristics',
-                    customCharacteristics
-                )
 
-                res.sendStatus(200)
-
-                refreshCustomCharacteristics(customCharacteristics)
+                Storage.saveCustomCharacteristics(customCharacteristics)
+                    .then(() => {
+                        res.sendStatus(200)
+                        refreshCustomCharacteristics(customCharacteristics)
+                    })
+                    .catch((error) => {
+                        log.error(error)
+                        res.sendStatus(500)
+                    })
             }
         )
     }
@@ -338,7 +342,7 @@ module.exports = function (RED: NodeAPI) {
             .sort()
             .filter((x) => parseInt(x) >= 0)
             .forEach((key) => {
-                const keyNumber = key as unknown as number
+                const keyNumber = (key as unknown) as number
                 accessoryCategoriesData[keyNumber] = HapCategories[keyNumber]
             })
 

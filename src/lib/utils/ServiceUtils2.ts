@@ -1,21 +1,27 @@
 import HostType from '../types/HostType'
-import HAPServiceNodeType from '../types/HAPServiceNodeType'
+import HAPService2NodeType from '../types/HAPService2NodeType'
 import {
     Accessory,
     Characteristic,
     CharacteristicChange,
+    CharacteristicEventTypes,
     CharacteristicGetCallback,
     CharacteristicSetCallback,
     CharacteristicValue,
     Service,
 } from 'hap-nodejs'
-import HAPServiceConfigType from '../types/HAPServiceConfigType'
-import { HAPConnection } from 'hap-nodejs/dist/lib/util/eventedhttp'
+import HAPService2ConfigType from '../types/HAPService2ConfigType'
+import {
+    HAPConnection,
+    HAPUsername,
+} from 'hap-nodejs/dist/lib/util/eventedhttp'
 import { logger } from '@nrchkb/logger'
+import { SessionIdentifier } from 'hap-nodejs/dist/types'
+import { Storage } from '../Storage'
 import NRCHKBError from '../NRCHKBError'
 
-module.exports = function (node: HAPServiceNodeType) {
-    const log = logger('NRCHKB', 'ServiceUtils', node.config.name, node)
+module.exports = function (node: HAPService2NodeType) {
+    const log = logger('NRCHKB', 'ServiceUtils2', node.config.name, node)
 
     const HapNodeJS = require('hap-nodejs')
     const Service = HapNodeJS.Service
@@ -25,113 +31,157 @@ module.exports = function (node: HAPServiceNodeType) {
 
     const NO_RESPONSE_MSG = 'NO_RESPONSE'
 
-    const prepareHapData = (context: any, connection?: HAPConnection) => {
-        const hap: { [key: string]: any } = {}
+    type HAPServiceNodeEvent = {
+        name: CharacteristicEventTypes // Event type
+        context?: {
+            callbackID?: string
+            reason?: string
+        } & {} // Additional event data provided by event caller
+    }
+
+    type HAPServiceMessage = {
+        payload?: { [key: string]: any }
+        hap?: {
+            oldValue?: any
+            newValue?: any
+            event?: HAPServiceNodeEvent
+            session?: {
+                sessionID?: SessionIdentifier
+                username?: HAPUsername
+                remoteAddress?: string
+                localAddress?: string
+                httpPort?: number
+            }
+            allChars: { [key: string]: any }
+        }
+        name?: string
+        topic?: string
+    }
+
+    const output = function (
+        this: Characteristic,
+        allCharacteristics: Characteristic[],
+        event: CharacteristicEventTypes | HAPServiceNodeEvent,
+        { oldValue, newValue }: any,
+        connection?: HAPConnection
+    ) {
+        const eventObject = typeof event === 'object' ? event : { name: event }
+
+        log.debug(
+            `${eventObject.name} event, oldValue: ${oldValue}, newValue: ${newValue}, connection ${connection?.sessionID}`
+        )
+
+        const msg: HAPServiceMessage = {
+            name: node.name,
+            topic: node.config.topic ? node.config.topic : node.topic_in,
+        }
+        msg.payload = {}
+        msg.hap = {
+            newValue,
+            event: eventObject,
+            allChars: allCharacteristics.reduce<{ [key: string]: any }>(
+                (allChars, singleChar) => {
+                    allChars[singleChar.displayName] = singleChar.value
+                    return allChars
+                },
+                {}
+            ),
+        }
+
+        if (oldValue !== undefined) {
+            msg.hap.oldValue = oldValue
+        }
+
+        const key = this.constructor.name
+
+        msg.payload[key] = newValue
 
         if (connection) {
-            hap.session = {
+            msg.hap.session = {
                 sessionID: connection.sessionID,
                 username: connection.username,
                 remoteAddress: connection.remoteAddress,
                 localAddress: connection.localAddress,
                 httpPort: connection.remotePort,
             }
-
-            hap.context = {}
         }
 
-        if (context) {
-            hap.context = context
-        }
-
-        return hap
-    }
-
-    const onCharacteristicGet = function (
-        this: Characteristic,
-        callback: CharacteristicGetCallback,
-        context: any,
-        connection?: HAPConnection
-    ) {
-        log.debug(
-            `onCharacteristicGet with status: ${this.statusCode}, value: ${
-                this.value
-            }, reachability is ${
-                node.accessory.reachable
-            } with context ${JSON.stringify(context)} on connection ${
-                connection?.sessionID
-            }`
-        )
-
-        if (callback) {
-            try {
-                callback(
-                    node.accessory.reachable
-                        ? this.statusCode
-                        : new Error(NO_RESPONSE_MSG),
-                    this.value
-                )
-            } catch (_) {}
-        }
-    }
-
-    const onValueChange = function (
-        this: Characteristic,
-        allCharacteristics: Characteristic[],
-        outputNumber: number,
-        { oldValue, newValue, context }: any,
-        connection?: HAPConnection
-    ) {
-        const topic = node.config.topic ? node.config.topic : node.topic_in
-        const msg: {
-            payload: { [key: string]: any }
-            hap: any
-            name?: string
-            topic: string
-        } = { payload: {}, hap: {}, name: node.name, topic: topic }
-        const key = this.constructor.name
-
-        msg.payload[key] = newValue
-
-        msg.hap = prepareHapData(context, connection)
-        msg.hap.allChars = allCharacteristics.reduce<{ [key: string]: any }>(
-            (allChars, singleChar) => {
-                allChars[singleChar.displayName] = singleChar.value
-                return allChars
+        node.setStatus(
+            {
+                fill: 'yellow',
+                shape: 'dot',
+                text: `[${eventObject.name}] ${key}${
+                    newValue != undefined ? `: ${newValue}` : ''
+                }`,
             },
-            {}
+            3000
         )
 
-        if (oldValue !== undefined) {
-            msg.hap.oldValue = oldValue
+        log.debug(
+            `${node.name} received ${eventObject.name} ${key}: ${newValue}`
+        )
+
+        if (connection || node.hostNode.config.allowMessagePassthrough) {
+            node.send(msg)
         }
+    }
 
-        msg.hap.newValue = newValue
-
-        const statusId = node.setStatus({
-            fill: 'yellow',
-            shape: 'dot',
-            text: key + ': ' + newValue,
-        })
-
-        setTimeout(function () {
-            node.clearStatus(statusId)
-        }, 3000)
-
-        log.debug(`${node.name} received ${key} : ${newValue}`)
-
-        if (
-            connection ||
-            context ||
-            node.hostNode.config.allowMessagePassthrough
+    const onCharacteristicGet = (allCharacteristics: Characteristic[]) =>
+        function (
+            this: Characteristic,
+            callback: CharacteristicGetCallback,
+            _context: any,
+            connection?: HAPConnection
         ) {
-            if (outputNumber === 0) {
-                node.send(msg)
-            } else if (outputNumber === 1) {
-                node.send([null!, msg])
+            const characteristic = this
+            const oldValue = characteristic.value
+
+            const delayedCallback = (value?: any) => {
+                const newValue = value ?? characteristic.value
+                if (callback) {
+                    try {
+                        callback(
+                            node.accessory.reachable
+                                ? characteristic.statusCode
+                                : new Error(NO_RESPONSE_MSG),
+                            newValue
+                        )
+                    } catch (_) {}
+                }
+
+                output.call(
+                    characteristic,
+                    allCharacteristics,
+                    { name: CharacteristicEventTypes.GET },
+                    { oldValue, newValue },
+                    connection
+                )
+            }
+
+            if (node.config.useEventCallback) {
+                const callbackID = Storage.saveCallback({
+                    event: CharacteristicEventTypes.GET,
+                    callback: delayedCallback,
+                })
+
+                log.debug(
+                    `Registered callback ${callbackID} for Characteristic ${characteristic.displayName}`
+                )
+
+                output.call(
+                    this,
+                    allCharacteristics,
+                    {
+                        name: CharacteristicEventTypes.GET,
+                        context: { callbackID },
+                    },
+                    { oldValue },
+                    connection
+                )
+            } else {
+                delayedCallback()
             }
         }
-    }
 
     // eslint-disable-next-line no-unused-vars
     const onCharacteristicSet = (allCharacteristics: Characteristic[]) =>
@@ -139,18 +189,9 @@ module.exports = function (node: HAPServiceNodeType) {
             this: Characteristic,
             newValue: CharacteristicValue,
             callback: CharacteristicSetCallback,
-            context: any,
+            _context: any,
             connection?: HAPConnection
         ) {
-            log.debug(
-                `onCharacteristicSet with status: ${this.statusCode}, value: ${
-                    this.value
-                }, reachability is ${node.accessory.reachable} 
-            with context ${JSON.stringify(context)} on connection ${
-                    connection?.sessionID
-                }`
-            )
-
             try {
                 if (callback) {
                     callback(
@@ -161,14 +202,11 @@ module.exports = function (node: HAPServiceNodeType) {
                 }
             } catch (_) {}
 
-            onValueChange.call(
+            output.call(
                 this,
                 allCharacteristics,
-                1,
-                {
-                    newValue,
-                    context,
-                },
+                CharacteristicEventTypes.SET,
+                { newValue },
                 connection
             )
         }
@@ -177,32 +215,22 @@ module.exports = function (node: HAPServiceNodeType) {
         function (this: Characteristic, change: CharacteristicChange) {
             const { oldValue, newValue, context, originator, reason } = change
 
-            log.debug(
-                `onCharacteristicChange with reason: ${reason}, oldValue: ${oldValue}, newValue: ${newValue}, reachability is ${
-                    node.accessory.reachable
-                } 
-            with context ${JSON.stringify(context)} on connection ${
-                    originator?.sessionID
-                }`
-            )
-
             if (oldValue != newValue) {
-                onValueChange.call(
+                output.call(
                     this,
                     allCharacteristics,
-                    0,
                     {
-                        oldValue,
-                        newValue,
-                        context,
+                        name: CharacteristicEventTypes.CHANGE,
+                        context: { reason },
                     },
+                    { oldValue, newValue, context },
                     originator
                 )
             }
         }
 
-    const onInput = function (msg: Record<string, any>) {
-        if (msg.hasOwnProperty('payload')) {
+    const onInput = function (msg: HAPServiceMessage) {
+        if (msg.payload) {
             // payload must be an object
             const type = typeof msg.payload
 
@@ -224,23 +252,43 @@ module.exports = function (node: HAPServiceNodeType) {
         }
 
         let context: any = null
-        if (msg.payload.hasOwnProperty('Context')) {
+        if (msg.payload.Context) {
             context = msg.payload.Context
             delete msg.payload.Context
         }
 
-        node.topic_in = msg.topic ? msg.topic : ''
+        node.topic_in = msg.topic ?? ''
 
         // iterate over characteristics to be written
         // eslint-disable-next-line no-unused-vars
         Object.keys(msg.payload).map((key: string) => {
             if (node.supported.indexOf(key) < 0) {
-                log.error(
-                    `Instead of ${key} try one of these characteristics: ${node.supported.join(
-                        ', '
-                    )}`
-                )
+                if (
+                    node.config.useEventCallback &&
+                    Storage.uuid4Validate(key)
+                ) {
+                    const callbackID = key
+                    const callbackValue = msg.payload?.[key]
+                    const eventCallback = Storage.loadCallback(callbackID)
+
+                    if (eventCallback) {
+                        log.debug(
+                            `Calling ${eventCallback.event} callback ${callbackID}`
+                        )
+                        eventCallback.callback(callbackValue)
+                    } else {
+                        log.error(`Callback ${callbackID} timeout`)
+                    }
+                } else {
+                    log.error(
+                        `Instead of ${key} try one of these characteristics: ${node.supported.join(
+                            ', '
+                        )}`
+                    )
+                }
             } else {
+                const value = msg.payload?.[key]
+
                 if (
                     (node.config.isParent &&
                         node.config.hostType == HostType.BRIDGE) ||
@@ -248,9 +296,7 @@ module.exports = function (node: HAPServiceNodeType) {
                         node.hostNode.hostType == HostType.BRIDGE)
                 ) {
                     // updateReachability is only supported on bridged accessories
-                    node.accessory.updateReachability(
-                        msg.payload[key] !== NO_RESPONSE_MSG
-                    )
+                    node.accessory.updateReachability(value !== NO_RESPONSE_MSG)
                 }
 
                 const characteristic = node.service.getCharacteristic(
@@ -258,13 +304,9 @@ module.exports = function (node: HAPServiceNodeType) {
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(
-                        msg.payload[key],
-                        undefined,
-                        context
-                    )
+                    characteristic.setValue(value, undefined, context)
                 } else {
-                    characteristic.setValue(msg.payload[key])
+                    characteristic.setValue(value)
                 }
             }
         })
@@ -309,7 +351,7 @@ module.exports = function (node: HAPServiceNodeType) {
             name: string
             UUID: string
             serviceName: string
-            config: HAPServiceConfigType
+            config: HAPService2ConfigType
         },
         parentService: Service
     ) {
@@ -378,7 +420,7 @@ module.exports = function (node: HAPServiceNodeType) {
     const configureCameraSource = function (
         accessory: Accessory,
         service: Service,
-        config: HAPServiceConfigType
+        config: HAPService2ConfigType
     ) {
         if (config.cameraConfigSource) {
             log.debug('Configuring Camera Source')
@@ -409,9 +451,9 @@ module.exports = function (node: HAPServiceNodeType) {
             })
 
             const checkAndWait = () => {
-                const parentNode: HAPServiceNodeType = node.RED.nodes.getNode(
+                const parentNode: HAPService2NodeType = node.RED.nodes.getNode(
                     node.config.parentService
-                ) as HAPServiceNodeType
+                ) as HAPService2NodeType
 
                 if (parentNode && parentNode.configured) {
                     resolve(parentNode)
@@ -427,9 +469,9 @@ module.exports = function (node: HAPServiceNodeType) {
     }
 
     const handleWaitForSetup = (
-        config: HAPServiceConfigType,
+        config: HAPService2ConfigType,
         msg: Record<string, any>,
-        resolve: (newConfig: HAPServiceConfigType) => void
+        resolve: (newConfig: HAPService2ConfigType) => void
     ) => {
         if (node.setupDone) {
             return

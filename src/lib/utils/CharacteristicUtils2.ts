@@ -1,15 +1,15 @@
-import HAPServiceNodeType from '../types/HAPServiceNodeType'
+import HAPService2NodeType from '../types/HAPService2NodeType'
 import { Characteristic, CharacteristicProps, Service } from 'hap-nodejs'
-import HAPServiceConfigType from '../types/HAPServiceConfigType'
+import HAPService2ConfigType from '../types/HAPService2ConfigType'
 import { logger } from '@nrchkb/logger'
 
-module.exports = function (node: HAPServiceNodeType) {
+module.exports = function (node: HAPService2NodeType) {
     const log = logger('NRCHKB', 'CharacteristicUtils', node.config.name, node)
-    const ServiceUtils = require('./ServiceUtils')(node)
+    const ServiceUtils = require('./ServiceUtils2')(node)
 
     const load = function (
         service: Service,
-        config: HAPServiceConfigType
+        config: HAPService2ConfigType
     ): { [key: string]: CharacteristicProps } {
         let characteristicProperties: {
             [key: string]: CharacteristicProps
@@ -70,7 +70,9 @@ module.exports = function (node: HAPServiceNodeType) {
 
             // Listen to characteristic events and store the listener functions
             // to be able to remove them later
-            node.onCharacteristicGet = ServiceUtils.onCharacteristicGet
+            node.onCharacteristicGet = ServiceUtils.onCharacteristicGet(
+                service.characteristics
+            )
             node.onCharacteristicSet = ServiceUtils.onCharacteristicSet(
                 service.characteristics
             )

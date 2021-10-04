@@ -1,5 +1,5 @@
 <!--suppress EqualityComparisonWithCoercionJS -->
-<script data-template-name="homekit-service" type="text/x-red">
+<script data-template-name="homekit-service2" type="text/x-red">
     <div class="form-row">
         <label for="node-config-input-isParent"><i class="fa fa-tasks"></i> Service Hierarchy</label>
         <select id="node-config-input-isParent" style="width: 70%">
@@ -203,9 +203,14 @@
         <label for="node-input-waitForSetupMsg"><i class="fa fa-bug"></i> Wait for Setup message</label>
         <input type="checkbox" id="node-input-waitForSetupMsg">
     </div>
+
+    <div class="form-row">
+        <label for="node-input-useEventCallback"><i class="fa fa-code-fork"></i> Use Event callback</label>
+        <input type="checkbox" id="node-input-useEventCallback">
+    </div>
 </script>
 
-<script data-help-name="homekit-service" type="text/x-red">
+<script data-help-name="homekit-service2" type="text/x-red">
 <h3 id="toc_5">Service</h3>
 <p>The Service node represents the single device you want to control or query.</p>
 <p>Every service node creates its own HAP accessory to keep things simple.</p>
@@ -255,6 +260,7 @@
    </ul>
    <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
    <li><strong>Wait for Setup message</strong>: If yes then Service node will wait for a input message with appropriate payload.</li>
+   <li><strong>Use Event callback</strong>: If yes then Service node will wait for a callback message to respond to get event.</li>
 </ul>
 <h2 id="toc_6">Input Messages</h2>
 <p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
@@ -294,9 +300,10 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('homekit-service', {
+if (nrchkbExperimental) {
+    RED.nodes.registerType('homekit-service2', {
         category: "Apple HomeKit",
-        paletteLabel: 'service',
+        paletteLabel: 'service 2',
         defaults: {
             isParent: {
                 value: 'false',
@@ -472,23 +479,18 @@
             waitForSetupMsg: {
                 value: false
             },
+            useEventCallback: {
+                value: false
+            },
             outputs: {
-                value: 2,
+                value: 1,
             }
         },
         inputs: 1,
-        outputs: 2,
+        outputs: 1,
         outputLabels: function (index) {
             if (index === 0) {
-                return 'onChange'
-            }
-
-            if (index === 1) {
-                return 'onSet'
-            }
-
-            if (index === 2) {
-                return 'camera snapshot'
+                return 'events'
             }
 
             return ''
@@ -496,7 +498,7 @@
         icon: 'homekit.png',
         color: '#fcc127',
         label: function () {
-            return this.name || this.serviceName || 'Service'
+            return this.name || this.serviceName || 'Service2'
         },
         labelStyle: function () {
             return this.name ? 'node_label_italic' : ''
@@ -593,10 +595,10 @@
                 .change(function () {
                     if (this.value === 'CameraControl') {
                         cameraConfiguration.fadeIn('fast')
-                        node.outputs = 3
+                        node.outputs = 2
                     } else {
                         cameraConfiguration.fadeOut('fast')
-                        node.outputs = 2
+                        node.outputs = 1
                     }
                 })
                 .change()
@@ -731,5 +733,6 @@
             ).val()
         },
     })
+}
 </script>
 
