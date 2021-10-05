@@ -142,6 +142,9 @@ module.exports = function (RED: NodeAPI) {
         const getCustomCharacteristics = () => {
             return Storage.loadCustomCharacteristics()
                 .then((value) => {
+                    log.trace(`loadCustomCharacteristics()`)
+                    log.trace(value)
+
                     if (Array.isArray(value)) {
                         return value
                     } else {
@@ -342,7 +345,7 @@ module.exports = function (RED: NodeAPI) {
             .sort()
             .filter((x) => parseInt(x) >= 0)
             .forEach((key) => {
-                const keyNumber = (key as unknown) as number
+                const keyNumber = key as unknown as number
                 accessoryCategoriesData[keyNumber] = HapCategories[keyNumber]
             })
 

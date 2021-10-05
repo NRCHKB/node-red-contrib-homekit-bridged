@@ -47,11 +47,12 @@ export class Storage {
 
     static save(
         type: StorageType,
-        key: string,
+        key: string | undefined,
         value: unknown
     ): Promise<storage.WriteFileResult> {
-        Storage.log.trace(`Saving ${type}, ${key}:${value}`)
-        return storage.set(`${type}-${key}`, value)
+        const itemName = key ? `${type}-${key}` : type
+        Storage.log.trace(`Saving ${itemName}:${value}`)
+        return storage.set(itemName, value)
     }
 
     static saveCallback(eventCallback: EventCallback, ttl = 10000) {
@@ -74,7 +75,11 @@ export class Storage {
     static saveCustomCharacteristics(
         value: unknown
     ): Promise<storage.WriteFileResult> {
-        return Storage.save(StorageType.CUSTOM_CHARACTERISTICS, '', value)
+        return Storage.save(
+            StorageType.CUSTOM_CHARACTERISTICS,
+            undefined,
+            value
+        )
     }
 
     static saveService(
@@ -98,9 +103,10 @@ export class Storage {
         return Storage.save(StorageType.HOST, key, serializedHost)
     }
 
-    static load(type: StorageType, key: string): Promise<any> {
-        Storage.log.trace(`Loading ${type}, ${key}`)
-        return storage.get(`${type}-${key}`)
+    static load(type: StorageType, key?: string): Promise<any> {
+        const itemName = key ? `${type}-${key}` : type
+        Storage.log.trace(`Loading ${itemName}`)
+        return storage.get(itemName)
     }
 
     static loadCallback(key: string): EventCallback | undefined {
@@ -115,7 +121,7 @@ export class Storage {
     }
 
     static loadCustomCharacteristics(): Promise<any> {
-        return Storage.load(StorageType.CUSTOM_CHARACTERISTICS, '')
+        return Storage.load(StorageType.CUSTOM_CHARACTERISTICS)
     }
 
     static loadService(key: string): Promise<SerializedService> {
