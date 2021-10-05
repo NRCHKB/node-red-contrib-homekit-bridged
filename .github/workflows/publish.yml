@@ -57,7 +57,8 @@ jobs:
       - name: Publish
         if: contains(steps.package-version.outputs.current-version, 'dev') != true
         run: |
-          yarn install --frozen-lockfile
+          npm i -g yarn
+          yarn install --frozen-lockfile --ignore-engines
           yarn build
           npm init --scope=nrchkb -y
           npm publish
