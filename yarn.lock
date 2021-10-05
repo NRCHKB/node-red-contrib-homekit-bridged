@@ -2161,10 +2161,10 @@ growl@1.10.5:
   resolved "https://registry.yarnpkg.com/growl/-/growl-1.10.5.tgz#f2735dc2283674fa67478b10181059355c369e5e"
   integrity sha512-qBr4OuELkhPenW6goKVXiv47US3clb3/IbuWF9KNKEijAy9oeHxU9IgzjvJhHkUzhaj7rOUD7+YGWqUjLp5oSA==
 
-hap-nodejs@^0.10.0-beta.1:
-  version "0.10.0-beta.1"
-  resolved "https://registry.yarnpkg.com/hap-nodejs/-/hap-nodejs-0.10.0-beta.1.tgz#543d82f8c0f6a62388de3ff223bdc517fa835330"
-  integrity sha512-Mn5K9Y75y/0sgEj/3TH34uVOLt7Np4JYNdsQkQv1mM3ixYFgqWHptF2ndQoTwGUsPOYZhRbwYkLJYyK0zZKdjw==
+hap-nodejs@^0.9.5:
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/hap-nodejs/-/hap-nodejs-0.9.5.tgz#69cbcdb854e273d7b8d7c5b3a3bc831067e5423c"
+  integrity sha512-nSr6STe9ghV10pDH0xBevJ7VxCbk4+h6a+E5RmHJOLEOJXNiAncrJje+eD4C5kgUGBegFkB8yAXceTYqdo8xbQ==
   dependencies:
     "@homebridge/ciao" "~1.1.2"
     bonjour-hap "~3.6.2"
