@@ -4,6 +4,8 @@ import semver from 'semver'
 import { HAPStorage } from 'hap-nodejs'
 import { logger, loggerSetup } from '@nrchkb/logger'
 import { Storage } from '../lib/Storage'
+import API from '../lib/api'
+import BadgeGenerator from '../lib/qrcode/BadgeGenerator'
 
 loggerSetup({ timestampEnabled: 'NRCHKB' })
 const log = logger('NRCHKB')
@@ -35,8 +37,6 @@ module.exports = (RED: NodeAPI) => {
         )
     }
 
-    const API = require('../lib/api')(RED)
-
     let rootFolder: string
 
     // Initialize our storage system
@@ -50,7 +50,9 @@ module.exports = (RED: NodeAPI) => {
 
     Storage.init(rootFolder, 'nrchkb').then(() => {
         log.debug(`nrchkb storage path set to ${Storage.storagePath()}`)
-        API.init()
+
+        API(RED).init()
+        BadgeGenerator(RED).start()
 
         const hapStoragePath = path.resolve(rootFolder!, 'homekit-persist')
 

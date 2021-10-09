@@ -10,7 +10,7 @@ import { Storage } from './Storage'
 
 const version = require('../../package.json').version.trim()
 
-module.exports = function (RED: NodeAPI) {
+export default (RED: NodeAPI) => {
     const log = logger('NRCHKB', 'API')
 
     // Service API
