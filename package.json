@@ -63,10 +63,10 @@
     "@types/qrcode": "^1.4.1",
     "@types/semver": "^7.3.8",
     "@types/uuid": "^8.3.1",
-    "@typescript-eslint/eslint-plugin": "^4.33.0",
-    "@typescript-eslint/parser": "^4.33.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.32.0",
+    "eslint": "^8.0.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.2",
@@ -75,7 +75,7 @@
     "node-red-node-test-helper": "^0.2.7",
     "pinst": "^2.1.6",
     "prettier": "^2.4.1",
-    "ts-node": "^10.2.1",
+    "ts-node": "^10.3.0",
     "typescript": "^4.4.3"
   },
   "engines": {

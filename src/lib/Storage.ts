@@ -22,14 +22,14 @@ type EventCallback = {
 
 export class Storage {
     private static customStoragePath: string
-    private static storageInitialized = false
+    private static initialized = false
 
     private static memoryStorage: { [key: string]: any } = {}
 
     private static log = logger('NRCHKB', 'Storage')
 
     static storagePath(): string {
-        if (!Storage.storageInitialized) {
+        if (!Storage.initialized) {
             throw new NRCHKBError('Storage path was not initialized!')
         }
 
@@ -38,7 +38,7 @@ export class Storage {
 
     static init(...storagePathSegments: string[]): Promise<InitOptions> {
         Storage.customStoragePath = path.resolve(...storagePathSegments)
-        Storage.storageInitialized = true
+        Storage.initialized = true
 
         Storage.log.trace('Initializing')
 

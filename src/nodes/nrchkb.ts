@@ -5,7 +5,7 @@ import { HAPStorage } from 'hap-nodejs'
 import { logger, loggerSetup } from '@nrchkb/logger'
 import { Storage } from '../lib/Storage'
 import API from '../lib/api'
-import BadgeGenerator from '../lib/qrcode/BadgeGenerator'
+import { BadgeGenerator } from '../lib/BadgeGenerator'
 
 loggerSetup({ timestampEnabled: 'NRCHKB' })
 const log = logger('NRCHKB')
@@ -52,7 +52,7 @@ module.exports = (RED: NodeAPI) => {
         log.debug(`nrchkb storage path set to ${Storage.storagePath()}`)
 
         API(RED).init()
-        BadgeGenerator(RED).start()
+        new BadgeGenerator(RED)
 
         const hapStoragePath = path.resolve(rootFolder!, 'homekit-persist')
 
