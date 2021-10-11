@@ -34,7 +34,8 @@ module.exports = function (node: HAPService2NodeType) {
     type HAPServiceNodeEvent = {
         name: CharacteristicEventTypes // Event type
         context?: {
-            callbackID?: string
+            callbackID?: string // ID used to update Characteristic value with get event
+            key?: string // Characteristic key
             reason?: string
         } & {} // Additional event data provided by event caller
     }
@@ -152,7 +153,10 @@ module.exports = function (node: HAPService2NodeType) {
                 output.call(
                     characteristic,
                     allCharacteristics,
-                    { name: CharacteristicEventTypes.GET },
+                    {
+                        name: CharacteristicEventTypes.GET,
+                        context: { key: this.displayName },
+                    },
                     { oldValue, newValue },
                     connection
                 )
@@ -173,7 +177,7 @@ module.exports = function (node: HAPService2NodeType) {
                     allCharacteristics,
                     {
                         name: CharacteristicEventTypes.GET,
-                        context: { callbackID },
+                        context: { callbackID, key: this.displayName },
                     },
                     { oldValue },
                     connection
@@ -205,7 +209,10 @@ module.exports = function (node: HAPService2NodeType) {
             output.call(
                 this,
                 allCharacteristics,
-                CharacteristicEventTypes.SET,
+                {
+                    name: CharacteristicEventTypes.SET,
+                    context: { key: this.displayName },
+                },
                 { newValue },
                 connection
             )
@@ -221,7 +228,7 @@ module.exports = function (node: HAPService2NodeType) {
                     allCharacteristics,
                     {
                         name: CharacteristicEventTypes.CHANGE,
-                        context: { reason },
+                        context: { reason, key: this.displayName },
                     },
                     { oldValue, newValue, context },
                     originator
