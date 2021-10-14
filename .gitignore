@@ -320,3 +320,5 @@ build/**/*.js
 *.d.ts
 
 .npm-upgrade.json
+
+persist/*
