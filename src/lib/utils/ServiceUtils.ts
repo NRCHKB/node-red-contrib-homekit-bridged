@@ -54,12 +54,9 @@ module.exports = function (node: HAPServiceNodeType) {
         connection?: HAPConnection
     ) {
         log.debug(
-            `onCharacteristicGet with status: ${this.statusCode}, value: ${
-                this.value
-            }, reachability is ${
-                node.accessory.reachable
-            } with context ${JSON.stringify(context)} on connection ${
-                connection?.sessionID
+            `onCharacteristicGet with status: ${this.statusCode}, value: ${this.value
+            }, reachability is ${node.accessory.reachable
+            } with context ${JSON.stringify(context)} on connection ${connection?.sessionID
             }`
         )
 
@@ -71,7 +68,7 @@ module.exports = function (node: HAPServiceNodeType) {
                         : new Error(NO_RESPONSE_MSG),
                     this.value
                 )
-            } catch (_) {}
+            } catch (_) { }
         }
     }
 
@@ -143,11 +140,9 @@ module.exports = function (node: HAPServiceNodeType) {
             connection?: HAPConnection
         ) {
             log.debug(
-                `onCharacteristicSet with status: ${this.statusCode}, value: ${
-                    this.value
+                `onCharacteristicSet with status: ${this.statusCode}, value: ${this.value
                 }, reachability is ${node.accessory.reachable} 
-            with context ${JSON.stringify(context)} on connection ${
-                    connection?.sessionID
+            with context ${JSON.stringify(context)} on connection ${connection?.sessionID
                 }`
             )
 
@@ -159,7 +154,7 @@ module.exports = function (node: HAPServiceNodeType) {
                             : new Error(NO_RESPONSE_MSG)
                     )
                 }
-            } catch (_) {}
+            } catch (_) { }
 
             onValueChange.call(
                 this,
@@ -178,11 +173,9 @@ module.exports = function (node: HAPServiceNodeType) {
             const { oldValue, newValue, context, originator, reason } = change
 
             log.debug(
-                `onCharacteristicChange with reason: ${reason}, oldValue: ${oldValue}, newValue: ${newValue}, reachability is ${
-                    node.accessory.reachable
+                `onCharacteristicChange with reason: ${reason}, oldValue: ${oldValue}, newValue: ${newValue}, reachability is ${node.accessory.reachable
                 } 
-            with context ${JSON.stringify(context)} on connection ${
-                    originator?.sessionID
+            with context ${JSON.stringify(context)} on connection ${originator?.sessionID
                 }`
             )
 
@@ -202,6 +195,26 @@ module.exports = function (node: HAPServiceNodeType) {
         }
 
     const onInput = function (msg: Record<string, any>) {
+
+        // 22/10/2021 Supergiovane: if the msg contains "ident", the node will emit some identification properties
+        if (msg.hasOwnProperty('ident')) {
+            try {
+                let jRet = {identification:{name:"",serviceName:"",topic:"",id:"",bridge:"",parentService:"",supported:[{}]}};
+                jRet.identification.name = node.config.name || "";
+                jRet.identification.serviceName = node.config.serviceName || "";
+                jRet.identification.topic = node.config.topic || "";
+                jRet.identification.id = node.config.id || "";
+                jRet.identification.bridge = node.config.bridge || "";
+                jRet.identification.parentService = node.config.parentService || "";
+                jRet.identification.supported = node.supported || "";
+                node.send({ payload: jRet });
+            } catch (error) {
+                log.error('Unable to get some properties from ident message');
+                node.send({payload:{identification: {error:"error"}}});
+            }
+            return
+        }
+
         if (msg.hasOwnProperty('payload')) {
             // payload must be an object
             const type = typeof msg.payload

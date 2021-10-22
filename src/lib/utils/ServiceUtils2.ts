@@ -237,6 +237,26 @@ module.exports = function (node: HAPService2NodeType) {
         }
 
     const onInput = function (msg: HAPServiceMessage) {
+
+        // 22/10/2021 Supergiovane: if the msg contains "ident", the node will emit some identification properties
+        if (msg.hasOwnProperty('ident')) {
+            try {
+                let jRet = {identification:{name:"",serviceName:"",topic:"",id:"",bridge:"",parentService:"",supported:[{}]}};
+                jRet.identification.name = node.config.name || "";
+                jRet.identification.serviceName = node.config.serviceName || "";
+                jRet.identification.topic = node.config.topic || "";
+                jRet.identification.id = node.config.id || "";
+                jRet.identification.bridge = node.config.bridge || "";
+                jRet.identification.parentService = node.config.parentService || "";
+                jRet.identification.supported = node.supported || "";
+                node.send({ payload: jRet });
+            } catch (error) {
+                log.error('Unable to get some properties from ident message');
+                node.send({payload:{identification: {error:"error"}}});
+            }
+            return
+        }
+        
         if (msg.payload) {
             // payload must be an object
             const type = typeof msg.payload
