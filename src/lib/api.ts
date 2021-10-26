@@ -166,6 +166,13 @@ module.exports = function (RED: NodeAPI) {
             return name.replace(' ', '')
         }
 
+        const toNumber = (value: any, optional = undefined) => {
+            const num = Number(value)
+            if (isNaN(num)) {
+                return optional
+            } else return num
+        }
+
         const refreshCustomCharacteristics = (
             customCharacteristics: CustomCharacteristicType[]
         ) => {
@@ -200,6 +207,21 @@ module.exports = function (RED: NodeAPI) {
                     }
                     if (validatedProps.adminOnlyAccess?.length === 0) {
                         validatedProps.adminOnlyAccess = undefined
+                    }
+                    if (validatedProps.minValue) {
+                        validatedProps.minValue = toNumber(
+                            validatedProps.minValue
+                        )
+                    }
+                    if (validatedProps.maxValue) {
+                        validatedProps.maxValue = toNumber(
+                            validatedProps.maxValue
+                        )
+                    }
+                    if (validatedProps.minStep) {
+                        validatedProps.minStep = toNumber(
+                            validatedProps.minStep
+                        )
                     }
 
                     class CustomCharacteristic extends Characteristic {
