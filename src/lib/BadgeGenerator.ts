@@ -6,21 +6,26 @@ import HAPService2NodeType from './types/HAPService2NodeType'
 import { AccessoryInfo } from 'hap-nodejs/dist/lib/model/AccessoryInfo'
 import QRCode from 'qrcode'
 import { NodeAPI } from 'node-red'
+import NRCHKBError from './NRCHKBError'
 
 export class BadgeGenerator {
     // Store qrcode data in cache, key is = hostNode.id + '_' + hostNode.config.pinCode
-    private memoryStorage: { [key: string]: any } = {}
+    private static memoryStorage: { [key: string]: any } = {}
 
-    private log = logger('NRCHKB', 'BadgeGenerator')
+    private static log = logger('NRCHKB', 'BadgeGenerator')
+    private static RED: NodeAPI
 
-    constructor(private RED: NodeAPI) {
-        this.log.trace('Initializing')
+    static rawPincodeRegex = /^\d{3}-\d{2}-\d{3}$/
+
+    public static init(RED: NodeAPI) {
+        BadgeGenerator.RED = RED
+        BadgeGenerator.log.trace('Initializing')
 
         // Register '/qrcode' endpoint
         RED.httpAdmin.get(
             '/qrcode',
             RED.auth.needsPermission('homekit.read'),
-            this.get
+            BadgeGenerator.get
         )
     }
 
@@ -36,21 +41,21 @@ export class BadgeGenerator {
      * 200 - ok, returned qrcode
      * 304 - ok, returned cached qrcode
      */
-    private async get(req: Request, res: Response) {
+    static async get(req: Request, res: Response) {
         try {
-            this.log.trace(`Received request ${req.url}`)
+            BadgeGenerator.log.trace(`Received request ${req.url}`)
             const url = new URL(req.url, 'https://localhost')
             const nodeId = url.searchParams.get('nodeId')
 
             //nodeId is empty
             if (typeof nodeId === 'undefined' || !nodeId) {
-                this.log.error('Provided nodeId is empty')
+                BadgeGenerator.log.error('Provided nodeId is empty')
                 res.sendStatus(400)
                 return
             }
 
             const nodeLogger = logger('NRCHKB', 'BadgeGenerator', nodeId)
-            const node = this.RED.nodes.getNode(nodeId)
+            const node = BadgeGenerator.RED.nodes.getNode(nodeId)
 
             if (!node) {
                 nodeLogger.error('Could not find node for given id')
@@ -105,12 +110,12 @@ export class BadgeGenerator {
             )
 
             //We have qrcode cached already
-            if (this.memoryStorage.hasOwnProperty(cacheKey)) {
+            if (BadgeGenerator.memoryStorage.hasOwnProperty(cacheKey)) {
                 nodeLogger.debug(
                     `Return cached badge for Bridge ${hostNode.id}`
                 )
                 res.json({
-                    qrcode: this.memoryStorage[cacheKey],
+                    qrcode: BadgeGenerator.memoryStorage[cacheKey],
                     pincode,
                 }).status(304)
                 return
@@ -133,10 +138,10 @@ export class BadgeGenerator {
                         `Generated new badge for Bridge ${hostNode.id}`
                     )
 
-                    this.memoryStorage[cacheKey] = url
+                    BadgeGenerator.memoryStorage[cacheKey] = url
 
                     res.json({
-                        qrcode: this.memoryStorage[cacheKey],
+                        qrcode: BadgeGenerator.memoryStorage[cacheKey],
                         pincode,
                     })
                     return
@@ -149,12 +154,12 @@ export class BadgeGenerator {
                     return
                 })
         } catch (err) {
-            this.log.error(`There was an error, ${err}`)
+            BadgeGenerator.log.error(`There was an error, ${err}`)
             res.sendStatus(500)
             return
         }
 
-        this.log.error('You should not be here!')
+        BadgeGenerator.log.error('You should not be here!')
         return
     }
 
@@ -163,11 +168,24 @@ export class BadgeGenerator {
      * @param pincode in form '123-45-678'
      * @return pincode as { top: '1234', bottom: '5678' }
      */
-    private static preparePincodeForQrcode(pincode: string): {
+    static preparePincodeForQrcode(pincode: string): {
         top: string
         bottom: string
     } {
-        const cleanPincode = pincode.replace(/[^\d]/, '').replace(/[^\d]/, '')
+        if (!pincode) {
+            throw new NRCHKBError(
+                `Incorrect pincode provided ${pincode} - cannot be empty`
+            )
+        }
+
+        if (!this.rawPincodeRegex.test(pincode)) {
+            throw new NRCHKBError(
+                `Incorrect pincode provided ${pincode} - incorrect format`
+            )
+        }
+
+        const cleanPincode = pincode.replace(/\D/g, '')
+
         return {
             top: cleanPincode.substr(0, 4),
             bottom: cleanPincode.substr(4),

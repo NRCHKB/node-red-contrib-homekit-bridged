@@ -1,6 +1,3 @@
-import 'should'
-import { describe, beforeEach, afterEach, it } from 'mocha'
-
 const helper = require('node-red-node-test-helper')
 
 const nrchkb = require('../../../build/nodes/nrchkb')
@@ -11,12 +8,12 @@ helper.init(require.resolve('node-red'))
 
 const flow = [
     {
-        id: 's1',
+        id: '5ad1672bc4876b81',
         type: 'homekit-service',
-        z: '164eade1.c33b62',
+        z: '8ec04ba1.f36a38',
         isParent: true,
         hostType: '0',
-        bridge: '129db7b5.160d88',
+        bridge: '4cfa72ab8e197e91',
         accessoryId: '',
         parentService: '',
         name: 'Example Switch',
@@ -24,11 +21,11 @@ const flow = [
         topic: '',
         filter: false,
         manufacturer: 'NRCHKB',
-        model: '0.130.7',
+        model: '1.4.3',
         serialNo: 'Default Serial Number',
-        firmwareRev: '0.130.7',
-        hardwareRev: '0.130.7',
-        softwareRev: '0.130.7',
+        firmwareRev: '1.4.3',
+        hardwareRev: '1.4.3',
+        softwareRev: '1.4.3',
         cameraConfigVideoProcessor: 'ffmpeg',
         cameraConfigSource: '',
         cameraConfigStillImageSource: '',
@@ -53,23 +50,24 @@ const flow = [
         characteristicProperties: '{}',
         waitForSetupMsg: false,
         outputs: 2,
-        x: 350,
-        y: 240,
+        x: 1270,
+        y: 500,
         wires: [[], []],
     },
     {
-        id: '129db7b5.160d88',
+        id: '4cfa72ab8e197e91',
         type: 'homekit-bridge',
         bridgeName: 'Example Bridge',
-        pinCode: '111-11-111',
+        pinCode: '917-02-252',
         port: '',
-        allowInsecureRequest: false,
+        advertiser: 'ciao',
+        allowInsecureRequest: true,
         manufacturer: 'NRCHKB',
-        model: '0.130.7',
+        model: '1.4.3',
         serialNo: 'Default Serial Number',
-        firmwareRev: '0.130.7',
-        hardwareRev: '0.130.7',
-        softwareRev: '0.130.7',
+        firmwareRev: '1.4.3',
+        hardwareRev: '1.4.3',
+        softwareRev: '1.4.3',
         customMdnsConfig: false,
         mdnsMulticast: true,
         mdnsInterface: '',
@@ -82,44 +80,60 @@ const flow = [
     },
 ]
 
-describe('Service Node', function () {
-    this.timeout(30000)
-
-    beforeEach(function (done) {
+describe('Service Node - should be loaded', () => {
+    beforeEach((done) => {
         helper.startServer(done)
     })
 
-    afterEach(function (done) {
-        helper.unload()
-        helper.stopServer(done)
+    afterEach((done) => {
+        helper.unload().then(() => {
+            helper.stopServer(done)
+        })
     })
 
-    it('should be loaded', function (done) {
+    test('should be loaded', (done) => {
         helper
             .load(
                 [nrchkb, homekitBridgeNode, homekitServiceNode],
                 flow,
                 function () {
-                    const s1 = helper.getNode('s1')
-                    s1.should.have.property('type', 'homekit-service')
-                    done()
+                    const s1 = helper.getNode('5ad1672bc4876b81')
+
+                    s1.on('input', () => {
+                        expect(s1.type).toEqual('homekit-service')
+                        done()
+                    })
+
+                    s1.receive({ payload: {} })
                 }
             )
             .catch((error: any) => {
                 done(new Error(error))
             })
     })
+})
 
-    it('should output ON:true payload', function (done) {
+describe('Service Node - should output ON:true payload', () => {
+    beforeEach((done) => {
+        helper.startServer(done)
+    })
+
+    afterEach((done) => {
+        helper.unload().then(() => {
+            helper.stopServer(done)
+        })
+    })
+
+    test('should output ON:true payload', (done) => {
         helper
             .load(
                 [nrchkb, homekitBridgeNode, homekitServiceNode],
                 flow,
                 function () {
-                    const s1 = helper.getNode('s1')
+                    const s1 = helper.getNode('5ad1672bc4876b81')
 
                     s1.on('input', (msg: any) => {
-                        msg.payload.should.have.property('On', true)
+                        expect(msg.payload.On).toEqual(true)
                         done()
                     })
 
@@ -130,17 +144,29 @@ describe('Service Node', function () {
                 done(new Error(error))
             })
     })
+})
 
-    it('should output ON:false payload', function (done) {
+describe('Service Node - should output ON:false payload', () => {
+    beforeEach((done) => {
+        helper.startServer(done)
+    })
+
+    afterEach((done) => {
+        helper.unload().then(() => {
+            helper.stopServer(done)
+        })
+    })
+
+    test('should output ON:false payload', (done) => {
         helper
             .load(
                 [nrchkb, homekitBridgeNode, homekitServiceNode],
                 flow,
                 function () {
-                    const s1 = helper.getNode('s1')
+                    const s1 = helper.getNode('5ad1672bc4876b81')
 
                     s1.on('input', function (msg: any) {
-                        msg.payload.should.have.property('On', false)
+                        expect(msg.payload.On).toEqual(false)
                         done()
                     })
 

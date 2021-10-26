@@ -52,7 +52,7 @@ module.exports = (RED: NodeAPI) => {
         log.debug(`nrchkb storage path set to ${Storage.storagePath()}`)
 
         API(RED).init()
-        new BadgeGenerator(RED)
+        BadgeGenerator.init(RED)
 
         const hapStoragePath = path.resolve(rootFolder!, 'homekit-persist')
 
