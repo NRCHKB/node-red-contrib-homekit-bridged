@@ -538,3 +538,69 @@
         <ol id="node-input-customCharacteristics-container"></ol>
     </div>
 </script>
+
+
+<!-- NRCHKB FONT -->
+<style>
+    @font-face {
+        font-family: 'nrchkb-icons';
+        src:
+            url('resources/node-red-contrib-homekit-bridged/fonts/nrchkb-icons.ttf') format('truetype'),
+            url('resources/node-red-contrib-homekit-bridged/fonts/nrchkb-icons.woff') format('woff'),
+            url('resources/node-red-contrib-homekit-bridged/fonts/nrchkb-icons.svg#nrchkb-icons') format('svg');
+        font-weight: normal;
+        font-style: normal;
+        font-display: block;
+    }
+
+    .nrchkb-icons {
+        font-family: 'nrchkb-icons' !important;
+        /* use !important to prevent issues with browser extensions that change fonts */
+        speak: never;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+
+        /* Better Font Rendering =========== */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+
+    .icon-homekit:before {
+        content: "\1f3db";
+    }
+    .icon-nrchkb:before {
+        content: "\1f3e1";
+    }
+    .icon-nrchkb_fatty:before {
+        content: "\1f3ef";
+    }
+    .icon-nrchkb-invert:before {
+        content: "\1f3e0";
+    }
+</style>
+<!-- NRCHKB FONT END -->
+
+<!-- NRCHKB TAB -->
+<script type="text/javascript">
+    const content = $("<div>").css({"position":"relative","height":"100%"});
+
+    const header = $("<div>", {class:"red-ui-sidebar-header"}).appendTo(content);
+
+    RED.actions.add("nrchkb-tab:show-custom-tab",function() {
+        RED.sidebar.show("nrchkb-tab");
+    });
+
+    RED.sidebar.addTab({
+        id: "nrchkb-tab",
+        label: "NRCHKB",
+        name: "NRCHKB",
+        iconClass: "fa nrchkb-icons icon-nrchkb-invert",
+        content: content,
+        action: "nrchkb-tab:show-custom-tab"
+    });
+</script>
+<!-- NRCHKB TAB END -->
