@@ -28,6 +28,7 @@ type HAPServiceNodeType = NodeType & {
     childNodes: (HAPService2NodeType | HAPServiceNodeType)[]
     service: Service
     parentService: Service
+    parentNode?: HAPService2NodeType | HAPServiceNodeType
     accessory: Accessory
     characteristicProperties: { [key: string]: CharacteristicProps }
     supported: string[]
@@ -51,6 +52,8 @@ type HAPServiceNodeType = NodeType & {
         change: CharacteristicChange
     ) => void
     uniqueIdentifier: string
+    // Is Accessory reachable? On Linked Service it will be undefined. If is not true then NO_RESPONSE
+    reachable?: boolean
 } & StatusUtilType
 
 export default HAPServiceNodeType

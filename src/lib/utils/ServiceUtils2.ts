@@ -1,4 +1,3 @@
-import HostType from '../types/HostType'
 import HAPService2NodeType from '../types/HAPService2NodeType'
 import {
     Accessory,
@@ -8,6 +7,8 @@ import {
     CharacteristicGetCallback,
     CharacteristicSetCallback,
     CharacteristicValue,
+    HAPStatus,
+    HapStatusError,
     Service,
 } from 'hap-nodejs'
 import HAPService2ConfigType from '../types/HAPService2ConfigType'
@@ -142,9 +143,11 @@ module.exports = function (node: HAPService2NodeType) {
                 if (callback) {
                     try {
                         callback(
-                            node.accessory.reachable
-                                ? characteristic.statusCode
-                                : new Error(NO_RESPONSE_MSG),
+                            (node.parentNode ?? node).reachable
+                                ? null
+                                : new HapStatusError(
+                                      HAPStatus.SERVICE_COMMUNICATION_FAILURE
+                                  ),
                             newValue
                         )
                     } catch (_) {}
@@ -199,9 +202,11 @@ module.exports = function (node: HAPService2NodeType) {
             try {
                 if (callback) {
                     callback(
-                        node.accessory.reachable
+                        (node.parentNode ?? node).reachable
                             ? null
-                            : new Error(NO_RESPONSE_MSG)
+                            : new HapStatusError(
+                                  HAPStatus.SERVICE_COMMUNICATION_FAILURE
+                              )
                     )
                 }
             } catch (_) {}
@@ -296,22 +301,15 @@ module.exports = function (node: HAPService2NodeType) {
             } else {
                 const value = msg.payload?.[key]
 
-                if (
-                    (node.config.isParent &&
-                        node.config.hostType == HostType.BRIDGE) ||
-                    (!node.config.isParent &&
-                        node.hostNode.hostType == HostType.BRIDGE)
-                ) {
-                    // updateReachability is only supported on bridged accessories
-                    node.accessory.updateReachability(value !== NO_RESPONSE_MSG)
-                }
+                const parentNode = node.parentNode ?? node
+                parentNode.reachable = value !== NO_RESPONSE_MSG
 
                 const characteristic = node.service.getCharacteristic(
                     Characteristic[key]
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(value, undefined, context)
+                    characteristic.setValue(value, context)
                 } else {
                     characteristic.setValue(value)
                 }

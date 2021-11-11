@@ -1,4 +1,3 @@
-import HostType from '../types/HostType'
 import HAPServiceNodeType from '../types/HAPServiceNodeType'
 import {
     Accessory,
@@ -7,6 +6,8 @@ import {
     CharacteristicGetCallback,
     CharacteristicSetCallback,
     CharacteristicValue,
+    HAPStatus,
+    HapStatusError,
     Service,
 } from 'hap-nodejs'
 import HAPServiceConfigType from '../types/HAPServiceConfigType'
@@ -57,7 +58,7 @@ module.exports = function (node: HAPServiceNodeType) {
             `onCharacteristicGet with status: ${this.statusCode}, value: ${
                 this.value
             }, reachability is ${
-                node.accessory.reachable
+                (node.parentNode ?? node).reachable
             } with context ${JSON.stringify(context)} on connection ${
                 connection?.sessionID
             }`
@@ -66,9 +67,11 @@ module.exports = function (node: HAPServiceNodeType) {
         if (callback) {
             try {
                 callback(
-                    node.accessory.reachable
-                        ? this.statusCode
-                        : new Error(NO_RESPONSE_MSG),
+                    (node.parentNode ?? node).reachable
+                        ? null
+                        : new HapStatusError(
+                              HAPStatus.SERVICE_COMMUNICATION_FAILURE
+                          ),
                     this.value
                 )
             } catch (_) {}
@@ -145,7 +148,7 @@ module.exports = function (node: HAPServiceNodeType) {
             log.debug(
                 `onCharacteristicSet with status: ${this.statusCode}, value: ${
                     this.value
-                }, reachability is ${node.accessory.reachable} 
+                }, reachability is ${(node.parentNode ?? node).reachable} 
             with context ${JSON.stringify(context)} on connection ${
                     connection?.sessionID
                 }`
@@ -154,9 +157,11 @@ module.exports = function (node: HAPServiceNodeType) {
             try {
                 if (callback) {
                     callback(
-                        node.accessory.reachable
+                        (node.parentNode ?? node).reachable
                             ? null
-                            : new Error(NO_RESPONSE_MSG)
+                            : new HapStatusError(
+                                  HAPStatus.SERVICE_COMMUNICATION_FAILURE
+                              )
                     )
                 }
             } catch (_) {}
@@ -179,7 +184,7 @@ module.exports = function (node: HAPServiceNodeType) {
 
             log.debug(
                 `onCharacteristicChange with reason: ${reason}, oldValue: ${oldValue}, newValue: ${newValue}, reachability is ${
-                    node.accessory.reachable
+                    (node.parentNode ?? node).reachable
                 } 
             with context ${JSON.stringify(context)} on connection ${
                     originator?.sessionID
@@ -241,30 +246,19 @@ module.exports = function (node: HAPServiceNodeType) {
                     )}`
                 )
             } else {
-                if (
-                    (node.config.isParent &&
-                        node.config.hostType == HostType.BRIDGE) ||
-                    (!node.config.isParent &&
-                        node.hostNode.hostType == HostType.BRIDGE)
-                ) {
-                    // updateReachability is only supported on bridged accessories
-                    node.accessory.updateReachability(
-                        msg.payload[key] !== NO_RESPONSE_MSG
-                    )
-                }
+                const value = msg.payload?.[key]
+
+                const parentNode = node.parentNode ?? node
+                parentNode.reachable = value !== NO_RESPONSE_MSG
 
                 const characteristic = node.service.getCharacteristic(
                     Characteristic[key]
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(
-                        msg.payload[key],
-                        undefined,
-                        context
-                    )
+                    characteristic.setValue(value, context)
                 } else {
-                    characteristic.setValue(msg.payload[key])
+                    characteristic.setValue(value)
                 }
             }
         })

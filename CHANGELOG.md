@@ -13,6 +13,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.5.0-dev.1]
 
+### Fixed
+
+- Accessory could not be recovered from NO_RESPONSE using single Characteristic
+
 ### Changed
 
 - Updated hap-nodejs to [0.9.7](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.9.7) (bug fixes)
@@ -25,7 +29,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-- Updated hap-nodejs to [0.9.6](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.9.6) (bug fixes and security fixes)
+- Updated hap-nodejs to [0.9.6](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.9.6) (bug fixes and security
+  fixes)
 
 ## [1.4.2]
 
@@ -62,7 +67,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-- Updated hap-nodejs to [0.9.5](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.9.5) (added new iOS 15 Services and Characteristics)
+- Updated hap-nodejs to [0.9.5](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.9.5) (added new iOS 15 Services
+  and Characteristics)
 - Updated dependencies to latest versions
 - Changed `BatteryService` to `Battery` in demo examples as `BatteryService` is deprecated #381 - thanks @crxporter
 - Readme rework - thanks @crxporter

@@ -111,6 +111,7 @@ module.exports = (RED: NodeAPI) => {
             log.debug('Starting Parent Service')
             configure.call(self)
             self.configured = true
+            self.reachable = true
         } else {
             const serviceType =
                 config.serviceName === 'CameraControl' ? 'Camera' : 'Linked'
@@ -168,17 +169,18 @@ module.exports = (RED: NodeAPI) => {
                 throw new NRCHKBError('Parent Node not assigned')
             }
 
-            self.parentService = parentNode.service
+            self.parentNode = parentNode
+            self.parentService = self.parentNode.service
 
             if (!self.parentService) {
                 log.error('Parent Service not assigned', false)
                 throw new NRCHKBError('Parent Service not assigned')
             }
 
-            self.hostNode = parentNode.hostNode
-            parentNode.childNodes.push(self)
+            self.hostNode = self.parentNode.hostNode
+            self.parentNode.childNodes.push(self)
 
-            self.accessory = parentNode.accessory
+            self.accessory = self.parentNode.accessory
         }
 
         // Service node properties
