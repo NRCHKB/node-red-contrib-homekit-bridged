@@ -424,10 +424,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node-red@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@types/node-red/-/node-red-1.1.1.tgz#6e67edd2b4e88f01fcc57bc8e653c6f5e2f9e1f8"
-  integrity sha512-ePusasml1Wc7v/LWCD+804b3ROX8rlztxDDGu3fS4eq8cVNg8vsKwmioRvsFwYv6DVfEd9CAOh5Bn4n1qsocjQ==
+"@types/node-red@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/node-red/-/node-red-1.2.0.tgz#8483b53e0aeda86462fc0f1a991d2e972927bc6b"
+  integrity sha512-+nXKS75ZEmtnSOZ0fQP7zt8vSf2RVqQ/UBFhBHLwPQRv0uQeVS/Fzj6IaQ2YLFoPQAZ7lVQ+ki3ajINNpNlpSg==
   dependencies:
     "@types/express" "*"
     "@types/node-red__editor-api" "*"
@@ -455,18 +455,18 @@
     "@types/node-red__util" "*"
 
 "@types/node-red__registry@*":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@types/node-red__registry/-/node-red__registry-1.1.5.tgz#6576a81584b405970d6c08e03878091b4b849af6"
-  integrity sha512-SSc9IdE2ESoAugenLvmxPgTrekWozOXGZZGvPcApaql91c3k4CZG9oYLSBWE0BvMjW1uQcaDOEUiDR5JVlRxUg==
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/node-red__registry/-/node-red__registry-1.2.0.tgz#18e16dbb6262c31e3cae6bcab931ef58497247d2"
+  integrity sha512-0YbBTdD06sU24BXapLXzC2I7lY+GU4uVNOiFXciP5RvlbVg2szJBfUfXN5M8/dC1wa1erayDjpetRUTHn8FzJg==
   dependencies:
     "@types/express" "*"
     "@types/node-red__runtime" "*"
     "@types/node-red__util" "*"
 
 "@types/node-red__runtime@*":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@types/node-red__runtime/-/node-red__runtime-1.1.3.tgz#e8780b1d632bea917626bd25c146ac032565b7bb"
-  integrity sha512-LOx+7gcsm3nq+4KXqC3FycEBijQ9XAbM4dJkOyky8vvM3ROcuxLIiOfzVmogSACHObfwX0phADBlz/JTeA+l9A==
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/node-red__runtime/-/node-red__runtime-1.2.0.tgz#723ecdc67e0818227b192d2f3bf1f47da0cd1e7f"
+  integrity sha512-1jSmhrzsBiW6OaNpyAdXitq0H3Zt2LYFNBhsLQE0LHSp77F26/bni1mFNGnIuo684CT+CX71kP6ZjuMJyeM/bA==
   dependencies:
     "@types/cors" "*"
     "@types/express" "*"
@@ -475,9 +475,9 @@
     "@types/passport" "*"
 
 "@types/node-red__util@*":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@types/node-red__util/-/node-red__util-1.1.2.tgz#586f5a71f0ce3fe136b0d39a8e2ca964a09aefce"
-  integrity sha512-XQsLKNdohotO4qUQtcMYen/c6hGSldrr48QuQy5oUnNdPpVtiT6GBFKcIuxXhTPiobmJkvwm9qgC6EwY+reIvw==
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/node-red__util/-/node-red__util-1.2.0.tgz#97d29cc39839a48d452dacdd4b3d29c4def48e0e"
+  integrity sha512-jxxznqRl2UhmMimkv7+vvxcsi0fXS1EnTmiuQ2FwplTNvl2Ui+g4K2vbG/Jn/rsLujpM6oyPPjwzKPG1diPqUQ==
   dependencies:
     "@types/node-red__registry" "*"
     "@types/node-red__runtime" "*"

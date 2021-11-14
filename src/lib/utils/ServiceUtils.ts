@@ -241,9 +241,9 @@ module.exports = function (node: HAPServiceNodeType) {
         Object.keys(msg.payload).map((key: string) => {
             if (node.supported.indexOf(key) < 0) {
                 log.error(
-                    `Instead of ${key} try one of these characteristics: ${node.supported.join(
-                        ', '
-                    )}`
+                    `Instead of '${key}' try one of these characteristics: '${node.supported.join(
+                        "', '"
+                    )}'`
                 )
             } else {
                 const value = msg.payload?.[key]

@@ -293,9 +293,9 @@ module.exports = function (node: HAPService2NodeType) {
                     }
                 } else {
                     log.error(
-                        `Instead of ${key} try one of these characteristics: ${node.supported.join(
-                            ', '
-                        )}`
+                        `Instead of '${key}' try one of these characteristics: '${node.supported.join(
+                            "', '"
+                        )}'`
                     )
                 }
             } else {

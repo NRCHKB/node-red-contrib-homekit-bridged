@@ -90,7 +90,8 @@ module.exports = function (node: HAPService2NodeType) {
             }
         })
 
-        return supported
+        // Removing accidental duplicate values
+        return [...new Set(supported)]
     }
 
     return {

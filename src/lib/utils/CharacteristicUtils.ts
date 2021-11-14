@@ -88,7 +88,8 @@ module.exports = function (node: HAPServiceNodeType) {
             }
         })
 
-        return supported
+        // Removing accidental duplicate values
+        return [...new Set(supported)]
     }
 
     return {
