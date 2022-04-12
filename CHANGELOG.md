@@ -13,6 +13,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.5.0-dev.4]
 
+### Added
+
+- Support for new advertiser [AVAHI](https://github.com/homebridge/HAP-NodeJS/pull/918)
+
 ### Fixed
 
 - Accessory could not be recovered from NO_RESPONSE using single Characteristic
@@ -22,6 +26,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 
 - Updated hap-nodejs to [0.9.7](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.9.7) (bug fixes)
+- Updated hap-nodejs to [0.9.8](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.9.8) (bug fixes)
+- Updated hap-nodejs to [0.10.0](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.0) (features)
 
 ## [1.4.3]
 
