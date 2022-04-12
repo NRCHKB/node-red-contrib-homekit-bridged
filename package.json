@@ -1,12 +1,12 @@
 {
   "name": "node-red-contrib-homekit-bridged",
-  "version": "1.5.0-dev.3",
+  "version": "1.5.0-dev.4",
   "description": "Node-RED nodes to simulate Apple HomeKit devices.",
   "main": "build/nodes/nrchkb.js",
   "scripts": {
-    "build": "yarn clean && tsc",
+    "build": "npm run clean && tsc",
     "clean": "rimraf build/lib build/**/*.js",
-    "test": "yarn build && mocha -r ts-node/register './src/**/*.test.[tj]s' --exit",
+    "test": "npm run build && mocha -r ts-node/register './src/**/*.test.[tj]s' --exit",
     "prettier": "prettier --write \"**/*.{js,ts}\"",
     "postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
@@ -74,6 +74,7 @@
     "node-red-node-test-helper": "^0.2.7",
     "pinst": "^2.1.6",
     "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
     "ts-node": "^10.5.0",
     "typescript": "^4.5.5"
   },
