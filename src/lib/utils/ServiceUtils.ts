@@ -99,7 +99,8 @@ module.exports = function (node: HAPServiceNodeType) {
         msg.hap = prepareHapData(context, connection)
         msg.hap.allChars = allCharacteristics.reduce<{ [key: string]: any }>(
             (allChars, singleChar) => {
-                allChars[singleChar.displayName] = singleChar.value
+                const cKey = singleChar.constructor.name
+                allChars[cKey] = singleChar.value
                 return allChars
             },
             {}

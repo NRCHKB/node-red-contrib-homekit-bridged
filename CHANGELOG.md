@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.5.0-dev.6]
+## [1.5.0-dev.7]
 
 ### Added
 
@@ -22,6 +22,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Accessory could not be recovered from NO_RESPONSE using single Characteristic
 - Make unsupported Characteristic error more
   descriptive [#456](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/456)
+- FFmpeg No such file or directory [#495](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/495)
+- allChars: properties have spaces in names [#496](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/496)
 
 ### Changed
 

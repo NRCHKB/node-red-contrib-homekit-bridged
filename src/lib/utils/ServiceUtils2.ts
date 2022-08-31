@@ -83,7 +83,8 @@ module.exports = function (node: HAPService2NodeType) {
             event: eventObject,
             allChars: allCharacteristics.reduce<{ [key: string]: any }>(
                 (allChars, singleChar) => {
-                    allChars[singleChar.displayName] = singleChar.value
+                    const cKey = singleChar.constructor.name
+                    allChars[cKey] = singleChar.value
                     return allChars
                 },
                 {}
