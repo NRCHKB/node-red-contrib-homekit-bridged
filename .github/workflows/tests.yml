@@ -16,7 +16,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: build and test
         run: |
-          npm ci --omit=dev --ignore-scripts
+          npm ci
           npm run build
           npm run test
         env:

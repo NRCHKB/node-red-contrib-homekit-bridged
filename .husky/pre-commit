@@ -1,4 +1,9 @@
 #!/usr/bin/env sh
+
+# .husky/pre-commit
+# ...
+[ -n "$CI" ] && exit 0
+
 . "$(dirname -- "$0")/_/husky.sh"
 
 npm run prettier && npm test
