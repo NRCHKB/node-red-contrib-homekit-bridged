@@ -391,8 +391,7 @@ Camera.prototype.handleStreamRequest = function (request) {
                     ' -r ' +
                     fps +
                     ' -f rawvideo' +
-                    ' ' +
-                    additionalCommandline +
+                    (additionalCommandline ? ' ' + additionalCommandline : '') +
                     (vf.length > 0 ? ' -vf ' + vf.join(',') : '') +
                     ' -b:v ' +
                     vbitrate +
