@@ -14,7 +14,7 @@ jobs:
         with:
           node-version: 10
       - run: |
-          npm ci
+          npm ci --omit=dev --ignore-scripts
           npm run build
           npm run test
 
@@ -35,11 +35,11 @@ jobs:
         id: discord-prepare
         run: |
          echo ::set-output name=DISCORD_MSG_DEV_ANN::'{"title":"New dev version `${{ steps.package-version.outputs.current-version }}` has been released.","description":"Changelog is available [here](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/commits/dev/CHANGELOG.md)","url":"https://github.com/NRCHKB/node-red-contrib-homekit-bridged/tree/dev","color":9371648,"fields":[{"name":"How to install","value":"1. Stop node-red\n2. Backup `~/.node-red` folder\n3. `cd ~/.node-red`\n4. `npm i node-red-contrib-homekit-bridged@${{ steps.package-version.outputs.current-version }}`\n5. Start node-red"}]}' 
-         echo ::set-output name=DISCORD_MSG_ERROR::'{"title":"Dev version `${{ steps.package-version.outputs.current-version }}` failed to be released.","description":"Changelog is available [here](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/commits/dev/CHANGELOG.md)","url":"https://github.com/NRCHKB/node-red-contrib-homekit-bridged/tree/dev","color":9371648,"fields":[{"name":"How to install","value":"1. Stop node-red\n2. Backup `~/.node-red` folder\n3. `cd ~/.node-red`\n4. `npm i node-red-contrib-homekit-bridged@${{ steps.package-version.outputs.current-version }}`\n5. Start node-red"}]}' 
+         echo ::set-output name=DISCORD_MSG_ERROR::'{"title":"Dev version `${{ steps.package-version.outputs.current-version }}` failed to be released.","description":"Changelog is available [here](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/commits/dev/CHANGELOG.md)","url":"https://github.com/NRCHKB/node-red-contrib-homekit-bridged/tree/dev","color":9371648,"fields":[{"name":"How to install","value":"1. Stop node-red\n2. Backup `~/.node-red` folder\n3. `cd ~/.node-red`\n4. `npm i node-red-contrib-homekit-bridged@${{ steps.package-version.outputs.current-version }}`\n5. Start node-red"}]}'
       - name: Publish
         if: contains(steps.package-version.outputs.current-version, 'dev') == true
         run: |
-          npm ci
+          npm ci --omit=dev --ignore-scripts
           npm run build
           npm publish --tag dev
         env:
