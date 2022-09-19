@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.5.0-dev.8]
+## [1.5.0-dev.9]
 
 ### Added
 
@@ -32,7 +32,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Updated hap-nodejs to [0.10.0](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.0) (features)
 - Updated hap-nodejs to [0.10.1](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.1) (changes)
 - Updated hap-nodejs to [0.10.2](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.2) (bug fixes)
-- Updated hap-nodejs to [0.10.3](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.2) (bug fixes)
+- Updated hap-nodejs to [0.10.3](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.3) (bug fixes)
+- Updated hap-nodejs to [0.10.4](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.4) (bug fixes)
 
 ## [1.4.3]
 
