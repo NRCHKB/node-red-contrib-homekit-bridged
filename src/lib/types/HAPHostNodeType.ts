@@ -1,8 +1,9 @@
-import NodeType from './NodeType'
-import HAPHostConfigType from './HAPHostConfigType'
-import { Accessory, Categories } from 'hap-nodejs'
-import HostType from './HostType'
 import { MulticastOptions } from 'bonjour-hap'
+import { Accessory, Categories } from 'hap-nodejs'
+
+import HAPHostConfigType from './HAPHostConfigType'
+import HostType from './HostType'
+import NodeType from './NodeType'
 
 type HAPHostNodeType = NodeType & {
     config: HAPHostConfigType

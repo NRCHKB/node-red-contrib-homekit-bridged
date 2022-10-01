@@ -1,7 +1,8 @@
-import HAPServiceNodeType from '../types/HAPServiceNodeType'
-import { Accessory, Service } from 'hap-nodejs'
-import AccessoryInformationType from '../types/AccessoryInformationType'
 import { logger } from '@nrchkb/logger'
+import { Accessory, Service } from 'hap-nodejs'
+
+import AccessoryInformationType from '../types/AccessoryInformationType'
+import HAPServiceNodeType from '../types/HAPServiceNodeType'
 
 module.exports = function (node: HAPServiceNodeType) {
     const HapNodeJS = require('hap-nodejs')

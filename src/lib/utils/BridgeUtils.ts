@@ -1,6 +1,7 @@
+import { logger } from '@nrchkb/logger'
+
 import HAPServiceNodeType from '../types/HAPServiceNodeType'
 import HostType from '../types/HostType'
-import { logger } from '@nrchkb/logger'
 
 module.exports = function () {
     // Publish accessory after the service has been added

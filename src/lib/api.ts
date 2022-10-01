@@ -1,12 +1,13 @@
-import { NodeAPI } from 'node-red'
-import express from 'express'
-import HapCategories from './types/HapCategories'
-import { Characteristic, Perms, SerializedService, Service } from 'hap-nodejs'
-import CustomCharacteristicType from './types/CustomCharacteristicType'
-import HAPServiceNodeType from './types/HAPServiceNodeType'
-import HAPServiceConfigType from './types/HAPServiceConfigType'
 import { logger } from '@nrchkb/logger'
+import express from 'express'
+import { Characteristic, Perms, SerializedService, Service } from 'hap-nodejs'
+import { NodeAPI } from 'node-red'
+
 import { Storage } from './Storage'
+import CustomCharacteristicType from './types/CustomCharacteristicType'
+import HapCategories from './types/HapCategories'
+import HAPServiceConfigType from './types/HAPServiceConfigType'
+import HAPServiceNodeType from './types/HAPServiceNodeType'
 
 const version = require('../../package.json').version.trim()
 
@@ -142,7 +143,7 @@ module.exports = function (RED: NodeAPI) {
         const getCustomCharacteristics = () => {
             return Storage.loadCustomCharacteristics()
                 .then((value) => {
-                    log.trace(`loadCustomCharacteristics()`)
+                    log.trace('loadCustomCharacteristics()')
                     log.trace(value)
 
                     if (Array.isArray(value)) {

@@ -1,8 +1,9 @@
+import { logger, loggerSetup } from '@nrchkb/logger'
+import { HAPStorage } from 'hap-nodejs'
 import { NodeAPI } from 'node-red'
 import * as path from 'path'
 import semver from 'semver'
-import { HAPStorage } from 'hap-nodejs'
-import { logger, loggerSetup } from '@nrchkb/logger'
+
 import { Storage } from '../lib/Storage'
 
 loggerSetup({ timestampEnabled: 'NRCHKB' })

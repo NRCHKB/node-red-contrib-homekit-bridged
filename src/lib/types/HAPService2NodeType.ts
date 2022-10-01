@@ -1,6 +1,3 @@
-import NodeType from './NodeType'
-import { NodeAPI } from 'node-red'
-import HAPService2ConfigType from './HAPService2ConfigType'
 import {
     Accessory,
     Characteristic,
@@ -11,11 +8,15 @@ import {
     CharacteristicValue,
     Service,
 } from 'hap-nodejs'
+import { HAPConnection } from 'hap-nodejs/dist/lib/util/eventedhttp'
+import { NodeAPI } from 'node-red'
+
 import HAPHostNodeType from './HAPHostNodeType'
+import HAPService2ConfigType from './HAPService2ConfigType'
+import HAPServiceNodeType from './HAPServiceNodeType'
+import NodeType from './NodeType'
 import PublishTimersType from './PublishTimersType'
 import StatusUtilType from './StatusUtilType'
-import HAPServiceNodeType from './HAPServiceNodeType'
-import { HAPConnection } from 'hap-nodejs/dist/lib/util/eventedhttp'
 
 type HAPService2NodeType = NodeType & {
     config: HAPService2ConfigType

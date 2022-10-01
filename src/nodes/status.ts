@@ -1,9 +1,10 @@
-import { NodeAPI } from 'node-red'
 import { logger } from '@nrchkb/logger'
-import HAPStatusNodeType from '../lib/types/HAPStatusNodeType'
-import HAPStatusConfigType from '../lib/types/HAPStatusConfigType'
-import HAPServiceNodeType from '../lib/types/HAPServiceNodeType'
 import { Service } from 'hap-nodejs'
+import { NodeAPI } from 'node-red'
+
+import HAPServiceNodeType from '../lib/types/HAPServiceNodeType'
+import HAPStatusConfigType from '../lib/types/HAPStatusConfigType'
+import HAPStatusNodeType from '../lib/types/HAPStatusNodeType'
 
 const log = logger('NRCHKB', 'HAPStatusNode')
 

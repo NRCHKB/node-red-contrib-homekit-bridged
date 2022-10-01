@@ -1,4 +1,5 @@
 import { Node } from 'node-red'
+
 import { FlowType } from './FlowType'
 
 type NodeType = Node & {

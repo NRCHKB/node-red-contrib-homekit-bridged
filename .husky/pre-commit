@@ -6,4 +6,4 @@
 
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run prettier && npm test
+npm run prettier && npm test && npm run lint

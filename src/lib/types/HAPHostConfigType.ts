@@ -1,7 +1,8 @@
+import { MDNSAdvertiser } from 'hap-nodejs'
 import { NodeDef } from 'node-red'
 import { SemVer } from 'semver'
+
 import HapCategories from './HapCategories'
-import { MDNSAdvertiser } from 'hap-nodejs'
 
 type HAPHostConfigType = NodeDef & {
     bridgeName: string

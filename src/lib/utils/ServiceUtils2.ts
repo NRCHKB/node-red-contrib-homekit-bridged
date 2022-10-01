@@ -1,4 +1,4 @@
-import HAPService2NodeType from '../types/HAPService2NodeType'
+import { logger } from '@nrchkb/logger'
 import {
     Accessory,
     Characteristic,
@@ -11,15 +11,16 @@ import {
     HapStatusError,
     Service,
 } from 'hap-nodejs'
-import HAPService2ConfigType from '../types/HAPService2ConfigType'
 import {
     HAPConnection,
     HAPUsername,
 } from 'hap-nodejs/dist/lib/util/eventedhttp'
-import { logger } from '@nrchkb/logger'
 import { SessionIdentifier } from 'hap-nodejs/dist/types'
-import { Storage } from '../Storage'
+
 import NRCHKBError from '../NRCHKBError'
+import { Storage } from '../Storage'
+import HAPService2ConfigType from '../types/HAPService2ConfigType'
+import HAPService2NodeType from '../types/HAPService2NodeType'
 
 module.exports = function (node: HAPService2NodeType) {
     const log = logger('NRCHKB', 'ServiceUtils2', node.config.name, node)
@@ -38,7 +39,7 @@ module.exports = function (node: HAPService2NodeType) {
             callbackID?: string // ID used to update Characteristic value with get event
             key?: string // Characteristic key
             reason?: string
-        } & {} // Additional event data provided by event caller
+        } & Record<string, unknown> // Additional event data provided by event caller
     }
 
     type HAPServiceMessage = {

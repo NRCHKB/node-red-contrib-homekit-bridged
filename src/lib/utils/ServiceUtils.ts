@@ -1,4 +1,4 @@
-import HAPServiceNodeType from '../types/HAPServiceNodeType'
+import { logger } from '@nrchkb/logger'
 import {
     Accessory,
     Characteristic,
@@ -10,10 +10,11 @@ import {
     HapStatusError,
     Service,
 } from 'hap-nodejs'
-import HAPServiceConfigType from '../types/HAPServiceConfigType'
 import { HAPConnection } from 'hap-nodejs/dist/lib/util/eventedhttp'
-import { logger } from '@nrchkb/logger'
+
 import NRCHKBError from '../NRCHKBError'
+import HAPServiceConfigType from '../types/HAPServiceConfigType'
+import HAPServiceNodeType from '../types/HAPServiceNodeType'
 
 module.exports = function (node: HAPServiceNodeType) {
     const log = logger('NRCHKB', 'ServiceUtils', node.config.name, node)

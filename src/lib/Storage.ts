@@ -1,19 +1,20 @@
-import path from 'path'
-import storage, { InitOptions } from 'node-persist'
-import { StorageType } from './types/storage/StorageType'
+import { logger } from '@nrchkb/logger'
 import {
     CharacteristicEventTypes,
     SerializedAccessory,
     SerializedService,
 } from 'hap-nodejs'
-import { logger } from '@nrchkb/logger'
-import { SerializedHostType } from './types/storage/SerializedHostType'
+import storage, { InitOptions } from 'node-persist'
+import path from 'path'
 import {
     v4 as uuidv4,
     validate as uuidValidate,
     version as uuidVersion,
 } from 'uuid'
+
 import NRCHKBError from './NRCHKBError'
+import { SerializedHostType } from './types/storage/SerializedHostType'
+import { StorageType } from './types/storage/StorageType'
 
 type EventCallback = {
     event: CharacteristicEventTypes

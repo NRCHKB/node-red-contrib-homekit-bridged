@@ -1,7 +1,8 @@
-import HAPServiceNodeType from '../types/HAPServiceNodeType'
-import { Characteristic, CharacteristicProps, Service } from 'hap-nodejs'
-import HAPServiceConfigType from '../types/HAPServiceConfigType'
 import { logger } from '@nrchkb/logger'
+import { Characteristic, CharacteristicProps, Service } from 'hap-nodejs'
+
+import HAPServiceConfigType from '../types/HAPServiceConfigType'
+import HAPServiceNodeType from '../types/HAPServiceNodeType'
 
 module.exports = function (node: HAPServiceNodeType) {
     const log = logger('NRCHKB', 'CharacteristicUtils', node.config.name, node)

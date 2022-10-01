@@ -1,12 +1,13 @@
+import { logger } from '@nrchkb/logger'
+import { uuid } from 'hap-nodejs'
 import { NodeAPI } from 'node-red'
+
+import NRCHKBError from './NRCHKBError'
+import { FlowTypeType } from './types/FlowType'
+import HAPHostNodeType from './types/HAPHostNodeType'
 import HAPService2ConfigType from './types/HAPService2ConfigType'
 import HAPService2NodeType from './types/HAPService2NodeType'
-import HAPHostNodeType from './types/HAPHostNodeType'
 import HostType from './types/HostType'
-import { uuid } from 'hap-nodejs'
-import { logger } from '@nrchkb/logger'
-import { FlowTypeType } from './types/FlowType'
-import NRCHKBError from './NRCHKBError'
 
 module.exports = (RED: NodeAPI) => {
     /**
