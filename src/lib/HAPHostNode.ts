@@ -141,15 +141,16 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             return true
         }
 
-        self.on('close', function (removed: any, done: () => any) {
+        self.on('close', async function (removed: any, done: () => any) {
             if (removed) {
-                // This node has been deleted
-                self.host.destroy()
+                log.debug('This node has been deleted')
+                await self.host.destroy()
             } else {
-                // This node is being restarted
-                self.host.unpublish()
-                self.published = false
+                log.debug('This node is being restarted')
+                await self.host.unpublish()
             }
+
+            self.published = false
 
             done()
         })
