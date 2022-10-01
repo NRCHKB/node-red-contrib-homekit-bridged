@@ -36,6 +36,10 @@ module.exports = function (RED: NodeAPI) {
             BridgingState: {
                 nrchkbDisabledText: 'BridgingState (deprecated, unused)',
             },
+            // CameraControl: {}, // This service is deprecated by used by nrchkb to link rtsp logic
+            CameraEventRecordingManagement: {
+                nrchkbDisabledText: 'CameraEventRecordingManagement (deprecated, replaced by CameraRecordingManagement)',
+            },
             Relay: {
                 nrchkbDisabledText:
                     'Relay (deprecated, replaced by CloudRelay)',
