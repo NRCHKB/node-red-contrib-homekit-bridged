@@ -16,7 +16,7 @@ module.exports = function (RED: NodeAPI) {
 
     // Service API
     const _initServiceAPI = () => {
-        log.debug('Initialize ServiceAPI')
+        log.debug('Initialize Service API')
 
         type ServiceData = {
             [key: string]: Partial<SerializedService> & {
@@ -38,7 +38,8 @@ module.exports = function (RED: NodeAPI) {
             },
             // CameraControl: {}, // This service is deprecated by used by nrchkb to link rtsp logic
             CameraEventRecordingManagement: {
-                nrchkbDisabledText: 'CameraEventRecordingManagement (deprecated, replaced by CameraRecordingManagement)',
+                nrchkbDisabledText:
+                    'CameraEventRecordingManagement (deprecated, replaced by CameraRecordingManagement)',
             },
             Relay: {
                 nrchkbDisabledText:
@@ -80,12 +81,7 @@ module.exports = function (RED: NodeAPI) {
         )
     }
 
-    // NRCHKB Info API
-    const _initNRCHKBInfoAPI = () => {
-        log.debug('Initialize NRCHKB Info API')
-
-        log.debug(`Running version: ${version}`)
-
+    const stringifyVersion = (version: string) => {
         const releaseVersionRegex = /(\d+)\.(\d+)\.(\d+)/
         const devVersionRegex = /(\d+)\.(\d+)\.(\d+)-dev\.(\d+)/
 
@@ -122,6 +118,17 @@ module.exports = function (RED: NodeAPI) {
             log.debug('Bad version format')
             xyzVersion = '0.0.0'
         }
+
+        return xyzVersion
+    }
+
+    // NRCHKB Info API
+    const _initNRCHKBInfoAPI = () => {
+        log.debug('Initialize NRCHKB Info API')
+
+        log.debug(`Running version: ${version}`)
+
+        const xyzVersion = stringifyVersion(version)
 
         log.debug(`Evaluated as: ${xyzVersion}`)
 
@@ -277,7 +284,10 @@ module.exports = function (RED: NodeAPI) {
                 isRedInitialized()
             }).then(() => {
                 RED.nodes.eachNode((node) => {
-                    if (node.type === 'homekit-service') {
+                    if (
+                        node.type === 'homekit-service' ||
+                        node.type === 'homekit-service2'
+                    ) {
                         const serviceNodeConfig = node as HAPServiceConfigType
 
                         const serviceNode = RED.nodes.getNode(
@@ -360,7 +370,7 @@ module.exports = function (RED: NodeAPI) {
 
     // Accessory API
     const _initAccessoryAPI = function () {
-        log.debug('Initialize AccessoryAPI')
+        log.debug('Initialize Accessory API')
 
         // Accessory Categories API response data
         const accessoryCategoriesData: {
@@ -399,5 +409,6 @@ module.exports = function (RED: NodeAPI) {
 
     return {
         init,
+        stringifyVersion,
     }
 }

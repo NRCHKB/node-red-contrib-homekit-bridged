@@ -151,6 +151,12 @@ describe('Service Node', function () {
                         try {
                             msg.payload.should.have.property('On', false)
                             msg.hap.should.have.property('reachable', false)
+                            // @ts-ignore
+                            s1.status.should.be.calledWithExactly({
+                                fill: 'yellow',
+                                shape: 'dot',
+                                text: 'Not reachable',
+                            })
                             done()
                         } catch (err) {
                             done(err)
