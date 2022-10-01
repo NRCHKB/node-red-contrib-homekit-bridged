@@ -110,17 +110,30 @@ module.exports = function (node: HAPServiceNodeType) {
             msg.hap.oldValue = oldValue
         }
 
-        msg.hap.newValue = newValue
+        if (!node.reachable) {
+            msg.hap.reachable = false
 
-        const statusId = node.setStatus({
-            fill: 'yellow',
-            shape: 'dot',
-            text: key + ': ' + newValue,
-        })
+            node.setStatus(
+                {
+                    fill: 'yellow',
+                    shape: 'dot',
+                    text: 'Not reachable',
+                },
+                3000
+            )
+        } else {
+            msg.hap.reachable = true
+            msg.hap.newValue = newValue
 
-        setTimeout(function () {
-            node.clearStatus(statusId)
-        }, 3000)
+            node.setStatus(
+                {
+                    fill: 'yellow',
+                    shape: 'dot',
+                    text: key + ': ' + newValue,
+                },
+                3000
+            )
+        }
 
         log.debug(`${node.name} received ${key} : ${newValue}`)
 

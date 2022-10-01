@@ -16,6 +16,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Support for new advertiser [AVAHI](https://github.com/homebridge/HAP-NodeJS/pull/918)
+- Added `msg.hap.reachable` parameter to get device reachable state (related to NO_RESPONSE)
 
 ### Fixed
 

@@ -46,6 +46,7 @@ module.exports = function (node: HAPService2NodeType) {
         hap?: {
             oldValue?: any
             newValue?: any
+            reachable?: boolean
             event?: HAPServiceNodeEvent
             session?: {
                 sessionID?: SessionIdentifier
@@ -79,7 +80,6 @@ module.exports = function (node: HAPService2NodeType) {
         }
         msg.payload = {}
         msg.hap = {
-            newValue,
             event: eventObject,
             allChars: allCharacteristics.reduce<{ [key: string]: any }>(
                 (allChars, singleChar) => {
@@ -89,13 +89,37 @@ module.exports = function (node: HAPService2NodeType) {
                 },
                 {}
             ),
-        }
-
-        if (oldValue !== undefined) {
-            msg.hap.oldValue = oldValue
+            oldValue,
         }
 
         const key = this.constructor.name
+
+        if (!node.reachable) {
+            msg.hap.reachable = false
+
+            node.setStatus(
+                {
+                    fill: 'yellow',
+                    shape: 'dot',
+                    text: 'Not reachable',
+                },
+                3000
+            )
+        } else {
+            msg.hap.reachable = true
+            msg.hap.newValue = newValue
+
+            node.setStatus(
+                {
+                    fill: 'yellow',
+                    shape: 'dot',
+                    text: `[${eventObject.name}] ${key}${
+                        newValue != undefined ? `: ${newValue}` : ''
+                    }`,
+                },
+                3000
+            )
+        }
 
         msg.payload[key] = newValue
 
@@ -108,17 +132,6 @@ module.exports = function (node: HAPService2NodeType) {
                 httpPort: connection.remotePort,
             }
         }
-
-        node.setStatus(
-            {
-                fill: 'yellow',
-                shape: 'dot',
-                text: `[${eventObject.name}] ${key}${
-                    newValue != undefined ? `: ${newValue}` : ''
-                }`,
-            },
-            3000
-        )
 
         log.debug(
             `${node.name} received ${eventObject.name} ${key}: ${newValue}`
