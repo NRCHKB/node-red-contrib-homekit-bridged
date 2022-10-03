@@ -5,9 +5,9 @@ import { afterEach, before, describe, it } from 'mocha'
 import helper from 'node-red-node-test-helper'
 
 import { switchServiceBridgeFlow } from '../test-utils/data'
-const homekitBridgeNode = require('../../../build/nodes/bridge')
-const nrchkb = require('../../../build/nodes/nrchkb')
-const homekitServiceNode = require('../../../build/nodes/service')
+const homekitBridgeNode = require('../../nodes/bridge')
+const nrchkb = require('../../nodes/nrchkb')
+const homekitServiceNode = require('../../nodes/service')
 
 loggerSetup({
     debugEnabled: true,
@@ -151,9 +151,10 @@ describe('Service Node', function () {
                             msg.hap.should.have.property('reachable', false)
                             // @ts-ignore
                             s1.status.should.be.calledWithExactly({
-                                fill: 'yellow',
-                                shape: 'dot',
+                                fill: 'red',
+                                shape: 'ring',
                                 text: 'Not reachable',
+                                type: 'NO_RESPONSE',
                             })
                             done()
                         } catch (err) {

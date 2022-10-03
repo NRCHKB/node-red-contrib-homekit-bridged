@@ -11,12 +11,12 @@ import {
 import { HAPConnection } from 'hap-nodejs/dist/lib/util/eventedhttp'
 import { NodeAPI } from 'node-red'
 
+import { NodeStatusUtils } from '../utils/NodeStatusUtils'
 import HAPHostNodeType from './HAPHostNodeType'
 import HAPService2ConfigType from './HAPService2ConfigType'
 import HAPServiceNodeType from './HAPServiceNodeType'
 import NodeType from './NodeType'
 import PublishTimersType from './PublishTimersType'
-import StatusUtilType from './StatusUtilType'
 
 type HAPService2NodeType = NodeType & {
     config: HAPService2ConfigType
@@ -26,7 +26,7 @@ type HAPService2NodeType = NodeType & {
     handleWaitForSetup: (msg: any) => any
     onIdentify: (paired: boolean, callback: () => any) => void
     hostNode: HAPHostNodeType
-    childNodes: (HAPService2NodeType | HAPServiceNodeType)[]
+    childNodes?: (HAPService2NodeType | HAPServiceNodeType)[]
     service: Service
     parentService: Service
     parentNode?: HAPService2NodeType | HAPServiceNodeType
@@ -55,6 +55,7 @@ type HAPService2NodeType = NodeType & {
     uniqueIdentifier: string
     // Is Accessory reachable? On Linked Service it will be undefined. If is not true then NO_RESPONSE
     reachable?: boolean
-} & StatusUtilType
+    nodeStatusUtils: NodeStatusUtils
+}
 
 export default HAPService2NodeType

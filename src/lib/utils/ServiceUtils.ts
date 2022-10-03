@@ -111,22 +111,21 @@ module.exports = function (node: HAPServiceNodeType) {
             msg.hap.oldValue = oldValue
         }
 
-        if (!node.reachable) {
-            msg.hap.reachable = false
+        msg.hap.reachable = node.reachable ?? node.parentNode?.reachable
 
-            node.setStatus(
-                {
-                    fill: 'yellow',
-                    shape: 'dot',
+        if (msg.hap.reachable === false) {
+            ;[node, ...(node.childNodes ?? [])].forEach((n) =>
+                n.nodeStatusUtils.setStatus({
+                    fill: 'red',
+                    shape: 'ring',
                     text: 'Not reachable',
-                },
-                3000
+                    type: 'NO_RESPONSE',
+                })
             )
         } else {
-            msg.hap.reachable = true
             msg.hap.newValue = newValue
 
-            node.setStatus(
+            node.nodeStatusUtils.setStatus(
                 {
                     fill: 'yellow',
                     shape: 'dot',
@@ -134,6 +133,11 @@ module.exports = function (node: HAPServiceNodeType) {
                 },
                 3000
             )
+
+            node.childNodes?.forEach((n) =>
+                n.nodeStatusUtils.clearStatusByType('NO_RESPONSE')
+            )
+            node.parentNode?.nodeStatusUtils.clearStatusByType('NO_RESPONSE')
         }
 
         log.debug(`${node.name} received ${key} : ${newValue}`)
@@ -146,7 +150,7 @@ module.exports = function (node: HAPServiceNodeType) {
             if (outputNumber === 0) {
                 node.send(msg)
             } else if (outputNumber === 1) {
-                node.send([null!, msg])
+                node.send([null, msg])
             }
         }
     }
@@ -411,7 +415,7 @@ module.exports = function (node: HAPServiceNodeType) {
         log.debug('Waiting for Parent Service')
 
         return new Promise((resolve) => {
-            node.setStatus({
+            node.nodeStatusUtils.setStatus({
                 fill: 'blue',
                 shape: 'dot',
                 text: 'Waiting for Parent Service',

@@ -4,7 +4,7 @@ import { loggerSetup } from '@nrchkb/logger'
 import { describe, it } from 'mocha'
 import should from 'should'
 
-const HAPHostNode = require('../../../build/lib/HAPHostNode')()
+const HAPHostNode = require('../../lib/HAPHostNode')()
 
 loggerSetup({
     debugEnabled: true,

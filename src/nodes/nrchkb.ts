@@ -53,7 +53,7 @@ module.exports = (RED: NodeAPI) => {
         log.debug(`nrchkb storage path set to ${Storage.storagePath()}`)
         API.init()
 
-        const hapStoragePath = path.resolve(rootFolder!, 'homekit-persist')
+        const hapStoragePath = path.resolve(rootFolder, 'homekit-persist')
 
         try {
             HAPStorage.setCustomStoragePath(hapStoragePath)

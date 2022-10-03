@@ -11,8 +11,8 @@ import {
     serviceTypesResponse,
 } from '../test-utils/data'
 
-const API = require('../../../build/lib/api')()
-const nrchkb = require('../../../build/nodes/nrchkb')
+const API = require('../../lib/api')()
+const nrchkb = require('../../nodes/nrchkb')
 
 process.env.NRCHKB_EXPERIMENTAL = 'true'
 
