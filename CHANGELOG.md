@@ -27,6 +27,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - FFmpeg No such file or directory [#495](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/495)
 - allChars: properties have spaces in names [#496](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/496)
 - Wait for host to return from unpublish/destroy before exiting, set published flag on destroy
+- Security system with characteristics, bad behaviour [#388](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/388)
 
 ### Changed
 
