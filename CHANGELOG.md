@@ -11,11 +11,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.5.0-dev.14]
+## [1.5.0-dev.15]
 
 ### Added
 
 - Support for new advertiser [AVAHI](https://github.com/homebridge/HAP-NodeJS/pull/918)
+- Support for new advertiser [RESOLVED](https://github.com/homebridge/HAP-NodeJS/pull/965)
 - Added `msg.hap.reachable` parameter to get device reachable state (related to NO_RESPONSE)
 
 ### Fixed
