@@ -36,6 +36,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Updated hap-nodejs to [0.10.2](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.2) (bug fixes)
 - Updated hap-nodejs to [0.10.3](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.3) (bug fixes)
 - Updated hap-nodejs to [0.10.4](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.4) (bug fixes)
+- Updated hap-nodejs to [0.11.0](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.11.0) (features and bug fixes)
 
 ## [1.4.3]
 

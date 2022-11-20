@@ -254,6 +254,28 @@ export const serviceTypesResponse = {
                 },
                 value: 0,
             },
+            {
+                UUID: '00000272-0000-1000-8000-0026BB765291',
+                constructorName: 'MetricsBufferFullState',
+                displayName: 'Metrics Buffer Full State',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+                value: false,
+            },
+            {
+                UUID: '00000271-0000-1000-8000-0026BB765291',
+                constructorName: 'SupportedMetrics',
+                displayName: 'Supported Metrics',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw'],
+                },
+                value: '',
+            },
         ],
         constructorName: 'AccessoryMetrics',
         displayName: 'AccessoryMetrics',
@@ -1314,6 +1336,28 @@ export const serviceTypesResponse = {
                 value: 0,
             },
             {
+                UUID: '00000209-0000-1000-8000-0026BB765291',
+                constructorName: 'SelectedCameraRecordingConfiguration',
+                displayName: 'Selected Camera Recording Configuration',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+                value: '',
+            },
+            {
+                UUID: '00000207-0000-1000-8000-0026BB765291',
+                constructorName: 'SupportedAudioRecordingConfiguration',
+                displayName: 'Supported Audio Recording Configuration',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+                value: '',
+            },
+            {
                 UUID: '00000205-0000-1000-8000-0026BB765291',
                 constructorName: 'SupportedCameraRecordingConfiguration',
                 displayName: 'Supported Camera Recording Configuration',
@@ -1332,28 +1376,6 @@ export const serviceTypesResponse = {
                 props: {
                     format: 'tlv8',
                     perms: ['ev', 'pr'],
-                },
-                value: '',
-            },
-            {
-                UUID: '00000207-0000-1000-8000-0026BB765291',
-                constructorName: 'SupportedAudioRecordingConfiguration',
-                displayName: 'Supported Audio Recording Configuration',
-                eventOnlyCharacteristic: false,
-                props: {
-                    format: 'tlv8',
-                    perms: ['ev', 'pr'],
-                },
-                value: '',
-            },
-            {
-                UUID: '00000209-0000-1000-8000-0026BB765291',
-                constructorName: 'SelectedCameraRecordingConfiguration',
-                displayName: 'Selected Camera Recording Configuration',
-                eventOnlyCharacteristic: false,
-                props: {
-                    format: 'tlv8',
-                    perms: ['ev', 'pr', 'pw'],
                 },
                 value: '',
             },
@@ -2333,6 +2355,61 @@ export const serviceTypesResponse = {
                 props: {
                     format: 'string',
                     maxLen: 64,
+                    perms: ['pr'],
+                },
+                value: '',
+            },
+        ],
+        primaryService: false,
+    },
+    FirmwareUpdate: {
+        UUID: '00000236-0000-1000-8000-0026BB765291',
+        characteristics: [
+            {
+                UUID: '00000234-0000-1000-8000-0026BB765291',
+                constructorName: 'FirmwareUpdateReadiness',
+                displayName: 'Firmware Update Readiness',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+                value: '',
+            },
+            {
+                UUID: '00000235-0000-1000-8000-0026BB765291',
+                constructorName: 'FirmwareUpdateStatus',
+                displayName: 'Firmware Update Status',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+                value: '',
+            },
+        ],
+        constructorName: 'FirmwareUpdate',
+        displayName: 'FirmwareUpdate',
+        hiddenService: false,
+        optionalCharacteristics: [
+            {
+                UUID: '00000249-0000-1000-8000-0026BB765291',
+                constructorName: 'StagedFirmwareVersion',
+                displayName: 'Staged Firmware Version',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'string',
+                    perms: ['ev', 'pr'],
+                },
+                value: '',
+            },
+            {
+                UUID: '00000233-0000-1000-8000-0026BB765291',
+                constructorName: 'SupportedFirmwareUpdateConfiguration',
+                displayName: 'Supported Firmware Update Configuration',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'tlv8',
                     perms: ['pr'],
                 },
                 value: '',
@@ -3961,7 +4038,30 @@ export const serviceTypesResponse = {
         constructorName: 'PowerManagement',
         displayName: 'PowerManagement',
         hiddenService: false,
-        optionalCharacteristics: [],
+        optionalCharacteristics: [
+            {
+                UUID: '00000252-0000-1000-8000-0026BB765291',
+                constructorName: 'SelectedSleepConfiguration',
+                displayName: 'Selected Sleep Configuration',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr', 'pw', 'wr'],
+                },
+                value: '',
+            },
+            {
+                UUID: '00000251-0000-1000-8000-0026BB765291',
+                constructorName: 'SupportedSleepConfiguration',
+                displayName: 'Supported Sleep Configuration',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+                value: '',
+            },
+        ],
         primaryService: false,
     },
     ProtocolInformation: {
@@ -4754,6 +4854,64 @@ export const serviceTypesResponse = {
                 value: '',
             },
         ],
+        primaryService: false,
+    },
+    TapManagement: {
+        UUID: '0000022E-0000-1000-8000-0026BB765291',
+        characteristics: [
+            {
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                constructorName: 'Active',
+                displayName: 'Active',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'uint8',
+                    maxValue: 1,
+                    minStep: 1,
+                    minValue: 0,
+                    perms: ['ev', 'pr', 'pw'],
+                    validValues: [0, 1],
+                },
+                value: 0,
+            },
+            {
+                UUID: '00000250-0000-1000-8000-0026BB765291',
+                constructorName: 'CryptoHash',
+                displayName: 'Crypto Hash',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'tlv8',
+                    perms: ['pw', 'wr'],
+                },
+                value: '',
+            },
+            {
+                UUID: '0000022F-0000-1000-8000-0026BB765291',
+                constructorName: 'TapType',
+                displayName: 'Tap Type',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'uint16',
+                    perms: ['pr'],
+                },
+                value: 0,
+            },
+            {
+                UUID: '00000231-0000-1000-8000-0026BB765291',
+                constructorName: 'Token',
+                displayName: 'Token',
+                eventOnlyCharacteristic: false,
+                props: {
+                    format: 'data',
+                    perms: ['pw'],
+                },
+                value: '',
+            },
+        ],
+        constructorName: 'TapManagement',
+        displayName: 'TapManagement',
+        hiddenService: false,
+        optionalCharacteristics: [],
         primaryService: false,
     },
     TargetControl: {
