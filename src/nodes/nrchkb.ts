@@ -1,8 +1,9 @@
+import { logger, loggerSetup } from '@nrchkb/logger'
+import { HAPStorage } from 'hap-nodejs'
 import { NodeAPI } from 'node-red'
 import * as path from 'path'
 import semver from 'semver'
-import { HAPStorage } from 'hap-nodejs'
-import { logger, loggerSetup } from '@nrchkb/logger'
+
 import { Storage } from '../lib/Storage'
 
 loggerSetup({ timestampEnabled: 'NRCHKB' })
@@ -52,7 +53,7 @@ module.exports = (RED: NodeAPI) => {
         log.debug(`nrchkb storage path set to ${Storage.storagePath()}`)
         API.init()
 
-        const hapStoragePath = path.resolve(rootFolder!, 'homekit-persist')
+        const hapStoragePath = path.resolve(rootFolder, 'homekit-persist')
 
         try {
             HAPStorage.setCustomStoragePath(hapStoragePath)

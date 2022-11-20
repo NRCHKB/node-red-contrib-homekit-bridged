@@ -11,6 +11,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2022-11-20
+
+### Added
+
+- Support for new advertiser [AVAHI](https://github.com/homebridge/HAP-NodeJS/pull/918)
+- Support for new advertiser [RESOLVED](https://github.com/homebridge/HAP-NodeJS/pull/965)
+- Added `msg.hap.reachable` parameter to get device reachable state (related to NO_RESPONSE)
+
+### Fixed
+
+- Accessory could not be recovered from NO_RESPONSE using single Characteristic
+- Make unsupported Characteristic error more
+  descriptive [#456](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/456)
+- FFmpeg No such file or directory [#495](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/495)
+- allChars: properties have spaces in names [#496](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/496)
+- Wait for host to return from unpublish/destroy before exiting, set published flag on destroy
+- Security system with characteristics, bad behaviour [#388](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/388)
+
+### Changed
+
+- Updated hap-nodejs to [0.9.7](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.9.7) (bug fixes)
+- Updated hap-nodejs to [0.9.8](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.9.8) (bug fixes)
+- Updated hap-nodejs to [0.10.0](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.0) (features)
+- Updated hap-nodejs to [0.10.1](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.1) (changes)
+- Updated hap-nodejs to [0.10.2](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.2) (bug fixes)
+- Updated hap-nodejs to [0.10.3](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.3) (bug fixes)
+- Updated hap-nodejs to [0.10.4](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.10.4) (bug fixes)
+- Updated hap-nodejs to [0.11.0](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.11.0) (features and bug fixes)
+
 ## [1.4.3]
 
 ### Added
@@ -19,7 +48,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-- Updated hap-nodejs to [0.9.6](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.9.6) (bug fixes and security fixes)
+- Updated hap-nodejs to [0.9.6](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.9.6) (bug fixes and security
+  fixes)
 
 ## [1.4.2]
 
@@ -56,7 +86,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-- Updated hap-nodejs to [0.9.5](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.9.5) (added new iOS 15 Services and Characteristics)
+- Updated hap-nodejs to [0.9.5](https://github.com/homebridge/HAP-NodeJS/releases/tag/v0.9.5) (added new iOS 15 Services
+  and Characteristics)
 - Updated dependencies to latest versions
 - Changed `BatteryService` to `Battery` in demo examples as `BatteryService` is deprecated #381 - thanks @crxporter
 - Readme rework - thanks @crxporter

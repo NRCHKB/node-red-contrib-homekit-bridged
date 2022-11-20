@@ -1,9 +1,11 @@
-import { NodeAPI } from 'node-red'
 import { logger } from '@nrchkb/logger'
-import HAPStatusNodeType from '../lib/types/HAPStatusNodeType'
-import HAPStatusConfigType from '../lib/types/HAPStatusConfigType'
-import HAPServiceNodeType from '../lib/types/HAPServiceNodeType'
 import { Service } from 'hap-nodejs'
+import { NodeAPI } from 'node-red'
+
+import HAPServiceNodeType from '../lib/types/HAPServiceNodeType'
+import HAPStatusConfigType from '../lib/types/HAPStatusConfigType'
+import HAPStatusNodeType from '../lib/types/HAPStatusNodeType'
+import { NodeStatusUtils } from '../lib/utils/NodeStatusUtils'
 
 const log = logger('NRCHKB', 'HAPStatusNode')
 
@@ -16,28 +18,7 @@ module.exports = (RED: NodeAPI) => {
             self.config = config
             RED.nodes.createNode(self, config)
 
-            self.lastStatusId = 0
-            self.setStatus = (status, timeout) => {
-                self.status(status)
-                self.lastStatusId = new Date().getTime()
-
-                if (timeout) {
-                    self.clearStatus(self.lastStatusId, timeout)
-                }
-
-                return self.lastStatusId
-            }
-            self.clearStatus = (statusId, delay) => {
-                if (statusId === self.lastStatusId) {
-                    if (delay) {
-                        setTimeout(function () {
-                            self.setStatus({})
-                        }, delay)
-                    } else {
-                        self.setStatus({})
-                    }
-                }
-            }
+            self.nodeStatusUtils = new NodeStatusUtils(self)
 
             try {
                 self.serviceNode = RED.nodes.getNode(
@@ -49,7 +30,7 @@ module.exports = (RED: NodeAPI) => {
 
             self.on('input', (_: Record<string, any>) => {
                 if (self.serviceNode) {
-                    self.setStatus(
+                    self.nodeStatusUtils.setStatus(
                         {
                             fill: 'green',
                             shape: 'dot',
@@ -64,14 +45,11 @@ module.exports = (RED: NodeAPI) => {
                         payload: serializedService,
                     })
                 } else {
-                    self.setStatus(
-                        {
-                            fill: 'red',
-                            shape: 'dot',
-                            text: 'Check your config',
-                        },
-                        3000
-                    )
+                    self.nodeStatusUtils.setStatus({
+                        fill: 'red',
+                        shape: 'dot',
+                        text: 'Check your config',
+                    })
                 }
             })
 

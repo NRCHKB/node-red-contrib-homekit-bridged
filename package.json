@@ -1,16 +1,15 @@
 {
   "name": "node-red-contrib-homekit-bridged",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "description": "Node-RED nodes to simulate Apple HomeKit devices.",
   "main": "build/nodes/nrchkb.js",
   "scripts": {
-    "build": "yarn clean && tsc",
+    "build": "npm run clean && tsc",
     "clean": "rimraf build/lib build/**/*.js",
-    "test": "yarn build && mocha -r ts-node/register './src/**/*.test.[tj]s' --exit",
+    "test": "mocha -r ts-node/register './src/**/*.test.[tj]s' --exit --timeout 30000",
     "prettier": "prettier --write \"**/*.{js,ts}\"",
-    "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable"
+    "eslint": "eslint \"src/**/*.ts\"",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -18,11 +17,11 @@
   },
   "keywords": [
     "homekit",
-    "hap-nodejs",
     "node-red",
+    "NRCHKB",
     "iot",
     "home",
-    "NRCHKB",
+    "hap-nodejs",
     "homebridge"
   ],
   "node-red": {
@@ -33,11 +32,12 @@
       "service": "build/nodes/service.js",
       "service2": "build/nodes/service2.js",
       "status": "build/nodes/status.js"
-    }
+    },
+    "version": ">=1.3.7"
   },
   "author": {
     "name": "Tadeusz Wyrzykowski",
-    "email": "tadeusz@hey.com",
+    "email": "shaquu@icloud.com",
     "url": "https://github.com/Shaquu"
   },
   "license": "Apache-2.0",
@@ -47,34 +47,36 @@
   "homepage": "https://github.com/NRCHKB/node-red-contrib-homekit-bridged#readme",
   "dependencies": {
     "@nrchkb/logger": "^1.3.3",
-    "hap-nodejs": "^0.9.6",
+    "hap-nodejs": "0.11.0",
     "node-persist": "^3.1.0",
-    "semver": "^7.3.5",
-    "uuid": "^8.3.2"
+    "semver": "^7.3.8",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@homebridge/ciao": "^1.1.2",
-    "@node-red/registry": "^1.3.7",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^10.17.50",
-    "@types/node-persist": "^3.1.2",
-    "@types/node-red": "^1.1.1",
-    "@types/semver": "^7.3.8",
-    "@types/uuid": "^8.3.1",
-    "@typescript-eslint/eslint-plugin": "^4.33.0",
-    "@typescript-eslint/parser": "^4.33.0",
+    "@homebridge/ciao": "^1.1.5",
+    "@node-red/registry": "^2.2.3",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^10.17.60",
+    "@types/node-persist": "^3.1.3",
+    "@types/node-red": "^1.2.1",
+    "@types/node-red-node-test-helper": "^0.2.2",
+    "@types/semver": "^7.3.13",
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.43.0",
+    "@typescript-eslint/parser": "^5.43.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "husky": "^7.0.2",
-    "mocha": "^9.1.2",
-    "node-red": "^1.3.7",
-    "node-red-node-test-helper": "^0.2.7",
-    "pinst": "^2.1.6",
-    "prettier": "^2.4.1",
-    "ts-node": "^10.2.1",
-    "typescript": "^4.4.3"
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "husky": "^8.0.2",
+    "mocha": "^10.1.0",
+    "node-red": "^2.2.3",
+    "node-red-node-test-helper": "^0.3.0",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3"
   },
   "engines": {
     "node": ">=10.22.1"

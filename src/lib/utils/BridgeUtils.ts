@@ -1,6 +1,7 @@
+import { logger } from '@nrchkb/logger'
+
 import HAPServiceNodeType from '../types/HAPServiceNodeType'
 import HostType from '../types/HostType'
-import { logger } from '@nrchkb/logger'
 
 module.exports = function () {
     // Publish accessory after the service has been added
@@ -35,7 +36,7 @@ module.exports = function () {
                 } catch (error) {
                     log.error(`${hostTypeName} publish failed due to ${error}`)
 
-                    node.setStatus({
+                    node.nodeStatusUtils.setStatus({
                         fill: 'red',
                         shape: 'ring',
                         text: 'Error while publishing ' + hostTypeName,

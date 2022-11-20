@@ -1,5 +1,3 @@
-import NodeType from './NodeType'
-import { NodeAPI } from 'node-red'
 import {
     Accessory,
     Characteristic,
@@ -10,12 +8,15 @@ import {
     CharacteristicValue,
     Service,
 } from 'hap-nodejs'
-import HAPHostNodeType from './HAPHostNodeType'
-import PublishTimersType from './PublishTimersType'
-import StatusUtilType from './StatusUtilType'
-import HAPServiceConfigType from './HAPServiceConfigType'
-import HAPService2NodeType from './HAPService2NodeType'
 import { HAPConnection } from 'hap-nodejs/dist/lib/util/eventedhttp'
+import { NodeAPI } from 'node-red'
+
+import { NodeStatusUtils } from '../utils/NodeStatusUtils'
+import HAPHostNodeType from './HAPHostNodeType'
+import HAPService2NodeType from './HAPService2NodeType'
+import HAPServiceConfigType from './HAPServiceConfigType'
+import NodeType from './NodeType'
+import PublishTimersType from './PublishTimersType'
 
 type HAPServiceNodeType = NodeType & {
     config: HAPServiceConfigType
@@ -25,9 +26,10 @@ type HAPServiceNodeType = NodeType & {
     handleWaitForSetup: (msg: any) => any
     onIdentify: (paired: boolean, callback: () => any) => void
     hostNode: HAPHostNodeType
-    childNodes: (HAPService2NodeType | HAPServiceNodeType)[]
+    childNodes?: (HAPService2NodeType | HAPServiceNodeType)[]
     service: Service
     parentService: Service
+    parentNode?: HAPService2NodeType | HAPServiceNodeType
     accessory: Accessory
     characteristicProperties: { [key: string]: CharacteristicProps }
     supported: string[]
@@ -51,6 +53,9 @@ type HAPServiceNodeType = NodeType & {
         change: CharacteristicChange
     ) => void
     uniqueIdentifier: string
-} & StatusUtilType
+    // Is Accessory reachable? On Linked Service it will be undefined. If is not true then NO_RESPONSE
+    reachable?: boolean
+    nodeStatusUtils: NodeStatusUtils
+}
 
 export default HAPServiceNodeType

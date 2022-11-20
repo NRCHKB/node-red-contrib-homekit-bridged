@@ -4,10 +4,12 @@ import { loggerSetup } from '@nrchkb/logger'
 import { afterEach, before, describe, it } from 'mocha'
 import helper from 'node-red-node-test-helper'
 
-import { switchServiceBridgeFlow } from '../test-utils/data'
+import { switchService2BridgeFlow } from '../test-utils/data'
 const homekitBridgeNode = require('../../nodes/bridge')
 const nrchkb = require('../../nodes/nrchkb')
-const homekitServiceNode = require('../../nodes/service')
+const homekitService2Node = require('../../nodes/service2')
+
+process.env.NRCHKB_EXPERIMENTAL = 'true'
 
 loggerSetup({
     debugEnabled: true,
@@ -29,15 +31,15 @@ describe('Service Node', function () {
     })
 
     it('should be loaded', function (done) {
-        const { serviceId, flow } = switchServiceBridgeFlow()
+        const { serviceId, flow } = switchService2BridgeFlow()
         helper
             .load(
-                [nrchkb, homekitBridgeNode, homekitServiceNode],
+                [nrchkb, homekitBridgeNode, homekitService2Node],
                 flow,
                 function () {
                     try {
                         const s1 = helper.getNode(serviceId)
-                        s1.should.have.property('type', 'homekit-service')
+                        s1.should.have.property('type', 'homekit-service2')
                         done()
                     } catch (err) {
                         done(err)
@@ -50,10 +52,10 @@ describe('Service Node', function () {
     })
 
     it('should output ON:true payload', function (done) {
-        const { serviceId, flow } = switchServiceBridgeFlow()
+        const { serviceId, flow } = switchService2BridgeFlow()
         helper
             .load(
-                [nrchkb, homekitBridgeNode, homekitServiceNode],
+                [nrchkb, homekitBridgeNode, homekitService2Node],
                 flow,
                 function () {
                     const s1 = helper.getNode(serviceId)
@@ -76,10 +78,10 @@ describe('Service Node', function () {
     })
 
     it('should output ON:false payload', function (done) {
-        const { serviceId, flow } = switchServiceBridgeFlow()
+        const { serviceId, flow } = switchService2BridgeFlow()
         helper
             .load(
-                [nrchkb, homekitBridgeNode, homekitServiceNode],
+                [nrchkb, homekitBridgeNode, homekitService2Node],
                 flow,
                 function () {
                     const s1 = helper.getNode(serviceId)
@@ -102,10 +104,10 @@ describe('Service Node', function () {
     })
 
     it('should output reachable true', function (done) {
-        const { serviceId, flow } = switchServiceBridgeFlow()
+        const { serviceId, flow } = switchService2BridgeFlow()
         helper
             .load(
-                [nrchkb, homekitBridgeNode, homekitServiceNode],
+                [nrchkb, homekitBridgeNode, homekitService2Node],
                 flow,
                 function () {
                     const s1 = helper.getNode(serviceId)
@@ -136,10 +138,10 @@ describe('Service Node', function () {
     })
 
     it('should output reachable false', function (done) {
-        const { serviceId, flow } = switchServiceBridgeFlow()
+        const { serviceId, flow } = switchService2BridgeFlow()
         helper
             .load(
-                [nrchkb, homekitBridgeNode, homekitServiceNode],
+                [nrchkb, homekitBridgeNode, homekitService2Node],
                 flow,
                 function () {
                     const s1 = helper.getNode(serviceId)

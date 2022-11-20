@@ -1,4 +1,5 @@
 import { NodeDef } from 'node-red'
+
 import CameraConfigType from './CameraConfigType'
 
 type HAPService2ConfigType = NodeDef & {

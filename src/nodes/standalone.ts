@@ -1,6 +1,7 @@
-import { NodeAPI } from 'node-red'
-import HostType from '../lib/types/HostType'
 import { logger } from '@nrchkb/logger'
+import { NodeAPI } from 'node-red'
+
+import HostType from '../lib/types/HostType'
 
 const log = logger('NRCHKB', 'HAPHostNode')
 

@@ -1,4 +1,9 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env sh
 
-yarn prettier && yarn test
+# .husky/pre-commit
+# ...
+[ -n "$CI" ] && exit 0
+
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm run prettier && npm test && npm run eslint

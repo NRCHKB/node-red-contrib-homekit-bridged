@@ -1,12 +1,13 @@
-import { NodeAPI } from 'node-red'
-import express from 'express'
-import HapCategories from './types/HapCategories'
-import { Characteristic, Perms, SerializedService, Service } from 'hap-nodejs'
-import CustomCharacteristicType from './types/CustomCharacteristicType'
-import HAPServiceNodeType from './types/HAPServiceNodeType'
-import HAPServiceConfigType from './types/HAPServiceConfigType'
 import { logger } from '@nrchkb/logger'
+import express from 'express'
+import { Characteristic, Perms, SerializedService, Service } from 'hap-nodejs'
+import { NodeAPI } from 'node-red'
+
 import { Storage } from './Storage'
+import CustomCharacteristicType from './types/CustomCharacteristicType'
+import HapCategories from './types/HapCategories'
+import HAPServiceConfigType from './types/HAPServiceConfigType'
+import HAPServiceNodeType from './types/HAPServiceNodeType'
 
 const version = require('../../package.json').version.trim()
 
@@ -15,7 +16,7 @@ module.exports = function (RED: NodeAPI) {
 
     // Service API
     const _initServiceAPI = () => {
-        log.debug('Initialize ServiceAPI')
+        log.debug('Initialize Service API')
 
         type ServiceData = {
             [key: string]: Partial<SerializedService> & {
@@ -34,6 +35,11 @@ module.exports = function (RED: NodeAPI) {
             },
             BridgingState: {
                 nrchkbDisabledText: 'BridgingState (deprecated, unused)',
+            },
+            // CameraControl: {}, // This service is deprecated but used by nrchkb to link rtsp logic
+            CameraEventRecordingManagement: {
+                nrchkbDisabledText:
+                    'CameraEventRecordingManagement (deprecated, replaced by CameraRecordingManagement)',
             },
             Relay: {
                 nrchkbDisabledText:
@@ -75,12 +81,7 @@ module.exports = function (RED: NodeAPI) {
         )
     }
 
-    // NRCHKB Info API
-    const _initNRCHKBInfoAPI = () => {
-        log.debug('Initialize NRCHKB Info API')
-
-        log.debug(`Running version: ${version}`)
-
+    const stringifyVersion = (version: string) => {
         const releaseVersionRegex = /(\d+)\.(\d+)\.(\d+)/
         const devVersionRegex = /(\d+)\.(\d+)\.(\d+)-dev\.(\d+)/
 
@@ -118,6 +119,17 @@ module.exports = function (RED: NodeAPI) {
             xyzVersion = '0.0.0'
         }
 
+        return xyzVersion
+    }
+
+    // NRCHKB Info API
+    const _initNRCHKBInfoAPI = () => {
+        log.debug('Initialize NRCHKB Info API')
+
+        log.debug(`Running version: ${version}`)
+
+        const xyzVersion = stringifyVersion(version)
+
         log.debug(`Evaluated as: ${xyzVersion}`)
 
         const experimental = process.env.NRCHKB_EXPERIMENTAL === 'true'
@@ -142,7 +154,7 @@ module.exports = function (RED: NodeAPI) {
         const getCustomCharacteristics = () => {
             return Storage.loadCustomCharacteristics()
                 .then((value) => {
-                    log.trace(`loadCustomCharacteristics()`)
+                    log.trace('loadCustomCharacteristics()')
                     log.trace(value)
 
                     if (Array.isArray(value)) {
@@ -164,6 +176,13 @@ module.exports = function (RED: NodeAPI) {
 
         const characteristicNameToKey = (name: string) => {
             return name.replace(' ', '')
+        }
+
+        const toNumber = (value: any, optional = undefined) => {
+            const num = Number(value)
+            if (isNaN(num)) {
+                return optional
+            } else return num
         }
 
         const refreshCustomCharacteristics = (
@@ -200,6 +219,21 @@ module.exports = function (RED: NodeAPI) {
                     }
                     if (validatedProps.adminOnlyAccess?.length === 0) {
                         validatedProps.adminOnlyAccess = undefined
+                    }
+                    if (validatedProps.minValue) {
+                        validatedProps.minValue = toNumber(
+                            validatedProps.minValue
+                        )
+                    }
+                    if (validatedProps.maxValue) {
+                        validatedProps.maxValue = toNumber(
+                            validatedProps.maxValue
+                        )
+                    }
+                    if (validatedProps.minStep) {
+                        validatedProps.minStep = toNumber(
+                            validatedProps.minStep
+                        )
                     }
 
                     class CustomCharacteristic extends Characteristic {
@@ -250,7 +284,10 @@ module.exports = function (RED: NodeAPI) {
                 isRedInitialized()
             }).then(() => {
                 RED.nodes.eachNode((node) => {
-                    if (node.type === 'homekit-service') {
+                    if (
+                        node.type === 'homekit-service' ||
+                        node.type === 'homekit-service2'
+                    ) {
                         const serviceNodeConfig = node as HAPServiceConfigType
 
                         const serviceNode = RED.nodes.getNode(
@@ -333,7 +370,7 @@ module.exports = function (RED: NodeAPI) {
 
     // Accessory API
     const _initAccessoryAPI = function () {
-        log.debug('Initialize AccessoryAPI')
+        log.debug('Initialize Accessory API')
 
         // Accessory Categories API response data
         const accessoryCategoriesData: {
@@ -372,5 +409,6 @@ module.exports = function (RED: NodeAPI) {
 
     return {
         init,
+        stringifyVersion,
     }
 }

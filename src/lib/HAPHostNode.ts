@@ -1,8 +1,5 @@
-import { NodeAPI } from 'node-red'
-import HAPHostConfigType from './types/HAPHostConfigType'
-import HAPHostNodeType from './types/HAPHostNodeType'
-import HostType from './types/HostType'
-import semver from 'semver/preload'
+import { logger } from '@nrchkb/logger'
+import { MulticastOptions } from 'bonjour-hap'
 import {
     Accessory,
     Bridge,
@@ -12,11 +9,15 @@ import {
     Service,
     uuid,
 } from 'hap-nodejs'
-import HapCategories from './types/HapCategories'
+import { NodeAPI } from 'node-red'
 import { SemVer } from 'semver'
-import { logger } from '@nrchkb/logger'
-import { MulticastOptions } from 'bonjour-hap'
+import semver from 'semver/preload'
+
 import NRCHKBError from './NRCHKBError'
+import HapCategories from './types/HapCategories'
+import HAPHostConfigType from './types/HAPHostConfigType'
+import HAPHostNodeType from './types/HAPHostNodeType'
+import HostType from './types/HostType'
 
 module.exports = (RED: NodeAPI, hostType: HostType) => {
     const MdnsUtils = require('./utils/MdnsUtils')()
@@ -141,15 +142,16 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             return true
         }
 
-        self.on('close', function (removed: any, done: () => any) {
+        self.on('close', async function (removed: any, done: () => any) {
             if (removed) {
-                // This node has been deleted
-                self.host.destroy()
+                log.debug('This node has been deleted')
+                await self.host.destroy()
             } else {
-                // This node is being restarted
-                self.host.unpublish()
-                self.published = false
+                log.debug('This node is being restarted')
+                await self.host.unpublish()
             }
+
+            self.published = false
 
             done()
         })

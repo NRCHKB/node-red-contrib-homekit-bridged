@@ -11,7 +11,7 @@ module.exports = {
         'plugin:prettier/recommended',
         'prettier',
     ],
-    plugins: ['@typescript-eslint', 'prettier'],
+    plugins: ['@typescript-eslint', 'prettier', 'simple-import-sort'],
     globals: {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly',
@@ -23,7 +23,6 @@ module.exports = {
     },
     rules: {
         'prettier/prettier': 'off',
-        indent: ['error', 4],
         'linebreak-style': ['error', 'unix'],
         quotes: ['error', 'single', { avoidEscape: true }],
         semi: ['error', 'never'],
@@ -32,5 +31,11 @@ module.exports = {
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
+        'simple-import-sort/imports': 'error',
+        'simple-import-sort/exports': 'error',
+        '@typescript-eslint/no-unused-vars': [
+            'error',
+            { argsIgnorePattern: '^_', destructuredArrayIgnorePattern: '^_' },
+        ],
     },
 }

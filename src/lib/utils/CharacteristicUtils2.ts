@@ -1,7 +1,8 @@
-import HAPService2NodeType from '../types/HAPService2NodeType'
-import { Characteristic, CharacteristicProps, Service } from 'hap-nodejs'
-import HAPService2ConfigType from '../types/HAPService2ConfigType'
 import { logger } from '@nrchkb/logger'
+import { Characteristic, CharacteristicProps, Service } from 'hap-nodejs'
+
+import HAPService2ConfigType from '../types/HAPService2ConfigType'
+import HAPService2NodeType from '../types/HAPService2NodeType'
 
 module.exports = function (node: HAPService2NodeType) {
     const log = logger('NRCHKB', 'CharacteristicUtils', node.config.name, node)
@@ -90,7 +91,8 @@ module.exports = function (node: HAPService2NodeType) {
             }
         })
 
-        return supported
+        // Removing accidental duplicate values
+        return [...new Set(supported)]
     }
 
     return {

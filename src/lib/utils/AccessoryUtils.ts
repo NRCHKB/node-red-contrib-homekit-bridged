@@ -1,7 +1,8 @@
-import HAPServiceNodeType from '../types/HAPServiceNodeType'
-import { Accessory, Service } from 'hap-nodejs'
-import AccessoryInformationType from '../types/AccessoryInformationType'
 import { logger } from '@nrchkb/logger'
+import { Accessory, Service } from 'hap-nodejs'
+
+import AccessoryInformationType from '../types/AccessoryInformationType'
+import HAPServiceNodeType from '../types/HAPServiceNodeType'
 
 module.exports = function (node: HAPServiceNodeType) {
     const HapNodeJS = require('hap-nodejs')
@@ -188,7 +189,7 @@ module.exports = function (node: HAPServiceNodeType) {
             )
         }
 
-        const nodes = node.childNodes
+        const nodes = node.childNodes ?? []
 
         for (let i = 0, len = nodes.length; i < len; i++) {
             const topic = nodes[i].config.topic
@@ -200,14 +201,14 @@ module.exports = function (node: HAPServiceNodeType) {
                 topic: topic,
             }
 
-            const statusId = nodes[i].setStatus({
+            const statusId = nodes[i].nodeStatusUtils.setStatus({
                 fill: 'yellow',
                 shape: 'dot',
                 text: 'Identify : 1',
             })
 
             setTimeout(function () {
-                nodes[i].clearStatus(statusId)
+                nodes[i].nodeStatusUtils.clearStatus(statusId)
             }, 3000)
 
             nodes[i].send([msg, msg])

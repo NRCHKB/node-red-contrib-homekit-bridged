@@ -1,12 +1,14 @@
+import { logger } from '@nrchkb/logger'
+import { uuid } from 'hap-nodejs'
 import { NodeAPI } from 'node-red'
+
+import NRCHKBError from './NRCHKBError'
+import { FlowTypeType } from './types/FlowType'
+import HAPHostNodeType from './types/HAPHostNodeType'
 import HAPService2ConfigType from './types/HAPService2ConfigType'
 import HAPService2NodeType from './types/HAPService2NodeType'
-import HAPHostNodeType from './types/HAPHostNodeType'
 import HostType from './types/HostType'
-import { uuid } from 'hap-nodejs'
-import { logger } from '@nrchkb/logger'
-import { FlowTypeType } from './types/FlowType'
-import NRCHKBError from './NRCHKBError'
+import { NodeStatusUtils } from './utils/NodeStatusUtils'
 
 module.exports = (RED: NodeAPI) => {
     /**
@@ -41,18 +43,7 @@ module.exports = (RED: NodeAPI) => {
         config: HAPService2ConfigType
     ) {
         const self = this
-
-        self.lastStatusId = 0
-        self.setStatus = (status) => {
-            self.status(status)
-            self.lastStatusId = new Date().getTime()
-            return self.lastStatusId
-        }
-        self.clearStatus = (statusId) => {
-            if (statusId === self.lastStatusId) {
-                self.setStatus({})
-            }
-        }
+        self.nodeStatusUtils = new NodeStatusUtils(self)
 
         self.config = config
         self.name = self.config.name
@@ -75,7 +66,7 @@ module.exports = (RED: NodeAPI) => {
 
                 self.setupDone = false
 
-                self.setStatus({
+                self.nodeStatusUtils.setStatus({
                     fill: 'blue',
                     shape: 'dot',
                     text: 'Waiting for Setup',
@@ -111,6 +102,7 @@ module.exports = (RED: NodeAPI) => {
             log.debug('Starting Parent Service')
             configure.call(self)
             self.configured = true
+            self.reachable = true
         } else {
             const serviceType =
                 config.serviceName === 'CameraControl' ? 'Camera' : 'Linked'
@@ -170,17 +162,18 @@ module.exports = (RED: NodeAPI) => {
                 throw new NRCHKBError('Parent Node not assigned')
             }
 
-            self.parentService = parentNode.service
+            self.parentNode = parentNode
+            self.parentService = self.parentNode.service
 
             if (!self.parentService) {
                 log.error('Parent Service not assigned', false)
                 throw new NRCHKBError('Parent Service not assigned')
             }
 
-            self.hostNode = parentNode.hostNode
-            parentNode.childNodes.push(self)
+            self.hostNode = self.parentNode.hostNode
+            self.parentNode.childNodes?.push(self)
 
-            self.accessory = parentNode.accessory
+            self.accessory = self.parentNode.accessory
         }
 
         // Service node properties
@@ -270,7 +263,7 @@ module.exports = (RED: NodeAPI) => {
 
         // The pinCode should be shown to the user until interaction with iOS
         // client starts
-        self.setStatus({
+        self.nodeStatusUtils.setStatus({
             fill: 'yellow',
             shape: 'ring',
             text: self.hostNode.config.pinCode,

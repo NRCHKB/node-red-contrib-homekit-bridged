@@ -1,5 +1,4 @@
-import HostType from '../types/HostType'
-import HAPService2NodeType from '../types/HAPService2NodeType'
+import { logger } from '@nrchkb/logger'
 import {
     Accessory,
     Characteristic,
@@ -8,17 +7,20 @@ import {
     CharacteristicGetCallback,
     CharacteristicSetCallback,
     CharacteristicValue,
+    HAPStatus,
+    HapStatusError,
     Service,
 } from 'hap-nodejs'
-import HAPService2ConfigType from '../types/HAPService2ConfigType'
 import {
     HAPConnection,
     HAPUsername,
 } from 'hap-nodejs/dist/lib/util/eventedhttp'
-import { logger } from '@nrchkb/logger'
 import { SessionIdentifier } from 'hap-nodejs/dist/types'
-import { Storage } from '../Storage'
+
 import NRCHKBError from '../NRCHKBError'
+import { Storage } from '../Storage'
+import HAPService2ConfigType from '../types/HAPService2ConfigType'
+import HAPService2NodeType from '../types/HAPService2NodeType'
 
 module.exports = function (node: HAPService2NodeType) {
     const log = logger('NRCHKB', 'ServiceUtils2', node.config.name, node)
@@ -37,7 +39,7 @@ module.exports = function (node: HAPService2NodeType) {
             callbackID?: string // ID used to update Characteristic value with get event
             key?: string // Characteristic key
             reason?: string
-        } & {} // Additional event data provided by event caller
+        } & Record<string, unknown> // Additional event data provided by event caller
     }
 
     type HAPServiceMessage = {
@@ -45,6 +47,7 @@ module.exports = function (node: HAPService2NodeType) {
         hap?: {
             oldValue?: any
             newValue?: any
+            reachable?: boolean
             event?: HAPServiceNodeEvent
             session?: {
                 sessionID?: SessionIdentifier
@@ -78,22 +81,50 @@ module.exports = function (node: HAPService2NodeType) {
         }
         msg.payload = {}
         msg.hap = {
-            newValue,
             event: eventObject,
             allChars: allCharacteristics.reduce<{ [key: string]: any }>(
                 (allChars, singleChar) => {
-                    allChars[singleChar.displayName] = singleChar.value
+                    const cKey = singleChar.constructor.name
+                    allChars[cKey] = singleChar.value
                     return allChars
                 },
                 {}
             ),
-        }
-
-        if (oldValue !== undefined) {
-            msg.hap.oldValue = oldValue
+            oldValue,
         }
 
         const key = this.constructor.name
+
+        msg.hap.reachable = node.reachable ?? node.parentNode?.reachable
+
+        if (msg.hap.reachable === false) {
+            ;[node, ...(node.childNodes ?? [])].forEach((n) =>
+                n.nodeStatusUtils.setStatus({
+                    fill: 'red',
+                    shape: 'ring',
+                    text: 'Not reachable',
+                    type: 'NO_RESPONSE',
+                })
+            )
+        } else {
+            msg.hap.newValue = newValue
+
+            node.nodeStatusUtils.setStatus(
+                {
+                    fill: 'yellow',
+                    shape: 'dot',
+                    text: `[${eventObject.name}] ${key}${
+                        newValue != undefined ? `: ${newValue}` : ''
+                    }`,
+                },
+                3000
+            )
+
+            node.childNodes?.forEach((n) =>
+                n.nodeStatusUtils.clearStatusByType('NO_RESPONSE')
+            )
+            node.parentNode?.nodeStatusUtils.clearStatusByType('NO_RESPONSE')
+        }
 
         msg.payload[key] = newValue
 
@@ -106,17 +137,6 @@ module.exports = function (node: HAPService2NodeType) {
                 httpPort: connection.remotePort,
             }
         }
-
-        node.setStatus(
-            {
-                fill: 'yellow',
-                shape: 'dot',
-                text: `[${eventObject.name}] ${key}${
-                    newValue != undefined ? `: ${newValue}` : ''
-                }`,
-            },
-            3000
-        )
 
         log.debug(
             `${node.name} received ${eventObject.name} ${key}: ${newValue}`
@@ -142,9 +162,11 @@ module.exports = function (node: HAPService2NodeType) {
                 if (callback) {
                     try {
                         callback(
-                            node.accessory.reachable
-                                ? characteristic.statusCode
-                                : new Error(NO_RESPONSE_MSG),
+                            (node.parentNode ?? node).reachable
+                                ? null
+                                : new HapStatusError(
+                                      HAPStatus.SERVICE_COMMUNICATION_FAILURE
+                                  ),
                             newValue
                         )
                     } catch (_) {}
@@ -199,9 +221,11 @@ module.exports = function (node: HAPService2NodeType) {
             try {
                 if (callback) {
                     callback(
-                        node.accessory.reachable
+                        (node.parentNode ?? node).reachable
                             ? null
-                            : new Error(NO_RESPONSE_MSG)
+                            : new HapStatusError(
+                                  HAPStatus.SERVICE_COMMUNICATION_FAILURE
+                              )
                     )
                 }
             } catch (_) {}
@@ -288,30 +312,23 @@ module.exports = function (node: HAPService2NodeType) {
                     }
                 } else {
                     log.error(
-                        `Instead of ${key} try one of these characteristics: ${node.supported.join(
-                            ', '
-                        )}`
+                        `Instead of '${key}' try one of these characteristics: '${node.supported.join(
+                            "', '"
+                        )}'`
                     )
                 }
             } else {
                 const value = msg.payload?.[key]
 
-                if (
-                    (node.config.isParent &&
-                        node.config.hostType == HostType.BRIDGE) ||
-                    (!node.config.isParent &&
-                        node.hostNode.hostType == HostType.BRIDGE)
-                ) {
-                    // updateReachability is only supported on bridged accessories
-                    node.accessory.updateReachability(value !== NO_RESPONSE_MSG)
-                }
+                const parentNode = node.parentNode ?? node
+                parentNode.reachable = value !== NO_RESPONSE_MSG
 
                 const characteristic = node.service.getCharacteristic(
                     Characteristic[key]
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(value, undefined, context)
+                    characteristic.setValue(value, context)
                 } else {
                     characteristic.setValue(value)
                 }
@@ -451,7 +468,7 @@ module.exports = function (node: HAPService2NodeType) {
         log.debug('Waiting for Parent Service')
 
         return new Promise((resolve) => {
-            node.setStatus({
+            node.nodeStatusUtils.setStatus({
                 fill: 'blue',
                 shape: 'dot',
                 text: 'Waiting for Parent Service',
