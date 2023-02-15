@@ -22,7 +22,7 @@ Contact Shaq#6198 at Discord
 
 or find us on
 
-[![Discord](https://img.shields.io/discord/586065987267330068.svg?label=Discord)](https://discord.gg/amwV5tq)
+[![Discord](https://img.shields.io/discord/586065987267330068.svg?label=Discord)](https://discord.gg/uvYac5u)
 
 ## Security concerns regarding usage of NRCHKB
 
