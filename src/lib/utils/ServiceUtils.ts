@@ -60,9 +60,9 @@ module.exports = function (node: HAPServiceNodeType) {
                 this.value
             }, reachability is ${
                 (node.parentNode ?? node).reachable
-            } with context ${JSON.stringify(context)} on connection ${
-                connection?.sessionID
-            }`
+            } with context ${JSON.stringify(
+                context
+            )} on connection ${connection?.sessionID}`
         )
 
         if (callback) {
@@ -168,9 +168,9 @@ module.exports = function (node: HAPServiceNodeType) {
                 `onCharacteristicSet with status: ${this.statusCode}, value: ${
                     this.value
                 }, reachability is ${(node.parentNode ?? node).reachable} 
-            with context ${JSON.stringify(context)} on connection ${
-                    connection?.sessionID
-                }`
+            with context ${JSON.stringify(
+                context
+            )} on connection ${connection?.sessionID}`
             )
 
             try {
@@ -205,9 +205,9 @@ module.exports = function (node: HAPServiceNodeType) {
                 `onCharacteristicChange with reason: ${reason}, oldValue: ${oldValue}, newValue: ${newValue}, reachability is ${
                     (node.parentNode ?? node).reachable
                 } 
-            with context ${JSON.stringify(context)} on connection ${
-                    originator?.sessionID
-                }`
+            with context ${JSON.stringify(
+                context
+            )} on connection ${originator?.sessionID}`
             )
 
             if (oldValue != newValue) {
