@@ -62,7 +62,7 @@ export const switchService2BridgeFlow = () => {
                 id: bridgeId,
                 type: 'homekit-bridge',
                 bridgeName: 'Example Bridge',
-                pinCode: '111-11-111',
+                pinCode: '1111-1111',
                 port: '',
                 allowInsecureRequest: false,
                 manufacturer: 'NRCHKB',
