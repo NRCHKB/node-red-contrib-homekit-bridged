@@ -3,7 +3,6 @@ import { uuid } from 'hap-nodejs'
 import { NodeAPI } from 'node-red'
 
 import NRCHKBError from './NRCHKBError'
-import { FlowTypeType } from './types/FlowType'
 import HAPHostNodeType from './types/HAPHostNodeType'
 import HAPServiceConfigType from './types/HAPServiceConfigType'
 import HAPServiceNodeType from './types/HAPServiceNodeType'
@@ -181,8 +180,8 @@ module.exports = (RED: NodeAPI) => {
         if (
             self.hasOwnProperty('_flow') &&
             self.hasOwnProperty('_alias') &&
-            self._flow.hasOwnProperty('TYPE') &&
-            FlowTypeType.Subflow == self._flow.TYPE
+            self._flow?.hasOwnProperty('TYPE') &&
+            self._flow.TYPE === 'subflow'
         ) {
             // For subflows, use the service node identifier from the subflow template
             // plus the full path from the subflow node identifier to the subflow.

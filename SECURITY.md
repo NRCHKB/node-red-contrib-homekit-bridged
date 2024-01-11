@@ -7,7 +7,7 @@ If you find any vulnerability in our functionality, code or dependency then plea
 If you found a problem then please open new
 Issue [here](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues).
 
-If vulnerability is a serious risk then please consider contacting us directly aswell for faster response.
+If vulnerability is a serious risk then please consider contacting us directly as well for faster response.
 
 ## Supported Versions
 
@@ -38,17 +38,17 @@ To use node-red safely you should secure it properly with encryption and passwor
 The following Setup Codes must not be used due to their trivial, insecure nature. In future release (possibly 1.X.Y)
 they will be forbidden programmatically.
 
-- 000-00-000
-- 111-11-111
-- 222-22-222
-- 333-33-333
-- 444-44-444
-- 555-55-555
-- 666-66-666
-- 777-77-777
-- 888-88-888
-- 999-99-999
-- 123-45-678
-- 876-54-321
+- 0000-0000
+- 1111-1111
+- 2222-2222
+- 3333-3333
+- 4444-4444
+- 5555-5555
+- 6666-6666
+- 7777-7777
+- 8888-8888
+- 9999-9999
+- 1234-5678
+- 8765-4321
 
-Since 1.3 random Setup Code will be generated for new Bridge nodes (instead of default 111-11-111)
+Since 1.3 random Setup Code will be generated for new Bridge nodes (instead of default 1111-1111)

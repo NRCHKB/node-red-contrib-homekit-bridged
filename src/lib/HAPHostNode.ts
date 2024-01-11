@@ -121,6 +121,14 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                 return false
             }
 
+            // As HAP-Nodejs cannot understand new pin code format yet, we need to adjust new to old one
+            let oldPinCode = self.config.pinCode
+
+            if ((oldPinCode.match(/-/g) || []).length == 1) {
+                oldPinCode = oldPinCode.replace(/-/g, '')
+                oldPinCode = `${oldPinCode.slice(0, 3)}-${oldPinCode.slice(3,5)}-${oldPinCode.slice(5, 8)}`
+            }
+
             self.host.publish(
                 {
                     username: self.bridgeUsername,
@@ -128,7 +136,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                         self.config.port && !isNaN(self.config.port)
                             ? self.config.port
                             : 0,
-                    pincode: self.config.pinCode,
+                    pincode: oldPinCode,
                     category: self.accessoryCategory,
                     mdns: self.mdnsConfig,
                     advertiser:
