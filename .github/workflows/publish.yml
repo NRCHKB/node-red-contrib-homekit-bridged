@@ -52,6 +52,7 @@ jobs:
         with:
           node-version: 18
           registry-url: https://npm.pkg.github.com/
+          scope: '@nrchkb'
       - name: Extract PACKAGE_VERSION
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
@@ -60,7 +61,6 @@ jobs:
         run: |
           npm ci
           npm run build
-          npm init --scope=nrchkb -y
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GHUB_TKN}}
