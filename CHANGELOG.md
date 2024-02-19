@@ -11,6 +11,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2024-02-19
+
+### Fixed
+
+- Bug: Cannot find module 'ip' [#545](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/545)
+
 ## [1.6.0] - 2024-01-12
 
 ### Removed
@@ -36,9 +42,11 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Make unsupported Characteristic error more
   descriptive [#456](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/456)
 - FFmpeg No such file or directory [#495](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/495)
-- allChars: properties have spaces in names [#496](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/496)
+- allChars: properties have spaces in
+  names [#496](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/496)
 - Wait for host to return from unpublish/destroy before exiting, set published flag on destroy
-- Security system with characteristics, bad behaviour [#388](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/388)
+- Security system with characteristics, bad
+  behaviour [#388](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/388)
 
 ### Changed
 

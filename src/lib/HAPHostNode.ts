@@ -126,7 +126,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
 
             if ((oldPinCode.match(/-/g) || []).length == 1) {
                 oldPinCode = oldPinCode.replace(/-/g, '')
-                oldPinCode = `${oldPinCode.slice(0, 3)}-${oldPinCode.slice(3,5)}-${oldPinCode.slice(5, 8)}`
+                oldPinCode = `${oldPinCode.slice(0, 3)}-${oldPinCode.slice(3, 5)}-${oldPinCode.slice(5, 8)}`
             }
 
             self.host.publish(
