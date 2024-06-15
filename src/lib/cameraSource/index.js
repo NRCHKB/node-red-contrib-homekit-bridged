@@ -7,7 +7,7 @@ const StreamController = HapNodeJS.StreamController
 
 const crypto = require('crypto')
 const fs = require('fs')
-const ip = require('ip')
+const os = require('os')
 const spawn = require('child_process').spawn
 
 const log = logger('CameraSource')
@@ -301,18 +301,19 @@ Camera.prototype.prepareStream = function (request, callback) {
         sessionInfo['audio_ssrc'] = ssrc
     }
 
-    let currentAddress = ip.address(this.interfaceName)
-    const addressResp = {
-        address: currentAddress,
+    const networkInterfaces = os.networkInterfaces()
+
+    if (this.interfaceName && networkInterfaces[this.interfaceName]) {
+        const currentAddress = networkInterfaces[this.interfaceName]
+
+        if (currentAddress?.[0]) {
+            response['address'] = {
+                address: currentAddress[0].address,
+                type: currentAddress[0].family === 'IPv4' ? 'v4' : 'v6',
+            }
+        }
     }
 
-    if (ip.isV4Format(currentAddress)) {
-        addressResp['type'] = 'v4'
-    } else {
-        addressResp['type'] = 'v6'
-    }
-
-    response['address'] = addressResp
     this.pendingSessions[uuid.unparse(sessionID)] = sessionInfo
 
     callback(response)
