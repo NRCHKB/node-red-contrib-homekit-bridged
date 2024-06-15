@@ -1,17 +1,17 @@
 name: Tests
 
-on: [pull_request]
+on: [ pull_request ]
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node_version: [12, 14, 16, 18]
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        node_version: [ 12, 14, 16, 18, 22 ]
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: build and test

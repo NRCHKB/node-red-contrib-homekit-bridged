@@ -9,8 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - run: |
@@ -22,8 +22,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
@@ -47,8 +47,8 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
           registry-url: https://npm.pkg.github.com/
@@ -64,3 +64,9 @@ jobs:
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GHUB_TKN}}
+      - name: Update Node-Red flow-library
+        if: contains(steps.package-version.outputs.current-version, 'dev') != true
+        uses: Zehir/update-package-node-red-flow-library-action@v1.0.5
+        continue-on-error: true
+        with:
+          package-name: 'node-red-contrib-homekit-bridged'
