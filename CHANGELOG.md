@@ -11,6 +11,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.7.0]
 
+### Fixed
+
+- Removed vulnerable module 'ip' [#545](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/545)
+
 ### Changed
 
 - Updated hap-nodejs [0.11.1 to 0.12.2](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (features
