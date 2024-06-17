@@ -1,3 +1,4 @@
+import { AdaptiveLightingControllerMode } from 'hap-nodejs/dist/lib/controller/AdaptiveLightingController'
 import { NodeDef } from 'node-red'
 
 import CameraConfigType from './CameraConfigType'
@@ -22,6 +23,10 @@ type HAPServiceConfigType = NodeDef & {
     softwareRev?: string
     characteristicProperties: string
     waitForSetupMsg: boolean
+    // If Service is a LightBulb, you can set AdaptiveLightingControllerMode.ts Lightning Mode
+    adaptiveLightingOptionsEnable?: boolean
+    adaptiveLightingOptionsMode?: AdaptiveLightingControllerMode
+    adaptiveLightingOptionsCustomTemperatureAdjustment?: number
 } & CameraConfigType
 
 export default HAPServiceConfigType

@@ -15,11 +15,17 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Removed vulnerable module 'ip' [#545](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/545)
 
+### Added
+
+- Adaptive Lighting support [#335](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/335)
+
 ### Changed
 
 - Updated hap-nodejs [0.11.1 to 0.12.2](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (features
   and bug fixes)
 - Dependencies upgrade
+- Node `10`, `12` and `16` no longer supported
+- Updated GitHub Actions
 
 ## [1.6.1] - 2024-02-19
 

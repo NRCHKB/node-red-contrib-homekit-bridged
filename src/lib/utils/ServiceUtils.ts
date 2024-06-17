@@ -1,6 +1,8 @@
 import { logger } from '@nrchkb/logger'
 import {
     Accessory,
+    AdaptiveLightingController,
+    AdaptiveLightingControllerMode,
     Characteristic,
     CharacteristicChange,
     CharacteristicGetCallback,
@@ -365,6 +367,32 @@ module.exports = function (node: HAPServiceNodeType) {
                 service = newService
             } else {
                 service = accessory.addService(newService)
+
+                if (
+                    serviceInformation.serviceName === 'Lightbulb' &&
+                    serviceInformation.config.adaptiveLightingOptionsEnable
+                ) {
+                    try {
+                        const adaptiveLightingController =
+                            new AdaptiveLightingController(service, {
+                                controllerMode:
+                                    serviceInformation.config
+                                        .adaptiveLightingOptionsMode ??
+                                    AdaptiveLightingControllerMode.AUTOMATIC,
+                                customTemperatureAdjustment:
+                                    serviceInformation.config
+                                        .adaptiveLightingOptionsCustomTemperatureAdjustment,
+                            })
+
+                        accessory.configureController(
+                            adaptiveLightingController
+                        )
+                    } catch (error) {
+                        log.error(
+                            `Failed to configure adaptive lightning due to ${error}`
+                        )
+                    }
+                }
             }
         } else {
             // if a service with the same UUID and subtype was found it will

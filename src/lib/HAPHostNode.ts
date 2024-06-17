@@ -14,7 +14,7 @@ import { SemVer } from 'semver'
 import semver from 'semver/preload'
 
 import NRCHKBError from './NRCHKBError'
-import HapCategories from './types/HapCategories'
+import HapCategories from './types/hap-nodejs/HapCategories'
 import HAPHostConfigType from './types/HAPHostConfigType'
 import HAPHostNodeType from './types/HAPHostNodeType'
 import HostType from './types/HostType'

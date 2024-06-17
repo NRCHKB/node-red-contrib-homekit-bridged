@@ -5,7 +5,7 @@ import { NodeAPI } from 'node-red'
 
 import { Storage } from './Storage'
 import CustomCharacteristicType from './types/CustomCharacteristicType'
-import HapCategories from './types/HapCategories'
+import HapCategories from './types/hap-nodejs/HapCategories'
 import HAPServiceConfigType from './types/HAPServiceConfigType'
 import HAPServiceNodeType from './types/HAPServiceNodeType'
 
