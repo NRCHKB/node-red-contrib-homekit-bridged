@@ -254,6 +254,8 @@ module.exports = (RED: NodeAPI) => {
             self.config
         )
 
+        ServiceUtils.configureAdaptiveLightning()
+
         if (self.config.isParent) {
             BridgeUtils.delayedPublish(self)
         }

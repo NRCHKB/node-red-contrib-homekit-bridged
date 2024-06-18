@@ -1,8 +1,6 @@
 import { logger } from '@nrchkb/logger'
 import {
     Accessory,
-    AdaptiveLightingController,
-    AdaptiveLightingControllerMode,
     Characteristic,
     CharacteristicChange,
     CharacteristicEventTypes,
@@ -26,6 +24,8 @@ import HAPService2NodeType from '../types/HAPService2NodeType'
 
 module.exports = function (node: HAPService2NodeType) {
     const log = logger('NRCHKB', 'ServiceUtils2', node.config.name, node)
+
+    const ServiceUtilsLegacy = require('./ServiceUtils')(node)
 
     const HapNodeJS = require('hap-nodejs')
     const Service = HapNodeJS.Service
@@ -418,32 +418,6 @@ module.exports = function (node: HAPService2NodeType) {
                 service = newService
             } else {
                 service = accessory.addService(newService)
-
-                if (
-                    serviceInformation.serviceName === 'Lightbulb' &&
-                    serviceInformation.config.adaptiveLightingOptionsEnable
-                ) {
-                    try {
-                        const adaptiveLightingController =
-                            new AdaptiveLightingController(service, {
-                                controllerMode:
-                                    serviceInformation.config
-                                        .adaptiveLightingOptionsMode ??
-                                    AdaptiveLightingControllerMode.AUTOMATIC,
-                                customTemperatureAdjustment:
-                                    serviceInformation.config
-                                        .adaptiveLightingOptionsCustomTemperatureAdjustment,
-                            })
-
-                        accessory.configureController(
-                            adaptiveLightingController
-                        )
-                    } catch (error) {
-                        log.error(
-                            `Failed to configure adaptive lightning due to ${error}`
-                        )
-                    }
-                }
             }
         } else {
             // if a service with the same UUID and subtype was found it will
@@ -558,5 +532,7 @@ module.exports = function (node: HAPService2NodeType) {
         onClose,
         waitForParent,
         handleWaitForSetup,
+        configureAdaptiveLightning:
+            ServiceUtilsLegacy.configureAdaptiveLightning,
     }
 }
