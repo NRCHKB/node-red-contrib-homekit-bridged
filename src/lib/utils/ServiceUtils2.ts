@@ -330,7 +330,7 @@ module.exports = function (node: HAPService2NodeType) {
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(value, context)
+                    characteristic.setValue(value, () => {}, context)
                 } else {
                     characteristic.setValue(value)
                 }

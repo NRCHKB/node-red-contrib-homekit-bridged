@@ -277,7 +277,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(value, context)
+                    characteristic.setValue(value, () => {}, context)
                 } else {
                     characteristic.setValue(value)
                 }

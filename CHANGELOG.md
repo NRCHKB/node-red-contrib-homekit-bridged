@@ -14,6 +14,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 - Removed vulnerable module 'ip' [#545](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/545)
+- msg.context now handled properly
 
 ### Added
 
