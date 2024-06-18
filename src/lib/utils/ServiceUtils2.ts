@@ -276,7 +276,7 @@ module.exports = function (node: HAPService2NodeType) {
             return
         }
 
-        const topic = node.config.topic ? node.config.topic : node.name
+        const topic = node.config.topic ?? node.name
         if (node.config.filter && msg.topic !== topic) {
             log.debug(
                 "msg.topic doesn't match configured value and filter is enabled. Dropping message."
@@ -292,8 +292,6 @@ module.exports = function (node: HAPService2NodeType) {
 
         node.topic_in = msg.topic ?? ''
 
-        // iterate over characteristics to be written
-        // eslint-disable-next-line no-unused-vars
         Object.keys(msg.payload).map((key: string) => {
             if (node.supported.indexOf(key) < 0) {
                 if (
@@ -330,7 +328,7 @@ module.exports = function (node: HAPService2NodeType) {
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(value, () => {}, context)
+                    characteristic.setValue(value, undefined, context)
                 } else {
                     characteristic.setValue(value)
                 }

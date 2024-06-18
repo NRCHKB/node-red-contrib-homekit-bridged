@@ -228,7 +228,7 @@ module.exports = function (node: HAPServiceNodeType) {
         }
 
     const onInput = function (msg: Record<string, any>) {
-        if (msg.hasOwnProperty('payload')) {
+        if (msg.payload) {
             // payload must be an object
             const type = typeof msg.payload
 
@@ -241,7 +241,7 @@ module.exports = function (node: HAPServiceNodeType) {
             return
         }
 
-        const topic = node.config.topic ? node.config.topic : node.name
+        const topic = node.config.topic ?? node.name
         if (node.config.filter && msg.topic !== topic) {
             log.debug(
                 "msg.topic doesn't match configured value and filter is enabled. Dropping message."
@@ -250,15 +250,13 @@ module.exports = function (node: HAPServiceNodeType) {
         }
 
         let context: any = null
-        if (msg.payload.hasOwnProperty('Context')) {
+        if (msg.payload.Context) {
             context = msg.payload.Context
             delete msg.payload.Context
         }
 
-        node.topic_in = msg.topic ? msg.topic : ''
+        node.topic_in = msg.topic ?? ''
 
-        // iterate over characteristics to be written
-        // eslint-disable-next-line no-unused-vars
         Object.keys(msg.payload).map((key: string) => {
             if (node.supported.indexOf(key) < 0) {
                 log.error(
@@ -277,7 +275,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(value, () => {}, context)
+                    characteristic.setValue(value, undefined, context)
                 } else {
                     characteristic.setValue(value)
                 }
