@@ -1,3 +1,5 @@
+import * as util from 'node:util'
+
 import { logger } from '@nrchkb/logger'
 import {
     Accessory,
@@ -62,7 +64,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 this.value
             }, reachability is ${
                 (node.parentNode ?? node).reachable
-            } with context ${JSON.stringify(
+            } with context ${util.inspect(
                 context
             )} on connection ${connection?.sessionID}`
         )
@@ -170,7 +172,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 `onCharacteristicSet with status: ${this.statusCode}, value: ${
                     this.value
                 }, reachability is ${(node.parentNode ?? node).reachable} 
-            with context ${JSON.stringify(
+            with context ${util.inspect(
                 context
             )} on connection ${connection?.sessionID}`
             )
@@ -207,7 +209,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 `onCharacteristicChange with reason: ${reason}, oldValue: ${oldValue}, newValue: ${newValue}, reachability is ${
                     (node.parentNode ?? node).reachable
                 } 
-            with context ${JSON.stringify(
+            with context ${util.inspect(
                 context
             )} on connection ${originator?.sessionID}`
             )
