@@ -5,6 +5,7 @@ import {
     Accessory,
     AdaptiveLightingController,
     AdaptiveLightingControllerMode,
+    AdaptiveLightingOptions,
     Characteristic,
     CharacteristicChange,
     CharacteristicGetCallback,
@@ -474,24 +475,35 @@ module.exports = function (node: HAPServiceNodeType) {
 
     const configureAdaptiveLightning = () => {
         if (
-            node.service.name === 'Lightbulb' &&
+            node.service.UUID === Service.Lightbulb.UUID &&
             node.config.adaptiveLightingOptionsEnable
         ) {
             try {
+                node.service.getCharacteristic(Characteristic.Brightness)
+                node.service.getCharacteristic(Characteristic.ColorTemperature)
+
+                const options: AdaptiveLightingOptions = {
+                    controllerMode: node.config.adaptiveLightingOptionsMode
+                        ? +node.config.adaptiveLightingOptionsMode
+                        : AdaptiveLightingControllerMode.AUTOMATIC,
+                    customTemperatureAdjustment: node.config
+                        .adaptiveLightingOptionsCustomTemperatureAdjustment
+                        ? +node.config
+                              .adaptiveLightingOptionsCustomTemperatureAdjustment
+                        : undefined,
+                }
+
+                log.trace(
+                    `Configuring Adaptive Lighting with options: ${options}`
+                )
+
                 const adaptiveLightingController =
-                    new AdaptiveLightingController(node.service, {
-                        controllerMode:
-                            node.config.adaptiveLightingOptionsMode ??
-                            AdaptiveLightingControllerMode.AUTOMATIC,
-                        customTemperatureAdjustment:
-                            node.config
-                                .adaptiveLightingOptionsCustomTemperatureAdjustment,
-                    })
+                    new AdaptiveLightingController(node.service, options)
 
                 node.accessory.configureController(adaptiveLightingController)
             } catch (error) {
                 log.error(
-                    `Failed to configure adaptive lightning due to ${error}`
+                    `Failed to configure Adaptive Lightning due to ${error}`
                 )
             }
         }

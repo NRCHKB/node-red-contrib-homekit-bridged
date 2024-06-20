@@ -1,6 +1,6 @@
 {
     "name": "node-red-contrib-homekit-bridged",
-    "version": "1.7.0-dev.2",
+    "version": "1.7.0-dev.3",
     "description": "Node-RED nodes to simulate Apple HomeKit devices.",
     "main": "build/nodes/nrchkb.js",
     "scripts": {
@@ -42,7 +42,7 @@
     },
     "homepage": "https://github.com/NRCHKB/node-red-contrib-homekit-bridged#readme",
     "dependencies": {
-        "@nrchkb/logger": "^2.0.2",
+        "@nrchkb/logger": "^3.0.0",
         "hap-nodejs": "0.12.2",
         "node-persist": "^4.0.1",
         "semver": "^7.6.2",
