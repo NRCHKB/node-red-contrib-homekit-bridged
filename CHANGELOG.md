@@ -19,6 +19,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Adaptive Lighting support [#335](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/335)
+- By default, registered Eve.app Characteristics for power management - for existing setup, requires old custom characteristics file to be removed
 
 ### Changed
 
