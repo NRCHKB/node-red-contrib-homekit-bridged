@@ -203,13 +203,14 @@
         <div class="form-row">
             <label for="node-input-adaptiveLightingOptionsMode"><i class="fa fa-hand-o-up"></i> Mode</label>
             <select id="node-input-adaptiveLightingOptionsMode">
-                <option value="1" selected="selected">AUTOMATIC</option>
+                <option value="" selected hidden disabled>AUTOMATIC</option>
+                <option value="1">AUTOMATIC</option>
                 <option value="2" disabled>MANUAL</option>
             </select>
         </div>
         <div class="form-row">
             <label for="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment"><i class="fa fa-thermometer-quarter"></i> Custom Temperature Adjustment</label>
-            <input type="number" id="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment">
+            <input type="number" id="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment" placeholder="0">
         </div>
     </div>
 
@@ -508,12 +509,10 @@ if (nrchkbExperimental) {
                 value: false,
             },
             adaptiveLightingOptionsMode: {
-                value: 1,
-                validate: RED.validators.number()
+                validate: RED.validators.number(true)
             },
             adaptiveLightingOptionsCustomTemperatureAdjustment: {
-                value: 0,
-                validate: RED.validators.number()
+                validate: RED.validators.number(true)
             },
         },
         inputs: 1,
