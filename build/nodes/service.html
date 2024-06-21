@@ -499,11 +499,11 @@
             },
             adaptiveLightingOptionsMode: {
                 value: 1,
-                validate: RED.validators.number()
+                validate: RED.validators.number(true)
             },
             adaptiveLightingOptionsCustomTemperatureAdjustment: {
                 value: 0,
-                validate: RED.validators.number()
+                validate: RED.validators.number(true)
             },
         },
         inputs: 1,
@@ -612,6 +612,17 @@
 
             let cameraConfiguration = $('#camera-configuration')
             let adaptiveLightningConfiguration = $('#adaptive-lightning-configuration')
+
+            const adaptiveLightingOptionsMode = $("#node-input-adaptiveLightingOptionsMode")
+            const adaptiveLightingOptionsCustomTemperatureAdjustment = $("#node-input-adaptiveLightingOptionsCustomTemperatureAdjustment")
+
+            // Need to handle existing node - add missing default values
+            if (node.adaptiveLightingOptionsMode === undefined) {
+                adaptiveLightingOptionsMode.val("1");
+            }
+            if (node.adaptiveLightingOptionsCustomTemperatureAdjustment === undefined) {
+                adaptiveLightingOptionsCustomTemperatureAdjustment.val("0");
+            }
 
             selectServiceName
                 .find('option')
