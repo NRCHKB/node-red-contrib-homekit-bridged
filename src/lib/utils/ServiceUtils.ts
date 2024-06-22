@@ -3,6 +3,7 @@ import * as util from 'node:util'
 import { logger } from '@nrchkb/logger'
 import {
     Accessory,
+    ActiveAdaptiveLightingTransition,
     AdaptiveLightingController,
     AdaptiveLightingControllerMode,
     AdaptiveLightingOptions,
@@ -32,7 +33,7 @@ module.exports = function (node: HAPServiceNodeType) {
 
     const NO_RESPONSE_MSG = 'NO_RESPONSE'
 
-    const prepareHapData = (context: any, connection?: HAPConnection) => {
+    const prepareHapData = (context?: any, connection?: HAPConnection) => {
         const hap: { [key: string]: any } = {}
 
         if (connection) {
@@ -262,6 +263,15 @@ module.exports = function (node: HAPServiceNodeType) {
 
         Object.keys(msg.payload).map((key: string) => {
             if (node.supported.indexOf(key) < 0) {
+                if (key === 'AdaptiveLightingController') {
+                    const value = msg.payload?.[key]
+                    const event = value?.event
+
+                    if (event === 'disable') {
+                        node.adaptiveLightingController?.disableAdaptiveLighting()
+                    }
+                }
+
                 log.error(
                     `Instead of '${key}' try one of these characteristics: '${node.supported.join(
                         "', '"
@@ -500,7 +510,44 @@ module.exports = function (node: HAPServiceNodeType) {
                 const adaptiveLightingController =
                     new AdaptiveLightingController(node.service, options)
 
+                adaptiveLightingController.on('update', () => {
+                    const activeAdaptiveLightingTransition: Partial<ActiveAdaptiveLightingTransition> =
+                        {
+                            transitionStartMillis:
+                                adaptiveLightingController.getAdaptiveLightingStartTimeOfTransition(),
+                            timeMillisOffset:
+                                adaptiveLightingController.getAdaptiveLightingTimeOffset(),
+                            transitionCurve:
+                                adaptiveLightingController.getAdaptiveLightingTransitionCurve(),
+                            brightnessAdjustmentRange:
+                                adaptiveLightingController.getAdaptiveLightingBrightnessMultiplierRange(),
+                            updateInterval:
+                                adaptiveLightingController.getAdaptiveLightingUpdateInterval(),
+                            notifyIntervalThreshold:
+                                adaptiveLightingController.getAdaptiveLightingNotifyIntervalThreshold(),
+                        }
+                    node.send({
+                        payload: {
+                            AdaptiveLightingController: {
+                                event: 'update',
+                                data: activeAdaptiveLightingTransition,
+                            },
+                        },
+                    })
+                })
+                adaptiveLightingController.on('disable', () => {
+                    node.send({
+                        payload: {
+                            AdaptiveLightingController: {
+                                event: 'disable',
+                            },
+                        },
+                    })
+                })
+
                 node.accessory.configureController(adaptiveLightingController)
+
+                node.adaptiveLightingController = adaptiveLightingController
             } catch (error) {
                 log.error(
                     `Failed to configure Adaptive Lightning due to ${error}`
