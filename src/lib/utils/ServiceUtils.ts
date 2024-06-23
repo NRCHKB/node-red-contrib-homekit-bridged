@@ -263,20 +263,20 @@ module.exports = function (node: HAPServiceNodeType) {
 
         Object.keys(msg.payload).map((key: string) => {
             if (node.supported.indexOf(key) < 0) {
-                if (key === 'AdaptiveLightingController') {
+                if (key === 'AdaptiveLightingController' && node.adaptiveLightingController) {
                     const value = msg.payload?.[key]
                     const event = value?.event
 
                     if (event === 'disable') {
                         node.adaptiveLightingController?.disableAdaptiveLighting()
                     }
+                } else {
+                    log.error(
+                        `Instead of '${key}' try one of these characteristics: '${node.supported.join(
+                            "', '"
+                        )}'`
+                    )
                 }
-
-                log.error(
-                    `Instead of '${key}' try one of these characteristics: '${node.supported.join(
-                        "', '"
-                    )}'`
-                )
             } else {
                 const value = msg.payload?.[key]
 
