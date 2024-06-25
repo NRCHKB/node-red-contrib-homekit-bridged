@@ -23,11 +23,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-- Updated hap-nodejs [0.11.1 to 0.12.2](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (features
+- Updated hap-nodejs [0.11.1 to 0.12.3](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (features
   and bug fixes)
 - Dependencies upgrade
-- Node `10`, `12` and `16` no longer supported
+- Node `10`, `12` and `16` no longer supported, use Node 20! Or at least 18
 - Updated GitHub Actions
+- Some trivial PinCodes are no longer allowed
 
 ## [1.6.1] - 2024-02-19
 

@@ -263,7 +263,10 @@ module.exports = function (node: HAPServiceNodeType) {
 
         Object.keys(msg.payload).map((key: string) => {
             if (node.supported.indexOf(key) < 0) {
-                if (key === 'AdaptiveLightingController' && node.adaptiveLightingController) {
+                if (
+                    key === 'AdaptiveLightingController' &&
+                    node.adaptiveLightingController
+                ) {
                     const value = msg.payload?.[key]
                     const event = value?.event
 

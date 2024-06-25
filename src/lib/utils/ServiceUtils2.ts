@@ -310,7 +310,10 @@ module.exports = function (node: HAPService2NodeType) {
                     } else {
                         log.error(`Callback ${callbackID} timeout`)
                     }
-                } else if (key === 'AdaptiveLightingController' && node.adaptiveLightingController) {
+                } else if (
+                    key === 'AdaptiveLightingController' &&
+                    node.adaptiveLightingController
+                ) {
                     const value = msg.payload?.[key]
                     const event = value?.event
 

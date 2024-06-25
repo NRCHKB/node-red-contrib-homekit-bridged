@@ -414,12 +414,38 @@
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
+    const forbiddenPinCodes = [
+        '00000000',
+        '11111111',
+        '22222222',
+        '33333333',
+        '44444444',
+        '55555555',
+        '66666666',
+        '77777777',
+        '88888888',
+        '99999999',
+        '12345678',
+        '87654321'
+    ]
+
     const generatePinCode = function () {
         const [a, b, c, d, e, f, g, h] = Array.from({length: 9}, () => getRandomIntInclusive(0, 9));
+
+        if (forbiddenPinCodes.includes(`${a}${b}${c}${d}${e}${f}${g}${h}`)) {
+            return generatePinCode()
+        }
+
         return `${a}${b}${c}${d}-${e}${f}${g}${h}`
     }
 
-    const pinCodeRegex = RED.validators.regex(/([0-9]{3}-[0-9]{2}-[0-9]{3}|[0-9]{4}-[0-9]{4})/)
+    const validatePinCode = function (value) {
+        if (!RED.validators.regex(/([0-9]{3}-[0-9]{2}-[0-9]{3}|[0-9]{4}-[0-9]{4})/)) {
+            return false
+        }
+
+        return !forbiddenPinCodes.includes(value.replaceAll("-", ""));
+    }
 </script>
 
 <script data-template-name="nrchkb" type="text/x-red">

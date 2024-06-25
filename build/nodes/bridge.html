@@ -95,7 +95,7 @@
 
 <script data-help-name="homekit-bridge" type="text/x-red">
     <h3 id="toc_4">Bridge</h3>
-    <p>The Bridge node is a configuration node, specifying the <em>bridge</em> that iOS sees, i.e. the device that is manually being added by the user. All accessories behind a bridge noded are then automatically added by iOS.
+    <p>The Bridge node is a configuration node, specifying the <em>bridge</em> that iOS sees, i.e. the device that is manually being added by the user. All accessories behind a bridge node are then automatically added by iOS.
     </p>
     <ul>
         <li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
@@ -107,7 +107,7 @@
         <li><strong>Hardware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
         <li><strong>Software Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
         <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>. Name should be maximum 64 chars long and not contain <pre>.</pre></li>
-        <li><strong>Allow Message Passthrough</strong>: If you allow then message from node input will be send to node output.</li>
+        <li><strong>Allow Message Passthrough</strong>: If you allow then message from node input will be sent to node output.</li>
         <li><strong>Custom MDNS Configuration</strong>: Check if you would like to use custom mdns configuration.</li>
         <ul>
             <li><strong>Multicast</strong>: Use udp multicasting. Optional. Default true.</li>
@@ -137,7 +137,7 @@
             },
             pinCode: {
                 required: true,
-                validate: pinCodeRegex,
+                validate: validatePinCode,
             },
             port: {
                 required: false,
@@ -229,7 +229,7 @@
             return this.bridgeName ? 'node_label_italic' : ''
         },
         oneditprepare: function () {
-            if (!pinCodeRegex(this.pinCode)) {
+            if (!validatePinCode(this.pinCode)) {
                 this.pinCode = generatePinCode()
                 $("#node-config-input-pinCode").val(this.pinCode)
             }

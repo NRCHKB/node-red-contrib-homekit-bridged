@@ -11,10 +11,10 @@ If vulnerability is a serious risk then please consider contacting us directly a
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| > = 1.2.0  | :white_check_mark: |
-| < 1.2.0   | :x: limited               |
+| Version  | Supported          |
+|----------|--------------------|
+| >= 1.x.y | :white_check_mark: |
+| < 1.x.y  | :x: limited        |
 
 ## Reporting a Vulnerability
 
@@ -35,8 +35,10 @@ To use node-red safely you should secure it properly with encryption and passwor
 
 ### Invalid Setup Codes
 
-The following Setup Codes must not be used due to their trivial, insecure nature. In future release (possibly 1.X.Y)
-they will be forbidden programmatically.
+Since 1.3 random Setup Code will be generated for new Host (Bridge or Standalone Accessory) nodes (instead of default 1111-1111)
+
+The following Setup Codes must not be used due to their trivial, insecure nature. 
+Since 1.7.0 they are forbidden programmatically.
 
 - 0000-0000
 - 1111-1111
@@ -51,4 +53,3 @@ they will be forbidden programmatically.
 - 1234-5678
 - 8765-4321
 
-Since 1.3 random Setup Code will be generated for new Bridge nodes (instead of default 1111-1111)
