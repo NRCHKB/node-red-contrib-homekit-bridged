@@ -142,8 +142,9 @@ module.exports = (RED: NodeAPI) => {
             self.hostNode = RED.nodes.getNode(hostId) as HAPHostNodeType
 
             if (!self.hostNode) {
-                log.error('Host Node not found', false)
-                throw new NRCHKBError('Host Node not found')
+                const message = `Host node ${self.config.hostType == HostType.BRIDGE ? 'Bridge' : 'Standalone Accessory'} ${hostId} not found`
+                log.error(message, false)
+                throw new NRCHKBError(message)
             }
 
             self.childNodes = []
