@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.7.0-dev.7] - To be announced
+## [1.7.0-dev.9] - To be announced
 
 ### Fixed
 
@@ -29,6 +29,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Node `10`, `12` and `16` no longer supported, use Node 20! Or at least 18
 - Updated GitHub Actions
 - Some trivial PinCodes are no longer allowed
+- MDNS Configuration is now deprecated, use Bind instead
 
 ## [1.6.1] - 2024-02-19
 

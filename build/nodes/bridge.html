@@ -56,8 +56,13 @@
     </div>
     <hr>
     <div class="form-row">
+        <label for="node-config-input-bind"><i class="fa fa-filter"></i> Bind</label>
+        <input type="text" id="node-config-input-bind" placeholder="::">
+        <input type="hidden" id="node-config-input-bindType">
+    </div>
+    <div class="form-row">
         <input type="checkbox" id="node-config-input-customMdnsConfig" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-config-input-customMdnsConfig" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-filter"></i> Custom MDNS Configuration</label>
+        <label for="node-config-input-customMdnsConfig" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-filter"></i> Custom MDNS Configuration (DEPRECATED, use Bind)</label>
     </div>
     <div id="mdns-configuration" style="display: none;">
         <div class="form-row">
@@ -108,7 +113,60 @@
         <li><strong>Software Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
         <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>. Name should be maximum 64 chars long and not contain <pre>.</pre></li>
         <li><strong>Allow Message Passthrough</strong>: If you allow then message from node input will be sent to node output.</li>
-        <li><strong>Custom MDNS Configuration</strong>: Check if you would like to use custom mdns configuration.</li>
+        <li><strong>Bind</strong>: Defines the host where the HAP server will be bound to. </li>
+        <ul>
+         <li>
+   Defines the host where the HAP server will be bound to.
+   When undefined the HAP server will bind to all available interfaces
+   (see https://nodejs.org/api/net.html#net_server_listen_port_host_backlog_callback).
+
+   This property accepts a mixture of IPAddresses and network interface names.
+   Depending on the mixture of supplied addresses/names hap-nodejs will bind differently.
+
+   It is advised to not just bind to a specific address, but specifying the interface name
+   in oder to bind on all address records (and ip version) available.
+
+   HAP-NodeJS (or the underlying ciao library) will not report about misspelled interface names,
+   as it could be that the interface is currently just down and will come up later.
+
+   Here are a few examples:
+    - bind: "::"
+        Pretty much identical to not specifying anything, as most systems (with ipv6 support)
+        will default to the unspecified ipv6 address (with dual stack support).
+
+    - bind: "0.0.0.0"
+        Binding TCP socket to the unspecified ipv4 address.
+        The mdns advertisement will exclude any ipv6 address records.
+
+    - bind: ["en0", "lo0"]
+        The mdns advertising will advertise all records of the en0 and loopback interface (if available) and
+        will also react to address changes on those interfaces.
+        In order for the HAP server to accept all those address records (which may contain ipv6 records)
+        it will bind on the unspecified ipv6 address "::" (assuming dual stack is supported).
+
+    - bind: ["en0", "lo0", "0.0.0.0"]
+        Same as above, only that the HAP server will bind on the unspecified ipv4 address "0.0.0.0".
+        The mdns advertisement will not advertise any ipv6 records.
+
+    - bind: "169.254.104.90"
+        This will bind the HAP server to the address 0.0.0.0.
+        The mdns advertisement will only advertise the A record 169.254.104.90.
+        If the given network interface of that address encounters an ip address change (to a different address),
+        the mdns advertisement will result in not advertising an address at all.
+        So it is advised to specify an interface name instead of a specific address.
+        This is identical with ipv6 addresses.
+
+    - bind: ["169.254.104.90", "192.168.1.4"]
+        As the HAP TCP socket can only bind to a single address, when specifying multiple ip addresses
+        the HAP server will bind to the unspecified ip address (0.0.0.0 if only ipv4 addresses are supplied,
+        :: if a mixture or only ipv6 addresses are supplied).
+        The mdns advertisement will only advertise the specified ip addresses.
+        If the given network interface of that address encounters an ip address change (to different addresses),
+        the mdns advertisement will result in not advertising an address at all.
+        So it is advised to specify an interface name instead of a specific address.
+         </li>
+        </ul>
+        <li><strong>Custom MDNS Configuration (DEPRECATED, use Bind)</strong>: Check if you would like to use custom mdns configuration.</li>
         <ul>
             <li><strong>Multicast</strong>: Use udp multicasting. Optional. Default true.</li>
             <li><strong>Multicast Interface IP:</strong>: Explicitly specify a network interface. Optional. Defaults to all.</li>
@@ -185,37 +243,42 @@
                 required: false,
                 validate: versionValidator,
             },
+            bind: {
+                value: undefined,
+                required: false,
+            },
+            bindType: {
+                value: undefined,
+                required: false,
+            },
             customMdnsConfig: {
                 value: false,
                 required: false,
+                validate: (value) => !value
             },
             mdnsMulticast: {
                 value: true,
-                required: false,
+                required: false
             },
             mdnsInterface: {
-                required: false,
+                required: false
             },
             mdnsPort: {
-                required: false,
-                validate: function (value) {
-                    if (value) return RED.validators.port(value)
-                    else return true
-                },
+                required: false
             },
             mdnsIp: {
-                required: false,
+                required: false
             },
             mdnsTtl: {
-                required: false,
+                required: false
             },
             mdnsLoopback: {
                 value: true,
-                required: false,
+                required: false
             },
             mdnsReuseAddr: {
                 value: true,
-                required: false,
+                required: false
             },
             allowMessagePassthrough: {
                 value: true,
@@ -231,7 +294,7 @@
         oneditprepare: function () {
             if (!validatePinCode(this.pinCode)) {
                 this.pinCode = generatePinCode()
-                $("#node-config-input-pinCode").val(this.pinCode)
+                $('#node-config-input-pinCode').val(this.pinCode)
             }
 
             if (typeof this.allowMessagePassthrough == 'undefined') {
@@ -256,6 +319,12 @@
                     }
                 })
                 .change()
+
+            $('#node-config-input-bind').typedInput({
+                typeField: '#node-config-input-bindType',
+                default: 'str',
+                types: ['json', 'str']
+            })
         },
     })
 </script>

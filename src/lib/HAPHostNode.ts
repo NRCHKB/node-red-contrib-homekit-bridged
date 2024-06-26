@@ -1,5 +1,4 @@
 import { logger } from '@nrchkb/logger'
-import { MulticastOptions } from 'bonjour-hap'
 import {
     Accessory,
     Bridge,
@@ -14,6 +13,7 @@ import { SemVer } from 'semver'
 import semver from 'semver/preload'
 
 import NRCHKBError from './NRCHKBError'
+import BonjourMulticastOptions from './types/hap-nodejs/BonjourMulticastOptions'
 import HapCategories from './types/hap-nodejs/HapCategories'
 import HAPHostConfigType from './types/HAPHostConfigType'
 import HAPHostNodeType from './types/HAPHostNodeType'
@@ -41,8 +41,10 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             config.firmwareRev = new SemVer('0.0.0')
         }
 
-        if (config.customMdnsConfig) {
-            self.mdnsConfig = {} as MulticastOptions
+        if (!config.bind?.length && config.customMdnsConfig) {
+            log.error('Custom mdns config is deprecated, use bind instead!')
+
+            self.mdnsConfig = {} as BonjourMulticastOptions
 
             if (MdnsUtils.checkMulticast(config.mdnsMulticast)) {
                 self.mdnsConfig.multicast = config.mdnsMulticast
@@ -129,6 +131,15 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                 oldPinCode = `${oldPinCode.slice(0, 3)}-${oldPinCode.slice(3, 5)}-${oldPinCode.slice(5, 8)}`
             }
 
+            let bind
+            if (self.config.bind?.length && self.config.bindType) {
+                if (self.config.bindType == 'str') {
+                    bind = self.config.bind
+                } else if (self.config.bindType == 'json') {
+                    bind = JSON.parse(self.config.bind)
+                }
+            }
+
             self.host.publish(
                 {
                     username: self.bridgeUsername,
@@ -139,6 +150,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                     pincode: oldPinCode,
                     category: self.accessoryCategory,
                     mdns: self.mdnsConfig,
+                    bind: bind,
                     advertiser:
                         self.config.advertiser ?? MDNSAdvertiser.BONJOUR,
                 },
