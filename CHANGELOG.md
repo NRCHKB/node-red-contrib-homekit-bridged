@@ -2,14 +2,34 @@
 
 ##### Before upgrading make sure that you are using the latest version of [Node-RED](https://nodered.org/docs/getting-started/local) and latest LTS version of [Node.js](https://nodejs.org/en/download/)
 
-###### Upgrading from versions 0.X to 1.X is a breaking change, all devices will be reset in the Home app. Please review the [release notes](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/releases/tag/v1.0.1) thoroughly before updating!
-
 # Changelog
 
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.7.0] - 2024-09-19
+
+### Fixed
+
+- Removed vulnerable module 'ip' [#545](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/545)
+- msg.context now handled properly
+
+### Added
+
+- Adaptive Lighting support [#335](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/335)
+- By default, registered Eve.app Characteristics for power management - for existing setup, requires old custom characteristics file to be removed
+
+### Changed
+
+- Updated hap-nodejs [0.11.1 to 0.12.3-beta.18](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (features
+  and bug fixes)
+- Dependencies upgrade
+- Node `10`, `12` and `16` no longer supported, use Node 20! Or at least 18
+- Updated GitHub Actions
+- Some trivial PinCodes are no longer allowed
+- MDNS Configuration is now deprecated, use Bind instead
 
 ## [1.6.1] - 2024-02-19
 

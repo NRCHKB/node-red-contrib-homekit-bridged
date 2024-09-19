@@ -7,6 +7,7 @@
         border-radius: .25rem;
         margin-right: 60px;
     }
+
     .alert-warning {
         color: #856404;
         background-color: #fff3cd;
@@ -56,55 +57,55 @@
 
                 $('#node-input-customCharacteristics-container').css('min-height', '150px').css('min-width', '550px').editableList({
                     addItem: function (container, i, opt) {
-                        $(".properties-accordion").accordion("option", "active", false);
+                        $('.properties-accordion').accordion('option', 'active', false)
 
                         const {name, UUID, ...props} = opt
 
                         container.css({
                             overflow: 'hidden',
                             whiteSpace: 'nowrap'
-                        });
+                        })
 
-                        const fragment = document.createDocumentFragment();
-                        const row1 = $('<div/>', {style: "display:flex; align-items: center;"}).appendTo(fragment);
-                        const row2 = $('<div/>', {style: "display:flex; margin-top:8px; align-items: center;"}).appendTo(fragment);
-                        const row3 = $('<div/>', {style: "margin-top:8px; align-items: center;"}).appendTo(fragment);
+                        const fragment = document.createDocumentFragment()
+                        const row1 = $('<div/>', {style: 'display:flex; align-items: center;'}).appendTo(fragment)
+                        const row2 = $('<div/>', {style: 'display:flex; margin-top:8px; align-items: center;'}).appendTo(fragment)
+                        const row3 = $('<div/>', {style: 'margin-top:8px; align-items: center;'}).appendTo(fragment)
 
                         $('<div/>', {
-                            style: "display:inline-block;text-align:left; width:120px; padding-left:10px; box-sizing:border-box;",
-                            required: "required"
+                            style: 'display:inline-block;text-align:left; width:120px; padding-left:10px; box-sizing:border-box;',
+                            required: 'required'
                         })
                             .text('UUID ')
-                            .appendTo(row1);
-                        $('<input/>', {class: "property-uuid", type: "text"})
+                            .appendTo(row1)
+                        $('<input/>', {class: 'property-uuid', type: 'text'})
                             .val(UUID ? UUID : uuidv4)
                             .appendTo(row1)
 
                         $('<div/>', {
-                            style: "display:inline-block;text-align:left; width:120px; padding-left:10px; box-sizing:border-box;",
-                            required: "required"
+                            style: 'display:inline-block;text-align:left; width:120px; padding-left:10px; box-sizing:border-box;',
+                            required: 'required'
                         })
                             .text('Name ')
-                            .appendTo(row2);
-                        $('<input/>', {class: "property-name", type: "text"})
+                            .appendTo(row2)
+                        $('<input/>', {class: 'property-name', type: 'text'})
                             .val(name)
                             .appendTo(row2)
 
-                        const row3_properties_accordion = $('<div/>', {class: "properties-accordion"})
-                            .appendTo(row3);
+                        const row3_properties_accordion = $('<div/>', {class: 'properties-accordion'})
+                            .appendTo(row3)
 
-                        $('<h3/>').text('Properties').appendTo(row3_properties_accordion);
+                        $('<h3/>').text('Properties').appendTo(row3_properties_accordion)
 
-                        const row3_properties = $('<div/>', {class: "properties"}).appendTo(row3_properties_accordion);
+                        const row3_properties = $('<div/>', {class: 'properties'}).appendTo(row3_properties_accordion)
 
-                        const formatRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
+                        const formatRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
                         $('<label/>', {
-                            class: "form-row",
-                            htmlFor: "property-format"
-                        }).text('Format *').appendTo(formatRow);
+                            class: 'form-row',
+                            htmlFor: 'property-format'
+                        }).text('Format *').appendTo(formatRow)
                         const formatInput = $('<select/>', {
-                            class: "property-format",
-                            required: "required"
+                            class: 'property-format',
+                            required: 'required'
                         }).appendTo(formatRow)
                         $('<option/>').val(undefined).text('Choose...').appendTo(formatInput)
                         $('<option/>').val('bool').text('BOOL').appendTo(formatInput)
@@ -121,9 +122,9 @@
                         $('<option/>').val('dict').text('DICTIONARY').appendTo(formatInput)
                         formatInput.val(props.format)
 
-                        const unitRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
-                        $('<label/>', {class: "form-row", htmlFor: "property-unit"}).text('Unit').appendTo(unitRow)
-                        const unitSelect = $('<select/>', {class: "property-unit"}).appendTo(unitRow)
+                        const unitRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        $('<label/>', {class: 'form-row', htmlFor: 'property-unit'}).text('Unit').appendTo(unitRow)
+                        const unitSelect = $('<select/>', {class: 'property-unit'}).appendTo(unitRow)
                         $('<option/>').val(undefined).text('Choose...').appendTo(unitSelect)
                         $('<option/>').val('celsius').text('CELSIUS').appendTo(unitSelect)
                         $('<option/>').val('percentage').text('PERCENTAGE').appendTo(unitSelect)
@@ -132,14 +133,14 @@
                         $('<option/>').val('seconds').text('SECONDS').appendTo(unitSelect)
                         unitSelect.val(props.unit)
 
-                        const permsRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
+                        const permsRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
                         $('<label/>', {
-                            class: "form-row",
-                            htmlFor: "property-perms"
+                            class: 'form-row',
+                            htmlFor: 'property-perms'
                         }).text('Permissions').appendTo(permsRow)
                         const permsSelect = $('<select/>', {
-                            class: "property-perms",
-                            multiple: "multiple"
+                            class: 'property-perms',
+                            multiple: 'multiple'
                         }).appendTo(permsRow)
                         $('<option/>').val('pr').text('PAIRED_READ / READ').appendTo(permsSelect)
                         $('<option/>').val('pw').text('PAIRED_WRITE / WRITE').appendTo(permsSelect)
@@ -150,94 +151,94 @@
                         $('<option/>').val('wr').text('WRITE_RESPONSE').appendTo(permsSelect)
                         permsSelect.val(props.perms)
 
-                        const evRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
+                        const evRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
                         $('<label/>', {
-                            class: "form-row",
-                            htmlFor: "property-ev"
+                            class: 'form-row',
+                            htmlFor: 'property-ev'
                         }).text('Event Notifications').appendTo(evRow)
                         $('<input/>', {
-                            class: "property-ev",
-                            type: "checkbox",
+                            class: 'property-ev',
+                            type: 'checkbox',
                             checked: props.ev
                         }).appendTo(evRow)
 
-                        const descriptionRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
+                        const descriptionRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
                         $('<label/>', {
-                            class: "form-row",
-                            htmlFor: "property-description"
+                            class: 'form-row',
+                            htmlFor: 'property-description'
                         }).text('Description').appendTo(descriptionRow)
                         $('<input/>', {
-                            class: "property-description",
+                            class: 'property-description',
                             type: 'text'
                         }).appendTo(descriptionRow).val(props.description)
 
-                        const minValueRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
+                        const minValueRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
                         $('<label/>', {
-                            class: "form-row",
-                            htmlFor: "property-minValue"
+                            class: 'form-row',
+                            htmlFor: 'property-minValue'
                         }).text('Minimum Value').appendTo(minValueRow)
                         $('<input/>', {
-                            class: "property-minValue",
+                            class: 'property-minValue',
                             type: 'number'
                         }).appendTo(minValueRow).val(props.minValue)
 
-                        const maxValueRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
+                        const maxValueRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
                         $('<label/>', {
-                            class: "form-row",
-                            htmlFor: "property-maxValue"
+                            class: 'form-row',
+                            htmlFor: 'property-maxValue'
                         }).text('Maximum Value').appendTo(maxValueRow)
                         $('<input/>', {
-                            class: "property-maxValue",
+                            class: 'property-maxValue',
                             type: 'number'
                         }).appendTo(maxValueRow).val(props.maxValue)
 
-                        const minStepRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
+                        const minStepRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
                         $('<label/>', {
-                            class: "form-row",
-                            htmlFor: "property-minStep"
+                            class: 'form-row',
+                            htmlFor: 'property-minStep'
                         }).text('Minimum Step').appendTo(minStepRow)
                         $('<input/>', {
-                            class: "property-minStep",
+                            class: 'property-minStep',
                             type: 'number'
                         }).appendTo(minStepRow).val(props.minStep)
 
-                        const maxLenRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
+                        const maxLenRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
                         $('<label/>', {
-                            class: "form-row",
-                            htmlFor: "property-maxLen"
+                            class: 'form-row',
+                            htmlFor: 'property-maxLen'
                         }).text('Maximum Length').appendTo(maxLenRow)
                         $('<input/>', {
-                            class: "property-maxLen",
+                            class: 'property-maxLen',
                             type: 'number'
                         }).appendTo(maxLenRow).val(props.maxLen)
 
-                        const maxDataLenRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
+                        const maxDataLenRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
                         $('<label/>', {
-                            class: "form-row",
-                            htmlFor: "property-maxDataLen"
+                            class: 'form-row',
+                            htmlFor: 'property-maxDataLen'
                         }).text('Maximum Data Length').appendTo(maxDataLenRow)
                         $('<input/>', {
-                            class: "property-maxDataLen",
+                            class: 'property-maxDataLen',
                             type: 'number'
                         }).appendTo(maxDataLenRow).val(props.maxDataLen)
 
-                        const validValuesRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
+                        const validValuesRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
                         $('<label/>', {
-                            class: "form-row",
-                            htmlFor: "property-validValues"
+                            class: 'form-row',
+                            htmlFor: 'property-validValues'
                         }).text('Valid Values').appendTo(validValuesRow)
                         $('<input/>', {
-                            class: "property-validValues",
+                            class: 'property-validValues',
                             type: 'text'
                         }).appendTo(validValuesRow).val(props.validValues)
 
-                        const validValueRangesRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
+                        const validValueRangesRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
                         const validValueRangesLabel = $('<label/>', {
-                            class: "form-row property-validValueRanges-label",
-                            htmlFor: "property-validValueRanges"
+                            class: 'form-row property-validValueRanges-label',
+                            htmlFor: 'property-validValueRanges'
                         }).text('Valid Value Ranges: ').appendTo(validValueRangesRow)
                         const validValueRangesSlider = $('<div/>', {
-                            class: "property-validValueRanges",
+                            class: 'property-validValueRanges',
                             type: 'text'
                         }).appendTo(validValueRangesRow)
 
@@ -247,19 +248,19 @@
                             max: 500,
                             values: props.validValueRanges,
                             slide: function (event, ui) {
-                                validValueRangesLabel.text("Valid Value Ranges: [" + ui.values[0] + ", " + ui.values[1] + "]");
+                                validValueRangesLabel.text('Valid Value Ranges: [' + ui.values[0] + ', ' + ui.values[1] + ']')
                             }
-                        });
-                        validValueRangesLabel.text("Valid Value Ranges: [" + validValueRangesSlider.slider("values", 0) + ", " + validValueRangesSlider.slider("values", 1) + "]");
+                        })
+                        validValueRangesLabel.text('Valid Value Ranges: [' + validValueRangesSlider.slider('values', 0) + ', ' + validValueRangesSlider.slider('values', 1) + ']')
 
-                        const adminOnlyAccessRow = $('<div/>', {class: "form-row"}).appendTo(row3_properties);
+                        const adminOnlyAccessRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
                         $('<label/>', {
-                            class: "form-row",
-                            htmlFor: "property-adminOnlyAccess"
+                            class: 'form-row',
+                            htmlFor: 'property-adminOnlyAccess'
                         }).text('Admin Only Access').appendTo(adminOnlyAccessRow)
                         const adminOnlyAccessSelect = $('<select/>', {
-                            class: "property-adminOnlyAccess",
-                            multiple: "multiple"
+                            class: 'property-adminOnlyAccess',
+                            multiple: 'multiple'
                         }).appendTo(adminOnlyAccessRow)
                         $('<option/>').val(0).text('READ').appendTo(adminOnlyAccessSelect)
                         $('<option/>').val(1).text('WRITE').appendTo(adminOnlyAccessSelect)
@@ -269,30 +270,30 @@
                         row3_properties_accordion.accordion({
                             collapsible: true,
                             active: 'UUID' in opt ? false : 0,
-                            heightStyle: "content"
-                        });
+                            heightStyle: 'content'
+                        })
 
-                        container[0].appendChild(fragment);
+                        container[0].appendChild(fragment)
                     },
                     removable: true,
                     sortable: true
-                });
+                })
 
                 for (let i = 0; i < config.customCharacteristics.length; i++) {
-                    const customCharacteristic = config.customCharacteristics[i];
-                    $("#node-input-customCharacteristics-container").editableList('addItem', customCharacteristic);
+                    const customCharacteristic = config.customCharacteristics[i]
+                    $('#node-input-customCharacteristics-container').editableList('addItem', customCharacteristic)
                 }
             },
             oneditresize: function (size) {
-                const rows = $("#dialog-form>div:not(.node-input-customCharacteristics-container-row)");
-                let height = size.height;
+                const rows = $('#dialog-form>div:not(.node-input-customCharacteristics-container-row)')
+                let height = size.height
                 for (let i = 0; i < rows.length; i++) {
-                    height -= $(rows[i]).outerHeight(true);
+                    height -= $(rows[i]).outerHeight(true)
                 }
-                const editorRow = $("#dialog-form>div.node-input-customCharacteristics-container-row");
-                height -= (parseInt(editorRow.css("marginTop")) + parseInt(editorRow.css("marginBottom")));
-                height += 16;
-                $("#node-input-customCharacteristics-container").editableList('height', height);
+                const editorRow = $('#dialog-form>div.node-input-customCharacteristics-container-row')
+                height -= (parseInt(editorRow.css('marginTop')) + parseInt(editorRow.css('marginBottom')))
+                height += 16
+                $('#node-input-customCharacteristics-container').editableList('height', height)
             }
         })
     }
@@ -352,27 +353,27 @@
 
     const saveCustomCharacteristics = function (self) {
         const customCharacteristics = []
-        const items = $("#node-input-customCharacteristics-container").editableList('items');
+        const items = $('#node-input-customCharacteristics-container').editableList('items')
 
         items.each(function () {
-            const item = $(this);
-            const name = item.find(".property-name").val();
-            const UUID = item.find(".property-uuid").val();
-            const format = item.find(".property-format").val();
-            const unit = item.find(".property-unit").val();
-            const perms = item.find(".property-perms").val();
-            const ev = item.find(".property-ev").prop('checked');
-            const description = item.find(".property-description").val();
-            const minValue = item.find(".property-minValue").val();
-            const maxValue = item.find(".property-maxValue").val();
-            const minStep = item.find(".property-minStep").val();
-            const maxLen = item.find(".property-maxLen").val();
-            const maxDataLen = item.find(".property-maxDataLen").val();
-            const validValues = item.find(".property-validValues").val();
-            const validValueRangesMin = item.find(".property-validValueRanges").slider("values", 0);
-            const validValueRangesMax = item.find(".property-validValueRanges").slider("values", 1);
+            const item = $(this)
+            const name = item.find('.property-name').val()
+            const UUID = item.find('.property-uuid').val()
+            const format = item.find('.property-format').val()
+            const unit = item.find('.property-unit').val()
+            const perms = item.find('.property-perms').val()
+            const ev = item.find('.property-ev').prop('checked')
+            const description = item.find('.property-description').val()
+            const minValue = item.find('.property-minValue').val()
+            const maxValue = item.find('.property-maxValue').val()
+            const minStep = item.find('.property-minStep').val()
+            const maxLen = item.find('.property-maxLen').val()
+            const maxDataLen = item.find('.property-maxDataLen').val()
+            const validValues = item.find('.property-validValues').val()
+            const validValueRangesMin = item.find('.property-validValueRanges').slider('values', 0)
+            const validValueRangesMax = item.find('.property-validValueRanges').slider('values', 1)
             const validValueRanges = validValueRangesMin && validValueRangesMax ? [validValueRangesMin, validValueRangesMax] : undefined
-            const adminOnlyAccess = item.find(".property-adminOnlyAccess").val();
+            const adminOnlyAccess = item.find('.property-adminOnlyAccess').val()
             customCharacteristics.push({
                 name,
                 UUID,
@@ -389,8 +390,8 @@
                 validValues,
                 validValueRanges,
                 adminOnlyAccess
-            });
-        });
+            })
+        })
 
         config.customCharacteristics = customCharacteristics
 
@@ -399,27 +400,57 @@
             url: 'nrchkb/config',
             dataType: 'json',
             data: {customCharacteristics}
-        });
+        })
     }
 
     const uuidv4 = function () {
         return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
             (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
+        )
     }
 
     const getRandomIntInclusive = function (min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1) + min);
+        min = Math.ceil(min)
+        max = Math.floor(max)
+        return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
+    const forbiddenPinCodes = [
+        '00000000',
+        '11111111',
+        '22222222',
+        '33333333',
+        '44444444',
+        '55555555',
+        '66666666',
+        '77777777',
+        '88888888',
+        '99999999',
+        '12345678',
+        '87654321'
+    ]
+
     const generatePinCode = function () {
-        const [a, b, c, d, e, f, g, h] = Array.from({length: 9}, () => getRandomIntInclusive(0, 9));
+        const [a, b, c, d, e, f, g, h] = Array.from({length: 9}, () => getRandomIntInclusive(0, 9))
+
+        if (forbiddenPinCodes.includes(`${a}${b}${c}${d}${e}${f}${g}${h}`)) {
+            return generatePinCode()
+        }
+
         return `${a}${b}${c}${d}-${e}${f}${g}${h}`
     }
 
-    const pinCodeRegex = RED.validators.regex(/([0-9]{3}-[0-9]{2}-[0-9]{3}|[0-9]{4}-[0-9]{4})/)
+    const validatePinCode = function (value) {
+        if (!value) {
+            return false
+        }
+
+        if (!RED.validators.regex(/([0-9]{3}-[0-9]{2}-[0-9]{3}|[0-9]{4}-[0-9]{4})/)(value)) {
+            return false
+        }
+
+        return !forbiddenPinCodes.includes(value.replaceAll('-', ''))
+    }
 </script>
 
 <script data-template-name="nrchkb" type="text/x-red">

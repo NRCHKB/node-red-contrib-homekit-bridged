@@ -1,5 +1,6 @@
 import {
     Accessory,
+    AdaptiveLightingController,
     Characteristic,
     CharacteristicChange,
     CharacteristicGetCallback,
@@ -56,6 +57,7 @@ type HAPServiceNodeType = NodeType & {
     // Is Accessory reachable? On Linked Service it will be undefined. If is not true then NO_RESPONSE
     reachable?: boolean
     nodeStatusUtils: NodeStatusUtils
+    adaptiveLightingController?: AdaptiveLightingController
 }
 
 export default HAPServiceNodeType

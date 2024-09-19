@@ -194,6 +194,26 @@
         </div>
     </div>
 
+    <div id="adaptive-lightning-configuration" style="display: none; border: 1px solid var(--red-ui-secondary-border-color); padding: 12px 12px 0 12px; margin-bottom: 12px;">
+        <label>&nbsp;&nbsp;<i class="fa fa-cog"></i> Adaptive Lightning Configuration</label>
+        <div class="form-row">
+            <label for="node-input-adaptiveLightingOptionsEnable"><i class="fa fa-toggle-on"></i> Enable</label>
+            <input type="checkbox" id="node-input-adaptiveLightingOptionsEnable">
+        </div>
+        <div class="form-row">
+            <label for="node-input-adaptiveLightingOptionsMode"><i class="fa fa-hand-o-up"></i> Mode</label>
+            <select id="node-input-adaptiveLightingOptionsMode">
+                <option value="" selected hidden disabled>AUTOMATIC</option>
+                <option value="1">AUTOMATIC</option>
+                <option value="2">MANUAL</option>
+            </select>
+        </div>
+        <div class="form-row">
+            <label for="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment"><i class="fa fa-thermometer-quarter"></i> Custom Temperature Adjustment</label>
+            <input type="number" id="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment" placeholder="0">
+        </div>
+    </div>
+
     <div class="form-row">
         <label for="node-input-characteristicProperties"><i class="fa fa-wrench"></i> Characteristic Properties</label>
         <input type="text" id="node-input-characteristicProperties" style="width: 70%">
@@ -484,7 +504,16 @@ if (nrchkbExperimental) {
             },
             outputs: {
                 value: 1,
-            }
+            },
+            adaptiveLightingOptionsEnable: {
+                value: false,
+            },
+            adaptiveLightingOptionsMode: {
+                validate: RED.validators.number(true)
+            },
+            adaptiveLightingOptionsCustomTemperatureAdjustment: {
+                validate: RED.validators.number(true)
+            },
         },
         inputs: 1,
         outputs: 1,
@@ -583,6 +612,7 @@ if (nrchkbExperimental) {
             })
 
             let cameraConfiguration = $('#camera-configuration')
+            let adaptiveLightningConfiguration = $('#adaptive-lightning-configuration')
 
             selectServiceName
                 .find('option')
@@ -599,6 +629,16 @@ if (nrchkbExperimental) {
                     } else {
                         cameraConfiguration.fadeOut('fast')
                         node.outputs = 1
+                    }
+                })
+                .change()
+
+            selectServiceName
+                .change(function () {
+                    if (this.value === 'Lightbulb') {
+                        adaptiveLightningConfiguration.fadeIn('fast')
+                    } else {
+                        adaptiveLightningConfiguration.fadeOut('fast')
                     }
                 })
                 .change()

@@ -25,6 +25,8 @@ import HAPService2NodeType from '../types/HAPService2NodeType'
 module.exports = function (node: HAPService2NodeType) {
     const log = logger('NRCHKB', 'ServiceUtils2', node.config.name, node)
 
+    const ServiceUtilsLegacy = require('./ServiceUtils')(node)
+
     const HapNodeJS = require('hap-nodejs')
     const Service = HapNodeJS.Service
     const Characteristic = HapNodeJS.Characteristic
@@ -274,7 +276,7 @@ module.exports = function (node: HAPService2NodeType) {
             return
         }
 
-        const topic = node.config.topic ? node.config.topic : node.name
+        const topic = node.config.topic ?? node.name
         if (node.config.filter && msg.topic !== topic) {
             log.debug(
                 "msg.topic doesn't match configured value and filter is enabled. Dropping message."
@@ -290,8 +292,6 @@ module.exports = function (node: HAPService2NodeType) {
 
         node.topic_in = msg.topic ?? ''
 
-        // iterate over characteristics to be written
-        // eslint-disable-next-line no-unused-vars
         Object.keys(msg.payload).map((key: string) => {
             if (node.supported.indexOf(key) < 0) {
                 if (
@@ -309,6 +309,16 @@ module.exports = function (node: HAPService2NodeType) {
                         eventCallback.callback(callbackValue)
                     } else {
                         log.error(`Callback ${callbackID} timeout`)
+                    }
+                } else if (
+                    key === 'AdaptiveLightingController' &&
+                    node.adaptiveLightingController
+                ) {
+                    const value = msg.payload?.[key]
+                    const event = value?.event
+
+                    if (event === 'disable') {
+                        node.adaptiveLightingController?.disableAdaptiveLighting()
                     }
                 } else {
                     log.error(
@@ -328,7 +338,7 @@ module.exports = function (node: HAPService2NodeType) {
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(value, context)
+                    characteristic.setValue(value, undefined, context)
                 } else {
                     characteristic.setValue(value)
                 }
@@ -532,5 +542,7 @@ module.exports = function (node: HAPService2NodeType) {
         onClose,
         waitForParent,
         handleWaitForSetup,
+        configureAdaptiveLightning:
+            ServiceUtilsLegacy.configureAdaptiveLightning,
     }
 }

@@ -1,6 +1,12 @@
+import * as util from 'node:util'
+
 import { logger } from '@nrchkb/logger'
 import {
     Accessory,
+    ActiveAdaptiveLightingTransition,
+    AdaptiveLightingController,
+    AdaptiveLightingControllerMode,
+    AdaptiveLightingOptions,
     Characteristic,
     CharacteristicChange,
     CharacteristicGetCallback,
@@ -27,7 +33,7 @@ module.exports = function (node: HAPServiceNodeType) {
 
     const NO_RESPONSE_MSG = 'NO_RESPONSE'
 
-    const prepareHapData = (context: any, connection?: HAPConnection) => {
+    const prepareHapData = (context?: any, connection?: HAPConnection) => {
         const hap: { [key: string]: any } = {}
 
         if (connection) {
@@ -60,7 +66,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 this.value
             }, reachability is ${
                 (node.parentNode ?? node).reachable
-            } with context ${JSON.stringify(
+            } with context ${util.inspect(
                 context
             )} on connection ${connection?.sessionID}`
         )
@@ -168,7 +174,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 `onCharacteristicSet with status: ${this.statusCode}, value: ${
                     this.value
                 }, reachability is ${(node.parentNode ?? node).reachable} 
-            with context ${JSON.stringify(
+            with context ${util.inspect(
                 context
             )} on connection ${connection?.sessionID}`
             )
@@ -205,7 +211,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 `onCharacteristicChange with reason: ${reason}, oldValue: ${oldValue}, newValue: ${newValue}, reachability is ${
                     (node.parentNode ?? node).reachable
                 } 
-            with context ${JSON.stringify(
+            with context ${util.inspect(
                 context
             )} on connection ${originator?.sessionID}`
             )
@@ -226,7 +232,7 @@ module.exports = function (node: HAPServiceNodeType) {
         }
 
     const onInput = function (msg: Record<string, any>) {
-        if (msg.hasOwnProperty('payload')) {
+        if (msg.payload) {
             // payload must be an object
             const type = typeof msg.payload
 
@@ -239,7 +245,7 @@ module.exports = function (node: HAPServiceNodeType) {
             return
         }
 
-        const topic = node.config.topic ? node.config.topic : node.name
+        const topic = node.config.topic ?? node.name
         if (node.config.filter && msg.topic !== topic) {
             log.debug(
                 "msg.topic doesn't match configured value and filter is enabled. Dropping message."
@@ -248,22 +254,32 @@ module.exports = function (node: HAPServiceNodeType) {
         }
 
         let context: any = null
-        if (msg.payload.hasOwnProperty('Context')) {
+        if (msg.payload.Context) {
             context = msg.payload.Context
             delete msg.payload.Context
         }
 
-        node.topic_in = msg.topic ? msg.topic : ''
+        node.topic_in = msg.topic ?? ''
 
-        // iterate over characteristics to be written
-        // eslint-disable-next-line no-unused-vars
         Object.keys(msg.payload).map((key: string) => {
             if (node.supported.indexOf(key) < 0) {
-                log.error(
-                    `Instead of '${key}' try one of these characteristics: '${node.supported.join(
-                        "', '"
-                    )}'`
-                )
+                if (
+                    key === 'AdaptiveLightingController' &&
+                    node.adaptiveLightingController
+                ) {
+                    const value = msg.payload?.[key]
+                    const event = value?.event
+
+                    if (event === 'disable') {
+                        node.adaptiveLightingController?.disableAdaptiveLighting()
+                    }
+                } else {
+                    log.error(
+                        `Instead of '${key}' try one of these characteristics: '${node.supported.join(
+                            "', '"
+                        )}'`
+                    )
+                }
             } else {
                 const value = msg.payload?.[key]
 
@@ -275,7 +291,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(value, context)
+                    characteristic.setValue(value, undefined, context)
                 } else {
                     characteristic.setValue(value)
                 }
@@ -470,6 +486,79 @@ module.exports = function (node: HAPServiceNodeType) {
         }
     }
 
+    const configureAdaptiveLightning = () => {
+        if (
+            node.service.UUID === Service.Lightbulb.UUID &&
+            node.config.adaptiveLightingOptionsEnable
+        ) {
+            try {
+                node.service.getCharacteristic(Characteristic.Brightness)
+                node.service.getCharacteristic(Characteristic.ColorTemperature)
+
+                const options: AdaptiveLightingOptions = {
+                    controllerMode: node.config.adaptiveLightingOptionsMode
+                        ? +node.config.adaptiveLightingOptionsMode
+                        : AdaptiveLightingControllerMode.AUTOMATIC,
+                    customTemperatureAdjustment: node.config
+                        .adaptiveLightingOptionsCustomTemperatureAdjustment
+                        ? +node.config
+                              .adaptiveLightingOptionsCustomTemperatureAdjustment
+                        : undefined,
+                }
+
+                log.trace(
+                    `Configuring Adaptive Lighting with options: ${options}`
+                )
+
+                const adaptiveLightingController =
+                    new AdaptiveLightingController(node.service, options)
+
+                adaptiveLightingController.on('update', () => {
+                    const activeAdaptiveLightingTransition: Partial<ActiveAdaptiveLightingTransition> =
+                        {
+                            transitionStartMillis:
+                                adaptiveLightingController.getAdaptiveLightingStartTimeOfTransition(),
+                            timeMillisOffset:
+                                adaptiveLightingController.getAdaptiveLightingTimeOffset(),
+                            transitionCurve:
+                                adaptiveLightingController.getAdaptiveLightingTransitionCurve(),
+                            brightnessAdjustmentRange:
+                                adaptiveLightingController.getAdaptiveLightingBrightnessMultiplierRange(),
+                            updateInterval:
+                                adaptiveLightingController.getAdaptiveLightingUpdateInterval(),
+                            notifyIntervalThreshold:
+                                adaptiveLightingController.getAdaptiveLightingNotifyIntervalThreshold(),
+                        }
+                    node.send({
+                        payload: {
+                            AdaptiveLightingController: {
+                                event: 'update',
+                                data: activeAdaptiveLightingTransition,
+                            },
+                        },
+                    })
+                })
+                adaptiveLightingController.on('disable', () => {
+                    node.send({
+                        payload: {
+                            AdaptiveLightingController: {
+                                event: 'disable',
+                            },
+                        },
+                    })
+                })
+
+                node.accessory.configureController(adaptiveLightingController)
+
+                node.adaptiveLightingController = adaptiveLightingController
+            } catch (error) {
+                log.error(
+                    `Failed to configure Adaptive Lightning due to ${error}`
+                )
+            }
+        }
+    }
+
     return {
         getOrCreate,
         onCharacteristicGet,
@@ -479,5 +568,6 @@ module.exports = function (node: HAPServiceNodeType) {
         onClose,
         waitForParent,
         handleWaitForSetup,
+        configureAdaptiveLightning,
     }
 }

@@ -1,13 +1,13 @@
-import { MulticastOptions } from 'bonjour-hap'
 import { Accessory, Categories } from 'hap-nodejs'
 
+import BonjourMulticastOptions from './hap-nodejs/BonjourMulticastOptions'
 import HAPHostConfigType from './HAPHostConfigType'
 import HostType from './HostType'
 import NodeType from './NodeType'
 
 type HAPHostNodeType = NodeType & {
     config: HAPHostConfigType
-    mdnsConfig: MulticastOptions
+    mdnsConfig: BonjourMulticastOptions
     accessoryCategory: Categories
     published: boolean
     bridgeUsername: string

@@ -3,9 +3,10 @@ import express from 'express'
 import { Characteristic, Perms, SerializedService, Service } from 'hap-nodejs'
 import { NodeAPI } from 'node-red'
 
+import EveCharacteristics from './hap/eve-app/EveCharacteristics'
 import { Storage } from './Storage'
 import CustomCharacteristicType from './types/CustomCharacteristicType'
-import HapCategories from './types/HapCategories'
+import HapCategories from './types/hap-nodejs/HapCategories'
 import HAPServiceConfigType from './types/HAPServiceConfigType'
 import HAPServiceNodeType from './types/HAPServiceNodeType'
 
@@ -151,27 +152,27 @@ module.exports = function (RED: NodeAPI) {
 
     // NRCHKB Custom Characteristics API
     const _initNRCHKBCustomCharacteristicsAPI = async () => {
-        const getCustomCharacteristics = () => {
-            return Storage.loadCustomCharacteristics()
-                .then((value) => {
-                    log.trace('loadCustomCharacteristics()')
-                    log.trace(value)
+        const getCustomCharacteristics = async () => {
+            try {
+                const value = await Storage.loadCustomCharacteristics()
 
-                    if (Array.isArray(value)) {
-                        return value
-                    } else {
-                        log.debug(
-                            'customCharacteristics is not Array, returning empty value'
-                        )
-                        return []
-                    }
-                })
-                .catch((error) => {
-                    log.error(
-                        `Failed to get customCharacteristics in nrchkbStorage due to ${error}`
+                log.trace('loadCustomCharacteristics()')
+                log.trace(value)
+
+                if (Array.isArray(value)) {
+                    return value
+                } else {
+                    log.debug(
+                        'customCharacteristics is not Array, returning empty value'
                     )
-                    return []
-                })
+                    return EveCharacteristics
+                }
+            } catch (error) {
+                log.error(
+                    `Failed to get customCharacteristics in nrchkbStorage due to ${error}`
+                )
+                return EveCharacteristics
+            }
         }
 
         const characteristicNameToKey = (name: string) => {
@@ -353,7 +354,7 @@ module.exports = function (RED: NodeAPI) {
             RED.auth.needsPermission('nrchkb.write'),
             async (req: express.Request, res: express.Response) => {
                 const customCharacteristics: CustomCharacteristicType[] =
-                    req.body.customCharacteristics || []
+                    req.body.customCharacteristics || EveCharacteristics
 
                 Storage.saveCustomCharacteristics(customCharacteristics)
                     .then(() => {
