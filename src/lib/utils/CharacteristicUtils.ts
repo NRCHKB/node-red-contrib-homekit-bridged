@@ -64,20 +64,21 @@ module.exports = function (node: HAPServiceNodeType) {
             service.optionalCharacteristics
         )
 
+        // Listen to characteristic events and store the listener functions
+        // to be able to remove them later
+        node.onCharacteristicGet = ServiceUtils.onCharacteristicGet
+        node.onCharacteristicSet = ServiceUtils.onCharacteristicSet(
+            service.characteristics
+        )
+        node.onCharacteristicChange = ServiceUtils.onCharacteristicChange(
+            service.characteristics
+        )
+
         allCharacteristics.map((characteristic) => {
             const cKey = characteristic.constructor.name
 
             supported.push(cKey)
 
-            // Listen to characteristic events and store the listener functions
-            // to be able to remove them later
-            node.onCharacteristicGet = ServiceUtils.onCharacteristicGet
-            node.onCharacteristicSet = ServiceUtils.onCharacteristicSet(
-                service.characteristics
-            )
-            node.onCharacteristicChange = ServiceUtils.onCharacteristicChange(
-                service.characteristics
-            )
             characteristic.on('get', node.onCharacteristicGet)
             characteristic.on('set', node.onCharacteristicSet)
             characteristic.on('change', node.onCharacteristicChange)
