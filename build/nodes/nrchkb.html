@@ -23,7 +23,7 @@
             dataType: 'json',
             async: false,
             success: function (data) {
-                config = data
+                nrchkbConfig = data
             },
         })
 
@@ -279,8 +279,8 @@
                     sortable: true
                 })
 
-                for (let i = 0; i < config.customCharacteristics.length; i++) {
-                    const customCharacteristic = config.customCharacteristics[i]
+                for (let i = 0; i < nrchkbConfig.customCharacteristics.length; i++) {
+                    const customCharacteristic = nrchkbConfig.customCharacteristics[i]
                     $('#node-input-customCharacteristics-container').editableList('addItem', customCharacteristic)
                 }
             },
@@ -312,7 +312,7 @@
     let accessoryCategories
     let nrchkbVersion = '0.0.0'
     let nrchkbExperimental = false
-    let config = []
+    let nrchkbConfig = {}
 
     //HomeKit Service Types
     $.getJSON('nrchkb/service/types', function (data) {
@@ -393,7 +393,7 @@
             })
         })
 
-        config.customCharacteristics = customCharacteristics
+        nrchkbConfig.customCharacteristics = customCharacteristics
 
         $.ajax({
             type: 'POST',
