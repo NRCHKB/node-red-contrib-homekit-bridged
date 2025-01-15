@@ -43,7 +43,7 @@
     "homepage": "https://github.com/NRCHKB/node-red-contrib-homekit-bridged#readme",
     "dependencies": {
         "@nrchkb/logger": "~3.1.1",
-        "hap-nodejs": "0.12.3-beta.18",
+        "hap-nodejs": "0.12.3",
         "node-persist": "^3.1.3",
         "semver": "~7.6.2",
         "uuid": "~10.0.0"
