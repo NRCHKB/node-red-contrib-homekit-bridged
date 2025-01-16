@@ -9,6 +9,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.3] - 2025-01-16
+
+### Changed
+
+- Updated hap-nodejs [0.12.3-beta.18 to 0.12.3](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (features
+  and bug fixes)
+- Dependencies upgrade
+
+### Fixed
+
+- Fix compatibility with node 22 [#568](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/568)
+
 ## [1.7.2] - 2024-10-11
 
 ### Changed
