@@ -77,6 +77,7 @@ module.exports = function (RED: NodeAPI) {
             '/nrchkb/service/types',
             RED.auth.needsPermission('nrchkb.read'),
             (_req: express.Request, res: express.Response) => {
+                res.setHeader('Content-Type', 'application/json')
                 res.json(serviceData)
             }
         )
@@ -142,6 +143,7 @@ module.exports = function (RED: NodeAPI) {
             '/nrchkb/info',
             RED.auth.needsPermission('nrchkb.read'),
             (_req: express.Request, res: express.Response) => {
+                res.setHeader('Content-Type', 'application/json')
                 res.json({
                     version: xyzVersion,
                     experimental,
@@ -342,6 +344,7 @@ module.exports = function (RED: NodeAPI) {
             '/nrchkb/config',
             RED.auth.needsPermission('nrchkb.read'),
             async (_req: express.Request, res: express.Response) => {
+                res.setHeader('Content-Type', 'application/json')
                 res.json({
                     customCharacteristics: await getCustomCharacteristics(),
                 })
@@ -392,6 +395,7 @@ module.exports = function (RED: NodeAPI) {
             '/nrchkb/accessory/categories',
             RED.auth.needsPermission('nrchkb.read'),
             (_req: express.Request, res: express.Response) => {
+                res.setHeader('Content-Type', 'application/json')
                 res.json(accessoryCategoriesData)
             }
         )
