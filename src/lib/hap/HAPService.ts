@@ -1,4 +1,4 @@
-import { Service } from 'hap-nodejs'
+import { Service } from '@homebridge/hap-nodejs'
 
 import { EveHistoryData } from './eve-app/EveServices'
 

@@ -5,13 +5,11 @@ module.exports = function (node: HAPServiceNodeType) {
     const BridgeUtils = require('./BridgeUtils')()
     const AccessoryUtils = require('./AccessoryUtils')(node)
     const CharacteristicUtils = require('./CharacteristicUtils')(node)
-    const MdnsUtils = require('./MdnsUtils')()
 
     return {
         ServiceUtils,
         BridgeUtils,
         AccessoryUtils,
         CharacteristicUtils,
-        MdnsUtils,
     }
 }

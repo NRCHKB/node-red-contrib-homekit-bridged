@@ -8,8 +8,9 @@ import {
     CharacteristicSetCallback,
     CharacteristicValue,
     Service,
-} from 'hap-nodejs'
-import { HAPConnection } from 'hap-nodejs/dist/lib/util/eventedhttp'
+} from '@homebridge/hap-nodejs'
+import { CharacteristicContext } from '@homebridge/hap-nodejs/dist/lib/Characteristic'
+import { HAPConnection } from '@homebridge/hap-nodejs/dist/lib/util/eventedhttp'
 import { NodeAPI } from 'node-red'
 
 import { NodeStatusUtils } from '../utils/NodeStatusUtils'
@@ -39,14 +40,14 @@ type HAPServiceNodeType = NodeType & {
     onCharacteristicGet: (
         this: Characteristic,
         callback: CharacteristicGetCallback,
-        context: any,
+        context: CharacteristicContext,
         connection?: HAPConnection
     ) => void
     onCharacteristicSet: (
         this: Characteristic,
-        newValue: CharacteristicValue,
+        value: CharacteristicValue,
         callback: CharacteristicSetCallback,
-        context: any,
+        context: CharacteristicContext,
         connection?: HAPConnection
     ) => void
     onCharacteristicChange: (

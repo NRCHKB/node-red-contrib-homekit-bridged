@@ -1,9 +1,9 @@
-import { logger } from '@nrchkb/logger'
 import {
     CharacteristicEventTypes,
     SerializedAccessory,
     SerializedService,
-} from 'hap-nodejs'
+} from '@homebridge/hap-nodejs'
+import { logger } from '@nrchkb/logger'
 import storage, { InitOptions } from 'node-persist'
 import path from 'path'
 import {

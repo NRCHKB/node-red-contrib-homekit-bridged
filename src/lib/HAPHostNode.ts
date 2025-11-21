@@ -1,4 +1,3 @@
-import { logger } from '@nrchkb/logger'
 import {
     Accessory,
     Bridge,
@@ -7,21 +6,19 @@ import {
     MDNSAdvertiser,
     Service,
     uuid,
-} from 'hap-nodejs'
+} from '@homebridge/hap-nodejs'
+import { logger } from '@nrchkb/logger'
 import { NodeAPI } from 'node-red'
 import { SemVer } from 'semver'
 import semver from 'semver/preload'
 
 import NRCHKBError from './NRCHKBError'
-import BonjourMulticastOptions from './types/hap-nodejs/BonjourMulticastOptions'
 import HapCategories from './types/hap-nodejs/HapCategories'
 import HAPHostConfigType from './types/HAPHostConfigType'
 import HAPHostNodeType from './types/HAPHostNodeType'
 import HostType from './types/HostType'
 
 module.exports = (RED: NodeAPI, hostType: HostType) => {
-    const MdnsUtils = require('./utils/MdnsUtils')()
-
     const init = function (this: HAPHostNodeType, config: HAPHostConfigType) {
         const self = this
         const log = logger('NRCHKB', 'HAPHostNode', config.bridgeName, self)
@@ -39,40 +36,6 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
 
         if (semver.parse(config.firmwareRev) == null) {
             config.firmwareRev = new SemVer('0.0.0')
-        }
-
-        if (!config.bind?.length && config.customMdnsConfig) {
-            log.error('Custom mdns config is deprecated, use bind instead!')
-
-            self.mdnsConfig = {} as BonjourMulticastOptions
-
-            if (MdnsUtils.checkMulticast(config.mdnsMulticast)) {
-                self.mdnsConfig.multicast = config.mdnsMulticast
-            }
-
-            if (MdnsUtils.checkInterface(config.mdnsInterface)) {
-                self.mdnsConfig.interface = config.mdnsInterface
-            }
-
-            if (MdnsUtils.checkPort(config.mdnsPort)) {
-                self.mdnsConfig.port = parseInt(config.mdnsPort?.toString())
-            }
-
-            if (MdnsUtils.checkIp(config.mdnsIp)) {
-                self.mdnsConfig.ip = config.mdnsIp
-            }
-
-            if (MdnsUtils.checkTtl(config.mdnsTtl)) {
-                self.mdnsConfig.ttl = parseInt(config.mdnsTtl?.toString())
-            }
-
-            if (MdnsUtils.checkLoopback(config.mdnsLoopback)) {
-                self.mdnsConfig.loopback = config.mdnsLoopback
-            }
-
-            if (MdnsUtils.checkReuseAddr(config.mdnsReuseAddr)) {
-                self.mdnsConfig.reuseAddr = config.mdnsReuseAddr
-            }
         }
 
         self.accessoryCategory = (self.hostType == HostType.BRIDGE
@@ -112,10 +75,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                 )
             }
 
-            if (
-                (self.config.port && self.config.port == 1880) ||
-                (self.mdnsConfig?.port && self.mdnsConfig?.port == 1880)
-            ) {
+            if (self.config.port && self.config.port == 1880) {
                 log.error(
                     `Cannot publish on ${hostTypeName} port 1880 as it is reserved for node-red`
                 )
@@ -149,7 +109,6 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                             : 0,
                     pincode: oldPinCode,
                     category: self.accessoryCategory,
-                    mdns: self.mdnsConfig,
                     bind: bind,
                     advertiser:
                         self.config.advertiser ?? MDNSAdvertiser.BONJOUR,

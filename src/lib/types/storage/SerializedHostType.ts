@@ -1,4 +1,4 @@
-import { SerializedAccessory } from 'hap-nodejs'
+import { SerializedAccessory } from '@homebridge/hap-nodejs'
 
 type SerializedHostType = {
     _isBridge: boolean

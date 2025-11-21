@@ -1,5 +1,5 @@
+import { uuid } from '@homebridge/hap-nodejs'
 import { logger } from '@nrchkb/logger'
-import { uuid } from 'hap-nodejs'
 import { NodeAPI } from 'node-red'
 
 import NRCHKBError from './NRCHKBError'

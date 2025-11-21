@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.8.0] - 2025-11-21
+## [2.0.0] - 2025-11-22
 
 ### Changed
 
@@ -18,6 +18,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Dependencies upgrade
 - Node `18` no longer supported, use Node
   24 [#578](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/578)! Or at least 20.
+- Due to major upgrade of hap-nodejs, some breaking changes might be present including Camera Service and MDNS Custom
+  Configuration.
 
 ## [1.7.3] - 2025-01-16
 

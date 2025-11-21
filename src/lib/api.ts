@@ -1,6 +1,11 @@
+import {
+    Characteristic,
+    Perms,
+    SerializedService,
+    Service,
+} from '@homebridge/hap-nodejs'
 import { logger } from '@nrchkb/logger'
 import express from 'express'
-import { Characteristic, Perms, SerializedService, Service } from 'hap-nodejs'
 import { NodeAPI } from 'node-red'
 
 import EveCharacteristics from './hap/eve-app/EveCharacteristics'
@@ -37,7 +42,10 @@ module.exports = function (RED: NodeAPI) {
             BridgingState: {
                 nrchkbDisabledText: 'BridgingState (deprecated, unused)',
             },
-            // CameraControl: {}, // This service is deprecated but used by nrchkb to link rtsp logic
+            CameraControl: {
+                //TODO: hmm, what is the replacement?
+                nrchkbDisabledText: 'CameraControl (deprecated, replaced by)',
+            },
             CameraEventRecordingManagement: {
                 nrchkbDisabledText:
                     'CameraEventRecordingManagement (deprecated, replaced by CameraRecordingManagement)',

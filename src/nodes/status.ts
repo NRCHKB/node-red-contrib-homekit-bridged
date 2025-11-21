@@ -1,5 +1,5 @@
+import { Service } from '@homebridge/hap-nodejs'
 import { logger } from '@nrchkb/logger'
-import { Service } from 'hap-nodejs'
 import { NodeAPI } from 'node-red'
 
 import HAPServiceNodeType from '../lib/types/HAPServiceNodeType'

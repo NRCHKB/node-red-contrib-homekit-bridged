@@ -1,4 +1,3 @@
-import { logger } from '@nrchkb/logger'
 import {
     Accessory,
     Characteristic,
@@ -10,12 +9,13 @@ import {
     HAPStatus,
     HapStatusError,
     Service,
-} from 'hap-nodejs'
+} from '@homebridge/hap-nodejs'
 import {
     HAPConnection,
     HAPUsername,
-} from 'hap-nodejs/dist/lib/util/eventedhttp'
-import { SessionIdentifier } from 'hap-nodejs/dist/types'
+} from '@homebridge/hap-nodejs/dist/lib/util/eventedhttp'
+import { SessionIdentifier } from '@homebridge/hap-nodejs/dist/types'
+import { logger } from '@nrchkb/logger'
 
 import NRCHKBError from '../NRCHKBError'
 import { Storage } from '../Storage'
@@ -27,11 +27,9 @@ module.exports = function (node: HAPService2NodeType) {
 
     const ServiceUtilsLegacy = require('./ServiceUtils')(node)
 
-    const HapNodeJS = require('hap-nodejs')
+    const HapNodeJS = require('@homebridge/hap-nodejs')
     const Service = HapNodeJS.Service
     const Characteristic = HapNodeJS.Characteristic
-
-    const CameraSource = require('../cameraSource').Camera
 
     const NO_RESPONSE_MSG = 'NO_RESPONSE'
 
@@ -338,7 +336,7 @@ module.exports = function (node: HAPService2NodeType) {
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(value, undefined, context)
+                    characteristic.setValue(value, context)
                 } else {
                     characteristic.setValue(value)
                 }
@@ -452,8 +450,8 @@ module.exports = function (node: HAPService2NodeType) {
     }
 
     const configureCameraSource = function (
-        accessory: Accessory,
-        service: Service,
+        _accessory: Accessory,
+        _service: Service,
         config: HAPService2ConfigType
     ) {
         if (config.cameraConfigSource) {
@@ -465,9 +463,10 @@ module.exports = function (node: HAPService2NodeType) {
                 )
             } else {
                 // Use of deprecated method to be replaced with new Camera API
-                accessory.configureCameraSource(
-                    new CameraSource(service, config, node)
-                )
+                // TODO: https://github.com/homebridge/HAP-NodeJS/blob/latest/src/accessories/Camera_accessory.ts
+                // accessory.configureCameraSource(
+                //     new CameraSource(service, config, node)
+                // )
             }
         } else {
             log.error('Missing configuration for CameraControl.')
