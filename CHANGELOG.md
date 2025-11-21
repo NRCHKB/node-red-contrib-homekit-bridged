@@ -9,11 +9,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2025-11-21
+
+### Changed
+
+- Updated hap-nodejs [0.12.3 to 2.0.2](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (features
+  and bug fixes)
+- Dependencies upgrade
+- Node `18` no longer supported, use Node
+  24 [#578](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/578)! Or at least 20.
+
 ## [1.7.3] - 2025-01-16
 
 ### Changed
 
-- Updated hap-nodejs [0.12.3-beta.18 to 0.12.3](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (features
+- Updated hap-nodejs [0.12.3-beta.18 to 0.12.3](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (
+  features
   and bug fixes)
 - Dependencies upgrade
 
@@ -31,7 +42,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-- Fix bad listeners detachment for characteristics [#563](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/563)
+- Fix bad listeners detachment for
+  characteristics [#563](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/563)
 
 ## [1.7.0] - 2024-09-19
 
@@ -43,11 +55,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Adaptive Lighting support [#335](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/335)
-- By default, registered Eve.app Characteristics for power management - for existing setup, requires old custom characteristics file to be removed
+- By default, registered Eve.app Characteristics for power management - for existing setup, requires old custom
+  characteristics file to be removed
 
 ### Changed
 
-- Updated hap-nodejs [0.11.1 to 0.12.3-beta.18](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (features
+- Updated hap-nodejs [0.11.1 to 0.12.3-beta.18](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (
+  features
   and bug fixes)
 - Dependencies upgrade
 - Node `10`, `12` and `16` no longer supported, use Node 20! Or at least 18
