@@ -487,7 +487,8 @@ module.exports = (node: HAPServiceNodeType) => {
             : undefined
         }
 
-        log.trace(`Configuring Adaptive Lighting with options: ${options}`)
+        log.trace(`Configuring Adaptive Lighting with options:`)
+        log.trace(JSON.stringify(options))
 
         const adaptiveLightingController = new AdaptiveLightingController(
           node.service,
