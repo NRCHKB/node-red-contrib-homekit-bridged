@@ -1,7 +1,7 @@
-import { AdaptiveLightingControllerMode } from '@homebridge/hap-nodejs/dist/lib/controller/AdaptiveLightingController'
-import { NodeDef } from 'node-red'
+import type { AdaptiveLightingControllerMode } from '@homebridge/hap-nodejs/dist/lib/controller/AdaptiveLightingController'
+import type { NodeDef } from 'node-red'
 
-import CameraConfigType from './CameraConfigType'
+import type CameraConfigType from './CameraConfigType'
 
 type HAPServiceConfigType = NodeDef & {
   isParent: boolean

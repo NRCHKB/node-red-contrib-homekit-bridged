@@ -1,10 +1,10 @@
 import { Service } from '@homebridge/hap-nodejs'
 import { logger } from '@nrchkb/logger'
-import { NodeAPI } from 'node-red'
+import type { NodeAPI } from 'node-red'
 
-import HAPServiceNodeType from '../lib/types/HAPServiceNodeType'
-import HAPStatusConfigType from '../lib/types/HAPStatusConfigType'
-import HAPStatusNodeType from '../lib/types/HAPStatusNodeType'
+import type HAPServiceNodeType from '../lib/types/HAPServiceNodeType'
+import type HAPStatusConfigType from '../lib/types/HAPStatusConfigType'
+import type HAPStatusNodeType from '../lib/types/HAPStatusNodeType'
 import { NodeStatusUtils } from '../lib/utils/NodeStatusUtils'
 
 const log = logger('NRCHKB', 'HAPStatusNode')
@@ -14,23 +14,22 @@ module.exports = (RED: NodeAPI) => {
   RED.nodes.registerType(
     'homekit-status',
     function (this: HAPStatusNodeType, config: HAPStatusConfigType) {
-      const self = this
-      self.config = config
-      RED.nodes.createNode(self, config)
+      this.config = config
+      RED.nodes.createNode(this, config)
 
-      self.nodeStatusUtils = new NodeStatusUtils(self)
+      this.nodeStatusUtils = new NodeStatusUtils(this)
 
       try {
-        self.serviceNode = RED.nodes.getNode(
-          self.config.serviceNodeId
+        this.serviceNode = RED.nodes.getNode(
+          this.config.serviceNodeId
         ) as HAPServiceNodeType
       } catch (error: any) {
         log.error(error)
       }
 
-      self.on('input', (_: Record<string, any>) => {
-        if (self.serviceNode) {
-          self.nodeStatusUtils.setStatus(
+      this.on('input', (_: Record<string, any>) => {
+        if (this.serviceNode) {
+          this.nodeStatusUtils.setStatus(
             {
               fill: 'green',
               shape: 'dot',
@@ -38,12 +37,12 @@ module.exports = (RED: NodeAPI) => {
             },
             3000
           )
-          const serializedService = Service.serialize(self.serviceNode.service)
-          self.send({
+          const serializedService = Service.serialize(this.serviceNode.service)
+          this.send({
             payload: serializedService
           })
         } else {
-          self.nodeStatusUtils.setStatus({
+          this.nodeStatusUtils.setStatus({
             fill: 'red',
             shape: 'dot',
             text: 'Check your config'
@@ -51,8 +50,8 @@ module.exports = (RED: NodeAPI) => {
         }
       })
 
-      self.on('close', (_: boolean, done: () => void) => {
-        self.serviceNode = undefined
+      this.on('close', (_: boolean, done: () => void) => {
+        this.serviceNode = undefined
         done()
       })
     }

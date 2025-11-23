@@ -9,29 +9,29 @@ loggerSetup({
   traceEnabled: false
 })
 
-describe('HAPHostNode', function () {
+describe('HAPHostNode', () => {
   // allow longer for this suite (configured via package.json vitest.test.testTimeout)
 
-  it('string macify should pass', function () {
+  it('string macify should pass', () => {
     const stringToMacify = 'BRIDGE NAME'
     HAPHostNode.macify(stringToMacify)
   })
 
-  it('null string macify should fail', function () {
+  it('null string macify should fail', () => {
     const stringToMacify = null as unknown as string
     expect(() => {
       HAPHostNode.macify(stringToMacify)
     }).toThrow('nodeId cannot be empty in macify process')
   })
 
-  it('undefined string macify should fail', function () {
+  it('undefined string macify should fail', () => {
     const stringToMacify = undefined as unknown as string
     expect(() => {
       HAPHostNode.macify(stringToMacify)
     }).toThrow('nodeId cannot be empty in macify process')
   })
 
-  it('empty string macify should fail', function () {
+  it('empty string macify should fail', () => {
     const stringToMacify = ''
     expect(() => {
       HAPHostNode.macify(stringToMacify)

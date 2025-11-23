@@ -1,6 +1,6 @@
 import { Formats, Perms } from '@homebridge/hap-nodejs/dist/lib/Characteristic'
 
-import CustomCharacteristicType from '../../types/CustomCharacteristicType'
+import type CustomCharacteristicType from '../../types/CustomCharacteristicType'
 import HAPCharacteristic from '../HAPCharacteristic'
 
 /**

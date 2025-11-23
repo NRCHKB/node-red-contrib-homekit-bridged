@@ -1,21 +1,21 @@
 import {
   Characteristic,
-  CharacteristicProps,
-  Service
+  type CharacteristicProps,
+  type Service
 } from '@homebridge/hap-nodejs'
 import { logger } from '@nrchkb/logger'
 
-import HAPServiceConfigType from '../types/HAPServiceConfigType'
-import HAPServiceNodeType from '../types/HAPServiceNodeType'
+import type HAPServiceConfigType from '../types/HAPServiceConfigType'
+import type HAPServiceNodeType from '../types/HAPServiceNodeType'
 
-module.exports = function (node: HAPServiceNodeType) {
+module.exports = (node: HAPServiceNodeType) => {
   const log = logger('NRCHKB', 'CharacteristicUtils', node.config.name, node)
   const ServiceUtils = require('./ServiceUtils')(node)
 
-  const load = function (
+  const load = (
     service: Service,
     config: HAPServiceConfigType
-  ): { [key: string]: CharacteristicProps } {
+  ): { [key: string]: CharacteristicProps } => {
     let characteristicProperties: {
       [key: string]: CharacteristicProps
     } = {}
@@ -37,10 +37,10 @@ module.exports = function (node: HAPServiceNodeType) {
 
       // Configure custom characteristic properties
       for (const key in characteristicProperties) {
-        if (!characteristicProperties.hasOwnProperty(key)) continue
+        if (!Object.hasOwn(characteristicProperties, key)) continue
 
         const characteristic = service.getCharacteristic(
-          // @ts-ignore
+          // @ts-expect-error
           Characteristic[key]
         )
 
@@ -54,7 +54,7 @@ module.exports = function (node: HAPServiceNodeType) {
     return characteristicProperties
   }
 
-  const subscribeAndGetSupported = function (service: Service) {
+  const subscribeAndGetSupported = (service: Service) => {
     const supported: string[] = []
 
     const allCharacteristics = service.characteristics.concat(
@@ -71,7 +71,7 @@ module.exports = function (node: HAPServiceNodeType) {
       service.characteristics
     )
 
-    allCharacteristics.map((characteristic) => {
+    allCharacteristics.forEach((characteristic) => {
       const cKey = characteristic.constructor.name
 
       supported.push(cKey)

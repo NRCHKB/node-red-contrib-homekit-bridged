@@ -1,4 +1,4 @@
-import { NodeStatus } from '@node-red/registry'
+import type { NodeStatus } from '@node-red/registry'
 import {
   afterAll,
   beforeAll,
@@ -18,36 +18,36 @@ class NodeWithStatusMock {
   }
 }
 
-describe('NodeStatusUtils', function () {
+describe('NodeStatusUtils', () => {
   let node: NodeWithStatusMock
   let nodeStatusUtils: NodeStatusUtils
 
-  beforeAll(function () {
+  beforeAll(() => {
     vi.useFakeTimers()
   })
 
-  afterAll(function () {
+  afterAll(() => {
     vi.useRealTimers()
   })
 
-  beforeEach(function () {
+  beforeEach(() => {
     node = new NodeWithStatusMock()
     nodeStatusUtils = new NodeStatusUtils(node)
   })
 
-  it('setStatus', function () {
+  it('setStatus', () => {
     nodeStatusUtils.setStatus('test')
     expect(node.currentStatus).toBe('test')
   })
 
-  it('clearStatus', function () {
+  it('clearStatus', () => {
     nodeStatusUtils.setStatus('test')
     expect(node.currentStatus).toBe('test')
     nodeStatusUtils.clearStatus()
     expect(node.currentStatus).toBe('')
   })
 
-  it('setStatusWithTimeout', function () {
+  it('setStatusWithTimeout', () => {
     nodeStatusUtils.setStatus('test', 2000)
     expect(node.currentStatus).toBe('test')
     vi.advanceTimersByTime(1000)
@@ -56,7 +56,7 @@ describe('NodeStatusUtils', function () {
     expect(node.currentStatus).toBe('')
   })
 
-  it('setStatusWithTimeout - should not clear status with different id', function () {
+  it('setStatusWithTimeout - should not clear status with different id', () => {
     nodeStatusUtils.setStatus('test', 2000)
     expect(node.currentStatus).toBe('test')
     vi.advanceTimersByTime(1000)
@@ -68,14 +68,14 @@ describe('NodeStatusUtils', function () {
     expect(node.currentStatus).toBe('')
   })
 
-  it('clearStatusByType - should not clear other type', function () {
+  it('clearStatusByType - should not clear other type', () => {
     nodeStatusUtils.setStatus({ text: 'test' })
     expect(node.currentStatus).toStrictEqual({ text: 'test' })
     nodeStatusUtils.clearStatusByType('NO_RESPONSE')
     expect(node.currentStatus).toStrictEqual({ text: 'test' })
   })
 
-  it('clearStatusByType - should clear same type', function () {
+  it('clearStatusByType - should clear same type', () => {
     nodeStatusUtils.setStatus({ text: 'test', type: 'NO_RESPONSE' })
     expect(node.currentStatus).toStrictEqual({
       text: 'test',

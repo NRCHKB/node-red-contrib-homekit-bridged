@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "lib": ["es2020.string"],
+    "lib": ["ES2023"],
     "skipLibCheck": true,
     "allowJs": true,
     "checkJs": false,

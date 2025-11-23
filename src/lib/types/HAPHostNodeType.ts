@@ -1,8 +1,8 @@
-import { Accessory, Categories } from '@homebridge/hap-nodejs'
+import type { Accessory, Categories } from '@homebridge/hap-nodejs'
 
-import HAPHostConfigType from './HAPHostConfigType'
-import HostType from './HostType'
-import NodeType from './NodeType'
+import type HAPHostConfigType from './HAPHostConfigType'
+import type HostType from './HostType'
+import type NodeType from './NodeType'
 
 type HAPHostNodeType = NodeType & {
   config: HAPHostConfigType

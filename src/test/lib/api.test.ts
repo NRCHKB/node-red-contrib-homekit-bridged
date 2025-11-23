@@ -19,20 +19,16 @@ loggerSetup({
   traceEnabled: false
 })
 
-describe('api', function () {
-  beforeAll(function () {
-    return new Promise<void>((resolve) => helper.startServer(resolve))
-  })
+describe('api', () => {
+  beforeAll(() => new Promise<void>((resolve) => helper.startServer(resolve)))
 
-  afterAll(function () {
-    return new Promise<void>((resolve) => helper.stopServer(resolve))
-  })
+  afterAll(() => new Promise<void>((resolve) => helper.stopServer(resolve)))
 
-  afterEach(function () {
+  afterEach(() => {
     helper.unload()
   })
 
-  it('Service API', async function () {
+  it('Service API', async () => {
     await helper.load([nrchkb], [])
     const response = await helper
       .request()
@@ -42,15 +38,15 @@ describe('api', function () {
     expect(response.body).toStrictEqual(serviceTypesResponse)
   })
 
-  describe('stringifyVersion', function () {
-    it('release', function () {
+  describe('stringifyVersion', () => {
+    it('release', () => {
       const input = '1.2.3'
       const expected = '1.2.3'
       const result = API.stringifyVersion(input)
       expect(result).toBe(expected)
     })
 
-    it('dev', function () {
+    it('dev', () => {
       const input = '1.2.3-dev.45'
       const expected = '0.123.45'
       const result = API.stringifyVersion(input)
@@ -58,7 +54,7 @@ describe('api', function () {
     })
   })
 
-  it('NRCHKB Info API', async function () {
+  it('NRCHKB Info API', async () => {
     await helper.load([nrchkb], [])
     const xyzVersion = API.stringifyVersion(version)
 
@@ -74,7 +70,7 @@ describe('api', function () {
     })
   })
 
-  it('Accessory API', async function () {
+  it('Accessory API', async () => {
     await helper.load([nrchkb], [])
     const response = await helper
       .request()

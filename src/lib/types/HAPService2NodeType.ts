@@ -1,6 +1,6 @@
-import HAPService2ConfigType from './HAPService2ConfigType'
-import HAPServiceNodeType from './HAPServiceNodeType'
-import NodeType from './NodeType'
+import type HAPService2ConfigType from './HAPService2ConfigType'
+import type HAPServiceNodeType from './HAPServiceNodeType'
+import type NodeType from './NodeType'
 
 type HAPService2NodeType = NodeType &
   HAPServiceNodeType & {

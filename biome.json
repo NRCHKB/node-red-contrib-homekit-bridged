@@ -6,7 +6,16 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": false,
+    "includes": [
+      "src/**",
+      "examples/**",
+      "docs/**",
+      "*.md",
+      "*.json",
+      "*.yml",
+      ".husky/**"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -15,7 +24,13 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "off"
+      },
+      "complexity": {
+        "useArrowFunction": "warn"
+      }
     }
   },
   "javascript": {

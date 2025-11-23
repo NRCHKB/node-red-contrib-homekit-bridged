@@ -1,19 +1,19 @@
-import {
+import path from 'node:path'
+import type {
   CharacteristicEventTypes,
   SerializedAccessory,
   SerializedService
 } from '@homebridge/hap-nodejs'
 import { logger } from '@nrchkb/logger'
-import storage, { InitOptions } from 'node-persist'
-import path from 'path'
+import storage, { type InitOptions } from 'node-persist'
 import {
-  v4 as uuidv4,
   validate as uuidValidate,
-  version as uuidVersion
+  version as uuidVersion,
+  v4 as uuidv4
 } from 'uuid'
 
 import NRCHKBError from './NRCHKBError'
-import { SerializedHostType } from './types/storage/SerializedHostType'
+import type { SerializedHostType } from './types/storage/SerializedHostType'
 import { StorageType } from './types/storage/StorageType'
 
 type EventCallback = {
@@ -21,6 +21,7 @@ type EventCallback = {
   callback: (value?: any) => void
 }
 
+// biome-ignore lint/complexity/noStaticOnlyClass: Storage is a static class
 export class Storage {
   private static customStoragePath: string
   private static storageInitialized = false

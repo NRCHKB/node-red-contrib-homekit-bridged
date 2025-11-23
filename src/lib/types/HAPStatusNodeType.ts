@@ -1,9 +1,9 @@
-import { NodeAPI } from 'node-red'
+import type { NodeAPI } from 'node-red'
 
-import { NodeStatusUtils } from '../utils/NodeStatusUtils'
-import HAPServiceNodeType from './HAPServiceNodeType'
-import HAPStatusConfigType from './HAPStatusConfigType'
-import NodeType from './NodeType'
+import type { NodeStatusUtils } from '../utils/NodeStatusUtils'
+import type HAPServiceNodeType from './HAPServiceNodeType'
+import type HAPStatusConfigType from './HAPStatusConfigType'
+import type NodeType from './NodeType'
 
 type HAPStatusNodeType = NodeType & {
   config: HAPStatusConfigType

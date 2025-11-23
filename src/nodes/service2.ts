@@ -1,5 +1,5 @@
 import { logger } from '@nrchkb/logger'
-import { NodeAPI } from 'node-red'
+import type { NodeAPI } from 'node-red'
 
 const log = logger('NRCHKB', 'HAPServiceNode2')
 

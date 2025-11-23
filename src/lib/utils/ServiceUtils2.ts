@@ -1,28 +1,28 @@
 import {
-  Accessory,
-  Characteristic,
-  CharacteristicChange,
+  type Accessory,
+  type Characteristic,
+  type CharacteristicChange,
   CharacteristicEventTypes,
-  CharacteristicGetCallback,
-  CharacteristicSetCallback,
-  CharacteristicValue,
+  type CharacteristicGetCallback,
+  type CharacteristicSetCallback,
+  type CharacteristicValue,
   HAPStatus,
   HapStatusError,
-  Service
+  type Service
 } from '@homebridge/hap-nodejs'
-import {
+import type {
   HAPConnection,
   HAPUsername
 } from '@homebridge/hap-nodejs/dist/lib/util/eventedhttp'
-import { SessionIdentifier } from '@homebridge/hap-nodejs/dist/types'
+import type { SessionIdentifier } from '@homebridge/hap-nodejs/dist/types'
 import { logger } from '@nrchkb/logger'
 
 import NRCHKBError from '../NRCHKBError'
 import { Storage } from '../Storage'
-import HAPService2ConfigType from '../types/HAPService2ConfigType'
-import HAPService2NodeType from '../types/HAPService2NodeType'
+import type HAPService2ConfigType from '../types/HAPService2ConfigType'
+import type HAPService2NodeType from '../types/HAPService2NodeType'
 
-module.exports = function (node: HAPService2NodeType) {
+module.exports = (node: HAPService2NodeType) => {
   const log = logger('NRCHKB', 'ServiceUtils2', node.config.name, node)
 
   const ServiceUtilsLegacy = require('./ServiceUtils')(node)
@@ -98,14 +98,14 @@ module.exports = function (node: HAPService2NodeType) {
     msg.hap.reachable = node.reachable ?? node.parentNode?.reachable
 
     if (msg.hap.reachable === false) {
-      ;[node, ...(node.childNodes ?? [])].forEach((n) =>
+      ;[node, ...(node.childNodes ?? [])].forEach((n) => {
         n.nodeStatusUtils.setStatus({
           fill: 'red',
           shape: 'ring',
           text: 'Not reachable',
           type: 'NO_RESPONSE'
         })
-      )
+      })
     } else {
       msg.hap.newValue = newValue
 
@@ -114,15 +114,15 @@ module.exports = function (node: HAPService2NodeType) {
           fill: 'yellow',
           shape: 'dot',
           text: `[${eventObject.name}] ${key}${
-            newValue != undefined ? `: ${newValue}` : ''
+            newValue !== undefined ? `: ${newValue}` : ''
           }`
         },
         3000
       )
 
-      node.childNodes?.forEach((n) =>
+      node.childNodes?.forEach((n) => {
         n.nodeStatusUtils.clearStatusByType('NO_RESPONSE')
-      )
+      })
       node.parentNode?.nodeStatusUtils.clearStatusByType('NO_RESPONSE')
     }
 
@@ -152,11 +152,10 @@ module.exports = function (node: HAPService2NodeType) {
       _context: any,
       connection?: HAPConnection
     ) {
-      const characteristic = this
-      const oldValue = characteristic.value
+      const oldValue = this.value
 
       const delayedCallback = (value?: any) => {
-        const newValue = value ?? characteristic.value
+        const newValue = value ?? this.value
         if (callback) {
           try {
             callback(
@@ -169,7 +168,7 @@ module.exports = function (node: HAPService2NodeType) {
         }
 
         output.call(
-          characteristic,
+          this,
           allCharacteristics,
           {
             name: CharacteristicEventTypes.GET,
@@ -187,7 +186,7 @@ module.exports = function (node: HAPService2NodeType) {
         })
 
         log.debug(
-          `Registered callback ${callbackID} for Characteristic ${characteristic.displayName}`
+          `Registered callback ${callbackID} for Characteristic ${this.displayName}`
         )
 
         output.call(
@@ -239,7 +238,7 @@ module.exports = function (node: HAPService2NodeType) {
     function (this: Characteristic, change: CharacteristicChange) {
       const { oldValue, newValue, context, originator, reason } = change
 
-      if (oldValue != newValue) {
+      if (oldValue !== newValue) {
         output.call(
           this,
           allCharacteristics,
@@ -253,7 +252,7 @@ module.exports = function (node: HAPService2NodeType) {
       }
     }
 
-  const onInput = function (msg: HAPServiceMessage) {
+  const onInput = (msg: HAPServiceMessage) => {
     if (msg.payload) {
       // payload must be an object
       const type = typeof msg.payload
@@ -283,7 +282,7 @@ module.exports = function (node: HAPService2NodeType) {
 
     node.topic_in = msg.topic ?? ''
 
-    Object.keys(msg.payload).map((key: string) => {
+    Object.keys(msg.payload).forEach((key: string) => {
       if (node.supported.indexOf(key) < 0) {
         if (node.config.useEventCallback && Storage.uuid4Validate(key)) {
           const callbackID = key
@@ -332,12 +331,12 @@ module.exports = function (node: HAPService2NodeType) {
     })
   }
 
-  const onClose = function (removed: boolean, done: () => void) {
+  const onClose = (removed: boolean, done: () => void) => {
     const characteristics = node.service.characteristics.concat(
       node.service.optionalCharacteristics
     )
 
-    characteristics.forEach(function (characteristic) {
+    characteristics.forEach((characteristic) => {
       // cleanup all node specific listeners
       characteristic.removeListener('get', node.onCharacteristicGet)
       characteristic.removeListener('set', node.onCharacteristicSet)
@@ -365,7 +364,7 @@ module.exports = function (node: HAPService2NodeType) {
     done()
   }
 
-  const getOrCreate = function (
+  const getOrCreate = (
     accessory: Accessory,
     serviceInformation: {
       name: string
@@ -374,7 +373,7 @@ module.exports = function (node: HAPService2NodeType) {
       config: HAPService2ConfigType
     },
     parentService: Service
-  ) {
+  ) => {
     const newService = new Service[serviceInformation.serviceName](
       serviceInformation.name,
       serviceInformation.UUID
@@ -429,11 +428,11 @@ module.exports = function (node: HAPService2NodeType) {
     return service
   }
 
-  const configureCameraSource = function (
+  const configureCameraSource = (
     _accessory: Accessory,
     _service: Service,
     config: HAPService2ConfigType
-  ) {
+  ) => {
     if (config.cameraConfigSource) {
       log.debug('Configuring Camera Source')
 
@@ -468,7 +467,7 @@ module.exports = function (node: HAPService2NodeType) {
           node.config.parentService
         ) as HAPService2NodeType
 
-        if (parentNode && parentNode.configured) {
+        if (parentNode?.configured) {
           resolve(parentNode)
         } else {
           setTimeout(checkAndWait, 1000)
@@ -491,9 +490,9 @@ module.exports = function (node: HAPService2NodeType) {
     }
 
     if (
-      msg.hasOwnProperty('payload') &&
-      msg.payload.hasOwnProperty('nrchkb') &&
-      msg.payload.nrchkb.hasOwnProperty('setup')
+      Object.hasOwn(msg, 'payload') &&
+      Object.hasOwn(msg.payload, 'nrchkb') &&
+      Object.hasOwn(msg.payload.nrchkb, 'setup')
     ) {
       node.setupDone = true
 

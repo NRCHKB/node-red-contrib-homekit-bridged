@@ -1,4 +1,4 @@
-import {
+import type {
   Accessory,
   AdaptiveLightingController,
   Characteristic,
@@ -9,16 +9,16 @@ import {
   CharacteristicValue,
   Service
 } from '@homebridge/hap-nodejs'
-import { CharacteristicContext } from '@homebridge/hap-nodejs/dist/lib/Characteristic'
-import { HAPConnection } from '@homebridge/hap-nodejs/dist/lib/util/eventedhttp'
-import { NodeAPI } from 'node-red'
+import type { CharacteristicContext } from '@homebridge/hap-nodejs/dist/lib/Characteristic'
+import type { HAPConnection } from '@homebridge/hap-nodejs/dist/lib/util/eventedhttp'
+import type { NodeAPI } from 'node-red'
 
-import { NodeStatusUtils } from '../utils/NodeStatusUtils'
-import HAPHostNodeType from './HAPHostNodeType'
-import HAPService2NodeType from './HAPService2NodeType'
-import HAPServiceConfigType from './HAPServiceConfigType'
-import NodeType from './NodeType'
-import PublishTimersType from './PublishTimersType'
+import type { NodeStatusUtils } from '../utils/NodeStatusUtils'
+import type HAPHostNodeType from './HAPHostNodeType'
+import type HAPService2NodeType from './HAPService2NodeType'
+import type HAPServiceConfigType from './HAPServiceConfigType'
+import type NodeType from './NodeType'
+import type PublishTimersType from './PublishTimersType'
 
 type HAPServiceNodeType = NodeType & {
   config: HAPServiceConfigType

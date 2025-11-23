@@ -1,6 +1,6 @@
-import { NodeStatus } from '@node-red/registry'
+import type { NodeStatus } from '@node-red/registry'
 
-import NodeType from '../types/NodeType'
+import type NodeType from '../types/NodeType'
 
 /**
  * NO_RESPONSE for NO_RESPONSE
@@ -31,7 +31,7 @@ export class NodeStatusUtils {
   setStatus(status: Status, timeout?: number): number {
     this.node.status(status)
 
-    const newStatusId = new Date().getTime()
+    const newStatusId = Date.now()
     this.lastStatusId = newStatusId
 
     if (typeof status !== 'string') {
@@ -67,7 +67,7 @@ export class NodeStatusUtils {
       if (statusId === this.lastStatusId) {
         if (timeout) {
           setTimeout(
-            function (nodeStatusUtil: NodeStatusUtils) {
+            (nodeStatusUtil: NodeStatusUtils) => {
               nodeStatusUtil.clearStatus(statusId)
             },
             timeout,

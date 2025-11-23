@@ -11,6 +11,7 @@ import {
 } from 'vitest'
 
 import { switchServiceBridgeFlow } from '../test-utils/data'
+
 const homekitBridgeNode = require('../../../build/nodes/bridge')
 const nrchkb = require('../../../build/nodes/nrchkb')
 const homekitServiceNode = require('../../../build/nodes/service')
@@ -21,27 +22,23 @@ loggerSetup({
   traceEnabled: false
 })
 
-describe('Service Node', function () {
-  beforeAll(function () {
-    return new Promise<void>((resolve) => helper.startServer(resolve))
-  })
+describe('Service Node', () => {
+  beforeAll(() => new Promise<void>((resolve) => helper.startServer(resolve)))
 
-  afterAll(function () {
-    return new Promise<void>((resolve) => helper.stopServer(resolve))
-  })
+  afterAll(() => new Promise<void>((resolve) => helper.stopServer(resolve)))
 
-  afterEach(function () {
+  afterEach(() => {
     helper.unload()
   })
 
-  it('should be loaded', async function () {
+  it('should be loaded', async () => {
     const { serviceId, flow } = switchServiceBridgeFlow()
     await helper.load([nrchkb, homekitBridgeNode, homekitServiceNode], flow)
     const s1 = helper.getNode(serviceId)
     expect(s1).toHaveProperty('type', 'homekit-service')
   })
 
-  it('should output ON:true payload', async function () {
+  it('should output ON:true payload', async () => {
     const { serviceId, flow } = switchServiceBridgeFlow()
     await helper.load([nrchkb, homekitBridgeNode, homekitServiceNode], flow)
     const s1 = helper.getNode(serviceId)
@@ -56,13 +53,13 @@ describe('Service Node', function () {
     })
   })
 
-  it('should output ON:false payload', async function () {
+  it('should output ON:false payload', async () => {
     const { serviceId, flow } = switchServiceBridgeFlow()
     await helper.load([nrchkb, homekitBridgeNode, homekitServiceNode], flow)
     const s1 = helper.getNode(serviceId)
 
     await new Promise<void>((resolve) => {
-      s1.on('input', function (msg: any) {
+      s1.on('input', (msg: any) => {
         expect(msg.payload).toHaveProperty('On', false)
         resolve()
       })
@@ -71,7 +68,7 @@ describe('Service Node', function () {
     })
   })
 
-  it('should output reachable true', async function () {
+  it('should output reachable true', async () => {
     const { serviceId, flow } = switchServiceBridgeFlow()
     await helper.load([nrchkb, homekitBridgeNode, homekitServiceNode], flow)
     const s1 = helper.getNode(serviceId)
@@ -80,7 +77,7 @@ describe('Service Node', function () {
     let count = 0
 
     await new Promise<void>((resolve) => {
-      h1.on('input', function (msg: any) {
+      h1.on('input', (msg: any) => {
         if (count === 0) {
           expect(msg.payload).toHaveProperty('On', true)
           expect(msg.hap).toHaveProperty('newValue', true)
@@ -94,7 +91,7 @@ describe('Service Node', function () {
     })
   })
 
-  it('should output reachable false', async function () {
+  it('should output reachable false', async () => {
     const { serviceId, flow } = switchServiceBridgeFlow()
     await helper.load([nrchkb, homekitBridgeNode, homekitServiceNode], flow)
     const s1 = helper.getNode(serviceId)
@@ -106,7 +103,7 @@ describe('Service Node', function () {
         .spyOn(s1 as any, 'status')
         .mockImplementation(() => {})
 
-      h1.on('input', function (msg: any) {
+      h1.on('input', (msg: any) => {
         try {
           expect(msg.payload).toHaveProperty('On', false)
           expect(msg.hap).toHaveProperty('reachable', false)

@@ -1,7 +1,7 @@
+import * as path from 'node:path'
 import { HAPStorage } from '@homebridge/hap-nodejs'
 import { logger, loggerSetup } from '@nrchkb/logger'
-import { NodeAPI } from 'node-red'
-import * as path from 'path'
+import type { NodeAPI } from 'node-red'
 import semver from 'semver'
 
 import { Storage } from '../lib/Storage'
@@ -46,7 +46,7 @@ module.exports = (RED: NodeAPI) => {
     rootFolder = RED.settings.userDir
   } else {
     log.error('RED settings not available')
-    rootFolder = path.join(require('os').homedir(), '.node-red')
+    rootFolder = path.join(require('node:os').homedir(), '.node-red')
   }
 
   Storage.init(rootFolder, 'nrchkb').then(() => {

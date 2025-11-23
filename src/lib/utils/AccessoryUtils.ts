@@ -1,10 +1,10 @@
-import { Accessory, Service } from '@homebridge/hap-nodejs'
+import type { Accessory, Service } from '@homebridge/hap-nodejs'
 import { logger } from '@nrchkb/logger'
 
-import AccessoryInformationType from '../types/AccessoryInformationType'
-import HAPServiceNodeType from '../types/HAPServiceNodeType'
+import type AccessoryInformationType from '../types/AccessoryInformationType'
+import type HAPServiceNodeType from '../types/HAPServiceNodeType'
 
-module.exports = function (node: HAPServiceNodeType) {
+module.exports = (node: HAPServiceNodeType) => {
   const HapNodeJS = require('@homebridge/hap-nodejs')
   const Accessory = HapNodeJS.Accessory
   const Service = HapNodeJS.Service
@@ -12,11 +12,11 @@ module.exports = function (node: HAPServiceNodeType) {
 
   const log = logger('NRCHKB', 'AccessoryUtils', node.config.name, node)
 
-  const getOrCreate = function (
+  const getOrCreate = (
     host: Accessory,
     accessoryInformation: AccessoryInformationType,
     subtypeUUID: string
-  ) {
+  ) => {
     let accessory: Accessory | undefined
     const services: Service[] = []
 
@@ -116,30 +116,21 @@ module.exports = function (node: HAPServiceNodeType) {
 
       const revisionRegex = /\d+\.\d+\.\d+/
 
-      if (
-        accessoryInformation.firmwareRev &&
-        accessoryInformation.firmwareRev.match(revisionRegex)
-      ) {
+      if (accessoryInformation.firmwareRev?.match(revisionRegex)) {
         accessoryInformationService?.setCharacteristic(
           Characteristic.FirmwareRevision,
           accessoryInformation.firmwareRev
         )
       }
 
-      if (
-        accessoryInformation.hardwareRev &&
-        accessoryInformation.hardwareRev.match(revisionRegex)
-      ) {
+      if (accessoryInformation.hardwareRev?.match(revisionRegex)) {
         accessoryInformationService?.setCharacteristic(
           Characteristic.HardwareRevision,
           accessoryInformation.hardwareRev
         )
       }
 
-      if (
-        accessoryInformation.softwareRev &&
-        accessoryInformation.softwareRev.match(revisionRegex)
-      ) {
+      if (accessoryInformation.softwareRev?.match(revisionRegex)) {
         accessoryInformationService?.setCharacteristic(
           Characteristic.SoftwareRevision,
           accessoryInformation.softwareRev
@@ -147,6 +138,7 @@ module.exports = function (node: HAPServiceNodeType) {
       }
 
       // Adding new accessory to the bridge.
+      // biome-ignore lint/style/noNonNullAssertion: accessory is not null here
       host.addBridgedAccessories([accessory!])
     } else {
       accessoryInformationService =
@@ -164,7 +156,7 @@ module.exports = function (node: HAPServiceNodeType) {
     return accessory
   }
 
-  const onIdentify = function (paired: boolean, callback: () => any) {
+  const onIdentify = (paired: boolean, callback: () => any) => {
     if (paired) {
       log.debug(
         `Identify called on paired Accessory ${node.accessory.displayName}`
@@ -193,7 +185,7 @@ module.exports = function (node: HAPServiceNodeType) {
         text: 'Identify : 1'
       })
 
-      setTimeout(function () {
+      setTimeout(() => {
         nodes[i].nodeStatusUtils.clearStatus(statusId)
       }, 3000)
 

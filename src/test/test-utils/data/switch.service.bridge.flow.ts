@@ -1,4 +1,4 @@
-import helper from 'node-red-node-test-helper'
+import type helper from 'node-red-node-test-helper'
 
 export const switchServiceBridgeFlow = () => {
   const serviceId = `s1.${Date.now()}`

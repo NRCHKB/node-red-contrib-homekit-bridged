@@ -1,6 +1,6 @@
-import { NodeDef } from 'node-red'
+import type { NodeDef } from 'node-red'
 
-import HAPServiceConfigType from './HAPServiceConfigType'
+import type HAPServiceConfigType from './HAPServiceConfigType'
 
 type HAPService2ConfigType = NodeDef &
   HAPServiceConfigType & {

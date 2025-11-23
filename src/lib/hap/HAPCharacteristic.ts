@@ -1,6 +1,6 @@
 import { Characteristic } from '@homebridge/hap-nodejs'
 
-import {
+import type {
   EveS2R1,
   EveS2R2,
   EveS2W1,

@@ -8,7 +8,8 @@
     "clean": "del-cli \"build/lib\" \"build/**/*.js\"",
     "test": "vitest run",
     "test:watch": "vitest",
-    "format": "biome format --write",
+    "format": "npx @biomejs/biome check --write",
+    "lint": "npx @biomejs/biome check",
     "prepare": "husky install"
   },
   "repository": {

@@ -1,23 +1,23 @@
 import {
   Characteristic,
   Perms,
-  SerializedService,
+  type SerializedService,
   Service
 } from '@homebridge/hap-nodejs'
 import { logger } from '@nrchkb/logger'
-import express from 'express'
-import { NodeAPI } from 'node-red'
+import type express from 'express'
+import type { NodeAPI } from 'node-red'
 
 import EveCharacteristics from './hap/eve-app/EveCharacteristics'
 import { Storage } from './Storage'
-import CustomCharacteristicType from './types/CustomCharacteristicType'
+import type CustomCharacteristicType from './types/CustomCharacteristicType'
+import type HAPServiceConfigType from './types/HAPServiceConfigType'
+import type HAPServiceNodeType from './types/HAPServiceNodeType'
 import HapCategories from './types/hap-nodejs/HapCategories'
-import HAPServiceConfigType from './types/HAPServiceConfigType'
-import HAPServiceNodeType from './types/HAPServiceNodeType'
 
 const version = require('../../package.json').version.trim()
 
-module.exports = function (RED: NodeAPI) {
+module.exports = (RED: NodeAPI) => {
   const log = logger('NRCHKB', 'API')
 
   // Service API
@@ -187,7 +187,7 @@ module.exports = function (RED: NodeAPI) {
 
     const toNumber = (value: any, optional = undefined) => {
       const num = Number(value)
-      if (isNaN(num)) {
+      if (Number.isNaN(num)) {
         return optional
       } else return num
     }
@@ -236,9 +236,11 @@ module.exports = function (RED: NodeAPI) {
           }
 
           class CustomCharacteristic extends Characteristic {
+            // biome-ignore lint/style/noNonNullAssertion: UUID is not null
             static readonly UUID: string = UUID!
 
             constructor() {
+              // biome-ignore lint/style/noNonNullAssertion: name is not null
               super(name!, CustomCharacteristic.UUID, {
                 ...validatedProps,
                 perms: validatedProps.perms ?? [
@@ -291,15 +293,11 @@ module.exports = function (RED: NodeAPI) {
               serviceNodeConfig.id
             ) as HAPServiceNodeType
 
-            if (
-              serviceNode &&
-              serviceNode.characteristicProperties &&
-              serviceNode.service
-            ) {
+            if (serviceNode?.characteristicProperties && serviceNode.service) {
               for (const key in serviceNode.characteristicProperties) {
                 if (customCharacteristicKeys.includes(key)) {
                   const characteristic = serviceNode.service
-                    // @ts-ignore
+                    // @ts-expect-error
                     .getCharacteristic(Characteristic[key])
                     .setProps(serviceNode.characteristicProperties[key])
                   serviceNode.supported.push(key)
@@ -358,7 +356,7 @@ module.exports = function (RED: NodeAPI) {
   }
 
   // Accessory API
-  const _initAccessoryAPI = function () {
+  const _initAccessoryAPI = () => {
     log.debug('Initialize Accessory API')
 
     // Accessory Categories API response data
@@ -369,7 +367,7 @@ module.exports = function (RED: NodeAPI) {
     // Prepare Accessory data once
     Object.keys(HapCategories)
       .sort()
-      .filter((x) => parseInt(x) >= 0)
+      .filter((x) => parseInt(x, 10) >= 0)
       .forEach((key) => {
         const keyNumber = key as unknown as number
         accessoryCategoriesData[keyNumber] = HapCategories[keyNumber]

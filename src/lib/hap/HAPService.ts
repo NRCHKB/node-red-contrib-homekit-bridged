@@ -1,6 +1,6 @@
 import { Service } from '@homebridge/hap-nodejs'
 
-import { EveHistoryData } from './eve-app/EveServices'
+import type { EveHistoryData } from './eve-app/EveServices'
 
 class HAPService extends Service {
   static EveHistoryData: typeof EveHistoryData
