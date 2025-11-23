@@ -1,6 +1,6 @@
 #### ⚠️ CAUTION ⚠️
 
-##### Before upgrading make sure that you are using the latest version of [Node-RED](https://nodered.org/docs/getting-started/local) and latest LTS version of [Node.js](https://nodejs.org/en/download/)
+##### Before upgrading make sure that you are using the latest version of [Node-RED](https://nodered.org/docs/getting-started/local) and the latest LTS version of [Node.js](https://nodejs.org/en/download/)
 
 # Changelog
 
@@ -11,6 +11,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [2.0.0] - 2025-11-22
 
+Lost backward compatibility for Camera Service and MDNS Custom Configuration.
+
 ### Changed
 
 - Updated hap-nodejs [0.12.3 to 2.0.2](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (features
@@ -18,7 +20,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Dependencies upgrade
 - Node `18` no longer supported, use Node
   24 [#578](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/578)! Or at least 20.
-- Due to major upgrade of hap-nodejs, some breaking changes might be present including Camera Service and MDNS Custom
+- Due to a major upgrade of hap-nodejs, some breaking changes might be present, including Camera Service and MDNS Custom
   Configuration.
 
 ## [1.7.3] - 2025-01-16

@@ -1,5 +1,5 @@
 type PublishTimersType = {
-    [key: string]: NodeJS.Timeout
+  [key: string]: NodeJS.Timeout
 }
 
 export default PublishTimersType

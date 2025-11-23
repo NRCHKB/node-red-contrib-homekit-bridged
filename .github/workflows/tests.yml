@@ -17,6 +17,7 @@ jobs:
       - name: build and test
         run: |
           npm ci
+          biome ci
           npm run build
           npm run test
         env:

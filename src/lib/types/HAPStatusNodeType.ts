@@ -6,10 +6,10 @@ import HAPStatusConfigType from './HAPStatusConfigType'
 import NodeType from './NodeType'
 
 type HAPStatusNodeType = NodeType & {
-    config: HAPStatusConfigType
-    RED: NodeAPI
-    serviceNode?: HAPServiceNodeType
-    nodeStatusUtils: NodeStatusUtils
+  config: HAPStatusConfigType
+  RED: NodeAPI
+  serviceNode?: HAPServiceNodeType
+  nodeStatusUtils: NodeStatusUtils
 }
 
 export default HAPStatusNodeType

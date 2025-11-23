@@ -2,9 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "lib": [
-      "es2020.string"
-    ],
+    "lib": ["es2020.string"],
     "skipLibCheck": true,
     "allowJs": true,
     "checkJs": false,
@@ -28,12 +26,6 @@
     "resolveJsonModule": true,
     "declaration": true
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/test/*",
-    "build"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules", "**/test/*", "build"]
 }
