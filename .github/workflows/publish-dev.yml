@@ -16,7 +16,7 @@ jobs:
       - run: |
           npm ci
           npm run build
-          npm run test
+          npm run test:ci
 
   publish-npm:
     needs: build

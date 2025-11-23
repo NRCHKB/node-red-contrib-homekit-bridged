@@ -19,6 +19,6 @@ jobs:
           npm ci
           npm run lint
           npm run build
-          npm run test
+          npm run test:ci
         env:
           CI: true
