@@ -158,7 +158,6 @@ module.exports = function (node: HAPServiceNodeType) {
             }
 
             // Adding new accessory to the bridge.
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             host.addBridgedAccessories([accessory!])
         } else {
             accessoryInformationService =

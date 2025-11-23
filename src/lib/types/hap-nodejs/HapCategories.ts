@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 // hap-nodejs declared this as const enum which makes it difficult to iterate key-value
 // Known category values. Category is a hint to iOS clients about what "type" of Accessory this represents, for UI only.
 enum HapCategories {
@@ -13,6 +12,7 @@ enum HapCategories {
     THERMOSTAT = 9,
     SENSOR = 10,
     ALARM_SYSTEM = 11,
+    // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
     SECURITY_SYSTEM = 11, //Added to conform to HAP naming
     DOOR = 12,
     WINDOW = 13,
@@ -20,6 +20,7 @@ enum HapCategories {
     PROGRAMMABLE_SWITCH = 15,
     RANGE_EXTENDER = 16,
     CAMERA = 17,
+    // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
     IP_CAMERA = 17, //Added to conform to HAP naming
     VIDEO_DOORBELL = 18,
     AIR_PURIFIER = 19,

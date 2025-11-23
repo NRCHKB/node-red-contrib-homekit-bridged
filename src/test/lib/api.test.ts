@@ -1,9 +1,6 @@
-import 'should'
-
 import { loggerSetup } from '@nrchkb/logger'
-import assert from 'assert'
-import { afterEach, before, describe, it } from 'mocha'
 import helper from 'node-red-node-test-helper'
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 
 import { version } from '../../../package.json'
 import {
@@ -11,8 +8,8 @@ import {
     serviceTypesResponse,
 } from '../test-utils/data'
 
-const API = require('../../lib/api')()
-const nrchkb = require('../../nodes/nrchkb')
+const API = require('../../../build/lib/api')()
+const nrchkb = require('../../../build/nodes/nrchkb')
 
 process.env.NRCHKB_EXPERIMENTAL = 'true'
 
@@ -23,103 +20,68 @@ loggerSetup({
 })
 
 describe('api', function () {
-    this.timeout(30000)
-
-    before(function (done) {
-        helper.startServer(done)
+    beforeAll(function () {
+        return new Promise<void>((resolve) => helper.startServer(resolve))
     })
 
-    after(function (done) {
-        helper.stopServer(done)
+    afterAll(function () {
+        return new Promise<void>((resolve) => helper.stopServer(resolve))
     })
 
     afterEach(function () {
         helper.unload()
     })
 
-    it('Service API', function (done) {
-        helper
-            .load([nrchkb], [], function () {
-                helper
-                    .request()
-                    .get('/nrchkb/service/types')
-                    .expect('Content-Type', /json/)
-                    .expect(200)
-                    .then((response) => {
-                        assert.deepStrictEqual(
-                            response.body,
-                            serviceTypesResponse
-                        )
-                        done()
-                    })
-                    .catch((err) => done(err))
-            })
-            .catch((error: any) => {
-                done(new Error(error))
-            })
+    it('Service API', async function () {
+        await helper.load([nrchkb], [])
+        const response = await helper
+            .request()
+            .get('/nrchkb/service/types')
+            .expect('Content-Type', /json/)
+            .expect(200)
+        expect(response.body).toStrictEqual(serviceTypesResponse)
     })
 
     describe('stringifyVersion', function () {
-        it('release', function (done) {
+        it('release', function () {
             const input = '1.2.3'
             const expected = '1.2.3'
             const result = API.stringifyVersion(input)
-            assert.strictEqual(result, expected)
-            done()
+            expect(result).toBe(expected)
         })
 
-        it('dev', function (done) {
+        it('dev', function () {
             const input = '1.2.3-dev.45'
             const expected = '0.123.45'
             const result = API.stringifyVersion(input)
-            assert.strictEqual(result, expected)
-            done()
+            expect(result).toBe(expected)
         })
     })
 
-    it('NRCHKB Info API', function (done) {
-        helper
-            .load([nrchkb], [], function () {
-                const xyzVersion = API.stringifyVersion(version)
+    it('NRCHKB Info API', async function () {
+        await helper.load([nrchkb], [])
+        const xyzVersion = API.stringifyVersion(version)
 
-                helper
-                    .request()
-                    .get('/nrchkb/info')
-                    .expect('Content-Type', /json/)
-                    .expect(200)
-                    .then((response) => {
-                        assert.deepStrictEqual(response.body, {
-                            experimental: true,
-                            version: xyzVersion,
-                        })
-                        done()
-                    })
-                    .catch((err) => done(err))
-            })
-            .catch((error: any) => {
-                done(new Error(error))
-            })
+        const response = await helper
+            .request()
+            .get('/nrchkb/info')
+            .expect('Content-Type', /json/)
+            .expect(200)
+
+        expect(response.body).toStrictEqual({
+            experimental: true,
+            version: xyzVersion,
+        })
     })
 
-    it('Accessory API', function (done) {
-        helper
-            .load([nrchkb], [], function () {
-                helper
-                    .request()
-                    .get('/nrchkb/accessory/categories')
-                    .expect('Content-Type', /json/)
-                    .expect(200)
-                    .then((response) => {
-                        assert.deepStrictEqual(
-                            response.body,
-                            accessoryCategoriesResponse
-                        )
-                        done()
-                    })
-                    .catch((err) => done(err))
-            })
-            .catch((error: any) => {
-                done(new Error(error))
-            })
+    it('Accessory API', async function () {
+        await helper.load([nrchkb], [])
+        const response = await helper
+            .request()
+            .get('/nrchkb/accessory/categories')
+            .expect('Content-Type', /json/)
+            .expect(200)
+
+        expect(response.body).toStrictEqual(accessoryCategoriesResponse)
     })
 })

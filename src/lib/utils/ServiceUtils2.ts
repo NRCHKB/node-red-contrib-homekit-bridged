@@ -209,7 +209,6 @@ module.exports = function (node: HAPService2NodeType) {
             }
         }
 
-    // eslint-disable-next-line no-unused-vars
     const onCharacteristicSet = (allCharacteristics: Characteristic[]) =>
         function (
             this: Characteristic,
