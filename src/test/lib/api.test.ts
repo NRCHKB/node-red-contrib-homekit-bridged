@@ -25,7 +25,7 @@ describe('api', () => {
   afterAll(() => new Promise<void>((resolve) => helper.stopServer(resolve)))
 
   afterEach(() => {
-    helper.unload()
+    return helper.unload()
   })
 
   it('Service API', async () => {

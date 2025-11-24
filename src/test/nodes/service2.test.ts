@@ -30,7 +30,7 @@ describe('Service Node', () => {
   afterAll(() => new Promise<void>((resolve) => helper.stopServer(resolve)))
 
   afterEach(() => {
-    helper.unload()
+    return helper.unload()
   })
 
   it('should be loaded', async () => {
