@@ -63,14 +63,14 @@ module.exports = (RED: NodeAPI) => {
       log.error('node-red restart highly recommended')
       log.trace(error)
     }
-
-    // Experimental feature
-    if (process.env.NRCHKB_EXPERIMENTAL === 'true') {
-      log.debug('Registering nrchkb type')
-
-      RED.nodes.registerType('nrchkb', function (this: any, config) {
-        RED.nodes.createNode(this, config)
-      })
-    }
   })
+
+  // Experimental feature
+  if (process.env.NRCHKB_EXPERIMENTAL === 'true') {
+    log.debug('Registering nrchkb type')
+
+    RED.nodes.registerType('nrchkb', function (this: any, config) {
+      RED.nodes.createNode(this, config)
+    })
+  }
 }
