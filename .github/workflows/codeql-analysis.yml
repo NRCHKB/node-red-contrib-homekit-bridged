@@ -11,6 +11,9 @@
 #
 name: "CodeQL"
 
+env:
+  HUSKY: 0
+
 on:
   push:
     branches: [ master, dev ]

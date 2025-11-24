@@ -11,7 +11,7 @@
     "test:watch": "vitest",
     "format": "npx @biomejs/biome check --write",
     "lint": "npx @biomejs/biome check",
-    "prepare": "husky install"
+    "prepare": "husky || true"
   },
   "repository": {
     "type": "git",
