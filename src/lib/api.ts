@@ -108,7 +108,7 @@ module.exports = (RED: NodeAPI) => {
           log.debug('Could not match dev version')
         }
       } catch (e) {
-        console.error(e)
+        log.error(e as any)
       }
     } else if (releaseVersionFound) {
       try {
@@ -120,7 +120,7 @@ module.exports = (RED: NodeAPI) => {
           log.debug('Could not match release version')
         }
       } catch (e) {
-        console.error(e)
+        log.error(e as any)
       }
     } else {
       log.debug('Bad version format')

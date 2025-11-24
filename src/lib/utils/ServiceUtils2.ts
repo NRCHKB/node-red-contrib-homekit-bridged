@@ -16,7 +16,7 @@ import type {
 } from '@homebridge/hap-nodejs/dist/lib/util/eventedhttp'
 import type { SessionIdentifier } from '@homebridge/hap-nodejs/dist/types'
 import { logger } from '@nrchkb/logger'
-
+import { configureCamera } from '../camera/CameraControl'
 import NRCHKBError from '../NRCHKBError'
 import { Storage } from '../Storage'
 import type HAPService2ConfigType from '../types/HAPService2ConfigType'
@@ -351,7 +351,7 @@ module.exports = (node: HAPService2NodeType) => {
     if (removed) {
       // This node has been deleted
       if (node.config.isParent) {
-        // remove accessory from bridge
+        // remove accessory from the bridge
         node.hostNode.host.removeBridgedAccessories([node.accessory])
         node.accessory.destroy()
       } else {
@@ -407,7 +407,7 @@ module.exports = (node: HAPService2NodeType) => {
         service = accessory.addService(newService)
       }
     } else {
-      // if a service with the same UUID and subtype was found it will
+      // if a service with the same UUID and subtype was found, it will
       // be updated and used
       log.debug('... found it! Updating it.')
       service
@@ -429,7 +429,7 @@ module.exports = (node: HAPService2NodeType) => {
   }
 
   const configureCameraSource = (
-    _accessory: Accessory,
+    accessory: Accessory,
     _service: Service,
     config: HAPService2ConfigType
   ) => {
@@ -446,6 +446,7 @@ module.exports = (node: HAPService2NodeType) => {
         // accessory.configureCameraSource(
         //     new CameraSource(service, config, node)
         // )
+        configureCamera(accessory, config)
       }
     } else {
       log.error('Missing configuration for CameraControl.')
