@@ -52,7 +52,7 @@ installations and Docker-based deployments.
 
 ### Changed
 
-- Upgraded to [`@homebridge/hap-nodejs` 2.1.6](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) for
+- Upgraded to [`@homebridge/hap-nodejs` 2.1.7](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) for
   new HomeKit protocol support and fixes.
 - Replaced the legacy `hap-nodejs` dependency with `@homebridge/hap-nodejs` and added a local compatibility wrapper for
   HAP-NodeJS types.

@@ -54,17 +54,17 @@
     "homepage": "https://github.com/NRCHKB/node-red-contrib-homekit-bridged#readme",
     "dependencies": {
         "@homebridge-plugins/homebridge-camera-ffmpeg": "^4.1.0",
-        "@homebridge/hap-nodejs": "2.1.6",
+        "@homebridge/hap-nodejs": "2.1.7",
         "@nrchkb/logger": "~3.2.1",
         "homebridge-unifi-protect": "^7.29.0",
         "homekit-code": "^1.2.13",
         "node-persist": "^3.1.3",
-        "semver": "~7.8.0",
+        "semver": "~7.8.4",
         "uuid": "~14.0.0"
     },
     "devDependencies": {
-        "@biomejs/biome": "2.4.15",
-        "@homebridge/ciao": "~1.3.8",
+        "@biomejs/biome": "2.5.0",
+        "@homebridge/ciao": "~1.3.9",
         "@node-red/registry": "^5.0.0",
         "@types/node": "^24.0.0",
         "@types/node-persist": "^3.1.8",
@@ -74,7 +74,7 @@
         "@types/uuid": "^10.0.0",
         "concurrently": "^9.2.1",
         "del-cli": "^7.0.0",
-        "esbuild": "^0.28.0",
+        "esbuild": "^0.28.1",
         "glob": "^13.0.6",
         "husky": "^9.1.7",
         "node-red": "^5.0.0",
@@ -82,7 +82,7 @@
         "nodemon": "^3.1.14",
         "ts-node": "^10.9.2",
         "typescript": "^6.0.3",
-        "vitest": "^4.1.6"
+        "vitest": "^4.1.9"
     },
     "vitest": {
         "test": {
