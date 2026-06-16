@@ -1,6146 +1,6186 @@
 export const serviceTypesResponse = {
-  AccessCode: {
-    UUID: '00000260-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000262-0000-1000-8000-0026BB765291',
-        constructorName: 'AccessCodeControlPoint',
-        displayName: 'Access Code Control Point',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr', 'pw', 'wr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000261-0000-1000-8000-0026BB765291',
-        constructorName: 'AccessCodeSupportedConfiguration',
-        displayName: 'Access Code Supported Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000263-0000-1000-8000-0026BB765291',
-        constructorName: 'ConfigurationState',
-        displayName: 'Configuration State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint16',
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'AccessCode',
-    displayName: 'AccessCode',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  AccessControl: {
-    UUID: '000000DA-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000E5-0000-1000-8000-0026BB765291',
-        constructorName: 'AccessControlLevel',
-        displayName: 'Access Control Level',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint16',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'AccessControl',
-    displayName: 'AccessControl',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000E4-0000-1000-8000-0026BB765291',
-        constructorName: 'PasswordSetting',
-        displayName: 'Password Setting',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: ''
-      }
-    ],
-    primaryService: false
-  },
-  AccessoryInformation: {
-    UUID: '0000003E-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000014-0000-1000-8000-0026BB765291',
-        constructorName: 'Identify',
-        displayName: 'Identify',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['pw']
-        },
-        value: false
-      },
-      {
-        UUID: '00000020-0000-1000-8000-0026BB765291',
-        constructorName: 'Manufacturer',
-        displayName: 'Manufacturer',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: 'Default-Manufacturer'
-      },
-      {
-        UUID: '00000021-0000-1000-8000-0026BB765291',
-        constructorName: 'Model',
-        displayName: 'Model',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: 'Default-Model'
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: 'Unnamed Service'
-      },
-      {
-        UUID: '00000030-0000-1000-8000-0026BB765291',
-        constructorName: 'SerialNumber',
-        displayName: 'Serial Number',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: 'Default-SerialNumber'
-      },
-      {
-        UUID: '00000052-0000-1000-8000-0026BB765291',
-        constructorName: 'FirmwareRevision',
-        displayName: 'Firmware Revision',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          perms: ['pr']
-        },
-        value: '0.0.0'
-      }
-    ],
-    constructorName: 'AccessoryInformation',
-    displayName: 'AccessoryInformation',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000A6-0000-1000-8000-0026BB765291',
-        constructorName: 'AccessoryFlags',
-        displayName: 'Accessory Flags',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '000000A4-0000-1000-8000-0026BB765291',
-        constructorName: 'AppMatchingIdentifier',
-        displayName: 'App Matching Identifier',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '000000E3-0000-1000-8000-0026BB765291',
-        constructorName: 'ConfiguredName',
-        displayName: 'Configured Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '0000026D-0000-1000-8000-0026BB765291',
-        constructorName: 'MatterFirmwareRevisionNumber',
-        displayName: 'Matter Firmware Revision Number',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '0000026C-0000-1000-8000-0026BB765291',
-        constructorName: 'HardwareFinish',
-        displayName: 'Hardware Finish',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000053-0000-1000-8000-0026BB765291',
-        constructorName: 'HardwareRevision',
-        displayName: 'Hardware Revision',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000220-0000-1000-8000-0026BB765291',
-        constructorName: 'ProductData',
-        displayName: 'Product Data',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'data',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000054-0000-1000-8000-0026BB765291',
-        constructorName: 'SoftwareRevision',
-        displayName: 'Software Revision',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    primaryService: false
-  },
-  AccessoryMetrics: {
-    UUID: '00000270-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000272-0000-1000-8000-0026BB765291',
-        constructorName: 'MetricsBufferFullState',
-        displayName: 'Metrics Buffer Full State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '00000271-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedMetrics',
-        displayName: 'Supported Metrics',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr', 'pw']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'AccessoryMetrics',
-    displayName: 'AccessoryMetrics',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  AccessoryRuntimeInformation: {
-    UUID: '00000239-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000023C-0000-1000-8000-0026BB765291',
-        constructorName: 'Ping',
-        displayName: 'Ping',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'data',
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'AccessoryRuntimeInformation',
-    displayName: 'AccessoryRuntimeInformation',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '0000023B-0000-1000-8000-0026BB765291',
-        constructorName: 'ActivityInterval',
-        displayName: 'Activity Interval',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '0000024A-0000-1000-8000-0026BB765291',
-        constructorName: 'HeartBeat',
-        displayName: 'Heart Beat',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '0000023A-0000-1000-8000-0026BB765291',
-        constructorName: 'SleepInterval',
-        displayName: 'Sleep Interval',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  AirPurifier: {
-    UUID: '000000BB-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000A9-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentAirPurifierState',
-        displayName: 'Current Air Purifier State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000A8-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetAirPurifierState',
-        displayName: 'Target Air Purifier State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'AirPurifier',
-    displayName: 'AirPurifier',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000A7-0000-1000-8000-0026BB765291',
-        constructorName: 'LockPhysicalControls',
-        displayName: 'Lock Physical Controls',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000029-0000-1000-8000-0026BB765291',
-        constructorName: 'RotationSpeed',
-        displayName: 'Rotation Speed',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '000000B6-0000-1000-8000-0026BB765291',
-        constructorName: 'SwingMode',
-        displayName: 'Swing Mode',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  AirQualitySensor: {
-    UUID: '0000008D-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000095-0000-1000-8000-0026BB765291',
-        constructorName: 'AirQuality',
-        displayName: 'Air Quality',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 5,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 3, 4, 5]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'AirQualitySensor',
-    displayName: 'AirQualitySensor',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000C4-0000-1000-8000-0026BB765291',
-        constructorName: 'NitrogenDioxideDensity',
-        displayName: 'Nitrogen Dioxide Density',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 1000,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '000000C3-0000-1000-8000-0026BB765291',
-        constructorName: 'OzoneDensity',
-        displayName: 'Ozone Density',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 1000,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '000000C7-0000-1000-8000-0026BB765291',
-        constructorName: 'PM10Density',
-        displayName: 'PM10 Density',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 1000,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '000000C6-0000-1000-8000-0026BB765291',
-        constructorName: 'PM2_5Density',
-        displayName: 'PM2.5 Density',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 1000,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '000000C5-0000-1000-8000-0026BB765291',
-        constructorName: 'SulphurDioxideDensity',
-        displayName: 'Sulphur Dioxide Density',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 1000,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '000000C8-0000-1000-8000-0026BB765291',
-        constructorName: 'VOCDensity',
-        displayName: 'VOC Density',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 1000,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000075-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusActive',
-        displayName: 'Status Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000079-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusLowBattery',
-        displayName: 'Status Low Battery',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007A-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusTampered',
-        displayName: 'Status Tampered',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  AssetUpdate: {
-    UUID: '00000267-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000269-0000-1000-8000-0026BB765291',
-        constructorName: 'AssetUpdateReadiness',
-        displayName: 'Asset Update Readiness',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000268-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedAssetTypes',
-        displayName: 'Supported Asset Types',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['pr']
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'AssetUpdate',
-    displayName: 'AssetUpdate',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  Assistant: {
-    UUID: '0000026A-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000E6-0000-1000-8000-0026BB765291',
-        constructorName: 'Identifier',
-        displayName: 'Identifier',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: 'Unnamed Service'
-      }
-    ],
-    constructorName: 'Assistant',
-    displayName: 'Assistant',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  AudioStreamManagement: {
-    UUID: '00000127-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000115-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedAudioStreamConfiguration',
-        displayName: 'Supported Audio Stream Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000128-0000-1000-8000-0026BB765291',
-        constructorName: 'SelectedAudioStreamConfiguration',
-        displayName: 'Selected Audio Stream Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr', 'pw']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'AudioStreamManagement',
-    displayName: 'AudioStreamManagement',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  Battery: {
-    UUID: '00000096-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000079-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusLowBattery',
-        displayName: 'Status Low Battery',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'Battery',
-    displayName: 'Battery',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000068-0000-1000-8000-0026BB765291',
-        constructorName: 'BatteryLevel',
-        displayName: 'Battery Level',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '0000008F-0000-1000-8000-0026BB765291',
-        constructorName: 'ChargingState',
-        displayName: 'Charging State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    primaryService: false
-  },
-  BatteryService: {
-    nrchkbDisabledText: 'BatteryService (deprecated, replaced by Battery)'
-  },
-  BridgeConfiguration: {
-    nrchkbDisabledText: 'BridgeConfiguration (deprecated, unused)'
-  },
-  BridgingState: {
-    nrchkbDisabledText: 'BridgingState (deprecated, unused)'
-  },
-  CameraControl: {
-    nrchkbDisabledText: 'CameraControl (deprecated, replaced by)'
-  },
-  CameraEventRecordingManagement: {
-    nrchkbDisabledText:
-      'CameraEventRecordingManagement (deprecated, replaced by CameraRecordingManagement)'
-  },
-  CameraOperatingMode: {
-    UUID: '0000021A-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000223-0000-1000-8000-0026BB765291',
-        constructorName: 'EventSnapshotsActive',
-        displayName: 'Event Snapshots Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000021B-0000-1000-8000-0026BB765291',
-        constructorName: 'HomeKitCameraActive',
-        displayName: 'HomeKit Camera Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'CameraOperatingMode',
-    displayName: 'CameraOperatingMode',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '0000021D-0000-1000-8000-0026BB765291',
-        constructorName: 'CameraOperatingModeIndicator',
-        displayName: 'Camera Operating Mode Indicator',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw', 'tw']
-        },
-        value: false
-      },
-      {
-        UUID: '00000227-0000-1000-8000-0026BB765291',
-        constructorName: 'ManuallyDisabled',
-        displayName: 'Manually Disabled',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '0000011B-0000-1000-8000-0026BB765291',
-        constructorName: 'NightVision',
-        displayName: 'Night Vision',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw', 'tw']
-        },
-        value: false
-      },
-      {
-        UUID: '00000225-0000-1000-8000-0026BB765291',
-        constructorName: 'PeriodicSnapshotsActive',
-        displayName: 'Periodic Snapshots Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000021C-0000-1000-8000-0026BB765291',
-        constructorName: 'ThirdPartyCameraActive',
-        displayName: 'Third Party Camera Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000224-0000-1000-8000-0026BB765291',
-        constructorName: 'DiagonalFieldOfView',
-        displayName: 'Diagonal Field Of View',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 360,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          unit: 'arcdegrees'
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  CameraRTPStreamManagement: {
-    UUID: '00000110-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000117-0000-1000-8000-0026BB765291',
-        constructorName: 'SelectedRTPStreamConfiguration',
-        displayName: 'Selected RTP Stream Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr', 'pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000118-0000-1000-8000-0026BB765291',
-        constructorName: 'SetupEndpoints',
-        displayName: 'Setup Endpoints',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr', 'pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000120-0000-1000-8000-0026BB765291',
-        constructorName: 'StreamingStatus',
-        displayName: 'Streaming Status',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000115-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedAudioStreamConfiguration',
-        displayName: 'Supported Audio Stream Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000116-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedRTPConfiguration',
-        displayName: 'Supported RTP Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000114-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedVideoStreamConfiguration',
-        displayName: 'Supported Video Stream Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'CameraRTPStreamManagement',
-    displayName: 'CameraRTPStreamManagement',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  CameraRecordingManagement: {
-    UUID: '00000204-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000209-0000-1000-8000-0026BB765291',
-        constructorName: 'SelectedCameraRecordingConfiguration',
-        displayName: 'Selected Camera Recording Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000207-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedAudioRecordingConfiguration',
-        displayName: 'Supported Audio Recording Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000205-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedCameraRecordingConfiguration',
-        displayName: 'Supported Camera Recording Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000206-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedVideoRecordingConfiguration',
-        displayName: 'Supported Video Recording Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'CameraRecordingManagement',
-    displayName: 'CameraRecordingManagement',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000226-0000-1000-8000-0026BB765291',
-        constructorName: 'RecordingAudioActive',
-        displayName: 'Recording Audio Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          perms: ['ev', 'pr', 'pw', 'tw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  CarbonDioxideSensor: {
-    UUID: '00000097-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000092-0000-1000-8000-0026BB765291',
-        constructorName: 'CarbonDioxideDetected',
-        displayName: 'Carbon Dioxide Detected',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'CarbonDioxideSensor',
-    displayName: 'CarbonDioxideSensor',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000093-0000-1000-8000-0026BB765291',
-        constructorName: 'CarbonDioxideLevel',
-        displayName: 'Carbon Dioxide Level',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100000,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000094-0000-1000-8000-0026BB765291',
-        constructorName: 'CarbonDioxidePeakLevel',
-        displayName: 'Carbon Dioxide Peak Level',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100000,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000075-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusActive',
-        displayName: 'Status Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000079-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusLowBattery',
-        displayName: 'Status Low Battery',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007A-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusTampered',
-        displayName: 'Status Tampered',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  CarbonMonoxideSensor: {
-    UUID: '0000007F-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000069-0000-1000-8000-0026BB765291',
-        constructorName: 'CarbonMonoxideDetected',
-        displayName: 'Carbon Monoxide Detected',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'CarbonMonoxideSensor',
-    displayName: 'CarbonMonoxideSensor',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000090-0000-1000-8000-0026BB765291',
-        constructorName: 'CarbonMonoxideLevel',
-        displayName: 'Carbon Monoxide Level',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000091-0000-1000-8000-0026BB765291',
-        constructorName: 'CarbonMonoxidePeakLevel',
-        displayName: 'Carbon Monoxide Peak Level',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000075-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusActive',
-        displayName: 'Status Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000079-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusLowBattery',
-        displayName: 'Status Low Battery',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007A-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusTampered',
-        displayName: 'Status Tampered',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  CloudRelay: {
-    UUID: '0000005A-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000005E-0000-1000-8000-0026BB765291',
-        constructorName: 'RelayControlPoint',
-        displayName: 'Relay Control Point',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '0000005C-0000-1000-8000-0026BB765291',
-        constructorName: 'RelayState',
-        displayName: 'Relay State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 5,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '0000005B-0000-1000-8000-0026BB765291',
-        constructorName: 'RelayEnabled',
-        displayName: 'Relay Enabled',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      }
-    ],
-    constructorName: 'CloudRelay',
-    displayName: 'CloudRelay',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  ContactSensor: {
-    UUID: '00000080-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000006A-0000-1000-8000-0026BB765291',
-        constructorName: 'ContactSensorState',
-        displayName: 'Contact Sensor State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'ContactSensor',
-    displayName: 'ContactSensor',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000075-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusActive',
-        displayName: 'Status Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000079-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusLowBattery',
-        displayName: 'Status Low Battery',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007A-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusTampered',
-        displayName: 'Status Tampered',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  DataStreamTransportManagement: {
-    UUID: '00000129-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000131-0000-1000-8000-0026BB765291',
-        constructorName: 'SetupDataStreamTransport',
-        displayName: 'Setup Data Stream Transport',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr', 'pw', 'wr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000130-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedDataStreamTransportConfiguration',
-        displayName: 'Supported Data Stream Transport Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000037-0000-1000-8000-0026BB765291',
-        constructorName: 'Version',
-        displayName: 'Version',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'DataStreamTransportManagement',
-    displayName: 'DataStreamTransportManagement',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  Diagnostics: {
-    UUID: '00000237-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000238-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedDiagnosticsSnapshot',
-        displayName: 'Supported Diagnostics Snapshot',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'Diagnostics',
-    displayName: 'Diagnostics',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '0000024D-0000-1000-8000-0026BB765291',
-        constructorName: 'SelectedDiagnosticsModes',
-        displayName: 'Selected Diagnostics Modes',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['pr', 'pw']
-        },
-        value: 0
-      },
-      {
-        UUID: '0000024C-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedDiagnosticsModes',
-        displayName: 'Supported Diagnostics Modes',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['pr']
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  Door: {
-    UUID: '00000081-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000006D-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentPosition',
-        displayName: 'Current Position',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '00000072-0000-1000-8000-0026BB765291',
-        constructorName: 'PositionState',
-        displayName: 'Position State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007C-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetPosition',
-        displayName: 'Target Position',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'Door',
-    displayName: 'Door',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000024-0000-1000-8000-0026BB765291',
-        constructorName: 'ObstructionDetected',
-        displayName: 'Obstruction Detected',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '0000006F-0000-1000-8000-0026BB765291',
-        constructorName: 'HoldPosition',
-        displayName: 'Hold Position',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['pw']
-        },
-        value: false
-      }
-    ],
-    primaryService: false
-  },
-  Doorbell: {
-    UUID: '00000121-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000073-0000-1000-8000-0026BB765291',
-        constructorName: 'ProgrammableSwitchEvent',
-        displayName: 'Programmable Switch Event',
-        eventOnlyCharacteristic: true,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'Doorbell',
-    displayName: 'Doorbell',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000008-0000-1000-8000-0026BB765291',
-        constructorName: 'Brightness',
-        displayName: 'Brightness',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '0000011A-0000-1000-8000-0026BB765291',
-        constructorName: 'Mute',
-        displayName: 'Mute',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000232-0000-1000-8000-0026BB765291',
-        constructorName: 'OperatingStateResponse',
-        displayName: 'Operating State Response',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000119-0000-1000-8000-0026BB765291',
-        constructorName: 'Volume',
-        displayName: 'Volume',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  Fan: {
-    UUID: '00000040-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000025-0000-1000-8000-0026BB765291',
-        constructorName: 'On',
-        displayName: 'On',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      }
-    ],
-    constructorName: 'Fan',
-    displayName: 'Fan',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000028-0000-1000-8000-0026BB765291',
-        constructorName: 'RotationDirection',
-        displayName: 'Rotation Direction',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000029-0000-1000-8000-0026BB765291',
-        constructorName: 'RotationSpeed',
-        displayName: 'Rotation Speed',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  Fanv2: {
-    UUID: '000000B7-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'Fanv2',
-    displayName: 'Fanv2',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000AF-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentFanState',
-        displayName: 'Current Fan State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000BF-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetFanState',
-        displayName: 'Target Fan State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000A7-0000-1000-8000-0026BB765291',
-        constructorName: 'LockPhysicalControls',
-        displayName: 'Lock Physical Controls',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000028-0000-1000-8000-0026BB765291',
-        constructorName: 'RotationDirection',
-        displayName: 'Rotation Direction',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000029-0000-1000-8000-0026BB765291',
-        constructorName: 'RotationSpeed',
-        displayName: 'Rotation Speed',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '000000B6-0000-1000-8000-0026BB765291',
-        constructorName: 'SwingMode',
-        displayName: 'Swing Mode',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  Faucet: {
-    UUID: '000000D7-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'Faucet',
-    displayName: 'Faucet',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  FilterMaintenance: {
-    UUID: '000000BA-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000AC-0000-1000-8000-0026BB765291',
-        constructorName: 'FilterChangeIndication',
-        displayName: 'Filter Change Indication',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'FilterMaintenance',
-    displayName: 'FilterMaintenance',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000AB-0000-1000-8000-0026BB765291',
-        constructorName: 'FilterLifeLevel',
-        displayName: 'Filter Life Level',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '000000AD-0000-1000-8000-0026BB765291',
-        constructorName: 'ResetFilterIndication',
-        displayName: 'Reset Filter Indication',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 1,
-          perms: ['pw']
-        },
-        value: 1
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    primaryService: false
-  },
-  FirmwareUpdate: {
-    UUID: '00000236-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000234-0000-1000-8000-0026BB765291',
-        constructorName: 'FirmwareUpdateReadiness',
-        displayName: 'Firmware Update Readiness',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000235-0000-1000-8000-0026BB765291',
-        constructorName: 'FirmwareUpdateStatus',
-        displayName: 'Firmware Update Status',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'FirmwareUpdate',
-    displayName: 'FirmwareUpdate',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '0000026F-0000-1000-8000-0026BB765291',
-        constructorName: 'FirmwareUpdateProtocolList',
-        displayName: 'Firmware Update Protocol List',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '0000026E-0000-1000-8000-0026BB765291',
-        constructorName: 'MatterFirmwareUpdateStatus',
-        displayName: 'Matter Firmware Update Status',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000249-0000-1000-8000-0026BB765291',
-        constructorName: 'StagedFirmwareVersion',
-        displayName: 'Staged Firmware Version',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000233-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedFirmwareUpdateConfiguration',
-        displayName: 'Supported Firmware Update Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    primaryService: false
-  },
-  GarageDoorOpener: {
-    UUID: '00000041-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000000E-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentDoorState',
-        displayName: 'Current Door State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 4,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 3, 4]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000032-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetDoorState',
-        displayName: 'Target Door State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000024-0000-1000-8000-0026BB765291',
-        constructorName: 'ObstructionDetected',
-        displayName: 'Obstruction Detected',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      }
-    ],
-    constructorName: 'GarageDoorOpener',
-    displayName: 'GarageDoorOpener',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '0000001D-0000-1000-8000-0026BB765291',
-        constructorName: 'LockCurrentState',
-        displayName: 'Lock Current State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 3,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 3]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000001E-0000-1000-8000-0026BB765291',
-        constructorName: 'LockTargetState',
-        displayName: 'Lock Target State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    primaryService: false
-  },
-  HeaterCooler: {
-    UUID: '000000BC-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000B1-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentHeaterCoolerState',
-        displayName: 'Current Heater-Cooler State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 3,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 3]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000B2-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetHeaterCoolerState',
-        displayName: 'Target Heater-Cooler State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000011-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentTemperature',
-        displayName: 'Current Temperature',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 0.1,
-          minValue: -270,
-          perms: ['ev', 'pr'],
-          unit: 'celsius'
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'HeaterCooler',
-    displayName: 'HeaterCooler',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000A7-0000-1000-8000-0026BB765291',
-        constructorName: 'LockPhysicalControls',
-        displayName: 'Lock Physical Controls',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000029-0000-1000-8000-0026BB765291',
-        constructorName: 'RotationSpeed',
-        displayName: 'Rotation Speed',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '000000B6-0000-1000-8000-0026BB765291',
-        constructorName: 'SwingMode',
-        displayName: 'Swing Mode',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000000D-0000-1000-8000-0026BB765291',
-        constructorName: 'CoolingThresholdTemperature',
-        displayName: 'Cooling Threshold Temperature',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 35,
-          minStep: 0.1,
-          minValue: 10,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'celsius'
-        },
-        value: 10
-      },
-      {
-        UUID: '00000012-0000-1000-8000-0026BB765291',
-        constructorName: 'HeatingThresholdTemperature',
-        displayName: 'Heating Threshold Temperature',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 25,
-          minStep: 0.1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'celsius'
-        },
-        value: 0
-      },
-      {
-        UUID: '00000036-0000-1000-8000-0026BB765291',
-        constructorName: 'TemperatureDisplayUnits',
-        displayName: 'Temperature Display Units',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  HumidifierDehumidifier: {
-    UUID: '000000BD-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000B3-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentHumidifierDehumidifierState',
-        displayName: 'Current Humidifier-Dehumidifier State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 3,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 3]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000B4-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetHumidifierDehumidifierState',
-        displayName: 'Target Humidifier-Dehumidifier State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000010-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentRelativeHumidity',
-        displayName: 'Current Relative Humidity',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          unit: 'percentage'
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'HumidifierDehumidifier',
-    displayName: 'HumidifierDehumidifier',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000A7-0000-1000-8000-0026BB765291',
-        constructorName: 'LockPhysicalControls',
-        displayName: 'Lock Physical Controls',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '000000C9-0000-1000-8000-0026BB765291',
-        constructorName: 'RelativeHumidityDehumidifierThreshold',
-        displayName: 'Relative Humidity Dehumidifier Threshold',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '000000CA-0000-1000-8000-0026BB765291',
-        constructorName: 'RelativeHumidityHumidifierThreshold',
-        displayName: 'Relative Humidity Humidifier Threshold',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '00000029-0000-1000-8000-0026BB765291',
-        constructorName: 'RotationSpeed',
-        displayName: 'Rotation Speed',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '000000B6-0000-1000-8000-0026BB765291',
-        constructorName: 'SwingMode',
-        displayName: 'Swing Mode',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000B5-0000-1000-8000-0026BB765291',
-        constructorName: 'WaterLevel',
-        displayName: 'Water Level',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          unit: 'percentage'
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  HumiditySensor: {
-    UUID: '00000082-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000010-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentRelativeHumidity',
-        displayName: 'Current Relative Humidity',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          unit: 'percentage'
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'HumiditySensor',
-    displayName: 'HumiditySensor',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000075-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusActive',
-        displayName: 'Status Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000079-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusLowBattery',
-        displayName: 'Status Low Battery',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007A-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusTampered',
-        displayName: 'Status Tampered',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  InputSource: {
-    UUID: '000000D9-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000E3-0000-1000-8000-0026BB765291',
-        constructorName: 'ConfiguredName',
-        displayName: 'Configured Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '000000DB-0000-1000-8000-0026BB765291',
-        constructorName: 'InputSourceType',
-        displayName: 'Input Source Type',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 10,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000D6-0000-1000-8000-0026BB765291',
-        constructorName: 'IsConfigured',
-        displayName: 'Is Configured',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: 'Unnamed Service'
-      },
-      {
-        UUID: '00000135-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentVisibilityState',
-        displayName: 'Current Visibility State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'InputSource',
-    displayName: 'InputSource',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000E6-0000-1000-8000-0026BB765291',
-        constructorName: 'Identifier',
-        displayName: 'Identifier',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '000000DC-0000-1000-8000-0026BB765291',
-        constructorName: 'InputDeviceType',
-        displayName: 'Input Device Type',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 6,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 3, 4, 5, 6]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000134-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetVisibilityState',
-        displayName: 'Target Visibility State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  IrrigationSystem: {
-    UUID: '000000CF-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000D1-0000-1000-8000-0026BB765291',
-        constructorName: 'ProgramMode',
-        displayName: 'Program Mode',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000D2-0000-1000-8000-0026BB765291',
-        constructorName: 'InUse',
-        displayName: 'In Use',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'IrrigationSystem',
-    displayName: 'IrrigationSystem',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000D4-0000-1000-8000-0026BB765291',
-        constructorName: 'RemainingDuration',
-        displayName: 'Remaining Duration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          maxValue: 3600,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          unit: 'seconds'
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  LeakSensor: {
-    UUID: '00000083-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000070-0000-1000-8000-0026BB765291',
-        constructorName: 'LeakDetected',
-        displayName: 'Leak Detected',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'LeakSensor',
-    displayName: 'LeakSensor',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000075-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusActive',
-        displayName: 'Status Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000079-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusLowBattery',
-        displayName: 'Status Low Battery',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007A-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusTampered',
-        displayName: 'Status Tampered',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  LightSensor: {
-    UUID: '00000084-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000006B-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentAmbientLightLevel',
-        displayName: 'Current Ambient Light Level',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100000,
-          minValue: 0.0001,
-          perms: ['ev', 'pr'],
-          unit: 'lux'
-        },
-        value: 0.0001
-      }
-    ],
-    constructorName: 'LightSensor',
-    displayName: 'LightSensor',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000075-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusActive',
-        displayName: 'Status Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000079-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusLowBattery',
-        displayName: 'Status Low Battery',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007A-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusTampered',
-        displayName: 'Status Tampered',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  Lightbulb: {
-    UUID: '00000043-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000025-0000-1000-8000-0026BB765291',
-        constructorName: 'On',
-        displayName: 'On',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      }
-    ],
-    constructorName: 'Lightbulb',
-    displayName: 'Lightbulb',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000008-0000-1000-8000-0026BB765291',
-        constructorName: 'Brightness',
-        displayName: 'Brightness',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '0000024B-0000-1000-8000-0026BB765291',
-        constructorName: 'CharacteristicValueActiveTransitionCount',
-        displayName: 'Characteristic Value Active Transition Count',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000143-0000-1000-8000-0026BB765291',
-        constructorName: 'CharacteristicValueTransitionControl',
-        displayName: 'Characteristic Value Transition Control',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr', 'pw', 'wr']
-        },
-        value: ''
-      },
-      {
-        UUID: '000000CE-0000-1000-8000-0026BB765291',
-        constructorName: 'ColorTemperature',
-        displayName: 'Color Temperature',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          maxValue: 500,
-          minStep: 1,
-          minValue: 140,
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: 140
-      },
-      {
-        UUID: '00000013-0000-1000-8000-0026BB765291',
-        constructorName: 'Hue',
-        displayName: 'Hue',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 360,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'arcdegrees'
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '0000002F-0000-1000-8000-0026BB765291',
-        constructorName: 'Saturation',
-        displayName: 'Saturation',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '00000144-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedCharacteristicValueTransitionConfiguration',
-        displayName: 'Supported Characteristic Value Transition Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    primaryService: false
-  },
-  LockManagement: {
-    UUID: '00000044-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000019-0000-1000-8000-0026BB765291',
-        constructorName: 'LockControlPoint',
-        displayName: 'Lock Control Point',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000037-0000-1000-8000-0026BB765291',
-        constructorName: 'Version',
-        displayName: 'Version',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'LockManagement',
-    displayName: 'LockManagement',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000001-0000-1000-8000-0026BB765291',
-        constructorName: 'AdministratorOnlyAccess',
-        displayName: 'Administrator Only Access',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      },
-      {
-        UUID: '00000005-0000-1000-8000-0026BB765291',
-        constructorName: 'AudioFeedback',
-        displayName: 'Audio Feedback',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      },
-      {
-        UUID: '0000000E-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentDoorState',
-        displayName: 'Current Door State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 4,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 3, 4]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000001A-0000-1000-8000-0026BB765291',
-        constructorName: 'LockManagementAutoSecurityTimeout',
-        displayName: 'Lock Management Auto Security Timeout',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'seconds'
-        },
-        value: 0
-      },
-      {
-        UUID: '0000001C-0000-1000-8000-0026BB765291',
-        constructorName: 'LockLastKnownAction',
-        displayName: 'Lock Last Known Action',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 10,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000001F-0000-1000-8000-0026BB765291',
-        constructorName: 'Logs',
-        displayName: 'Logs',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000022-0000-1000-8000-0026BB765291',
-        constructorName: 'MotionDetected',
-        displayName: 'Motion Detected',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      }
-    ],
-    primaryService: false
-  },
-  LockMechanism: {
-    UUID: '00000045-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000001D-0000-1000-8000-0026BB765291',
-        constructorName: 'LockCurrentState',
-        displayName: 'Lock Current State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 3,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 3]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000001E-0000-1000-8000-0026BB765291',
-        constructorName: 'LockTargetState',
-        displayName: 'Lock Target State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'LockMechanism',
-    displayName: 'LockMechanism',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    primaryService: false
-  },
-  Microphone: {
-    UUID: '00000112-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000011A-0000-1000-8000-0026BB765291',
-        constructorName: 'Mute',
-        displayName: 'Mute',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      }
-    ],
-    constructorName: 'Microphone',
-    displayName: 'Microphone',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000119-0000-1000-8000-0026BB765291',
-        constructorName: 'Volume',
-        displayName: 'Volume',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  MotionSensor: {
-    UUID: '00000085-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000022-0000-1000-8000-0026BB765291',
-        constructorName: 'MotionDetected',
-        displayName: 'Motion Detected',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      }
-    ],
-    constructorName: 'MotionSensor',
-    displayName: 'MotionSensor',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000075-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusActive',
-        displayName: 'Status Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000079-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusLowBattery',
-        displayName: 'Status Low Battery',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007A-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusTampered',
-        displayName: 'Status Tampered',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  NFCAccess: {
-    UUID: '00000266-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000263-0000-1000-8000-0026BB765291',
-        constructorName: 'ConfigurationState',
-        displayName: 'Configuration State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint16',
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000264-0000-1000-8000-0026BB765291',
-        constructorName: 'NFCAccessControlPoint',
-        displayName: 'NFC Access Control Point',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr', 'pw', 'wr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000265-0000-1000-8000-0026BB765291',
-        constructorName: 'NFCAccessSupportedConfiguration',
-        displayName: 'NFC Access Supported Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'NFCAccess',
-    displayName: 'NFCAccess',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  OccupancySensor: {
-    UUID: '00000086-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000071-0000-1000-8000-0026BB765291',
-        constructorName: 'OccupancyDetected',
-        displayName: 'Occupancy Detected',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'OccupancySensor',
-    displayName: 'OccupancySensor',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000075-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusActive',
-        displayName: 'Status Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000079-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusLowBattery',
-        displayName: 'Status Low Battery',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007A-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusTampered',
-        displayName: 'Status Tampered',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  Outlet: {
-    UUID: '00000047-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000025-0000-1000-8000-0026BB765291',
-        constructorName: 'On',
-        displayName: 'On',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      }
-    ],
-    constructorName: 'Outlet',
-    displayName: 'Outlet',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000026-0000-1000-8000-0026BB765291',
-        constructorName: 'OutletInUse',
-        displayName: 'Outlet In Use',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      }
-    ],
-    primaryService: false
-  },
-  Pairing: {
-    UUID: '00000055-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000050-0000-1000-8000-0026BB765291',
-        constructorName: 'ListPairings',
-        displayName: 'List Pairings',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr', 'pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '0000004C-0000-1000-8000-0026BB765291',
-        constructorName: 'PairSetup',
-        displayName: 'Pair Setup',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr', 'pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '0000004E-0000-1000-8000-0026BB765291',
-        constructorName: 'PairVerify',
-        displayName: 'Pair Verify',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr', 'pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '0000004F-0000-1000-8000-0026BB765291',
-        constructorName: 'PairingFeatures',
-        displayName: 'Pairing Features',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          perms: ['pr']
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'Pairing',
-    displayName: 'Pairing',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  PowerManagement: {
-    UUID: '00000221-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000222-0000-1000-8000-0026BB765291',
-        constructorName: 'WakeConfiguration',
-        displayName: 'Wake Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'PowerManagement',
-    displayName: 'PowerManagement',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000252-0000-1000-8000-0026BB765291',
-        constructorName: 'SelectedSleepConfiguration',
-        displayName: 'Selected Sleep Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr', 'pw', 'wr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000251-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedSleepConfiguration',
-        displayName: 'Supported Sleep Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    primaryService: false
-  },
-  ProtocolInformation: {
-    UUID: '000000A2-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000037-0000-1000-8000-0026BB765291',
-        constructorName: 'Version',
-        displayName: 'Version',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'ProtocolInformation',
-    displayName: 'ProtocolInformation',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  Relay: {
-    nrchkbDisabledText: 'Relay (deprecated, replaced by CloudRelay)'
-  },
-  SecuritySystem: {
-    UUID: '0000007E-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000066-0000-1000-8000-0026BB765291',
-        constructorName: 'SecuritySystemCurrentState',
-        displayName: 'Security System Current State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 4,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 3, 4]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000067-0000-1000-8000-0026BB765291',
-        constructorName: 'SecuritySystemTargetState',
-        displayName: 'Security System Target State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 3,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1, 2, 3]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'SecuritySystem',
-    displayName: 'SecuritySystem',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '0000008E-0000-1000-8000-0026BB765291',
-        constructorName: 'SecuritySystemAlarmType',
-        displayName: 'Security System Alarm Type',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          validValues: [0, 1],
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007A-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusTampered',
-        displayName: 'Status Tampered',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  ServiceLabel: {
-    UUID: '000000CC-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000CD-0000-1000-8000-0026BB765291',
-        constructorName: 'ServiceLabelNamespace',
-        displayName: 'Service Label Namespace',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'ServiceLabel',
-    displayName: 'ServiceLabel',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  Siri: {
-    UUID: '00000133-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000132-0000-1000-8000-0026BB765291',
-        constructorName: 'SiriInputType',
-        displayName: 'Siri Input Type',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 0,
-          minValue: 0,
-          perms: ['pr'],
-          validValues: [0]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'Siri',
-    displayName: 'Siri',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '0000026B-0000-1000-8000-0026BB765291',
-        constructorName: 'MultifunctionButton',
-        displayName: 'Multifunction Button',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000255-0000-1000-8000-0026BB765291',
-        constructorName: 'SiriEnable',
-        displayName: 'Siri Enable',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: 0
-      },
-      {
-        UUID: '0000025A-0000-1000-8000-0026BB765291',
-        constructorName: 'SiriEngineVersion',
-        displayName: 'Siri Engine Version',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000258-0000-1000-8000-0026BB765291',
-        constructorName: 'SiriLightOnUse',
-        displayName: 'Siri Light On Use',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000256-0000-1000-8000-0026BB765291',
-        constructorName: 'SiriListening',
-        displayName: 'Siri Listening',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000257-0000-1000-8000-0026BB765291',
-        constructorName: 'SiriTouchToUse',
-        displayName: 'Siri Touch To Use',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  SiriEndpoint: {
-    UUID: '00000253-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000254-0000-1000-8000-0026BB765291',
-        constructorName: 'SiriEndpointSessionStatus',
-        displayName: 'Siri Endpoint Session Status',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000037-0000-1000-8000-0026BB765291',
-        constructorName: 'Version',
-        displayName: 'Version',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'SiriEndpoint',
-    displayName: 'SiriEndpoint',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000E7-0000-1000-8000-0026BB765291',
-        constructorName: 'ActiveIdentifier',
-        displayName: 'Active Identifier',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000227-0000-1000-8000-0026BB765291',
-        constructorName: 'ManuallyDisabled',
-        displayName: 'Manually Disabled',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      }
-    ],
-    primaryService: false
-  },
-  Slat: {
-    nrchkbDisabledText: 'Slat (deprecated, replaced by Slats)'
-  },
-  Slats: {
-    UUID: '000000B9-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000AA-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentSlatState',
-        displayName: 'Current Slat State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000C0-0000-1000-8000-0026BB765291',
-        constructorName: 'SlatType',
-        displayName: 'Slat Type',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'Slats',
-    displayName: 'Slats',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '000000B6-0000-1000-8000-0026BB765291',
-        constructorName: 'SwingMode',
-        displayName: 'Swing Mode',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000C1-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentTiltAngle',
-        displayName: 'Current Tilt Angle',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          maxValue: 90,
-          minStep: 1,
-          minValue: -90,
-          perms: ['ev', 'pr'],
-          unit: 'arcdegrees'
-        },
-        value: -90
-      },
-      {
-        UUID: '000000C2-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetTiltAngle',
-        displayName: 'Target Tilt Angle',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          maxValue: 90,
-          minStep: 1,
-          minValue: -90,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'arcdegrees'
-        },
-        value: -90
-      }
-    ],
-    primaryService: false
-  },
-  SmartSpeaker: {
-    UUID: '00000228-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000E0-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentMediaState',
-        displayName: 'Current Media State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 5,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 4, 5]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000137-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetMediaState',
-        displayName: 'Target Media State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'SmartSpeaker',
-    displayName: 'SmartSpeaker',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '0000025B-0000-1000-8000-0026BB765291',
-        constructorName: 'AirPlayEnable',
-        displayName: 'AirPlay Enable',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: 0
-      },
-      {
-        UUID: '000000E3-0000-1000-8000-0026BB765291',
-        constructorName: 'ConfiguredName',
-        displayName: 'Configured Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '0000011A-0000-1000-8000-0026BB765291',
-        constructorName: 'Mute',
-        displayName: 'Mute',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000119-0000-1000-8000-0026BB765291',
-        constructorName: 'Volume',
-        displayName: 'Volume',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  SmokeSensor: {
-    UUID: '00000087-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000076-0000-1000-8000-0026BB765291',
-        constructorName: 'SmokeDetected',
-        displayName: 'Smoke Detected',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'SmokeSensor',
-    displayName: 'SmokeSensor',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000075-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusActive',
-        displayName: 'Status Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000079-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusLowBattery',
-        displayName: 'Status Low Battery',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007A-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusTampered',
-        displayName: 'Status Tampered',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  Speaker: {
-    UUID: '00000113-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000011A-0000-1000-8000-0026BB765291',
-        constructorName: 'Mute',
-        displayName: 'Mute',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      }
-    ],
-    constructorName: 'Speaker',
-    displayName: 'Speaker',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000119-0000-1000-8000-0026BB765291',
-        constructorName: 'Volume',
-        displayName: 'Volume',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  StatefulProgrammableSwitch: {
-    UUID: '00000088-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000073-0000-1000-8000-0026BB765291',
-        constructorName: 'ProgrammableSwitchEvent',
-        displayName: 'Programmable Switch Event',
-        eventOnlyCharacteristic: true,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000074-0000-1000-8000-0026BB765291',
-        constructorName: 'ProgrammableSwitchOutputState',
-        displayName: 'Programmable Switch Output State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'StatefulProgrammableSwitch',
-    displayName: 'StatefulProgrammableSwitch',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    primaryService: false
-  },
-  StatelessProgrammableSwitch: {
-    UUID: '00000089-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000073-0000-1000-8000-0026BB765291',
-        constructorName: 'ProgrammableSwitchEvent',
-        displayName: 'Programmable Switch Event',
-        eventOnlyCharacteristic: true,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'StatelessProgrammableSwitch',
-    displayName: 'StatelessProgrammableSwitch',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '000000CB-0000-1000-8000-0026BB765291',
-        constructorName: 'ServiceLabelIndex',
-        displayName: 'Service Label Index',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 255,
-          minStep: 1,
-          minValue: 1,
-          perms: ['pr']
-        },
-        value: 1
-      }
-    ],
-    primaryService: false
-  },
-  Switch: {
-    UUID: '00000049-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000025-0000-1000-8000-0026BB765291',
-        constructorName: 'On',
-        displayName: 'On',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      }
-    ],
-    constructorName: 'Switch',
-    displayName: 'Switch',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    primaryService: false
-  },
-  TapManagement: {
-    UUID: '0000022E-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000250-0000-1000-8000-0026BB765291',
-        constructorName: 'CryptoHash',
-        displayName: 'Crypto Hash',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pw', 'wr']
-        },
-        value: ''
-      },
-      {
-        UUID: '0000022F-0000-1000-8000-0026BB765291',
-        constructorName: 'TapType',
-        displayName: 'Tap Type',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint16',
-          perms: ['pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000231-0000-1000-8000-0026BB765291',
-        constructorName: 'Token',
-        displayName: 'Token',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'data',
-          perms: ['pw']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'TapManagement',
-    displayName: 'TapManagement',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  TargetControl: {
-    UUID: '00000125-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000E7-0000-1000-8000-0026BB765291',
-        constructorName: 'ActiveIdentifier',
-        displayName: 'Active Identifier',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000126-0000-1000-8000-0026BB765291',
-        constructorName: 'ButtonEvent',
-        displayName: 'Button Event',
-        eventOnlyCharacteristic: false,
-        props: {
-          adminOnlyAccess: [2],
-          format: 'tlv8',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'TargetControl',
-    displayName: 'TargetControl',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      }
-    ],
-    primaryService: false
-  },
-  TargetControlManagement: {
-    UUID: '00000122-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000123-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetControlSupportedConfiguration',
-        displayName: 'Target Control Supported Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000124-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetControlList',
-        displayName: 'Target Control List',
-        eventOnlyCharacteristic: false,
-        props: {
-          adminOnlyAccess: [0, 1],
-          format: 'tlv8',
-          perms: ['pr', 'pw', 'wr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'TargetControlManagement',
-    displayName: 'TargetControlManagement',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  Television: {
-    UUID: '000000D8-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000E7-0000-1000-8000-0026BB765291',
-        constructorName: 'ActiveIdentifier',
-        displayName: 'Active Identifier',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: 0
-      },
-      {
-        UUID: '000000E3-0000-1000-8000-0026BB765291',
-        constructorName: 'ConfiguredName',
-        displayName: 'Configured Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '000000E1-0000-1000-8000-0026BB765291',
-        constructorName: 'RemoteKey',
-        displayName: 'Remote Key',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 16,
-          minStep: 1,
-          minValue: 0,
-          perms: ['pw'],
-          validValues: [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-          ]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000E8-0000-1000-8000-0026BB765291',
-        constructorName: 'SleepDiscoveryMode',
-        displayName: 'Sleep Discovery Mode',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'Television',
-    displayName: 'Television',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000008-0000-1000-8000-0026BB765291',
-        constructorName: 'Brightness',
-        displayName: 'Brightness',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '000000DD-0000-1000-8000-0026BB765291',
-        constructorName: 'ClosedCaptions',
-        displayName: 'Closed Captions',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000136-0000-1000-8000-0026BB765291',
-        constructorName: 'DisplayOrder',
-        displayName: 'Display Order',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '000000E0-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentMediaState',
-        displayName: 'Current Media State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 5,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 4, 5]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000137-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetMediaState',
-        displayName: 'Target Media State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '000000E2-0000-1000-8000-0026BB765291',
-        constructorName: 'PictureMode',
-        displayName: 'Picture Mode',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 13,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000DF-0000-1000-8000-0026BB765291',
-        constructorName: 'PowerModeSelection',
-        displayName: 'Power Mode Selection',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  TelevisionSpeaker: {
-    UUID: '00000113-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000011A-0000-1000-8000-0026BB765291',
-        constructorName: 'Mute',
-        displayName: 'Mute',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      }
-    ],
-    constructorName: 'TelevisionSpeaker',
-    displayName: 'TelevisionSpeaker',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000119-0000-1000-8000-0026BB765291',
-        constructorName: 'Volume',
-        displayName: 'Volume',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '000000E9-0000-1000-8000-0026BB765291',
-        constructorName: 'VolumeControlType',
-        displayName: 'Volume Control Type',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 3,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 3]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000EA-0000-1000-8000-0026BB765291',
-        constructorName: 'VolumeSelector',
-        displayName: 'Volume Selector',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  TemperatureSensor: {
-    UUID: '0000008A-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000011-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentTemperature',
-        displayName: 'Current Temperature',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 0.1,
-          minValue: -270,
-          perms: ['ev', 'pr'],
-          unit: 'celsius'
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'TemperatureSensor',
-    displayName: 'TemperatureSensor',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000075-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusActive',
-        displayName: 'Status Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000079-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusLowBattery',
-        displayName: 'Status Low Battery',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007A-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusTampered',
-        displayName: 'Status Tampered',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  Thermostat: {
-    UUID: '0000004A-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000000F-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentHeatingCoolingState',
-        displayName: 'Current Heating Cooling State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000033-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetHeatingCoolingState',
-        displayName: 'Target Heating Cooling State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 3,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1, 2, 3]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000011-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentTemperature',
-        displayName: 'Current Temperature',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 0.1,
-          minValue: -270,
-          perms: ['ev', 'pr'],
-          unit: 'celsius'
-        },
-        value: 0
-      },
-      {
-        UUID: '00000035-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetTemperature',
-        displayName: 'Target Temperature',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 38,
-          minStep: 0.1,
-          minValue: 10,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'celsius'
-        },
-        value: 10
-      },
-      {
-        UUID: '00000036-0000-1000-8000-0026BB765291',
-        constructorName: 'TemperatureDisplayUnits',
-        displayName: 'Temperature Display Units',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'Thermostat',
-    displayName: 'Thermostat',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000010-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentRelativeHumidity',
-        displayName: 'Current Relative Humidity',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '00000034-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetRelativeHumidity',
-        displayName: 'Target Relative Humidity',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '0000000D-0000-1000-8000-0026BB765291',
-        constructorName: 'CoolingThresholdTemperature',
-        displayName: 'Cooling Threshold Temperature',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 35,
-          minStep: 0.1,
-          minValue: 10,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'celsius'
-        },
-        value: 10
-      },
-      {
-        UUID: '00000012-0000-1000-8000-0026BB765291',
-        constructorName: 'HeatingThresholdTemperature',
-        displayName: 'Heating Threshold Temperature',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'float',
-          maxValue: 25,
-          minStep: 0.1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'celsius'
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  ThreadTransport: {
-    UUID: '00000701-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000022B-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentTransport',
-        displayName: 'Current Transport',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['pr']
-        },
-        value: false
-      },
-      {
-        UUID: '00000704-0000-1000-8000-0026BB765291',
-        constructorName: 'ThreadControlPoint',
-        displayName: 'Thread Control Point',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000702-0000-1000-8000-0026BB765291',
-        constructorName: 'ThreadNodeCapabilities',
-        displayName: 'Thread Node Capabilities',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint16',
-          maxValue: 31,
-          minStep: 1,
-          minValue: 0,
-          perms: ['pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000703-0000-1000-8000-0026BB765291',
-        constructorName: 'ThreadStatus',
-        displayName: 'Thread Status',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint16',
-          maxValue: 6,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'ThreadTransport',
-    displayName: 'ThreadTransport',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000246-0000-1000-8000-0026BB765291',
-        constructorName: 'CCAEnergyDetectThreshold',
-        displayName: 'CCA Energy Detect Threshold',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          perms: ['pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000245-0000-1000-8000-0026BB765291',
-        constructorName: 'CCASignalDetectThreshold',
-        displayName: 'CCA Signal Detect Threshold',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          perms: ['pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '0000023D-0000-1000-8000-0026BB765291',
-        constructorName: 'EventRetransmissionMaximum',
-        displayName: 'Event Retransmission Maximum',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          perms: ['pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '0000023E-0000-1000-8000-0026BB765291',
-        constructorName: 'EventTransmissionCounters',
-        displayName: 'Event Transmission Counters',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000247-0000-1000-8000-0026BB765291',
-        constructorName: 'MACRetransmissionMaximum',
-        displayName: 'MAC Retransmission Maximum',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          perms: ['pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000248-0000-1000-8000-0026BB765291',
-        constructorName: 'MACTransmissionCounters',
-        displayName: 'MAC Transmission Counters',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'data',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000244-0000-1000-8000-0026BB765291',
-        constructorName: 'ReceiverSensitivity',
-        displayName: 'Receiver Sensitivity',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          perms: ['pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '0000023F-0000-1000-8000-0026BB765291',
-        constructorName: 'ReceivedSignalStrengthIndication',
-        displayName: 'Received Signal Strength Indication',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          perms: ['pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000241-0000-1000-8000-0026BB765291',
-        constructorName: 'SignalToNoiseRatio',
-        displayName: 'Signal To Noise Ratio',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          perms: ['pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000706-0000-1000-8000-0026BB765291',
-        constructorName: 'ThreadOpenThreadVersion',
-        displayName: 'Thread OpenThread Version',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000242-0000-1000-8000-0026BB765291',
-        constructorName: 'TransmitPower',
-        displayName: 'Transmit Power',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          perms: ['pr']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000243-0000-1000-8000-0026BB765291',
-        constructorName: 'MaximumTransmitPower',
-        displayName: 'Maximum Transmit Power',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          perms: ['pr']
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  TimeInformation: {
-    nrchkbDisabledText: 'TimeInformation (deprecated, unused)'
-  },
-  TransferTransportManagement: {
-    UUID: '00000203-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000202-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedTransferTransportConfiguration',
-        displayName: 'Supported Transfer Transport Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000201-0000-1000-8000-0026BB765291',
-        constructorName: 'SetupTransferTransport',
-        displayName: 'Setup Transfer Transport',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pw', 'wr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'TransferTransportManagement',
-    displayName: 'TransferTransportManagement',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  Tunnel: {
-    UUID: '00000056-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '00000057-0000-1000-8000-0026BB765291',
-        constructorName: 'AccessoryIdentifier',
-        displayName: 'Accessory Identifier',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000061-0000-1000-8000-0026BB765291',
-        constructorName: 'TunnelConnectionTimeout',
-        displayName: 'Tunnel Connection Timeout',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: 0
-      },
-      {
-        UUID: '00000060-0000-1000-8000-0026BB765291',
-        constructorName: 'TunneledAccessoryAdvertising',
-        displayName: 'Tunneled Accessory Advertising',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      },
-      {
-        UUID: '00000059-0000-1000-8000-0026BB765291',
-        constructorName: 'TunneledAccessoryConnected',
-        displayName: 'Tunneled Accessory Connected',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: false
-      },
-      {
-        UUID: '00000058-0000-1000-8000-0026BB765291',
-        constructorName: 'TunneledAccessoryStateNumber',
-        displayName: 'Tunneled Accessory State Number',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          perms: ['ev', 'pr']
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'Tunnel',
-    displayName: 'Tunnel',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  TunneledBTLEAccessoryService: {
-    nrchkbDisabledText:
-      'TunneledBTLEAccessoryService (deprecated, replaced by Tunnel)'
-  },
-  Valve: {
-    UUID: '000000D0-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000B0-0000-1000-8000-0026BB765291',
-        constructorName: 'Active',
-        displayName: 'Active',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000D2-0000-1000-8000-0026BB765291',
-        constructorName: 'InUse',
-        displayName: 'In Use',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '000000D5-0000-1000-8000-0026BB765291',
-        constructorName: 'ValveType',
-        displayName: 'Valve Type',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 3,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2, 3]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'Valve',
-    displayName: 'Valve',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '000000D6-0000-1000-8000-0026BB765291',
-        constructorName: 'IsConfigured',
-        displayName: 'Is Configured',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '000000D4-0000-1000-8000-0026BB765291',
-        constructorName: 'RemainingDuration',
-        displayName: 'Remaining Duration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          maxValue: 3600,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          unit: 'seconds'
-        },
-        value: 0
-      },
-      {
-        UUID: '000000CB-0000-1000-8000-0026BB765291',
-        constructorName: 'ServiceLabelIndex',
-        displayName: 'Service Label Index',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 255,
-          minStep: 1,
-          minValue: 1,
-          perms: ['pr']
-        },
-        value: 1
-      },
-      {
-        UUID: '000000D3-0000-1000-8000-0026BB765291',
-        constructorName: 'SetDuration',
-        displayName: 'Set Duration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          maxValue: 3600,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'seconds'
-        },
-        value: 0
-      },
-      {
-        UUID: '00000077-0000-1000-8000-0026BB765291',
-        constructorName: 'StatusFault',
-        displayName: 'Status Fault',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      }
-    ],
-    primaryService: false
-  },
-  WiFiRouter: {
-    UUID: '0000020A-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '000000E3-0000-1000-8000-0026BB765291',
-        constructorName: 'ConfiguredName',
-        displayName: 'Configured Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          perms: ['ev', 'pr', 'pw']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000215-0000-1000-8000-0026BB765291',
-        constructorName: 'ManagedNetworkEnable',
-        displayName: 'Managed Network Enable',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw', 'tw'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000021F-0000-1000-8000-0026BB765291',
-        constructorName: 'NetworkAccessViolationControl',
-        displayName: 'Network Access Violation Control',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr', 'pw', 'tw', 'wr']
-        },
-        value: ''
-      },
-      {
-        UUID: '0000020C-0000-1000-8000-0026BB765291',
-        constructorName: 'NetworkClientProfileControl',
-        displayName: 'Network Client Profile Control',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr', 'pw', 'tw', 'wr']
-        },
-        value: ''
-      },
-      {
-        UUID: '0000020D-0000-1000-8000-0026BB765291',
-        constructorName: 'NetworkClientStatusControl',
-        displayName: 'Network Client Status Control',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr', 'pw', 'wr']
-        },
-        value: ''
-      },
-      {
-        UUID: '0000020E-0000-1000-8000-0026BB765291',
-        constructorName: 'RouterStatus',
-        displayName: 'Router Status',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1]
-        },
-        value: 0
-      },
-      {
-        UUID: '00000210-0000-1000-8000-0026BB765291',
-        constructorName: 'SupportedRouterConfiguration',
-        displayName: 'Supported Router Configuration',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000211-0000-1000-8000-0026BB765291',
-        constructorName: 'WANConfigurationList',
-        displayName: 'WAN Configuration List',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000212-0000-1000-8000-0026BB765291',
-        constructorName: 'WANStatusList',
-        displayName: 'WAN Status List',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr']
-        },
-        value: ''
-      }
-    ],
-    constructorName: 'WiFiRouter',
-    displayName: 'WiFiRouter',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  WiFiSatellite: {
-    UUID: '0000020F-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000021E-0000-1000-8000-0026BB765291',
-        constructorName: 'WiFiSatelliteStatus',
-        displayName: 'Wi-Fi Satellite Status',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'WiFiSatellite',
-    displayName: 'WiFiSatellite',
-    hiddenService: false,
-    optionalCharacteristics: [],
-    primaryService: false
-  },
-  WiFiTransport: {
-    UUID: '0000022A-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000022B-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentTransport',
-        displayName: 'Current Transport',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['pr']
-        },
-        value: false
-      },
-      {
-        UUID: '0000022C-0000-1000-8000-0026BB765291',
-        constructorName: 'WiFiCapabilities',
-        displayName: 'Wi-Fi Capabilities',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint32',
-          perms: ['pr']
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'WiFiTransport',
-    displayName: 'WiFiTransport',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '0000022D-0000-1000-8000-0026BB765291',
-        constructorName: 'WiFiConfigurationControl',
-        displayName: 'Wi-Fi Configuration Control',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'tlv8',
-          perms: ['ev', 'pr', 'pw', 'tw', 'wr']
-        },
-        value: ''
-      }
-    ],
-    primaryService: false
-  },
-  Window: {
-    UUID: '0000008B-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000006D-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentPosition',
-        displayName: 'Current Position',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '00000072-0000-1000-8000-0026BB765291',
-        constructorName: 'PositionState',
-        displayName: 'Position State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007C-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetPosition',
-        displayName: 'Target Position',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'Window',
-    displayName: 'Window',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000024-0000-1000-8000-0026BB765291',
-        constructorName: 'ObstructionDetected',
-        displayName: 'Obstruction Detected',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '0000006F-0000-1000-8000-0026BB765291',
-        constructorName: 'HoldPosition',
-        displayName: 'Hold Position',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['pw']
-        },
-        value: false
-      }
-    ],
-    primaryService: false
-  },
-  WindowCovering: {
-    UUID: '0000008C-0000-1000-8000-0026BB765291',
-    characteristics: [
-      {
-        UUID: '0000006D-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentPosition',
-        displayName: 'Current Position',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          unit: 'percentage'
-        },
-        value: 0
-      },
-      {
-        UUID: '00000072-0000-1000-8000-0026BB765291',
-        constructorName: 'PositionState',
-        displayName: 'Position State',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 2,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr'],
-          validValues: [0, 1, 2]
-        },
-        value: 0
-      },
-      {
-        UUID: '0000007C-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetPosition',
-        displayName: 'Target Position',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'uint8',
-          maxValue: 100,
-          minStep: 1,
-          minValue: 0,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'percentage'
-        },
-        value: 0
-      }
-    ],
-    constructorName: 'WindowCovering',
-    displayName: 'WindowCovering',
-    hiddenService: false,
-    optionalCharacteristics: [
-      {
-        UUID: '0000006C-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentHorizontalTiltAngle',
-        displayName: 'Current Horizontal Tilt Angle',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          maxValue: 90,
-          minStep: 1,
-          minValue: -90,
-          perms: ['ev', 'pr'],
-          unit: 'arcdegrees'
-        },
-        value: -90
-      },
-      {
-        UUID: '0000007B-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetHorizontalTiltAngle',
-        displayName: 'Target Horizontal Tilt Angle',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          maxValue: 90,
-          minStep: 1,
-          minValue: -90,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'arcdegrees'
-        },
-        value: -90
-      },
-      {
-        UUID: '00000023-0000-1000-8000-0026BB765291',
-        constructorName: 'Name',
-        displayName: 'Name',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'string',
-          maxLen: 64,
-          perms: ['pr']
-        },
-        value: ''
-      },
-      {
-        UUID: '00000024-0000-1000-8000-0026BB765291',
-        constructorName: 'ObstructionDetected',
-        displayName: 'Obstruction Detected',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['ev', 'pr']
-        },
-        value: false
-      },
-      {
-        UUID: '0000006F-0000-1000-8000-0026BB765291',
-        constructorName: 'HoldPosition',
-        displayName: 'Hold Position',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'bool',
-          perms: ['pw']
-        },
-        value: false
-      },
-      {
-        UUID: '0000006E-0000-1000-8000-0026BB765291',
-        constructorName: 'CurrentVerticalTiltAngle',
-        displayName: 'Current Vertical Tilt Angle',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          maxValue: 90,
-          minStep: 1,
-          minValue: -90,
-          perms: ['ev', 'pr'],
-          unit: 'arcdegrees'
-        },
-        value: -90
-      },
-      {
-        UUID: '0000007D-0000-1000-8000-0026BB765291',
-        constructorName: 'TargetVerticalTiltAngle',
-        displayName: 'Target Vertical Tilt Angle',
-        eventOnlyCharacteristic: false,
-        props: {
-          format: 'int',
-          maxValue: 90,
-          minStep: 1,
-          minValue: -90,
-          perms: ['ev', 'pr', 'pw'],
-          unit: 'arcdegrees'
-        },
-        value: -90
-      }
-    ],
-    primaryService: false
-  }
+    AccessCode: {
+        displayName: 'AccessCode',
+        UUID: '00000260-0000-1000-8000-0026BB765291',
+        constructorName: 'AccessCode',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Access Code Control Point',
+                UUID: '00000262-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'AccessCodeControlPoint',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw', 'wr'],
+                },
+            },
+            {
+                displayName: 'Access Code Supported Configuration',
+                UUID: '00000261-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'AccessCodeSupportedConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Configuration State',
+                UUID: '00000263-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ConfigurationState',
+                value: 0,
+                props: {
+                    format: 'uint16',
+                    perms: ['ev', 'pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    AccessControl: {
+        displayName: 'AccessControl',
+        UUID: '000000DA-0000-1000-8000-0026BB765291',
+        constructorName: 'AccessControl',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Access Control Level',
+                UUID: '000000E5-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'AccessControlLevel',
+                value: 0,
+                props: {
+                    format: 'uint16',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Media Access Control Level',
+                UUID: '000000EE-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'MediaAccessControlLevel',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Password Setting',
+                UUID: '000000E4-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'PasswordSetting',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+        ],
+    },
+    AccessoryInformation: {
+        displayName: 'AccessoryInformation',
+        UUID: '0000003E-0000-1000-8000-0026BB765291',
+        constructorName: 'AccessoryInformation',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Identify',
+                UUID: '00000014-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Identify',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['pw'],
+                },
+            },
+            {
+                displayName: 'Manufacturer',
+                UUID: '00000020-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Manufacturer',
+                value: 'Default-Manufacturer',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Model',
+                UUID: '00000021-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Model',
+                value: 'Default-Model',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: 'Unnamed Service',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Serial Number',
+                UUID: '00000030-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SerialNumber',
+                value: 'Default-SerialNumber',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Firmware Revision',
+                UUID: '00000052-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'FirmwareRevision',
+                value: '0.0.0',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Accessory Flags',
+                UUID: '000000A6-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'AccessoryFlags',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'App Matching Identifier',
+                UUID: '000000A4-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'AppMatchingIdentifier',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Configured Name',
+                UUID: '000000E3-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ConfiguredName',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Matter Firmware Revision Number',
+                UUID: '0000026D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'MatterFirmwareRevisionNumber',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Hardware Finish',
+                UUID: '0000026C-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'HardwareFinish',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Hardware Revision',
+                UUID: '00000053-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'HardwareRevision',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Product Data',
+                UUID: '00000220-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ProductData',
+                value: '',
+                props: {
+                    format: 'data',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Software Revision',
+                UUID: '00000054-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SoftwareRevision',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                },
+            },
+        ],
+    },
+    AccessoryMetrics: {
+        displayName: 'AccessoryMetrics',
+        UUID: '00000270-0000-1000-8000-0026BB765291',
+        constructorName: 'AccessoryMetrics',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Metrics Buffer Full State',
+                UUID: '00000272-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'MetricsBufferFullState',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Supported Metrics',
+                UUID: '00000271-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedMetrics',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw'],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    AccessoryRuntimeInformation: {
+        displayName: 'AccessoryRuntimeInformation',
+        UUID: '00000239-0000-1000-8000-0026BB765291',
+        constructorName: 'AccessoryRuntimeInformation',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Ping',
+                UUID: '0000023C-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Ping',
+                value: '',
+                props: {
+                    format: 'data',
+                    perms: ['pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Activity Interval',
+                UUID: '0000023B-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ActivityInterval',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Connection Health Monitor',
+                UUID: '00000273-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ConnectionHealthMonitor',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Heart Beat',
+                UUID: '0000024A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'HeartBeat',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Sleep Interval',
+                UUID: '0000023A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SleepInterval',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    minStep: 1,
+                },
+            },
+        ],
+    },
+    AirPurifier: {
+        displayName: 'AirPurifier',
+        UUID: '000000BB-0000-1000-8000-0026BB765291',
+        constructorName: 'AirPurifier',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Current Air Purifier State',
+                UUID: '000000A9-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentAirPurifierState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+            {
+                displayName: 'Target Air Purifier State',
+                UUID: '000000A8-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetAirPurifierState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Lock Physical Controls',
+                UUID: '000000A7-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'LockPhysicalControls',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Rotation Speed',
+                UUID: '00000029-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RotationSpeed',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Swing Mode',
+                UUID: '000000B6-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SwingMode',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    AirQualitySensor: {
+        displayName: 'AirQualitySensor',
+        UUID: '0000008D-0000-1000-8000-0026BB765291',
+        constructorName: 'AirQualitySensor',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Air Quality',
+                UUID: '00000095-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'AirQuality',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 5,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3, 4, 5],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Nitrogen Dioxide Density',
+                UUID: '000000C4-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'NitrogenDioxideDensity',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1000,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Ozone Density',
+                UUID: '000000C3-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'OzoneDensity',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1000,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'PM10 Density',
+                UUID: '000000C7-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'PM10Density',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1000,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'PM2.5 Density',
+                UUID: '000000C6-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'PM2_5Density',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1000,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Sulphur Dioxide Density',
+                UUID: '000000C5-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SulphurDioxideDensity',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1000,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'VOC Density',
+                UUID: '000000C8-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'VOCDensity',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1000,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Status Active',
+                UUID: '00000075-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusActive',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Low Battery',
+                UUID: '00000079-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusLowBattery',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Tampered',
+                UUID: '0000007A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusTampered',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    AssetUpdate: {
+        displayName: 'AssetUpdate',
+        UUID: '00000267-0000-1000-8000-0026BB765291',
+        constructorName: 'AssetUpdate',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Asset Update Readiness',
+                UUID: '00000269-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'AssetUpdateReadiness',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Supported Asset Types',
+                UUID: '00000268-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedAssetTypes',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    Assistant: {
+        displayName: 'Assistant',
+        UUID: '0000026A-0000-1000-8000-0026BB765291',
+        constructorName: 'Assistant',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Identifier',
+                UUID: '000000E6-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Identifier',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: 'Unnamed Service',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    AudioStreamManagement: {
+        displayName: 'AudioStreamManagement',
+        UUID: '00000127-0000-1000-8000-0026BB765291',
+        constructorName: 'AudioStreamManagement',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Supported Audio Stream Configuration',
+                UUID: '00000115-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedAudioStreamConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Selected Audio Stream Configuration',
+                UUID: '00000128-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SelectedAudioStreamConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw'],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    Battery: {
+        displayName: 'Battery',
+        UUID: '00000096-0000-1000-8000-0026BB765291',
+        constructorName: 'Battery',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Status Low Battery',
+                UUID: '00000079-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusLowBattery',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Battery Level',
+                UUID: '00000068-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'BatteryLevel',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Charging State',
+                UUID: '0000008F-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ChargingState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+        ],
+    },
+    CameraOperatingMode: {
+        displayName: 'CameraOperatingMode',
+        UUID: '0000021A-0000-1000-8000-0026BB765291',
+        constructorName: 'CameraOperatingMode',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Event Snapshots Active',
+                UUID: '00000223-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'EventSnapshotsActive',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'HomeKit Camera Active',
+                UUID: '0000021B-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'HomeKitCameraActive',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Camera Operating Mode Indicator',
+                UUID: '0000021D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CameraOperatingModeIndicator',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw', 'tw'],
+                },
+            },
+            {
+                displayName: 'Manually Disabled',
+                UUID: '00000227-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ManuallyDisabled',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Night Vision',
+                UUID: '0000011B-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'NightVision',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw', 'tw'],
+                },
+            },
+            {
+                displayName: 'Periodic Snapshots Active',
+                UUID: '00000225-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'PeriodicSnapshotsActive',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Third Party Camera Active',
+                UUID: '0000021C-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ThirdPartyCameraActive',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Diagonal Field Of View',
+                UUID: '00000224-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'DiagonalFieldOfView',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    unit: 'arcdegrees',
+                    minValue: 0,
+                    maxValue: 360,
+                },
+            },
+        ],
+    },
+    CameraRecordingManagement: {
+        displayName: 'CameraRecordingManagement',
+        UUID: '00000204-0000-1000-8000-0026BB765291',
+        constructorName: 'CameraRecordingManagement',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Selected Camera Recording Configuration',
+                UUID: '00000209-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SelectedCameraRecordingConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Supported Audio Recording Configuration',
+                UUID: '00000207-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedAudioRecordingConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Supported Camera Recording Configuration',
+                UUID: '00000205-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedCameraRecordingConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Supported Video Recording Configuration',
+                UUID: '00000206-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedVideoRecordingConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Recording Audio Active',
+                UUID: '00000226-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RecordingAudioActive',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw', 'tw'],
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    CameraRTPStreamManagement: {
+        displayName: 'CameraRTPStreamManagement',
+        UUID: '00000110-0000-1000-8000-0026BB765291',
+        constructorName: 'CameraRTPStreamManagement',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Selected RTP Stream Configuration',
+                UUID: '00000117-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SelectedRTPStreamConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Setup Endpoints',
+                UUID: '00000118-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SetupEndpoints',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Streaming Status',
+                UUID: '00000120-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StreamingStatus',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Supported Audio Stream Configuration',
+                UUID: '00000115-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedAudioStreamConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Supported RTP Configuration',
+                UUID: '00000116-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedRTPConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Supported Video Stream Configuration',
+                UUID: '00000114-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedVideoStreamConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    CarbonDioxideSensor: {
+        displayName: 'CarbonDioxideSensor',
+        UUID: '00000097-0000-1000-8000-0026BB765291',
+        constructorName: 'CarbonDioxideSensor',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Carbon Dioxide Detected',
+                UUID: '00000092-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CarbonDioxideDetected',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Carbon Dioxide Level',
+                UUID: '00000093-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CarbonDioxideLevel',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 100000,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Carbon Dioxide Peak Level',
+                UUID: '00000094-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CarbonDioxidePeakLevel',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 100000,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Status Active',
+                UUID: '00000075-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusActive',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Low Battery',
+                UUID: '00000079-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusLowBattery',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Tampered',
+                UUID: '0000007A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusTampered',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    CarbonMonoxideSensor: {
+        displayName: 'CarbonMonoxideSensor',
+        UUID: '0000007F-0000-1000-8000-0026BB765291',
+        constructorName: 'CarbonMonoxideSensor',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Carbon Monoxide Detected',
+                UUID: '00000069-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CarbonMonoxideDetected',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Carbon Monoxide Level',
+                UUID: '00000090-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CarbonMonoxideLevel',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Carbon Monoxide Peak Level',
+                UUID: '00000091-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CarbonMonoxidePeakLevel',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Status Active',
+                UUID: '00000075-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusActive',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Low Battery',
+                UUID: '00000079-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusLowBattery',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Tampered',
+                UUID: '0000007A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusTampered',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    CloudRelay: {
+        displayName: 'CloudRelay',
+        UUID: '0000005A-0000-1000-8000-0026BB765291',
+        constructorName: 'CloudRelay',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Relay Control Point',
+                UUID: '0000005E-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RelayControlPoint',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Relay State',
+                UUID: '0000005C-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RelayState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 5,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Relay Enabled',
+                UUID: '0000005B-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RelayEnabled',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    ContactSensor: {
+        displayName: 'ContactSensor',
+        UUID: '00000080-0000-1000-8000-0026BB765291',
+        constructorName: 'ContactSensor',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Contact Sensor State',
+                UUID: '0000006A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ContactSensorState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Status Active',
+                UUID: '00000075-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusActive',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Low Battery',
+                UUID: '00000079-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusLowBattery',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Tampered',
+                UUID: '0000007A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusTampered',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    DataStreamTransportManagement: {
+        displayName: 'DataStreamTransportManagement',
+        UUID: '00000129-0000-1000-8000-0026BB765291',
+        constructorName: 'DataStreamTransportManagement',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Setup Data Stream Transport',
+                UUID: '00000131-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SetupDataStreamTransport',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw', 'wr'],
+                },
+            },
+            {
+                displayName: 'Supported Data Stream Transport Configuration',
+                UUID: '00000130-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedDataStreamTransportConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Version',
+                UUID: '00000037-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Version',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    Diagnostics: {
+        displayName: 'Diagnostics',
+        UUID: '00000237-0000-1000-8000-0026BB765291',
+        constructorName: 'Diagnostics',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Supported Diagnostics Snapshot',
+                UUID: '00000238-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedDiagnosticsSnapshot',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Selected Diagnostics Modes',
+                UUID: '0000024D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SelectedDiagnosticsModes',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Supported Diagnostics Modes',
+                UUID: '0000024C-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedDiagnosticsModes',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['pr'],
+                },
+            },
+        ],
+    },
+    Door: {
+        displayName: 'Door',
+        UUID: '00000081-0000-1000-8000-0026BB765291',
+        constructorName: 'Door',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Current Position',
+                UUID: '0000006D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentPosition',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Position State',
+                UUID: '00000072-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'PositionState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+            {
+                displayName: 'Target Position',
+                UUID: '0000007C-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetPosition',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Obstruction Detected',
+                UUID: '00000024-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ObstructionDetected',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Hold Position',
+                UUID: '0000006F-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'HoldPosition',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['pw'],
+                },
+            },
+        ],
+    },
+    Doorbell: {
+        displayName: 'Doorbell',
+        UUID: '00000121-0000-1000-8000-0026BB765291',
+        constructorName: 'Doorbell',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Programmable Switch Event',
+                UUID: '00000073-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: true,
+                constructorName: 'ProgrammableSwitchEvent',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Brightness',
+                UUID: '00000008-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Brightness',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Mute',
+                UUID: '0000011A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Mute',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Operating State Response',
+                UUID: '00000232-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'OperatingStateResponse',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Volume',
+                UUID: '00000119-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Volume',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+        ],
+    },
+    Fan: {
+        displayName: 'Fan',
+        UUID: '00000040-0000-1000-8000-0026BB765291',
+        constructorName: 'Fan',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'On',
+                UUID: '00000025-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'On',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Rotation Direction',
+                UUID: '00000028-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RotationDirection',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Rotation Speed',
+                UUID: '00000029-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RotationSpeed',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+        ],
+    },
+    Fanv2: {
+        displayName: 'Fanv2',
+        UUID: '000000B7-0000-1000-8000-0026BB765291',
+        constructorName: 'Fanv2',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Current Fan State',
+                UUID: '000000AF-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentFanState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+            {
+                displayName: 'Target Fan State',
+                UUID: '000000BF-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetFanState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Lock Physical Controls',
+                UUID: '000000A7-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'LockPhysicalControls',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Rotation Direction',
+                UUID: '00000028-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RotationDirection',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Rotation Speed',
+                UUID: '00000029-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RotationSpeed',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Swing Mode',
+                UUID: '000000B6-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SwingMode',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    Faucet: {
+        displayName: 'Faucet',
+        UUID: '000000D7-0000-1000-8000-0026BB765291',
+        constructorName: 'Faucet',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    FilterMaintenance: {
+        displayName: 'FilterMaintenance',
+        UUID: '000000BA-0000-1000-8000-0026BB765291',
+        constructorName: 'FilterMaintenance',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Filter Change Indication',
+                UUID: '000000AC-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'FilterChangeIndication',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Filter Life Level',
+                UUID: '000000AB-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'FilterLifeLevel',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Reset Filter Indication',
+                UUID: '000000AD-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ResetFilterIndication',
+                value: 1,
+                props: {
+                    format: 'uint8',
+                    perms: ['pw'],
+                    minValue: 1,
+                    maxValue: 1,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+        ],
+    },
+    FirmwareUpdate: {
+        displayName: 'FirmwareUpdate',
+        UUID: '00000236-0000-1000-8000-0026BB765291',
+        constructorName: 'FirmwareUpdate',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Firmware Update Readiness',
+                UUID: '00000234-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'FirmwareUpdateReadiness',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Firmware Update Status',
+                UUID: '00000235-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'FirmwareUpdateStatus',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Firmware Update Protocol List',
+                UUID: '0000026F-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'FirmwareUpdateProtocolList',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Matter Firmware Update Status',
+                UUID: '0000026E-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'MatterFirmwareUpdateStatus',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Staged Firmware Version',
+                UUID: '00000249-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StagedFirmwareVersion',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Supported Firmware Update Configuration',
+                UUID: '00000233-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedFirmwareUpdateConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+        ],
+    },
+    GarageDoorOpener: {
+        displayName: 'GarageDoorOpener',
+        UUID: '00000041-0000-1000-8000-0026BB765291',
+        constructorName: 'GarageDoorOpener',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Current Door State',
+                UUID: '0000000E-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentDoorState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 4,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3, 4],
+                },
+            },
+            {
+                displayName: 'Target Door State',
+                UUID: '00000032-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetDoorState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Obstruction Detected',
+                UUID: '00000024-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ObstructionDetected',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Lock Current State',
+                UUID: '0000001D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'LockCurrentState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 3,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3],
+                },
+            },
+            {
+                displayName: 'Lock Target State',
+                UUID: '0000001E-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'LockTargetState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+        ],
+    },
+    HeaterCooler: {
+        displayName: 'HeaterCooler',
+        UUID: '000000BC-0000-1000-8000-0026BB765291',
+        constructorName: 'HeaterCooler',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Current Heater-Cooler State',
+                UUID: '000000B1-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentHeaterCoolerState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 3,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3],
+                },
+            },
+            {
+                displayName: 'Target Heater-Cooler State',
+                UUID: '000000B2-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetHeaterCoolerState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+            {
+                displayName: 'Current Temperature',
+                UUID: '00000011-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentTemperature',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    unit: 'celsius',
+                    minValue: -270,
+                    maxValue: 100,
+                    minStep: 0.1,
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Lock Physical Controls',
+                UUID: '000000A7-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'LockPhysicalControls',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Rotation Speed',
+                UUID: '00000029-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RotationSpeed',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Swing Mode',
+                UUID: '000000B6-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SwingMode',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Cooling Threshold Temperature',
+                UUID: '0000000D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CoolingThresholdTemperature',
+                value: 10,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'celsius',
+                    minValue: 10,
+                    maxValue: 35,
+                    minStep: 0.1,
+                },
+            },
+            {
+                displayName: 'Heating Threshold Temperature',
+                UUID: '00000012-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'HeatingThresholdTemperature',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'celsius',
+                    minValue: 0,
+                    maxValue: 25,
+                    minStep: 0.1,
+                },
+            },
+            {
+                displayName: 'Temperature Display Units',
+                UUID: '00000036-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TemperatureDisplayUnits',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    HumidifierDehumidifier: {
+        displayName: 'HumidifierDehumidifier',
+        UUID: '000000BD-0000-1000-8000-0026BB765291',
+        constructorName: 'HumidifierDehumidifier',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Current Humidifier-Dehumidifier State',
+                UUID: '000000B3-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentHumidifierDehumidifierState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 3,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3],
+                },
+            },
+            {
+                displayName: 'Target Humidifier-Dehumidifier State',
+                UUID: '000000B4-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetHumidifierDehumidifierState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+            {
+                displayName: 'Current Relative Humidity',
+                UUID: '00000010-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentRelativeHumidity',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Lock Physical Controls',
+                UUID: '000000A7-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'LockPhysicalControls',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Relative Humidity Dehumidifier Threshold',
+                UUID: '000000C9-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RelativeHumidityDehumidifierThreshold',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Relative Humidity Humidifier Threshold',
+                UUID: '000000CA-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RelativeHumidityHumidifierThreshold',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Rotation Speed',
+                UUID: '00000029-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RotationSpeed',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Swing Mode',
+                UUID: '000000B6-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SwingMode',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Water Level',
+                UUID: '000000B5-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'WaterLevel',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+        ],
+    },
+    HumiditySensor: {
+        displayName: 'HumiditySensor',
+        UUID: '00000082-0000-1000-8000-0026BB765291',
+        constructorName: 'HumiditySensor',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Current Relative Humidity',
+                UUID: '00000010-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentRelativeHumidity',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Status Active',
+                UUID: '00000075-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusActive',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Low Battery',
+                UUID: '00000079-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusLowBattery',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Tampered',
+                UUID: '0000007A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusTampered',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    InputSource: {
+        displayName: 'InputSource',
+        UUID: '000000D9-0000-1000-8000-0026BB765291',
+        constructorName: 'InputSource',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Configured Name',
+                UUID: '000000E3-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ConfiguredName',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Input Source Type',
+                UUID: '000000DB-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'InputSourceType',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 10,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                },
+            },
+            {
+                displayName: 'Is Configured',
+                UUID: '000000D6-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'IsConfigured',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: 'Unnamed Service',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Current Visibility State',
+                UUID: '00000135-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentVisibilityState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Identifier',
+                UUID: '000000E6-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Identifier',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Input Device Type',
+                UUID: '000000DC-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'InputDeviceType',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 6,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3, 4, 5, 6],
+                },
+            },
+            {
+                displayName: 'Target Visibility State',
+                UUID: '00000134-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetVisibilityState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    IrrigationSystem: {
+        displayName: 'IrrigationSystem',
+        UUID: '000000CF-0000-1000-8000-0026BB765291',
+        constructorName: 'IrrigationSystem',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Program Mode',
+                UUID: '000000D1-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ProgramMode',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+            {
+                displayName: 'In Use',
+                UUID: '000000D2-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'InUse',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Remaining Duration',
+                UUID: '000000D4-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RemainingDuration',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['ev', 'pr'],
+                    unit: 'seconds',
+                    minValue: 0,
+                    maxValue: 3600,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    LeakSensor: {
+        displayName: 'LeakSensor',
+        UUID: '00000083-0000-1000-8000-0026BB765291',
+        constructorName: 'LeakSensor',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Leak Detected',
+                UUID: '00000070-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'LeakDetected',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Status Active',
+                UUID: '00000075-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusActive',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Low Battery',
+                UUID: '00000079-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusLowBattery',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Tampered',
+                UUID: '0000007A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusTampered',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    Lightbulb: {
+        displayName: 'Lightbulb',
+        UUID: '00000043-0000-1000-8000-0026BB765291',
+        constructorName: 'Lightbulb',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'On',
+                UUID: '00000025-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'On',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Brightness',
+                UUID: '00000008-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Brightness',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Characteristic Value Active Transition Count',
+                UUID: '0000024B-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CharacteristicValueActiveTransitionCount',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Characteristic Value Transition Control',
+                UUID: '00000143-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CharacteristicValueTransitionControl',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw', 'wr'],
+                },
+            },
+            {
+                displayName: 'Color Temperature',
+                UUID: '000000CE-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ColorTemperature',
+                value: 140,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 140,
+                    maxValue: 500,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Hue',
+                UUID: '00000013-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Hue',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'arcdegrees',
+                    minValue: 0,
+                    maxValue: 360,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Saturation',
+                UUID: '0000002F-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Saturation',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName:
+                    'Supported Characteristic Value Transition Configuration',
+                UUID: '00000144-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName:
+                    'SupportedCharacteristicValueTransitionConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+        ],
+    },
+    LightSensor: {
+        displayName: 'LightSensor',
+        UUID: '00000084-0000-1000-8000-0026BB765291',
+        constructorName: 'LightSensor',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Current Ambient Light Level',
+                UUID: '0000006B-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentAmbientLightLevel',
+                value: 0.0001,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    unit: 'lux',
+                    minValue: 0.0001,
+                    maxValue: 100000,
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Status Active',
+                UUID: '00000075-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusActive',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Low Battery',
+                UUID: '00000079-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusLowBattery',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Tampered',
+                UUID: '0000007A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusTampered',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    LockManagement: {
+        displayName: 'LockManagement',
+        UUID: '00000044-0000-1000-8000-0026BB765291',
+        constructorName: 'LockManagement',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Lock Control Point',
+                UUID: '00000019-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'LockControlPoint',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pw'],
+                },
+            },
+            {
+                displayName: 'Version',
+                UUID: '00000037-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Version',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Administrator Only Access',
+                UUID: '00000001-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'AdministratorOnlyAccess',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Audio Feedback',
+                UUID: '00000005-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'AudioFeedback',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Current Door State',
+                UUID: '0000000E-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentDoorState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 4,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3, 4],
+                },
+            },
+            {
+                displayName: 'Lock Management Auto Security Timeout',
+                UUID: '0000001A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'LockManagementAutoSecurityTimeout',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'seconds',
+                },
+            },
+            {
+                displayName: 'Lock Last Known Action',
+                UUID: '0000001C-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'LockLastKnownAction',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 10,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                },
+            },
+            {
+                displayName: 'Logs',
+                UUID: '0000001F-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Logs',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Motion Detected',
+                UUID: '00000022-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'MotionDetected',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+        ],
+    },
+    LockMechanism: {
+        displayName: 'LockMechanism',
+        UUID: '00000045-0000-1000-8000-0026BB765291',
+        constructorName: 'LockMechanism',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Lock Current State',
+                UUID: '0000001D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'LockCurrentState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 3,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3],
+                },
+            },
+            {
+                displayName: 'Lock Target State',
+                UUID: '0000001E-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'LockTargetState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+        ],
+    },
+    Microphone: {
+        displayName: 'Microphone',
+        UUID: '00000112-0000-1000-8000-0026BB765291',
+        constructorName: 'Microphone',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Mute',
+                UUID: '0000011A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Mute',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Volume',
+                UUID: '00000119-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Volume',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+        ],
+    },
+    MotionSensor: {
+        displayName: 'MotionSensor',
+        UUID: '00000085-0000-1000-8000-0026BB765291',
+        constructorName: 'MotionSensor',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Motion Detected',
+                UUID: '00000022-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'MotionDetected',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Status Active',
+                UUID: '00000075-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusActive',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Low Battery',
+                UUID: '00000079-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusLowBattery',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Tampered',
+                UUID: '0000007A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusTampered',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    NFCAccess: {
+        displayName: 'NFCAccess',
+        UUID: '00000266-0000-1000-8000-0026BB765291',
+        constructorName: 'NFCAccess',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Configuration State',
+                UUID: '00000263-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ConfigurationState',
+                value: 0,
+                props: {
+                    format: 'uint16',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'NFC Access Control Point',
+                UUID: '00000264-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'NFCAccessControlPoint',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw', 'wr'],
+                },
+            },
+            {
+                displayName: 'NFC Access Supported Configuration',
+                UUID: '00000265-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'NFCAccessSupportedConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    OccupancySensor: {
+        displayName: 'OccupancySensor',
+        UUID: '00000086-0000-1000-8000-0026BB765291',
+        constructorName: 'OccupancySensor',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Occupancy Detected',
+                UUID: '00000071-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'OccupancyDetected',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Status Active',
+                UUID: '00000075-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusActive',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Low Battery',
+                UUID: '00000079-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusLowBattery',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Tampered',
+                UUID: '0000007A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusTampered',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    Outlet: {
+        displayName: 'Outlet',
+        UUID: '00000047-0000-1000-8000-0026BB765291',
+        constructorName: 'Outlet',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'On',
+                UUID: '00000025-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'On',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Outlet In Use',
+                UUID: '00000026-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'OutletInUse',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+        ],
+    },
+    Pairing: {
+        displayName: 'Pairing',
+        UUID: '00000055-0000-1000-8000-0026BB765291',
+        constructorName: 'Pairing',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'List Pairings',
+                UUID: '00000050-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ListPairings',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Pair Setup',
+                UUID: '0000004C-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'PairSetup',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Pair Verify',
+                UUID: '0000004E-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'PairVerify',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Pairing Features',
+                UUID: '0000004F-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'PairingFeatures',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    PowerManagement: {
+        displayName: 'PowerManagement',
+        UUID: '00000221-0000-1000-8000-0026BB765291',
+        constructorName: 'PowerManagement',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Wake Configuration',
+                UUID: '00000222-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'WakeConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Selected Sleep Configuration',
+                UUID: '00000252-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SelectedSleepConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr', 'pw', 'wr'],
+                },
+            },
+            {
+                displayName: 'Supported Sleep Configuration',
+                UUID: '00000251-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedSleepConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+        ],
+    },
+    ProtocolInformation: {
+        displayName: 'ProtocolInformation',
+        UUID: '000000A2-0000-1000-8000-0026BB765291',
+        constructorName: 'ProtocolInformation',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Version',
+                UUID: '00000037-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Version',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    SecuritySystem: {
+        displayName: 'SecuritySystem',
+        UUID: '0000007E-0000-1000-8000-0026BB765291',
+        constructorName: 'SecuritySystem',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Security System Current State',
+                UUID: '00000066-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SecuritySystemCurrentState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 4,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3, 4],
+                },
+            },
+            {
+                displayName: 'Security System Target State',
+                UUID: '00000067-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SecuritySystemTargetState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 3,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Security System Alarm Type',
+                UUID: '0000008E-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SecuritySystemAlarmType',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Tampered',
+                UUID: '0000007A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusTampered',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    ServiceLabel: {
+        displayName: 'ServiceLabel',
+        UUID: '000000CC-0000-1000-8000-0026BB765291',
+        constructorName: 'ServiceLabel',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Service Label Namespace',
+                UUID: '000000CD-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ServiceLabelNamespace',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    Siri: {
+        displayName: 'Siri',
+        UUID: '00000133-0000-1000-8000-0026BB765291',
+        constructorName: 'Siri',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Siri Input Type',
+                UUID: '00000132-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SiriInputType',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['pr'],
+                    minValue: 0,
+                    maxValue: 0,
+                    validValues: [0],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Multifunction Button',
+                UUID: '0000026B-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'MultifunctionButton',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                },
+            },
+            {
+                displayName: 'Siri Enable',
+                UUID: '00000255-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SiriEnable',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                },
+            },
+            {
+                displayName: 'Siri Engine Version',
+                UUID: '0000025A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SiriEngineVersion',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Siri Light On Use',
+                UUID: '00000258-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SiriLightOnUse',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                },
+            },
+            {
+                displayName: 'Siri Listening',
+                UUID: '00000256-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SiriListening',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                },
+            },
+            {
+                displayName: 'Siri Touch To Use',
+                UUID: '00000257-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SiriTouchToUse',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                },
+            },
+        ],
+    },
+    SiriEndpoint: {
+        displayName: 'SiriEndpoint',
+        UUID: '00000253-0000-1000-8000-0026BB765291',
+        constructorName: 'SiriEndpoint',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Siri Endpoint Session Status',
+                UUID: '00000254-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SiriEndpointSessionStatus',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Version',
+                UUID: '00000037-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Version',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Active Identifier',
+                UUID: '000000E7-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ActiveIdentifier',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Manually Disabled',
+                UUID: '00000227-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ManuallyDisabled',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+        ],
+    },
+    Slats: {
+        displayName: 'Slats',
+        UUID: '000000B9-0000-1000-8000-0026BB765291',
+        constructorName: 'Slats',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Current Slat State',
+                UUID: '000000AA-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentSlatState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+            {
+                displayName: 'Slat Type',
+                UUID: '000000C0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SlatType',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Swing Mode',
+                UUID: '000000B6-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SwingMode',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Current Tilt Angle',
+                UUID: '000000C1-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentTiltAngle',
+                value: -90,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr'],
+                    unit: 'arcdegrees',
+                    minValue: -90,
+                    maxValue: 90,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Target Tilt Angle',
+                UUID: '000000C2-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetTiltAngle',
+                value: -90,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'arcdegrees',
+                    minValue: -90,
+                    maxValue: 90,
+                    minStep: 1,
+                },
+            },
+        ],
+    },
+    SmartSpeaker: {
+        displayName: 'SmartSpeaker',
+        UUID: '00000228-0000-1000-8000-0026BB765291',
+        constructorName: 'SmartSpeaker',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Current Media State',
+                UUID: '000000E0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentMediaState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 5,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 4, 5],
+                },
+            },
+            {
+                displayName: 'Target Media State',
+                UUID: '00000137-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetMediaState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'AirPlay Enable',
+                UUID: '0000025B-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'AirPlayEnable',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                },
+            },
+            {
+                displayName: 'Configured Name',
+                UUID: '000000E3-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ConfiguredName',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Mute',
+                UUID: '0000011A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Mute',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Volume',
+                UUID: '00000119-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Volume',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+        ],
+    },
+    SmokeSensor: {
+        displayName: 'SmokeSensor',
+        UUID: '00000087-0000-1000-8000-0026BB765291',
+        constructorName: 'SmokeSensor',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Smoke Detected',
+                UUID: '00000076-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SmokeDetected',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Status Active',
+                UUID: '00000075-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusActive',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Low Battery',
+                UUID: '00000079-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusLowBattery',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Tampered',
+                UUID: '0000007A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusTampered',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    Speaker: {
+        displayName: 'Speaker',
+        UUID: '00000113-0000-1000-8000-0026BB765291',
+        constructorName: 'Speaker',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Mute',
+                UUID: '0000011A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Mute',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Volume',
+                UUID: '00000119-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Volume',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+        ],
+    },
+    StatefulProgrammableSwitch: {
+        displayName: 'StatefulProgrammableSwitch',
+        UUID: '00000088-0000-1000-8000-0026BB765291',
+        constructorName: 'StatefulProgrammableSwitch',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Programmable Switch Event',
+                UUID: '00000073-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: true,
+                constructorName: 'ProgrammableSwitchEvent',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+            {
+                displayName: 'Programmable Switch Output State',
+                UUID: '00000074-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ProgrammableSwitchOutputState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+        ],
+    },
+    StatelessProgrammableSwitch: {
+        displayName: 'StatelessProgrammableSwitch',
+        UUID: '00000089-0000-1000-8000-0026BB765291',
+        constructorName: 'StatelessProgrammableSwitch',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Programmable Switch Event',
+                UUID: '00000073-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: true,
+                constructorName: 'ProgrammableSwitchEvent',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Service Label Index',
+                UUID: '000000CB-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ServiceLabelIndex',
+                value: 1,
+                props: {
+                    format: 'uint8',
+                    perms: ['pr'],
+                    minValue: 1,
+                    maxValue: 255,
+                    minStep: 1,
+                },
+            },
+        ],
+    },
+    Switch: {
+        displayName: 'Switch',
+        UUID: '00000049-0000-1000-8000-0026BB765291',
+        constructorName: 'Switch',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'On',
+                UUID: '00000025-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'On',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+        ],
+    },
+    TapManagement: {
+        displayName: 'TapManagement',
+        UUID: '0000022E-0000-1000-8000-0026BB765291',
+        constructorName: 'TapManagement',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Crypto Hash',
+                UUID: '00000250-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CryptoHash',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pw', 'wr'],
+                },
+            },
+            {
+                displayName: 'Tap Type',
+                UUID: '0000022F-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TapType',
+                value: 0,
+                props: {
+                    format: 'uint16',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Token',
+                UUID: '00000231-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Token',
+                value: '',
+                props: {
+                    format: 'data',
+                    perms: ['pw'],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    TargetControl: {
+        displayName: 'TargetControl',
+        UUID: '00000125-0000-1000-8000-0026BB765291',
+        constructorName: 'TargetControl',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Active Identifier',
+                UUID: '000000E7-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ActiveIdentifier',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Button Event',
+                UUID: '00000126-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ButtonEvent',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                    adminOnlyAccess: [2],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+        ],
+    },
+    TargetControlManagement: {
+        displayName: 'TargetControlManagement',
+        UUID: '00000122-0000-1000-8000-0026BB765291',
+        constructorName: 'TargetControlManagement',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Target Control Supported Configuration',
+                UUID: '00000123-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetControlSupportedConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Target Control List',
+                UUID: '00000124-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetControlList',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw', 'wr'],
+                    adminOnlyAccess: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    Television: {
+        displayName: 'Television',
+        UUID: '000000D8-0000-1000-8000-0026BB765291',
+        constructorName: 'Television',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Active Identifier',
+                UUID: '000000E7-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ActiveIdentifier',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Configured Name',
+                UUID: '000000E3-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ConfiguredName',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Remote Key',
+                UUID: '000000E1-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RemoteKey',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['pw'],
+                    minValue: 0,
+                    maxValue: 16,
+                    minStep: 1,
+                    validValues: [
+                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                        16,
+                    ],
+                },
+            },
+            {
+                displayName: 'Sleep Discovery Mode',
+                UUID: '000000E8-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SleepDiscoveryMode',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Brightness',
+                UUID: '00000008-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Brightness',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Closed Captions',
+                UUID: '000000DD-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ClosedCaptions',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Display Order',
+                UUID: '00000136-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'DisplayOrder',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Current Media State',
+                UUID: '000000E0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentMediaState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 5,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 4, 5],
+                },
+            },
+            {
+                displayName: 'Target Media State',
+                UUID: '00000137-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetMediaState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Picture Mode',
+                UUID: '000000E2-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'PictureMode',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 13,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                },
+            },
+            {
+                displayName: 'Power Mode Selection',
+                UUID: '000000DF-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'PowerModeSelection',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    TelevisionSpeaker: {
+        displayName: 'TelevisionSpeaker',
+        UUID: '00000113-0000-1000-8000-0026BB765291',
+        constructorName: 'TelevisionSpeaker',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Mute',
+                UUID: '0000011A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Mute',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Volume',
+                UUID: '00000119-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Volume',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Volume Control Type',
+                UUID: '000000E9-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'VolumeControlType',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 3,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3],
+                },
+            },
+            {
+                displayName: 'Volume Selector',
+                UUID: '000000EA-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'VolumeSelector',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    TemperatureSensor: {
+        displayName: 'TemperatureSensor',
+        UUID: '0000008A-0000-1000-8000-0026BB765291',
+        constructorName: 'TemperatureSensor',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Current Temperature',
+                UUID: '00000011-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentTemperature',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    unit: 'celsius',
+                    minValue: -270,
+                    maxValue: 100,
+                    minStep: 0.1,
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Status Active',
+                UUID: '00000075-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusActive',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Low Battery',
+                UUID: '00000079-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusLowBattery',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Status Tampered',
+                UUID: '0000007A-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusTampered',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    Thermostat: {
+        displayName: 'Thermostat',
+        UUID: '0000004A-0000-1000-8000-0026BB765291',
+        constructorName: 'Thermostat',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Current Heating Cooling State',
+                UUID: '0000000F-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentHeatingCoolingState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+            {
+                displayName: 'Target Heating Cooling State',
+                UUID: '00000033-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetHeatingCoolingState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 3,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3],
+                },
+            },
+            {
+                displayName: 'Current Temperature',
+                UUID: '00000011-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentTemperature',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    unit: 'celsius',
+                    minValue: -270,
+                    maxValue: 100,
+                    minStep: 0.1,
+                },
+            },
+            {
+                displayName: 'Target Temperature',
+                UUID: '00000035-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetTemperature',
+                value: 10,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'celsius',
+                    minValue: 10,
+                    maxValue: 38,
+                    minStep: 0.1,
+                },
+            },
+            {
+                displayName: 'Temperature Display Units',
+                UUID: '00000036-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TemperatureDisplayUnits',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Current Relative Humidity',
+                UUID: '00000010-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentRelativeHumidity',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Target Relative Humidity',
+                UUID: '00000034-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetRelativeHumidity',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Cooling Threshold Temperature',
+                UUID: '0000000D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CoolingThresholdTemperature',
+                value: 10,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'celsius',
+                    minValue: 10,
+                    maxValue: 35,
+                    minStep: 0.1,
+                },
+            },
+            {
+                displayName: 'Heating Threshold Temperature',
+                UUID: '00000012-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'HeatingThresholdTemperature',
+                value: 0,
+                props: {
+                    format: 'float',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'celsius',
+                    minValue: 0,
+                    maxValue: 25,
+                    minStep: 0.1,
+                },
+            },
+        ],
+    },
+    ThreadTransport: {
+        displayName: 'ThreadTransport',
+        UUID: '00000701-0000-1000-8000-0026BB765291',
+        constructorName: 'ThreadTransport',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Current Transport',
+                UUID: '0000022B-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentTransport',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Thread Control Point',
+                UUID: '00000704-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ThreadControlPoint',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pw'],
+                },
+            },
+            {
+                displayName: 'Thread Node Capabilities',
+                UUID: '00000702-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ThreadNodeCapabilities',
+                value: 0,
+                props: {
+                    format: 'uint16',
+                    perms: ['pr'],
+                    minValue: 0,
+                    maxValue: 31,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Thread Status',
+                UUID: '00000703-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ThreadStatus',
+                value: 0,
+                props: {
+                    format: 'uint16',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 6,
+                    minStep: 1,
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'CCA Energy Detect Threshold',
+                UUID: '00000246-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CCAEnergyDetectThreshold',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'CCA Signal Detect Threshold',
+                UUID: '00000245-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CCASignalDetectThreshold',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Event Retransmission Maximum',
+                UUID: '0000023D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'EventRetransmissionMaximum',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Event Transmission Counters',
+                UUID: '0000023E-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'EventTransmissionCounters',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'MAC Retransmission Maximum',
+                UUID: '00000247-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'MACRetransmissionMaximum',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'MAC Transmission Counters',
+                UUID: '00000248-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'MACTransmissionCounters',
+                value: '',
+                props: {
+                    format: 'data',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Receiver Sensitivity',
+                UUID: '00000244-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ReceiverSensitivity',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Received Signal Strength Indication',
+                UUID: '0000023F-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ReceivedSignalStrengthIndication',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Signal To Noise Ratio',
+                UUID: '00000241-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SignalToNoiseRatio',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Thread OpenThread Version',
+                UUID: '00000706-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ThreadOpenThreadVersion',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Transmit Power',
+                UUID: '00000242-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TransmitPower',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Maximum Transmit Power',
+                UUID: '00000243-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'MaximumTransmitPower',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['pr'],
+                },
+            },
+        ],
+    },
+    TransferTransportManagement: {
+        displayName: 'TransferTransportManagement',
+        UUID: '00000203-0000-1000-8000-0026BB765291',
+        constructorName: 'TransferTransportManagement',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Supported Transfer Transport Configuration',
+                UUID: '00000202-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedTransferTransportConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Setup Transfer Transport',
+                UUID: '00000201-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SetupTransferTransport',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pw', 'wr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    Tunnel: {
+        displayName: 'Tunnel',
+        UUID: '00000056-0000-1000-8000-0026BB765291',
+        constructorName: 'Tunnel',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Accessory Identifier',
+                UUID: '00000057-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'AccessoryIdentifier',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Tunnel Connection Timeout',
+                UUID: '00000061-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TunnelConnectionTimeout',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Tunneled Accessory Advertising',
+                UUID: '00000060-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TunneledAccessoryAdvertising',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Tunneled Accessory Connected',
+                UUID: '00000059-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TunneledAccessoryConnected',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Tunneled Accessory State Number',
+                UUID: '00000058-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TunneledAccessoryStateNumber',
+                value: 0,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    Valve: {
+        displayName: 'Valve',
+        UUID: '000000D0-0000-1000-8000-0026BB765291',
+        constructorName: 'Valve',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Active',
+                UUID: '000000B0-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Active',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'In Use',
+                UUID: '000000D2-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'InUse',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Valve Type',
+                UUID: '000000D5-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ValveType',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 3,
+                    minStep: 1,
+                    validValues: [0, 1, 2, 3],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Is Configured',
+                UUID: '000000D6-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'IsConfigured',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Remaining Duration',
+                UUID: '000000D4-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RemainingDuration',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['ev', 'pr'],
+                    unit: 'seconds',
+                    minValue: 0,
+                    maxValue: 3600,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Service Label Index',
+                UUID: '000000CB-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ServiceLabelIndex',
+                value: 1,
+                props: {
+                    format: 'uint8',
+                    perms: ['pr'],
+                    minValue: 1,
+                    maxValue: 255,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Set Duration',
+                UUID: '000000D3-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SetDuration',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'seconds',
+                    minValue: 0,
+                    maxValue: 3600,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Status Fault',
+                UUID: '00000077-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'StatusFault',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    minStep: 1,
+                    validValues: [0, 1],
+                },
+            },
+        ],
+    },
+    WiFiRouter: {
+        displayName: 'WiFiRouter',
+        UUID: '0000020A-0000-1000-8000-0026BB765291',
+        constructorName: 'WiFiRouter',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Configured Name',
+                UUID: '000000E3-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ConfiguredName',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Managed Network Enable',
+                UUID: '00000215-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ManagedNetworkEnable',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw', 'tw'],
+                    minValue: 0,
+                    maxValue: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Network Access Violation Control',
+                UUID: '0000021F-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'NetworkAccessViolationControl',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr', 'pw', 'tw', 'wr'],
+                },
+            },
+            {
+                displayName: 'Network Client Profile Control',
+                UUID: '0000020C-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'NetworkClientProfileControl',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr', 'pw', 'tw', 'wr'],
+                },
+            },
+            {
+                displayName: 'Network Client Status Control',
+                UUID: '0000020D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'NetworkClientStatusControl',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr', 'pw', 'wr'],
+                },
+            },
+            {
+                displayName: 'Router Status',
+                UUID: '0000020E-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RouterStatus',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 1,
+                    validValues: [0, 1],
+                },
+            },
+            {
+                displayName: 'Supported Router Configuration',
+                UUID: '00000210-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedRouterConfiguration',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'WAN Configuration List',
+                UUID: '00000211-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'WANConfigurationList',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'WAN Status List',
+                UUID: '00000212-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'WANStatusList',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    WiFiSatellite: {
+        displayName: 'WiFiSatellite',
+        UUID: '0000020F-0000-1000-8000-0026BB765291',
+        constructorName: 'WiFiSatellite',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Wi-Fi Satellite Status',
+                UUID: '0000021E-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'WiFiSatelliteStatus',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 2,
+                    validValues: [0, 1, 2],
+                },
+            },
+        ],
+        optionalCharacteristics: [],
+    },
+    WiFiTransport: {
+        displayName: 'WiFiTransport',
+        UUID: '0000022A-0000-1000-8000-0026BB765291',
+        constructorName: 'WiFiTransport',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Current Transport',
+                UUID: '0000022B-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentTransport',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['pr'],
+                },
+            },
+            {
+                displayName: 'Wi-Fi Capabilities',
+                UUID: '0000022C-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'WiFiCapabilities',
+                value: 0,
+                props: {
+                    format: 'uint32',
+                    perms: ['pr'],
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Preferred Wi-Fi List',
+                UUID: '0000022E-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'PreferredWiFiList',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
+                displayName: 'Wi-Fi Configuration Control',
+                UUID: '0000022D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'WiFiConfigurationControl',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr', 'pw', 'tw', 'wr'],
+                },
+            },
+        ],
+    },
+    BatteryService: {
+        nrchkbDisabledText: 'BatteryService (deprecated, replaced by Battery)',
+    },
+    BridgeConfiguration: {
+        nrchkbDisabledText: 'BridgeConfiguration (deprecated, unused)',
+    },
+    BridgingState: {
+        nrchkbDisabledText: 'BridgingState (deprecated, unused)',
+    },
+    CameraControl: {
+        nrchkbDisabledText: 'CameraControl (deprecated, replaced by Camera)',
+        nrchkbHiddenInService2: true,
+    },
+    CameraEventRecordingManagement: {
+        nrchkbDisabledText:
+            'CameraEventRecordingManagement (deprecated, replaced by CameraRecordingManagement)',
+    },
+    Relay: {
+        nrchkbDisabledText: 'Relay (deprecated, replaced by CloudRelay)',
+    },
+    Slat: {
+        nrchkbDisabledText: 'Slat (deprecated, replaced by Slats)',
+    },
+    TimeInformation: {
+        nrchkbDisabledText: 'TimeInformation (deprecated, unused)',
+    },
+    TunneledBTLEAccessoryService: {
+        nrchkbDisabledText:
+            'TunneledBTLEAccessoryService (deprecated, replaced by Tunnel)',
+    },
+    Window: {
+        displayName: 'Window',
+        UUID: '0000008B-0000-1000-8000-0026BB765291',
+        constructorName: 'Window',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Current Position',
+                UUID: '0000006D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentPosition',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Position State',
+                UUID: '00000072-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'PositionState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+            {
+                displayName: 'Target Position',
+                UUID: '0000007C-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetPosition',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Obstruction Detected',
+                UUID: '00000024-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ObstructionDetected',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Hold Position',
+                UUID: '0000006F-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'HoldPosition',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['pw'],
+                },
+            },
+        ],
+    },
+    WindowCovering: {
+        displayName: 'WindowCovering',
+        UUID: '0000008C-0000-1000-8000-0026BB765291',
+        constructorName: 'WindowCovering',
+        hiddenService: false,
+        primaryService: false,
+        characteristics: [
+            {
+                displayName: 'Current Position',
+                UUID: '0000006D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentPosition',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Position State',
+                UUID: '00000072-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'PositionState',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr'],
+                    minValue: 0,
+                    maxValue: 2,
+                    minStep: 1,
+                    validValues: [0, 1, 2],
+                },
+            },
+            {
+                displayName: 'Target Position',
+                UUID: '0000007C-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetPosition',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'percentage',
+                    minValue: 0,
+                    maxValue: 100,
+                    minStep: 1,
+                },
+            },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Current Horizontal Tilt Angle',
+                UUID: '0000006C-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentHorizontalTiltAngle',
+                value: -90,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr'],
+                    unit: 'arcdegrees',
+                    minValue: -90,
+                    maxValue: 90,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Target Horizontal Tilt Angle',
+                UUID: '0000007B-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetHorizontalTiltAngle',
+                value: -90,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'arcdegrees',
+                    minValue: -90,
+                    maxValue: 90,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Name',
+                UUID: '00000023-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'Name',
+                value: '',
+                props: {
+                    format: 'string',
+                    perms: ['pr'],
+                    maxLen: 64,
+                },
+            },
+            {
+                displayName: 'Obstruction Detected',
+                UUID: '00000024-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'ObstructionDetected',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['ev', 'pr'],
+                },
+            },
+            {
+                displayName: 'Hold Position',
+                UUID: '0000006F-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'HoldPosition',
+                value: false,
+                props: {
+                    format: 'bool',
+                    perms: ['pw'],
+                },
+            },
+            {
+                displayName: 'Current Vertical Tilt Angle',
+                UUID: '0000006E-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'CurrentVerticalTiltAngle',
+                value: -90,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr'],
+                    unit: 'arcdegrees',
+                    minValue: -90,
+                    maxValue: 90,
+                    minStep: 1,
+                },
+            },
+            {
+                displayName: 'Target Vertical Tilt Angle',
+                UUID: '0000007D-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'TargetVerticalTiltAngle',
+                value: -90,
+                props: {
+                    format: 'int',
+                    perms: ['ev', 'pr', 'pw'],
+                    unit: 'arcdegrees',
+                    minValue: -90,
+                    maxValue: 90,
+                    minStep: 1,
+                },
+            },
+        ],
+    },
 }

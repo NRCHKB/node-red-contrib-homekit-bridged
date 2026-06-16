@@ -1,326 +1,454 @@
 <!--suppress EqualityComparisonWithCoercionJS -->
+<style>
+    .nrchkb-editor .nrchkb-plugins-summary {
+        display: flex !important;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+    }
+
+    .nrchkb-editor .nrchkb-plugins-summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-add {
+        margin-left: auto;
+        justify-self: end;
+        white-space: nowrap;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-label {
+        display: flex;
+        align-items: baseline;
+        gap: 5px;
+        min-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-count {
+        color: var(--red-ui-secondary-text-color, #666);
+        font-weight: normal;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-summary-list {
+        display: inline;
+        min-width: 0;
+        overflow: hidden;
+        color: var(--red-ui-secondary-text-color, #666);
+        font-size: 12px;
+        font-weight: normal;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-empty {
+        margin: 0;
+        padding: 8px 0;
+        color: var(--red-ui-secondary-text-color, #666);
+    }
+
+    .nrchkb-editor .nrchkb-plugin-overview {
+        display: grid;
+        gap: 6px;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-overview-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 8px;
+        border: 1px solid var(--red-ui-secondary-border-color, #d8d8d8);
+        border-radius: 6px;
+        background: var(--red-ui-primary-background, #fff);
+    }
+
+    .nrchkb-editor .nrchkb-plugin-overview-name {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-overview-name {
+        font-weight: 600;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-overview-actions {
+        display: flex;
+        gap: 6px;
+        flex-shrink: 0;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-section {
+        margin-top: 8px;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-section summary {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+        list-style: none;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-section summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-title {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-remove {
+        justify-self: end;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-about {
+        margin-bottom: 10px;
+        padding: 7px 9px;
+        border: 1px solid var(--red-ui-secondary-border-color, #d8d8d8);
+        border-radius: 6px;
+        background: var(--red-ui-tertiary-background, #f7f7f7);
+        color: var(--red-ui-secondary-text-color, #666);
+        font-size: 12px;
+        line-height: 1.35;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-about strong {
+        display: block;
+        color: var(--red-ui-primary-text-color, #333);
+    }
+
+    .nrchkb-plugin-picker {
+        display: grid;
+        gap: 8px;
+    }
+
+    .nrchkb-plugin-picker-item {
+        padding: 9px 10px;
+        border: 1px solid var(--red-ui-secondary-border-color, #d0d0d0);
+        border-radius: 6px;
+        background: var(--red-ui-primary-background, #fff);
+        cursor: pointer;
+    }
+
+    .nrchkb-plugin-picker-item:not([aria-disabled="true"]):hover,
+    .nrchkb-plugin-picker-item:not([aria-disabled="true"]):focus-visible {
+        border-color: var(--red-ui-focus-color, var(--red-ui-text-color-link, #1a73e8));
+    }
+
+    .nrchkb-plugin-picker-item[aria-disabled="true"] {
+        cursor: default;
+        opacity: 0.55;
+    }
+
+    .nrchkb-plugin-picker-title {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        font-weight: 600;
+    }
+
+    .nrchkb-plugin-picker-description,
+    .nrchkb-plugin-picker-meta {
+        margin-top: 3px;
+        color: var(--red-ui-secondary-text-color, #666);
+        font-size: 12px;
+        line-height: 1.35;
+    }
+
+    .nrchkb-plugin-picker-description {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>
+
 <script data-template-name="homekit-service2" type="text/x-red">
-    <div class="form-row">
-        <label for="node-config-input-isParent"><i class="fa fa-tasks"></i> Service Hierarchy</label>
-        <select id="node-config-input-isParent" style="width: 70%">
-            <option value="true" selected="selected">Parent</option>
-            <option value="false">Linked</option>
-        </select>
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-serviceName">
-          <i class="fa fa-cog"></i>
-          Service</label>
-        <select id="node-input-serviceName" style="width: 70%">
-          <option value="">Choose...</option>
-      </select>
-    </div>
-
-    <div id="isParent">
-        <div class="form-row">
-            <label for="node-config-input-hostType"><i class="fa fa-tasks"></i> Host Type</label>
-            <select id="node-config-input-hostType" style="width: 70%">
-                <option value="0" selected="selected">Bridge</option>
-                <option value="1">Accessory</option>
-            </select>
-        </div>
-        <div id="isOnBridge">
-            <div id="isBridgeInSubflow" class="alert alert-warning" role="alert">
-              Read more <b><a href="#" id="bridgeInSubflowNotice">here</a></b> about adding Bridge in a Subflow.
+    <div class="nrchkb-editor">
+        <details id="plugins-configuration" class="nrchkb-section">
+            <summary class="nrchkb-plugins-summary">
+                <i class="fa fa-plug"></i>
+                <span class="nrchkb-plugin-label">
+                    Plugins <span id="node-input-plugin-count" class="nrchkb-plugin-count">0</span>
+                    <span id="node-input-plugin-summary-list" class="nrchkb-plugin-summary-list">No plugins attached</span>
+                </span>
+                <button type="button" id="node-input-add-plugin" class="red-ui-button red-ui-button-small nrchkb-plugin-add">
+                    <i class="fa fa-plus"></i>
+                    Add plugin
+                </button>
+            </summary>
+            <div class="nrchkb-section-body">
+                <div class="nrchkb-plugin-slot-fields" style="display: none;">
+                    <input type="hidden" id="node-input-plugins">
+                    <input type="hidden" id="node-input-plugin1">
+                    <input type="hidden" id="node-input-plugin2">
+                    <input type="hidden" id="node-input-plugin3">
+                    <input type="hidden" id="node-input-plugin4">
+                    <input type="hidden" id="node-input-plugin5">
+                    <input type="hidden" id="node-input-plugin6">
+                    <input type="hidden" id="node-input-plugin7">
+                    <input type="hidden" id="node-input-plugin8">
+                </div>
+                <div id="node-input-plugin-overview" class="nrchkb-plugin-overview"></div>
             </div>
-            <div class="form-row" style="height: 34px;">
-                <label for="node-input-bridge">
-              <i class="fa fa-rocket"></i>
-              Bridge</label>
-                <input id="node-input-bridge">
+        </details>
+
+        <details class="nrchkb-section" open>
+            <summary><i class="fa fa-sliders"></i> Essentials</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row">
+                    <label for="node-config-input-isParent"><i class="fa fa-sitemap"></i> Service Hierarchy</label>
+                    <select id="node-config-input-isParent">
+                        <option value="true" selected="selected">Parent</option>
+                        <option value="false">Linked</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label for="node-input-serviceName">
+                        <i class="fa fa-puzzle-piece"></i>
+                        Service
+                    </label>
+                    <select id="node-input-serviceName">
+                        <option value="">Choose...</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label for="node-input-name">
+                        <i class="fa fa-tag"></i>
+                        Name
+                    </label>
+                    <input type="text" id="node-input-name" placeholder="Name">
+                </div>
             </div>
-            <div class="form-row">
-                <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
-                <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
+        </details>
+
+        <details class="nrchkb-section" open>
+            <summary><i class="fa fa-map-marker"></i> Placement</summary>
+            <div class="nrchkb-section-body">
+                <div id="isParent">
+                    <div class="form-row">
+                        <label for="node-config-input-hostType"><i class="fa fa-server"></i> Host Type</label>
+                        <select id="node-config-input-hostType">
+                            <option value="0" selected="selected">Bridge</option>
+                            <option value="1">Accessory</option>
+                        </select>
+                    </div>
+                    <div id="isOnBridge">
+                        <div id="isBridgeInSubflow" class="alert alert-warning nrchkb-warning" role="alert">
+                            Read more <b><a href="#" id="bridgeInSubflowNotice">here</a></b> about adding Bridge in a Subflow.
+                        </div>
+                        <div class="form-row">
+                            <label for="node-input-bridge">
+                                <i class="fa fa-link"></i>
+                                Bridge
+                            </label>
+                            <input id="node-input-bridge">
+                        </div>
+                        <details class="nrchkb-section">
+                            <summary><i class="fa fa-id-card-o"></i> Accessory Metadata</summary>
+                            <div class="nrchkb-section-body">
+                                <div class="form-row">
+                                    <label for="node-input-manufacturer"><i class="fa fa-industry"></i> Manufacturer</label>
+                                    <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
+                                </div>
+                                <div class="form-row">
+                                    <label for="node-input-serialNo"><i class="fa fa-barcode"></i> Serial Number</label>
+                                    <input type="text" id="node-input-serialNo" placeholder="Serial Number">
+                                </div>
+                                <div class="form-row">
+                                    <label for="node-input-model"><i class="fa fa-cube"></i> Model</label>
+                                    <input type="text" id="node-input-model" placeholder="Model">
+                                </div>
+                                <div class="form-row">
+                                    <label for="node-input-firmwareRev"><i class="fa fa-microchip"></i> Firmware Revision</label>
+                                    <input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision">
+                                </div>
+                                <div class="form-row">
+                                    <label for="node-input-hardwareRev"><i class="fa fa-hdd-o"></i> Hardware Revision</label>
+                                    <input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision">
+                                </div>
+                                <div class="form-row">
+                                    <label for="node-input-softwareRev"><i class="fa fa-code"></i> Software Revision</label>
+                                    <input type="text" id="node-input-softwareRev" placeholder="Software Revision">
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                    <div id="isAccessory">
+                        <div class="form-row">
+                            <label for="node-input-accessoryId">
+                                <i class="fa fa-home"></i>
+                                Accessory
+                            </label>
+                            <input id="node-input-accessoryId">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="isLinked" style="display: none;">
+                    <div class="form-row">
+                        <label for="node-input-parentService">
+                            <i class="fa fa-level-up"></i>
+                            Parent Service
+                        </label>
+                        <select id="node-input-parentService">
+                            <option value="">Choose...</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="form-row">
-                <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
-                <input type="text" id="node-input-serialNo" placeholder="Serial Number">
+        </details>
+
+        <details class="nrchkb-section" open>
+            <summary><i class="fa fa-exchange"></i> Message Routing</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row">
+                    <label for="node-input-topic"><i class="fa fa-comment-o"></i> Topic</label>
+                    <input type="text" id="node-input-topic" placeholder="Topic">
+                </div>
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-input-filter">
+                        <input type="checkbox" id="node-input-filter">
+                        <span><i class="fa fa-filter"></i> Filter on Topic</span>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label for="node-input-outputMode"><i class="fa fa-random"></i> Output mode</label>
+                    <select id="node-input-outputMode">
+                        <option value="events" selected="selected">Events</option>
+                        <option value="legacy">Legacy onChange/onSet</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-row">
-                <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
-                <input type="text" id="node-input-model" placeholder="Model">
+        </details>
+
+        <details id="adaptive-lightning-configuration" class="nrchkb-section" open style="display: none;">
+            <summary><i class="fa fa-sun-o"></i> Adaptive Lighting Configuration</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-input-adaptiveLightingOptionsEnable">
+                        <input type="checkbox" id="node-input-adaptiveLightingOptionsEnable">
+                        <span><i class="fa fa-toggle-on"></i> Enable</span>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label for="node-input-adaptiveLightingOptionsMode"><i class="fa fa-magic"></i> Mode</label>
+                    <select id="node-input-adaptiveLightingOptionsMode">
+                        <option value="" selected hidden disabled>AUTOMATIC</option>
+                        <option value="1">AUTOMATIC</option>
+                        <option value="2">MANUAL</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment"><i class="fa fa-thermometer-half"></i> Custom Temperature Adjustment</label>
+                    <input type="number" id="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment" placeholder="0">
+                </div>
             </div>
-            <div class="form-row">
-                <label for="node-input-firmwareRev"><i class="fa fa-wrench"></i> Firmware Revision</label>
-                <input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision">
+        </details>
+
+        <details class="nrchkb-section">
+            <summary><i class="fa fa-sliders"></i> Advanced Behavior</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row">
+                    <label for="node-input-characteristicProperties"><i class="fa fa-list-alt"></i> Characteristic Properties</label>
+                    <input type="text" id="node-input-characteristicProperties">
+                </div>
+
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-input-waitForSetupMsg">
+                        <input type="checkbox" id="node-input-waitForSetupMsg">
+                        <span><i class="fa fa-hourglass-half"></i> Wait for Setup message</span>
+                    </label>
+                </div>
+
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-input-useEventCallback">
+                        <input type="checkbox" id="node-input-useEventCallback">
+                        <span><i class="fa fa-code-fork"></i> Use Event callback</span>
+                    </label>
+                </div>
             </div>
-            <div class="form-row">
-                <label for="node-input-hardwareRev"><i class="fa fa-wrench"></i> Hardware Revision</label>
-                <input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision">
-            </div>
-            <div class="form-row">
-                <label for="node-input-softwareRev"><i class="fa fa-wrench"></i> Software Revision</label>
-                <input type="text" id="node-input-softwareRev" placeholder="Software Revision">
-            </div>
-        </div>
-        <div id="isAccessory">
-            <div class="form-row" style="height: 34px;">
-                <label for="node-input-accessoryId">
-              <i class="fa fa-rocket"></i>
-              Accessory</label>
-                <input id="node-input-accessoryId">
-            </div>
-        </div>
-    </div>
+        </details>
 
-    <div id="isLinked" style="display: none;">
-        <div class="form-row">
-            <label for="node-input-parentService">
-              <i class="fa fa-cog"></i>
-              Parent Service</label>
-            <select id="node-input-parentService">
-              <option value="">Choose...</option>
-          </select>
-        </div>
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
-        <input type="text" id="node-input-topic" placeholder="Topic">
-    </div>
-    <div class="form-row">
-        <label class="visibleDesktop">&nbsp;</label>
-        <div style="display: inline;">
-            <input type="checkbox" id="node-input-filter" style="display: inline-block; width: auto; vertical-align: top;">
-            <label for="node-input-filter" style="width: 120px;">&nbsp;&nbsp;<i class="fa fa-filter"></i> Filter on Topic</label>
-        </div>
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-name">
-          <i class="fa fa-tag"></i>
-          Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
-    </div>
-
-    <div id="camera-configuration" style="display: none;">
-        <label>&nbsp;&nbsp;<i class="fa fa-video-camera"></i> Camera Configuration</label>
-        <div class="form-row">
-            <label for="node-input-cameraConfigVideoProcessor"><i class="fa fa-cog"></i> Video Processor</label>
-            <input type="text" id="node-input-cameraConfigVideoProcessor" placeholder="ffmpeg">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigSource"><i class="fa fa-tint"></i> Source</label>
-            <input type="text" id="node-input-cameraConfigSource" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigStillImageSource"><i class="fa fa-picture-o"></i> Still Image Source</label>
-            <input type="text" id="node-input-cameraConfigStillImageSource" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMaxStreams"><i class="fa fa-tint"></i> Max Streams</label>
-            <input type="text" id="node-input-cameraConfigMaxStreams" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMaxWidth"><i class="fa fa-text-width"></i> Max Width</label>
-            <input type="text" id="node-input-cameraConfigMaxWidth" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMaxHeight"><i class="fa fa-text-height"></i> Max Height</label>
-            <input type="text" id="node-input-cameraConfigMaxHeight" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMaxFPS"><i class="fa fa-clock-o"></i> Max FPS</label>
-            <input type="text" id="node-input-cameraConfigMaxFPS" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMaxBitrate"><i class="fa fa-clock-o"></i> Max Bitrate</label>
-            <input type="text" id="node-input-cameraConfigMaxBitrate" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigVideoCodec"><i class="fa fa-video-camera"></i> Video Codec</label>
-            <input type="text" id="node-input-cameraConfigVideoCodec" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigAudioCodec"><i class="fa fa-video-camera"></i> Audio Codec</label>
-            <input type="text" id="node-input-cameraConfigAudioCodec" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigAudio"><i class="fa fa-headphones"></i> Audio</label>
-            <input type="checkbox" id="node-input-cameraConfigAudio">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigPacketSize"><i class="fa fa-get-pocket"></i> Packet Size</label>
-            <input type="text" id="node-input-cameraConfigPacketSize" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigVerticalFlip"><i class="fa fa-undo"></i> Vertical Flip</label>
-            <input type="checkbox" id="node-input-cameraConfigVerticalFlip">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigHorizontalFlip"><i class="fa fa-undo"></i> Horizontal Flip</label>
-            <input type="checkbox" id="node-input-cameraConfigHorizontalFlip">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMapVideo"><i class="fa fa-video-camera"></i> Map Video</label>
-            <input type="text" id="node-input-cameraConfigMapVideo" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMapAudio"><i class="fa fa-headphones"></i> Map Audio</label>
-            <input type="text" id="node-input-cameraConfigMapAudio" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigVideoFilter"><i class="fa fa-filter"></i> Video Filter</label>
-            <input type="text" id="node-input-cameraConfigVideoFilter" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigAdditionalCommandLine"><i class="fa fa-plus"></i> Additional Command Line</label>
-            <input type="text" id="node-input-cameraConfigAdditionalCommandLine" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigDebug"><i class="fa fa-bug"></i> Debug</label>
-            <input type="checkbox" id="node-input-cameraConfigDebug">
-        </div>
-
-        <div class="form-row">
-            <label for="node-input-cameraConfigSnapshotOutput"><i class="fa fa-picture-o"></i> Snapshot output</label>
-            <select id="node-input-cameraConfigSnapshotOutput">
-                <option value="disabled" selected="selected">Disabled</option>
-                <option value="path">Path</option>
-                <option value="content">Content</option>
-            </select>
-        </div>
-
-        <div class="form-row">
-            <label for="node-input-cameraConfigInterfaceName"><i class="fa fa-smile-o"></i> Interface Name</label>
-            <input type="text" id="node-input-cameraConfigInterfaceName" placeholder="">
-        </div>
-    </div>
-
-    <div id="adaptive-lightning-configuration" style="display: none; border: 1px solid var(--red-ui-secondary-border-color); padding: 12px 12px 0 12px; margin-bottom: 12px;">
-        <label>&nbsp;&nbsp;<i class="fa fa-cog"></i> Adaptive Lightning Configuration</label>
-        <div class="form-row">
-            <label for="node-input-adaptiveLightingOptionsEnable"><i class="fa fa-toggle-on"></i> Enable</label>
-            <input type="checkbox" id="node-input-adaptiveLightingOptionsEnable">
-        </div>
-        <div class="form-row">
-            <label for="node-input-adaptiveLightingOptionsMode"><i class="fa fa-hand-o-up"></i> Mode</label>
-            <select id="node-input-adaptiveLightingOptionsMode">
-                <option value="" selected hidden disabled>AUTOMATIC</option>
-                <option value="1">AUTOMATIC</option>
-                <option value="2">MANUAL</option>
-            </select>
-        </div>
-        <div class="form-row">
-            <label for="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment"><i class="fa fa-thermometer-quarter"></i> Custom Temperature Adjustment</label>
-            <input type="number" id="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment" placeholder="0">
-        </div>
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-characteristicProperties"><i class="fa fa-wrench"></i> Characteristic Properties</label>
-        <input type="text" id="node-input-characteristicProperties" style="width: 70%">
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-waitForSetupMsg"><i class="fa fa-bug"></i> Wait for Setup message</label>
-        <input type="checkbox" id="node-input-waitForSetupMsg">
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-useEventCallback"><i class="fa fa-code-fork"></i> Use Event callback</label>
-        <input type="checkbox" id="node-input-useEventCallback">
+        <div id="node-input-plugin-sections"></div>
     </div>
 </script>
 
-<script data-help-name="homekit-service2" type="text/x-red">
-<h3 id="toc_5">Service</h3>
-<p>The Service node represents the single device you want to control or query.</p>
-<p>Every service node creates its own HAP accessory to keep things simple.</p>
-<ul>
-   <li><strong>Service Hierarchy</strong>: Choose if this Service is Parent or Linked</li>
-   <ul>
-      <li>Parent has <strong>Bridge</strong> and <strong>Accessory Category</strong>: On what Bridge to host this Service and its Accessory and what kind of category is this Accessory, default <em>OTHER</em></li>
-      <li>Linked has <strong>Parent Service</strong>: On what Parent Service link this Service.</li>
-   </ul>
-   <li><strong>Topic</strong>: An optional property that can be configured in the node or, if left blank, can be set by <code>msg.topic</code>. If <em>Filter on Topic</em> is selected <code>msg.topic</code> of incoming messages must match the configured
-      value for the message to be accepted. If <em>Filter on Topic</em> is selected and no <em>Topic</em> is set on the node, then <code>msg.topic</code> must match the nodes <em>Name</em>
-   </li>
-   <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
-   <li><strong>Firmware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
-   <li><strong>Hardware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
-   <li><strong>Software Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
-   <li><strong>Service</strong>: Choose the type of Service from the list.</li>
-   <li><strong>Name</strong>: <em>optional</em></li>
-   <li><strong>Camera Configuration</strong>: Additional configuration for CameraControl service.</li>
-   <ul>
-      <li><strong>Video Processor</strong>: Video processor used for Camera. Default is <em>ffmpeg</em>.</li>
-      <li><strong>Source</strong>: Camera source used for video processor. Example for ffmpeg <em>-re -i rtsp://192.168.0.227:8554/unicast</em></li>
-      <li><strong>Still Image Source</strong>: Camera snapshot source used for video processor. Example for ffmpeg <em>-i http://faster_still_image_grab_url/this_is_optional.jpg</em></li>
-      <li><strong>Max Streams</strong>: Maximum number of streams that will be generated for this camera, default <em>2</em>.</li>
-      <li><strong>Max Width</strong>: Maximum width reported to HomeKit, default <em>1280</em>.</li>
-      <li><strong>Max Height</strong>: Maximum height reported to HomeKit, default <em>720</em>.</li>
-      <li><strong>Max FPS</strong>: Maximum frame rate of the stream, default <em>10</em>.</li>
-      <li><strong>Max Bitrate</strong>: Maximum bit rate of the stream in kbit/s, default <em>300</em>.</li>
-      <li><strong>Video Codec</strong>: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated video codec with this option, default <em>libx264</em>.</li>
-      <li><strong>Audio Codec</strong>: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated audio codec with this option, default <em>libfdk_aac</em>.</li>
-      <li><strong>Audio</strong>: Can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, default <em>false</em>.</li>
-      <li><strong>Packet Size</strong>: If audio or video is choppy try a smaller value, set to a multiple of 188, default <em>1316</em>.</li>
-      <li><strong>Vertical Flip</strong>: Flips the stream vertically, default <em>false</em>.</li>
-      <li><strong>Horizontal Flip</strong>: Flips the stream horizontally, default <em>false</em>.</li>
-      <li><strong>Map Video</strong>: Select the stream used for video, default <em>0:0</em>.</li>
-      <li><strong>Map Audio</strong>: Select the stream used for audio, default <em>0:1</em>.</li>
-      <li><strong>Video Filter</strong>: Allows a custom video filter to be passed to FFmpeg via -vf, defaults to <em>scale=1280:720</em> but is optional.</li>
-      <li><strong>Additional Command Line</strong>: Allows additional of extra command line options to FFmpeg, default <em>-tune zerolatency</em> but is optional.</li>
-      <li><strong>Debug</strong>: Show the output of ffmpeg in the log, default <em>false</em>.</li>
-      <li><strong>Snapshot output</strong>: Choose how to output camera snapshot</li>
-      <ul>
-         <li><strong>Disabled</strong>: there will be no output</li>
-         <li><strong>Path</strong>: file will be saved and path will be send to output, <em>msg.payload.cameraSnapshot</em> contains path value stored as a string.</li>
-         <li><strong>Content</strong>: file content will be send to output, <em>msg.payload.cameraSnapshot</em> contains Buffer object {"type":"Buffer","data":[]}.</li>
-      </ul>
-      <li><strong>Interface Name</strong>: Selects the IP address of a given network interface.</li>
-   </ul>
-   <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
-   <li><strong>Wait for Setup message</strong>: If yes then Service node will wait for a input message with appropriate payload.</li>
-   <li><strong>Use Event callback</strong>: If yes then Service node will wait for a callback message to respond to get event.</li>
-</ul>
-<h2 id="toc_6">Input Messages</h2>
-<p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
-<p><strong>Example</strong>: to signal that an <em>Outlet</em> is turned on and in use, send the following payload</p>
-<div>
-<pre><code class="language-javascript">
-{
-    &quot;On&quot;: 1,
-    &quot;OutletInUse&quot;: 1
-}
-</code></pre>
-</div>
-<p><strong>Hint</strong>: to find out what <em>Characteristics</em> you can address, just send <code>{&quot;foo&quot;:&quot;bar&quot;}</code> and watch the debug tab ;)</p>
-<h2 id="toc_7">Output Messages</h2>
-<p>Output messages are in the same format as input messages. They are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
-<h2 id="toc_8">Characteristic Properties</h2>
-<p><strong>Example</strong>: allow temperatures below 0&deg;C</p>
-<div>
-<pre><code class="language-json">
-{
-    &quot;CurrentTemperature&quot;: {
-        &quot;minValue&quot;: -100
-    }
-}
-</code></pre>
-<p><strong>Example</strong>: limit fan speed multiples of 25%</p>
-<div>
-<pre><code class="language-json">
-{
-    &quot;RotationSpeed&quot;: {
-        &quot;minStep&quot;: 25
-    }
-}
-</code></pre>
-</div>
+<script data-help-name="homekit-service2" type="text/markdown">
+# HomeKit Service 2
 
+Represents one HomeKit service, such as a Switch, Outlet, Lightbulb, Sensor, or Camera. It receives Node-RED messages to update HomeKit characteristics and emits HomeKit events from the selected service.
+
+> [!IMPORTANT]
+> Input payload keys must be HomeKit characteristic names. For example, send `{"On": true}` to turn on a Switch or Outlet.
+
+> [!NOTE]
+> **Events** output mode is the preferred layout for new flows. **Legacy onChange/onSet** is available for migrated `homekit-service` flows.
+
+## Essentials
+
+- **Service Hierarchy**: Select **Parent** for the main service of an accessory, or **Linked** for a secondary service attached to another service.
+- **Service**: HAP service type exposed to HomeKit.
+- **Name**: Service name shown in HomeKit and used as the default topic match when topic filtering is enabled without a configured topic.
+
+## Placement
+
+- **Host Type**: Publish a parent service behind a shared **Bridge** or behind a standalone **Accessory**.
+- **Bridge**: HomeKit bridge configuration that hosts this service.
+- **Accessory**: Standalone accessory configuration that hosts this service.
+- **Parent Service**: Parent service used by linked services.
+
+## Message Routing
+
+- **Topic**: Optional route key. If blank, incoming messages may provide `msg.topic`.
+- **Filter on Topic**: Accept incoming messages only when `msg.topic` matches the configured Topic. If Topic is blank, `msg.topic` must match the node Name.
+- **Output mode**: **Events** emits all HomeKit events through one output; **Legacy onChange/onSet** preserves the old output layout.
+
+## Plugins
+
+Plugins add service-specific behavior and render their own configuration fields from registered plugin metadata.
+
+## Advanced Behavior
+
+> [!WARNING]
+> **Wait for Setup message** delays service setup until the node receives the required setup payload. The service will not be published until that message arrives.
+
+- **Characteristic Properties**: JSON object that overrides HAP characteristic metadata such as `minValue`, `maxValue`, or `minStep`.
+- **Use Event callback**: Lets a flow answer HomeKit read/get events by sending a callback response message.
+
+## Input Messages
+
+```json
+{
+  "On": true,
+  "OutletInUse": true
+}
+```
+
+To discover valid characteristic names for the selected service, send a test payload such as `{"foo":"bar"}` and check the Node-RED debug output.
+
+## Characteristic Properties
+
+```json
+{
+  "CurrentTemperature": {
+    "minValue": -100
+  }
+}
+```
 </script>
 
 <script type="text/javascript">
-if (nrchkbExperimental) {
     RED.nodes.registerType('homekit-service2', {
         category: "Apple HomeKit",
         paletteLabel: 'service 2',
@@ -404,81 +532,6 @@ if (nrchkbExperimental) {
                 required: false,
                 validate: versionValidator,
             },
-            cameraConfigVideoProcessor: {
-                value: 'ffmpeg',
-                validate: cameraConfigRequiredField,
-            },
-            cameraConfigSource: {
-                validate: cameraConfigRequiredField,
-            },
-            cameraConfigStillImageSource: {
-                required: false,
-            },
-            cameraConfigMaxStreams: {
-                value: 2,
-                validate: cameraConfigRequiredField,
-            },
-            cameraConfigMaxWidth: {
-                value: 1280,
-                validate: cameraConfigRequiredField,
-            },
-            cameraConfigMaxHeight: {
-                value: 720,
-                validate: cameraConfigRequiredField,
-            },
-            cameraConfigMaxFPS: {
-                value: 10,
-                validate: cameraConfigRequiredField,
-            },
-            cameraConfigMaxBitrate: {
-                value: 300,
-                validate: cameraConfigRequiredField,
-            },
-            cameraConfigVideoCodec: {
-                value: 'libx264',
-                validate: cameraConfigRequiredField,
-            },
-            cameraConfigAudioCodec: {
-                value: 'libfdk_aac',
-                validate: cameraConfigRequiredField,
-            },
-            cameraConfigAudio: {
-                value: false,
-            },
-            cameraConfigPacketSize: {
-                value: 1316,
-                validate: cameraConfigRequiredField,
-            },
-            cameraConfigVerticalFlip: {
-                value: false,
-            },
-            cameraConfigHorizontalFlip: {
-                value: false,
-            },
-            cameraConfigMapVideo: {
-                value: '0:0',
-                validate: cameraConfigRequiredField,
-            },
-            cameraConfigMapAudio: {
-                value: '0:1',
-                validate: cameraConfigRequiredField,
-            },
-            cameraConfigVideoFilter: {
-                value: 'scale=1280:720',
-            },
-            cameraConfigAdditionalCommandLine: {
-                value: '-tune zerolatency',
-            },
-            cameraConfigDebug: {
-                value: false,
-            },
-            cameraConfigSnapshotOutput: {
-                value: 'disabled',
-                validate: cameraConfigRequiredField,
-            },
-            cameraConfigInterfaceName: {
-                value: '',
-            },
             characteristicProperties: {
                 value: '{}',
                 validate: function (value) {
@@ -488,8 +541,7 @@ if (nrchkbExperimental) {
 
                     try {
                         JSON.parse(value)
-                    } catch (e) {
-                        console.log(e, value)
+                    } catch (_) {
                         return false
                     }
 
@@ -499,7 +551,64 @@ if (nrchkbExperimental) {
             waitForSetupMsg: {
                 value: false
             },
+            outputMode: {
+                value: 'events'
+            },
             useEventCallback: {
+                value: false
+            },
+            plugins: {
+                value: []
+            },
+            plugin1: {
+                value: '',
+                type: 'homekit-plugin-instance',
+                required: false,
+                validate: function () { return true }
+            },
+            plugin2: {
+                value: '',
+                type: 'homekit-plugin-instance',
+                required: false,
+                validate: function () { return true }
+            },
+            plugin3: {
+                value: '',
+                type: 'homekit-plugin-instance',
+                required: false,
+                validate: function () { return true }
+            },
+            plugin4: {
+                value: '',
+                type: 'homekit-plugin-instance',
+                required: false,
+                validate: function () { return true }
+            },
+            plugin5: {
+                value: '',
+                type: 'homekit-plugin-instance',
+                required: false,
+                validate: function () { return true }
+            },
+            plugin6: {
+                value: '',
+                type: 'homekit-plugin-instance',
+                required: false,
+                validate: function () { return true }
+            },
+            plugin7: {
+                value: '',
+                type: 'homekit-plugin-instance',
+                required: false,
+                validate: function () { return true }
+            },
+            plugin8: {
+                value: '',
+                type: 'homekit-plugin-instance',
+                required: false,
+                validate: function () { return true }
+            },
+            pluginSetupComplete: {
                 value: false
             },
             outputs: {
@@ -518,8 +627,30 @@ if (nrchkbExperimental) {
         inputs: 1,
         outputs: 1,
         outputLabels: function (index) {
+            const outputMode = this.outputMode || 'events'
+
+            if (outputMode === 'legacy') {
+                if (index === 0) {
+                    return 'onChange'
+                }
+
+                if (index === 1) {
+                    return 'onSet'
+                }
+
+                if (index === 2) {
+                    return 'camera snapshot'
+                }
+
+                return ''
+            }
+
             if (index === 0) {
                 return 'events'
+            }
+
+            if (index === 1 && this.serviceName === 'Camera') {
+                return 'camera snapshot'
             }
 
             return ''
@@ -532,9 +663,13 @@ if (nrchkbExperimental) {
         labelStyle: function () {
             return this.name ? 'node_label_italic' : ''
         },
+        onadd: function () {
+            applyDefaultNodeDocumentation(this, 'homekit-service2')
+        },
         oneditprepare: function () {
             let node = this
             let isParentToggle = $('#node-config-input-isParent')
+            const cameraPluginId = 'node-red-contrib-homekit-bridged:homebridge-camera-ffmpeg'
 
             if (node.isParent === false) {
                 isParentToggle.val('false')
@@ -595,8 +730,1047 @@ if (nrchkbExperimental) {
                 .change()
 
             const selectServiceName = $('#node-input-serviceName')
+            let availablePlugins = []
+
+            const normalizePlugins = function (value) {
+                if (Array.isArray(value)) {
+                    return value
+                }
+
+                if (typeof value === 'string' && value.trim()) {
+                    try {
+                        const parsed = JSON.parse(value)
+                        return Array.isArray(parsed) ? parsed : []
+                    } catch (_) {
+                        return []
+                    }
+                }
+
+                return []
+            }
+
+            const initialServiceName = node.serviceName || ''
+            const initialPlugins = normalizePlugins(node.plugins)
+            let pluginSetupComplete =
+                node.pluginSetupComplete === true ||
+                (initialServiceName !== '' && initialPlugins.length === 0)
+
+            const pluginOverview = $('#node-input-plugin-overview')
+            const pluginSections = $('#node-input-plugin-sections')
+            const pluginCount = $('#node-input-plugin-count')
+            const pluginSummaryList = $('#node-input-plugin-summary-list')
+
+            const getPluginMetadata = function (id) {
+                return availablePlugins.find(function (entry) {
+                    return entry.id === id
+                })
+            }
+
+            const getPluginDisplayLabel = function (plugin) {
+                if (!plugin) {
+                    return ''
+                }
+
+                const hasDisplayNameCollision = availablePlugins.filter(function (entry) {
+                    return entry.displayName === plugin.displayName
+                }).length > 1
+
+                return hasDisplayNameCollision
+                    ? plugin.displayName + ' (' + plugin.packageName + ')'
+                    : plugin.displayName
+            }
+
+            const getPluginPrerequisiteServiceNames = function (plugin) {
+                return plugin && plugin.prerequisites && Array.isArray(plugin.prerequisites.serviceNames)
+                    ? plugin.prerequisites.serviceNames
+                    : []
+            }
+
+            const isPluginCompatibleWithSelectedService = function (plugin) {
+                const serviceNames = getPluginPrerequisiteServiceNames(plugin)
+                return serviceNames.length === 0 || serviceNames.includes(selectServiceName.val())
+            }
+
+            const allowsAnotherPluginInstance = function (plugin, selectedId) {
+                if (!plugin || plugin.multipleInstances !== false || !selectedId) {
+                    return true
+                }
+
+                return readPluginsFromList().filter(function (entry) {
+                    return entry.id === selectedId
+                }).length === 0
+            }
+
+            const renderCompatibilityText = function (plugin) {
+                const serviceNames = getPluginPrerequisiteServiceNames(plugin)
+
+                if (!serviceNames.length) {
+                    return 'Works with any service'
+                }
+
+                return 'Works with: ' + serviceNames.join(', ')
+            }
+
+            const renderMultipleInstancesText = function (plugin) {
+                return plugin && plugin.multipleInstances === false
+                    ? 'Single instance'
+                    : 'Multiple instances allowed'
+            }
+
+            const getPluginSectionId = function (entry, index) {
+                return 'node-input-plugin-section-' + (entry.id || 'plugin')
+                    .replace(/[^a-zA-Z0-9_-]/g, '-') + '-' + index
+            }
+
+            const renderPluginDetails = function (plugin) {
+                const upstream = plugin.upstream || {}
+                const capabilities = plugin.capabilities
+                    ? Object.keys(plugin.capabilities).filter(function (key) {
+                        return plugin.capabilities[key] === true
+                    }).join(', ')
+                    : ''
+
+                return (
+                    '<strong>' + $('<div>').text(plugin.displayName).html() + '</strong> ' +
+                    'v' + $('<div>').text(plugin.version).html() + ' by ' +
+                    $('<div>').text(plugin.author).html() + '<br>' +
+                    $('<div>').text(plugin.description).html() + '<br>' +
+                    '<small>' + $('<div>').text(renderCompatibilityText(plugin)).html() + '. ' +
+                    $('<div>').text(renderMultipleInstancesText(plugin)).html() + '.</small><br>' +
+                    (capabilities ? '<small>Features: ' + $('<div>').text(capabilities).html() + '</small><br>' : '') +
+                    '<small>Package: ' + $('<div>').text(plugin.packageName).html() + '</small>' +
+                    (upstream.packageName
+                        ? '<br><small>Uses upstream ' + $('<div>').text(upstream.packageName).html() +
+                            (upstream.packageVersion ? ' v' + $('<div>').text(upstream.packageVersion).html() : '') +
+                            '. Upstream authors are credited for the original plugin, not this NRCHKB integration.</small>'
+                        : '')
+                )
+            }
+
+            const cloneObject = function (value) {
+                return $.extend(true, {}, value || {})
+            }
+
+            const getPathParts = function (path) {
+                return typeof path === 'string' && path.length
+                    ? path.split('.').filter(function (part) {
+                        return part.length > 0
+                    })
+                    : []
+            }
+
+            const getConfigValue = function (config, path, defaultValue) {
+                const parts = getPathParts(path)
+                let current = config
+
+                for (let index = 0; index < parts.length; index += 1) {
+                    if (!current || typeof current !== 'object' || !Object.prototype.hasOwnProperty.call(current, parts[index])) {
+                        return defaultValue
+                    }
+
+                    current = current[parts[index]]
+                }
+
+                return current === undefined ? defaultValue : current
+            }
+
+            const setConfigValue = function (config, path, value) {
+                const parts = getPathParts(path)
+                let current = config
+
+                parts.forEach(function (part, index) {
+                    if (index === parts.length - 1) {
+                        current[part] = value
+                        return
+                    }
+
+                    if (!current[part] || typeof current[part] !== 'object') {
+                        current[part] = {}
+                    }
+
+                    current = current[part]
+                })
+            }
+
+            const getPluginDefaultConfig = function (plugin) {
+                return cloneObject(plugin && plugin.editor && plugin.editor.defaultConfig)
+            }
+
+            const mergePluginConfig = function (plugin, config) {
+                return $.extend(true, getPluginDefaultConfig(plugin), config || {})
+            }
+
+            const readPluginConfig = function (section, entry, plugin) {
+                const config = mergePluginConfig(plugin, entry.config || {})
+
+                section.find('[data-plugin-config-path]').each(function () {
+                    const input = $(this)
+                    const path = input.attr('data-plugin-config-path')
+                    const field = input.data('pluginField') || {}
+
+                    if (!path) {
+                        return
+                    }
+
+                    if (field.type === 'checkbox') {
+                        setConfigValue(config, path, input.is(':checked'))
+                    } else if (field.type === 'number') {
+                        const value = input.val()
+                        setConfigValue(config, path, value === '' || value === undefined ? undefined : Number(value))
+                    } else if (field.type === 'dynamic-select') {
+                        const value = input.val() || input.data('pluginDynamicValue') || ''
+                        setConfigValue(config, path, value)
+                    } else {
+                        setConfigValue(config, path, input.val())
+                    }
+                })
+
+                return config
+            }
+
+            const readPluginsFromList = function () {
+                const plugins = []
+                const sections = pluginSections.find('.nrchkb-plugin-section')
+
+                sections.each(function () {
+                    const section = $(this)
+                    const entry = section.data('pluginEntry') || {}
+                    const id = entry.id
+
+                    if (!id) {
+                        return
+                    }
+
+                    const plugin = getPluginMetadata(id)
+
+                    plugins.push({
+                        id,
+                        automatic: entry.automatic === true,
+                        modified: entry.modified === true,
+                        config: readPluginConfig(section, entry, plugin || {})
+                    })
+                })
+
+                return plugins
+            }
+
+            const syncPluginsInput = function () {
+                const plugins = readPluginsFromList()
+                node.plugins = plugins
+                $('#node-input-plugins').val(JSON.stringify(plugins))
+            }
+
+            const getCameraPluginEntry = function () {
+                return readPluginsFromList().find(function (entry) {
+                    return entry.id === cameraPluginId
+                })
+            }
+
+            const buildCameraPluginEntry = function () {
+                const plugin = getPluginMetadata(cameraPluginId)
+                const existing = getCameraPluginEntry()
+                const defaultConfig = getPluginDefaultConfig(plugin || {})
+
+                // If we don't have an existing entry, merge service node's camera config into default config
+                if (!existing && defaultConfig && defaultConfig.camera && defaultConfig.camera.videoConfig) {
+                    if (node.cameraConfigSource) {
+                        defaultConfig.camera.videoConfig.source = node.cameraConfigSource
+                    }
+                    if (node.cameraConfigStillImageSource) {
+                        defaultConfig.camera.videoConfig.stillImageSource = node.cameraConfigStillImageSource
+                    }
+                    if (node.cameraConfigMaxStreams !== undefined) {
+                        defaultConfig.camera.videoConfig.maxStreams = node.cameraConfigMaxStreams
+                    }
+                    if (node.cameraConfigMaxWidth !== undefined) {
+                        defaultConfig.camera.videoConfig.maxWidth = node.cameraConfigMaxWidth
+                    }
+                    if (node.cameraConfigMaxHeight !== undefined) {
+                        defaultConfig.camera.videoConfig.maxHeight = node.cameraConfigMaxHeight
+                    }
+                    if (node.cameraConfigMaxFPS !== undefined) {
+                        defaultConfig.camera.videoConfig.maxFPS = node.cameraConfigMaxFPS
+                    }
+                    if (node.cameraConfigMaxBitrate !== undefined) {
+                        defaultConfig.camera.videoConfig.maxBitrate = node.cameraConfigMaxBitrate
+                    }
+                    if (node.cameraConfigVideoCodec) {
+                        defaultConfig.camera.videoConfig.vcodec = node.cameraConfigVideoCodec
+                    }
+                    if (node.cameraConfigAudio !== undefined) {
+                        defaultConfig.camera.videoConfig.audio = node.cameraConfigAudio
+                    }
+                    if (node.cameraConfigPacketSize !== undefined) {
+                        defaultConfig.camera.videoConfig.packetSize = node.cameraConfigPacketSize
+                    }
+                    if (node.cameraConfigMapVideo) {
+                        defaultConfig.camera.videoConfig.mapvideo = node.cameraConfigMapVideo
+                    }
+                    if (node.cameraConfigMapAudio) {
+                        defaultConfig.camera.videoConfig.mapaudio = node.cameraConfigMapAudio
+                    }
+                    if (node.cameraConfigVideoFilter) {
+                        defaultConfig.camera.videoConfig.videoFilter = node.cameraConfigVideoFilter
+                    }
+                    if (node.cameraConfigAdditionalCommandLine) {
+                        defaultConfig.camera.videoConfig.encoderOptions = node.cameraConfigAdditionalCommandLine
+                    }
+                    if (node.cameraConfigDebug !== undefined) {
+                        defaultConfig.camera.videoConfig.debug = node.cameraConfigDebug
+                    }
+                }
+
+                return {
+                    id: cameraPluginId,
+                    automatic: existing ? existing.automatic !== false : true,
+                    modified: existing ? existing.modified === true : false,
+                    config: existing ? existing.config : defaultConfig
+                }
+            }
+
+            const shouldSeedCameraPluginEntry = function () {
+                return (
+                    !pluginSetupComplete &&
+                    initialServiceName === '' &&
+                    selectServiceName.val() === 'Camera' &&
+                    !getCameraPluginEntry()
+                )
+            }
+
+            const ensureCameraPluginEntry = function () {
+                if (!availablePlugins.length) {
+                    return
+                }
+
+                if (shouldSeedCameraPluginEntry()) {
+                    addPluginEntry(buildCameraPluginEntry())
+                    pluginSetupComplete = true
+                }
+            }
+
+            const getInitialPluginEntry = function (entry, index) {
+                const indexedEntry = initialPlugins[index]
+
+                if (indexedEntry && indexedEntry.id === entry.id) {
+                    return indexedEntry
+                }
+
+                return initialPlugins.find(function (initialEntry) {
+                    return initialEntry.id === entry.id
+                })
+            }
+
+            const createPluginAbout = function (plugin) {
+                return $('<div/>', {class: 'nrchkb-plugin-about'})
+                    .html(renderPluginDetails(plugin))
+            }
+
+            const createPluginFieldId = function (sectionId, field) {
+                return sectionId + '-' + (field.path || 'field').replace(/[^a-zA-Z0-9_-]/g, '-')
+            }
+
+            const renderPluginField = function (body, section, field, config) {
+                const sectionId = section.attr('id')
+                const fieldId = createPluginFieldId(sectionId, field)
+                let value = getConfigValue(config, field.path, field.default)
+                if ((value === '' || value === undefined) && field.type === 'dynamic-select') {
+                    const initialEntry = section.data('pluginInitialEntry') || {}
+                    const initialValue = getConfigValue(initialEntry.config || {}, field.path, undefined)
+
+                    if (initialValue !== '' && initialValue !== undefined) {
+                        value = initialValue
+                    }
+                }
+                const row = $('<div/>', {
+                    class: 'form-row' + (field.type === 'checkbox'
+                        ? ' nrchkb-checkbox-row nrchkb-plugin-instance-check-row'
+                        : field.type === 'textarea'
+                            ? ' nrchkb-plugin-instance-textarea-row'
+                            : '')
+                }).appendTo(body)
+
+                let input
+
+                if (field.type === 'checkbox') {
+                    const label = $('<label/>', {
+                        class: 'nrchkb-checkbox-label nrchkb-plugin-instance-check',
+                        for: fieldId
+                    }).appendTo(row)
+                    input = $('<input/>', {type: 'checkbox', id: fieldId}).appendTo(label)
+                    $('<span/>')
+                        .append(field.icon ? $('<i/>', {class: 'fa ' + field.icon}) : $())
+                        .append(field.icon ? ' ' : '')
+                        .append(document.createTextNode(field.label || field.path))
+                        .appendTo(label)
+                    input.prop('checked', !!value)
+                } else {
+                    const label = $('<label/>', {for: fieldId}).appendTo(row)
+
+                    if (field.icon) {
+                        $('<i/>', {class: 'fa ' + field.icon}).appendTo(label)
+                        label.append(' ')
+                    }
+
+                    label.append(document.createTextNode(field.label || field.path))
+                }
+
+                if (field.type === 'select' || field.type === 'dynamic-select') {
+                    input = $('<select/>', {id: fieldId, class: 'nrchkb-plugin-instance-select'}).appendTo(row)
+                    ;(field.options || []).forEach(function (option) {
+                        $('<option/>')
+                            .val(option.value)
+                            .text(option.label)
+                            .appendTo(input)
+                    })
+                    input.val(value === undefined ? '' : value)
+                } else if (field.type === 'textarea') {
+                    input = $('<textarea/>', {
+                        id: fieldId,
+                        class: 'nrchkb-plugin-instance-textarea',
+                        rows: 4
+                    }).appendTo(row)
+                    input.val(value === undefined ? '' : value)
+                    if (field.placeholder) {
+                        const helpId = fieldId + '-help'
+                        input.attr('aria-describedby', helpId)
+                        $('<div/>', {
+                            id: helpId,
+                            class: 'nrchkb-plugin-instance-help'
+                        }).text(field.placeholder).appendTo(row)
+                    }
+                } else {
+                    input = $('<input/>', {
+                        type: field.type === 'number' ? 'number' : field.type === 'password' ? 'password' : 'text',
+                        id: fieldId,
+                        placeholder: field.placeholder || ''
+                    }).appendTo(row)
+                    input.val(value === undefined ? '' : value)
+                }
+
+                input
+                    .attr('data-plugin-config-path', field.path)
+                    .data('pluginField', field)
+
+                if (field.type === 'config-node' && field.configNodeType && RED.editor && RED.editor.prepareConfigNodeSelect) {
+                    const property = fieldId.replace(/^node-input-/, '')
+                    const node = {}
+                    node[property] = value === undefined ? '' : value
+
+                    RED.editor.prepareConfigNodeSelect(
+                        node,
+                        property,
+                        field.configNodeType,
+                        'node-input'
+                    )
+
+                    input = $('#' + fieldId)
+                    input
+                        .attr('data-plugin-config-path', field.path)
+                        .data('pluginField', field)
+                }
+
+                if (field.type === 'dynamic-select') {
+                    input.attr('data-plugin-dynamic-select', 'true')
+                    input.data('pluginDynamicValue', value === undefined ? '' : value)
+                }
+            }
+
+            const loadDynamicPluginSelect = function (section, input) {
+                const field = input.data('pluginField') || {}
+                const selectedValue = input.val() || input.data('pluginDynamicValue') || ''
+
+                if (!field.optionsUrl) {
+                    return
+                }
+
+                let url = field.optionsUrl
+                if (field.optionsDependsOn) {
+                    const dependsInput = section.find('[data-plugin-config-path="' + field.optionsDependsOn + '"]')
+                    const dependsValue = dependsInput.val()
+
+                    if (!dependsValue) {
+                        input.empty()
+                        $('<option/>').val('').text('Choose a controller first').appendTo(input)
+                        input.val('')
+                        syncPluginsInput()
+                        return
+                    }
+
+                    url = url.replace('{' + field.optionsDependsOn + '}', encodeURIComponent(dependsValue))
+                }
+
+                input.empty()
+                $('<option/>').val('').text('Loading...').appendTo(input)
+
+                $.getJSON(url, function (options) {
+                    input.empty()
+                    $('<option/>').val('').text('Choose...').appendTo(input)
+                    ;(options || []).forEach(function (option) {
+                        $('<option/>')
+                            .val(option.value)
+                            .text(option.label)
+                            .appendTo(input)
+                    })
+                    if (selectedValue && input.find('option').filter(function () {
+                        return $(this).val() === selectedValue
+                    }).length === 0) {
+                        $('<option/>')
+                            .val(selectedValue)
+                            .text('Saved camera (' + selectedValue + ')')
+                            .appendTo(input)
+                    }
+                    input.val(selectedValue)
+                    input.data('pluginDynamicValue', input.val() || selectedValue)
+                    syncPluginsInput()
+                }).fail(function () {
+                    input.empty()
+                    $('<option/>').val('').text('Unable to load cameras').appendTo(input)
+                    if (selectedValue) {
+                        $('<option/>').val(selectedValue).text(selectedValue).appendTo(input)
+                        input.val(selectedValue)
+                    }
+                    input.data('pluginDynamicValue', input.val() || selectedValue)
+                    syncPluginsInput()
+                })
+            }
+
+            const renderPluginEditor = function (body, entry, plugin, section) {
+                const editor = plugin.editor || {}
+                const editorSections = Array.isArray(editor.sections) ? editor.sections : []
+                const config = mergePluginConfig(plugin, entry.config || {})
+
+                body.append(createPluginAbout(plugin))
+
+                if (!editorSections.length) {
+                    $('<div/>', {class: 'alert alert-info nrchkb-info'})
+                        .text('This plugin does not provide editor fields.')
+                        .appendTo(body)
+                    return
+                }
+
+                editorSections.forEach(function (editorSection) {
+                    if (editorSection.title) {
+                        $('<div/>', {class: 'nrchkb-plugin-overview-name'})
+                            .text(editorSection.title)
+                            .appendTo(body)
+                    }
+
+                    if (editorSection.description) {
+                        $('<div/>', {class: 'nrchkb-plugin-empty'})
+                            .text(editorSection.description)
+                            .appendTo(body)
+                    }
+
+                    ;(editorSection.fields || []).forEach(function (field) {
+                        renderPluginField(body, section, field, config)
+                    })
+                })
+
+                section.data('pluginEntry', $.extend(true, {}, entry, {config}))
+                section.find('[data-plugin-dynamic-select="true"]').each(function () {
+                    loadDynamicPluginSelect(section, $(this))
+                })
+            }
+
+            const renderPluginSections = function () {
+                pluginOverview.empty()
+                pluginSections.empty()
+
+                const entries = normalizePlugins(node.plugins)
+                const configNodeEntries = readPluginSlotEntries()
+                const allEntries = entries.concat(configNodeEntries)
+                pluginCount.text(allEntries.length)
+
+                if (!allEntries.length) {
+                    pluginSummaryList.text('No plugins attached')
+                    $('<div/>', {class: 'nrchkb-plugin-empty'})
+                        .text('No plugins attached.')
+                        .appendTo(pluginOverview)
+                    return
+                }
+
+                const summaryNames = allEntries.map(function (entry) {
+                    const plugin = getPluginMetadata(entry.id)
+                    return plugin ? getPluginDisplayLabel(plugin) : entry.id
+                })
+                pluginSummaryList.text(summaryNames.join(', '))
+
+                entries.forEach(function (entry, index) {
+                    const plugin = getPluginMetadata(entry.id)
+                    const title = plugin
+                        ? getPluginDisplayLabel(plugin) + ' v' + plugin.version
+                        : entry.id
+                    const sectionId = getPluginSectionId(entry, index)
+
+                    renderPluginOverviewItem(title, sectionId)
+
+                    const section = $('<details/>', {
+                        id: sectionId,
+                        class: 'nrchkb-section nrchkb-plugin-section',
+                        open: true
+                    }).appendTo(pluginSections)
+                    section.data('pluginEntry', $.extend(true, {}, entry))
+                    section.data('pluginInitialEntry', $.extend(true, {}, getInitialPluginEntry(entry, index) || {}))
+
+                    const summary = $('<summary/>').appendTo(section)
+                    $('<i/>', {class: 'fa fa-plug'}).appendTo(summary)
+                    $('<span/>', {class: 'nrchkb-plugin-title'}).text(title).appendTo(summary)
+                    $('<button/>', {
+                        type: 'button',
+                        class: 'red-ui-button red-ui-button-small nrchkb-plugin-remove',
+                        'aria-label': 'Remove plugin ' + title,
+                        title: 'Remove plugin'
+                    })
+                        .append($('<i/>', {class: 'fa fa-remove'}))
+                        .appendTo(summary)
+
+                    const body = $('<div/>', {class: 'nrchkb-section-body'}).appendTo(section)
+                    renderPluginEditor(body, entry, plugin || {}, section)
+                })
+
+                configNodeEntries.forEach(function (entry, index) {
+                    renderConfigNodePluginSection(entry, getPluginMetadata(entry.id), index)
+                })
+            }
+
+            const pluginSlotNames = [
+                'plugin1',
+                'plugin2',
+                'plugin3',
+                'plugin4',
+                'plugin5',
+                'plugin6',
+                'plugin7',
+                'plugin8'
+            ]
+
+            const isOccupiedPluginSlotValue = function (value) {
+                return typeof value === 'string' &&
+                    value.trim() !== '' &&
+                    value !== '_ADD_' &&
+                    value !== '_NONE_'
+            }
+
+            const getPluginSlotValue = function (slot) {
+                const inputValue = $('#node-input-' + slot).val()
+                const savedValue = node[slot]
+
+                if (isOccupiedPluginSlotValue(inputValue)) {
+                    return inputValue
+                }
+
+                if (isOccupiedPluginSlotValue(savedValue)) {
+                    return savedValue
+                }
+
+                return ''
+            }
+
+            const parsePluginInstanceConfig = function (value) {
+                if (!value || typeof value !== 'string') {
+                    return {}
+                }
+
+                try {
+                    const parsed = JSON.parse(value)
+                    return parsed && typeof parsed === 'object' ? parsed : {}
+                } catch (_) {
+                    return {}
+                }
+            }
+
+            const readPluginSlotEntries = function () {
+                return pluginSlotNames.map(function (slot) {
+                    const configNodeId = getPluginSlotValue(slot)
+                    const configNode = configNodeId ? RED.nodes.node(configNodeId) : undefined
+                    const pluginId = configNode && configNode.pluginId
+
+                    if (!configNodeId || !pluginId) {
+                        return undefined
+                    }
+
+                    return {
+                        id: pluginId,
+                        slot,
+                        configNodeId,
+                        config: parsePluginInstanceConfig(configNode.pluginConfig)
+                    }
+                }).filter(function (entry) {
+                    return !!entry
+                })
+            }
+
+            const renderPluginOverviewItem = function (title, sectionId, options) {
+                const overviewItem = $('<div/>', {class: 'nrchkb-plugin-overview-item'}).appendTo(pluginOverview)
+                const overviewText = $('<div/>').appendTo(overviewItem)
+                $('<div/>', {class: 'nrchkb-plugin-overview-name'}).text(title).appendTo(overviewText)
+                const overviewActions = $('<div/>', {class: 'nrchkb-plugin-overview-actions'}).appendTo(overviewItem)
+                $('<button/>', {
+                    type: 'button',
+                    class: 'red-ui-button red-ui-button-small nrchkb-plugin-overview-edit',
+                    'aria-label': 'Edit plugin settings for ' + title,
+                    title: 'Edit plugin settings',
+                    'data-target': sectionId,
+                    'data-slot': options && options.slot ? options.slot : '',
+                    'data-config-id': options && options.configNodeId ? options.configNodeId : ''
+                })
+                    .append($('<i/>', {class: 'fa fa-pencil'}))
+                    .append(' Edit')
+                    .appendTo(overviewActions)
+                $('<button/>', {
+                    type: 'button',
+                    class: 'red-ui-button red-ui-button-small nrchkb-plugin-overview-remove',
+                    'aria-label': 'Remove plugin ' + title,
+                    title: 'Remove plugin',
+                    'data-target': sectionId,
+                    'data-slot': options && options.slot ? options.slot : ''
+                })
+                    .append($('<i/>', {class: 'fa fa-remove'}))
+                    .append(' Remove')
+                    .appendTo(overviewActions)
+            }
+
+            const renderConfigNodePluginSection = function (entry, plugin, index) {
+                const title = plugin
+                    ? getPluginDisplayLabel(plugin) + ' v' + plugin.version
+                    : entry.id
+                const sectionId = 'node-input-plugin-config-section-' + entry.slot + '-' + index
+
+                renderPluginOverviewItem(title, sectionId, entry)
+
+                const section = $('<details/>', {
+                    id: sectionId,
+                    class: 'nrchkb-section nrchkb-plugin-section',
+                    open: true,
+                    'data-plugin-slot': entry.slot
+                }).appendTo(pluginSections)
+
+                const summary = $('<summary/>').appendTo(section)
+                $('<i/>', {class: 'fa fa-plug'}).appendTo(summary)
+                $('<span/>', {class: 'nrchkb-plugin-title'}).text(title).appendTo(summary)
+                $('<button/>', {
+                    type: 'button',
+                    class: 'red-ui-button red-ui-button-small nrchkb-plugin-remove',
+                    'aria-label': 'Remove plugin ' + title,
+                    title: 'Remove plugin',
+                    'data-slot': entry.slot
+                })
+                    .append($('<i/>', {class: 'fa fa-remove'}))
+                    .appendTo(summary)
+
+                const body = $('<div/>', {class: 'nrchkb-section-body'}).appendTo(section)
+                if (plugin) {
+                    body.append(createPluginAbout(plugin))
+                }
+            }
+
+            const getFirstEmptyPluginSlot = function () {
+                return pluginSlotNames.find(function (slot) {
+                    return !getPluginSlotValue(slot)
+                })
+            }
+
+            const addConfigNodePlugin = function (plugin) {
+                const slot = getFirstEmptyPluginSlot()
+
+                if (!slot) {
+                    RED.notify('This service already has the maximum number of plugin config nodes.', 'warning')
+                    return
+                }
+
+                if (!RED.editor || !RED.editor.editConfig) {
+                    RED.notify('This plugin does not provide a config node editor.', 'warning')
+                    return
+                }
+
+                window.NRCHKBPluginInstanceDraft = {
+                    pluginId: plugin.id,
+                    pluginConfig: getPluginDefaultConfig(plugin)
+                }
+                RED.editor.editConfig(slot, 'homekit-plugin-instance', '_ADD_', 'node-input', node)
+                pluginSetupComplete = true
+                window.setTimeout(renderPluginSections, 100)
+                window.setTimeout(renderPluginSections, 500)
+            }
+
+            const addPluginEntry = function (entry) {
+                const plugin = getPluginMetadata(entry.id)
+
+                if (!plugin) {
+                    RED.notify('Plugin metadata is not available.', 'warning')
+                    return
+                }
+
+                if (!isPluginCompatibleWithSelectedService(plugin)) {
+                    RED.notify('Plugin is not compatible with this service.', 'warning')
+                    return
+                }
+
+                if (!allowsAnotherPluginInstance(plugin, entry.id)) {
+                    RED.notify('This plugin can only be added once to this node.', 'warning')
+                    return
+                }
+
+                if (plugin.attachment === 'config-node') {
+                    addConfigNodePlugin(plugin)
+                    return
+                }
+
+                node.plugins = readPluginsFromList().concat([entry])
+                pluginSetupComplete = true
+                renderPluginSections()
+                syncPluginsInput()
+            }
+
+            const setPluginEntries = function (plugins) {
+                node.plugins = normalizePlugins(plugins)
+                renderPluginSections()
+                syncPluginsInput()
+            }
+
+            const openAddPluginDialog = function () {
+                const dialog = $('<div/>', {class: 'nrchkb-plugin-picker'})
+
+                availablePlugins.forEach(function (plugin) {
+                    const compatible = isPluginCompatibleWithSelectedService(plugin)
+                    const duplicateAllowed = allowsAnotherPluginInstance(plugin, plugin.id)
+                    const disabled = !compatible || !duplicateAllowed
+                    const reason = !compatible
+                        ? 'Not compatible with ' + (selectServiceName.val() || 'this service')
+                        : !duplicateAllowed
+                            ? 'Already added'
+                            : renderCompatibilityText(plugin)
+                    const item = $('<div/>', {
+                        class: 'nrchkb-plugin-picker-item',
+                        'aria-disabled': disabled ? 'true' : 'false',
+                        'aria-label': getPluginDisplayLabel(plugin) + '. ' + reason,
+                        role: 'button',
+                        tabindex: disabled ? '-1' : '0'
+                    }).appendTo(dialog)
+
+                    $('<div/>', {class: 'nrchkb-plugin-picker-title'})
+                        .append(
+                            $('<span/>').text(getPluginDisplayLabel(plugin)),
+                            $('<span/>').text('v' + plugin.version)
+                        )
+                        .appendTo(item)
+                    $('<div/>', {class: 'nrchkb-plugin-picker-description'})
+                        .text(plugin.description)
+                        .appendTo(item)
+                    $('<div/>', {class: 'nrchkb-plugin-picker-meta'})
+                        .text(reason + ' · ' + renderMultipleInstancesText(plugin))
+                        .appendTo(item)
+
+                    if (!disabled) {
+                        const addSelectedPlugin = function () {
+                            addPluginEntry({
+                                id: plugin.id,
+                                automatic: false,
+                                modified: true,
+                                config: getPluginDefaultConfig(plugin)
+                            })
+                            dialog.dialog('close')
+                        }
+
+                        item.on('click', addSelectedPlugin)
+                        item.on('keydown', function (event) {
+                            if (event.key === 'Enter') {
+                                event.preventDefault()
+                                addSelectedPlugin()
+                            } else if (event.key === ' ') {
+                                event.preventDefault()
+                            }
+                        })
+                        item.on('keyup', function (event) {
+                            if (event.key === ' ') {
+                                event.preventDefault()
+                                addSelectedPlugin()
+                            }
+                        })
+                    }
+                })
+
+                if (!availablePlugins.length) {
+                    $('<div/>', {class: 'nrchkb-plugin-empty'})
+                        .text('No plugins are registered.')
+                        .appendTo(dialog)
+                }
+
+                dialog.dialog({
+                    modal: true,
+                    resizable: false,
+                    width: Math.min(560, $(window).width() - 80),
+                    title: 'Add plugin',
+                    close: function () {
+                        dialog.dialog('destroy').remove()
+                    },
+                    buttons: {
+                        Cancel: function () {
+                            $(this).dialog('close')
+                        }
+                    }
+                })
+            }
+
+            pluginSections.on('click', '.nrchkb-plugin-remove', function (event) {
+                event.preventDefault()
+                event.stopPropagation()
+                const section = $(this).closest('.nrchkb-plugin-section')
+                const slot = $(this).attr('data-slot') || section.attr('data-plugin-slot')
+
+                if (slot) {
+                    $('#node-input-' + slot).val('_ADD_').trigger('change')
+                    node[slot] = ''
+                    pluginSetupComplete = true
+                    renderPluginSections()
+                    return
+                }
+
+                section.remove()
+                node.plugins = readPluginsFromList()
+                pluginSetupComplete = true
+                renderPluginSections()
+                syncPluginsInput()
+            })
+
+            pluginSections.on('change keyup', '[data-plugin-config-path]', function (event) {
+                const section = $(this).closest('.nrchkb-plugin-section')
+                const entry = section.data('pluginEntry') || {}
+                const plugin = getPluginMetadata(entry.id)
+                const changedInput = $(event.target)
+                const changedPath = changedInput.attr('data-plugin-config-path') || ''
+                const changedField = changedInput.data('pluginField') || {}
+
+                if (changedField.type === 'dynamic-select') {
+                    changedInput.data('pluginDynamicValue', changedInput.val() || '')
+                }
+
+                entry.modified = true
+                entry.config = readPluginConfig(section, entry, plugin || {})
+                section.data('pluginEntry', entry)
+                section.find('[data-plugin-dynamic-select="true"]').each(function () {
+                    const dynamicInput = $(this)
+                    const dynamicField = dynamicInput.data('pluginField') || {}
+                    if (dynamicField.optionsDependsOn === changedPath) {
+                        dynamicInput.data(
+                            'pluginDynamicValue',
+                            dynamicInput.val() || dynamicInput.data('pluginDynamicValue') || ''
+                        )
+                        loadDynamicPluginSelect(section, dynamicInput)
+                    }
+                })
+
+                syncPluginsInput()
+            })
+
+            pluginOverview.on('click', '.nrchkb-plugin-overview-edit', function (event) {
+                event.preventDefault()
+                event.stopPropagation()
+
+                const slot = $(this).attr('data-slot')
+                if (slot) {
+                    const configNodeId = $(this).attr('data-config-id') || getPluginSlotValue(slot)
+                    if (RED.editor && RED.editor.editConfig) {
+                        RED.editor.editConfig(slot, 'homekit-plugin-instance', configNodeId || '_ADD_', 'node-input', node)
+                        window.setTimeout(renderPluginSections, 100)
+                        window.setTimeout(renderPluginSections, 500)
+                    }
+                    return
+                }
+
+                const targetId = $(this).attr('data-target')
+                const section = targetId ? $('#' + targetId) : $()
+
+                if (!section.length) {
+                    return
+                }
+
+                section.prop('open', true)
+
+                if (section[0] && section[0].scrollIntoView) {
+                    section[0].scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    })
+                }
+            })
+
+            pluginOverview.on('click', '.nrchkb-plugin-overview-remove', function (event) {
+                event.preventDefault()
+                event.stopPropagation()
+
+                const slot = $(this).attr('data-slot')
+                if (slot) {
+                    $('#node-input-' + slot).val('_ADD_').trigger('change')
+                    node[slot] = ''
+                    pluginSetupComplete = true
+                    renderPluginSections()
+                    return
+                }
+
+                const targetId = $(this).attr('data-target')
+                const section = targetId ? $('#' + targetId) : $()
+
+                if (section.length) {
+                    section.remove()
+                }
+
+                node.plugins = readPluginsFromList()
+                pluginSetupComplete = true
+                renderPluginSections()
+                syncPluginsInput()
+            })
+
+            $('#node-input-add-plugin').on('click', function (event) {
+                event.preventDefault()
+                event.stopPropagation()
+                openAddPluginDialog()
+            })
+
+            pluginSlotNames.forEach(function (slot) {
+                $('#node-input-' + slot).on('change', function () {
+                    node[slot] = getPluginSlotValue(slot)
+                    renderPluginSections()
+                })
+            })
+
+            const pluginsDetailsElement = document.getElementById('plugins-configuration')
+            const pluginsSummaryElement = pluginsDetailsElement && pluginsDetailsElement.querySelector('summary')
+            const updatePluginsExpandedState = function () {
+                if (pluginsSummaryElement) {
+                    pluginsSummaryElement.setAttribute('aria-expanded', pluginsDetailsElement.open ? 'true' : 'false')
+                }
+            }
+
+            if (pluginsSummaryElement) {
+                pluginsSummaryElement.setAttribute('aria-controls', 'node-input-plugin-overview')
+                updatePluginsExpandedState()
+            }
+            if (pluginsDetailsElement) {
+                pluginsDetailsElement.addEventListener('toggle', updatePluginsExpandedState)
+            }
+
+            setPluginEntries(node.plugins)
+
+            $.getJSON('nrchkb/plugins', function (plugins) {
+                availablePlugins = plugins.slice().sort(function (left, right) {
+                    return getPluginDisplayLabel(left).localeCompare(getPluginDisplayLabel(right), undefined, {
+                        numeric: true,
+                        sensitivity: 'base'
+                    })
+                })
+                if (selectServiceName.val() === 'Camera') {
+                    ensureCameraPluginEntry()
+                }
+                renderPluginSections()
+                syncPluginsInput()
+            })
 
             Object.keys(serviceTypes).sort().forEach(function (key) {
+                if (serviceTypes[key].nrchkbHiddenInService2) {
+                    return
+                }
+
                 const serviceOption = $('<option></option>')
 
                 serviceOption
@@ -611,8 +1785,24 @@ if (nrchkbExperimental) {
                 selectServiceName.append(serviceOption)
             })
 
-            let cameraConfiguration = $('#camera-configuration')
             let adaptiveLightningConfiguration = $('#adaptive-lightning-configuration')
+            const selectOutputMode = $('#node-input-outputMode')
+
+            if (!node.outputMode) {
+                selectOutputMode.val('events')
+            }
+
+            const updateOutputs = function () {
+                const outputMode = selectOutputMode.val() || 'events'
+                const serviceName = selectServiceName.val()
+                const isCamera = serviceName === 'Camera'
+
+                if (outputMode === 'legacy') {
+                    node.outputs = isCamera ? 3 : 2
+                } else {
+                    node.outputs = isCamera ? 2 : 1
+                }
+            }
 
             selectServiceName
                 .find('option')
@@ -623,19 +1813,25 @@ if (nrchkbExperimental) {
 
             selectServiceName
                 .change(function () {
-                    if (this.value === 'CameraControl') {
-                        cameraConfiguration.fadeIn('fast')
-                        node.outputs = 2
+                    if (this.value === 'Camera') {
+                        ensureCameraPluginEntry()
                     } else {
-                        cameraConfiguration.fadeOut('fast')
-                        node.outputs = 1
+                        setPluginEntries(readPluginsFromList().filter(function (entry) {
+                            return entry.id !== cameraPluginId || entry.automatic === false || entry.modified
+                        }))
                     }
+
+                    syncPluginsInput()
+                    updateOutputs()
                 })
                 .change()
+
+            selectOutputMode.change(updateOutputs).change()
 
             selectServiceName
                 .change(function () {
                     if (this.value === 'Lightbulb') {
+                        adaptiveLightningConfiguration.prop('open', true)
                         adaptiveLightningConfiguration.fadeIn('fast')
                     } else {
                         adaptiveLightningConfiguration.fadeOut('fast')
@@ -658,6 +1854,8 @@ if (nrchkbExperimental) {
                     type: 'homekit-service2',
                 })
             ]
+
+            const parentServiceOptions = []
 
             candidateNodes.forEach(function (n) {
                 if (!n.name || n.name.length < 1 || !n.isParent) {
@@ -691,13 +1889,16 @@ if (nrchkbExperimental) {
                 const text = n.name + ' (' + sublabel + ')'
                 const hostType = n.hostType
 
-                selectParentService.append(
-                    $('<option></option>')
+                parentServiceOptions.push({
+                    text,
+                    element: $('<option></option>')
                         .val(value)
                         .text(text)
-                        .attr("hostType", hostType),
-                )
+                        .attr("hostType", hostType)
+                })
             })
+
+            sortSelectOptionsByLabel(selectParentService, parentServiceOptions)
 
             selectParentService
                 .find('option')
@@ -771,8 +1972,30 @@ if (nrchkbExperimental) {
             node.serviceName = $(
                 '#node-input-serviceName option:selected',
             ).val()
+            node.outputMode = $('#node-input-outputMode').val() || 'events'
+            try {
+                const plugins = JSON.parse($('#node-input-plugins').val() || '[]')
+                node.plugins = Array.isArray(plugins) ? plugins : []
+            } catch (_) {
+                node.plugins = []
+            }
+            node.plugin1 = $('#node-input-plugin1').val() || ''
+            node.plugin2 = $('#node-input-plugin2').val() || ''
+            node.plugin3 = $('#node-input-plugin3').val() || ''
+            node.plugin4 = $('#node-input-plugin4').val() || ''
+            node.plugin5 = $('#node-input-plugin5').val() || ''
+            node.plugin6 = $('#node-input-plugin6').val() || ''
+            node.plugin7 = $('#node-input-plugin7').val() || ''
+            node.plugin8 = $('#node-input-plugin8').val() || ''
+            node.pluginSetupComplete = true
+            node.outputs =
+                node.outputMode === 'legacy'
+                    ? node.serviceName === 'Camera'
+                        ? 3
+                        : 2
+                    : node.serviceName === 'Camera'
+                      ? 2
+                      : 1
         },
     })
-}
 </script>
-

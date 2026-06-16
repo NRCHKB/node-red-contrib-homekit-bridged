@@ -1,22 +1,740 @@
 <style>
-    .alert {
+    .nrchkb-editor {
+        --nrchkb-section-border: var(--red-ui-secondary-border-color, #d8d8d8);
+        --nrchkb-section-bg: var(--red-ui-secondary-background, #fff);
+        --nrchkb-section-header-bg: var(--red-ui-tertiary-background, #f6f6f6);
+        --nrchkb-muted-text: var(--red-ui-secondary-text-color, #666);
+        --nrchkb-focus-ring: var(--red-ui-focus-color, #1a73e8);
+        --nrchkb-accent: var(--red-ui-text-color-link, #ad1625);
+        --nrchkb-warning-border: var(--red-ui-message-warning-border-color, #d7a100);
+        --nrchkb-warning-bg: var(--red-ui-message-warning-background, var(--red-ui-tertiary-background, #fff7d6));
+        --nrchkb-warning-text: var(--red-ui-message-warning-color, var(--red-ui-primary-text-color, #333));
+        --nrchkb-info-border: var(--red-ui-message-info-border-color, var(--red-ui-secondary-border-color, #9ab));
+        --nrchkb-info-bg: var(--red-ui-message-info-background, var(--red-ui-tertiary-background, #eef6ff));
+        --nrchkb-info-text: var(--red-ui-message-info-color, var(--red-ui-primary-text-color, #333));
+        --nrchkb-toggle-on: #34c759;
+        --nrchkb-toggle-off: color-mix(in srgb, var(--red-ui-secondary-text-color, #666) 30%, var(--red-ui-tertiary-background, #f6f6f6));
+        --nrchkb-toggle-border: color-mix(in srgb, var(--red-ui-secondary-text-color, #666) 20%, transparent);
+        --nrchkb-toggle-thumb: #fff;
+        --nrchkb-toggle-shadow: 0 1px 2px rgba(0, 0, 0, .22), 0 1px 4px rgba(0, 0, 0, .12);
+        container-type: inline-size;
+        box-sizing: border-box;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .nrchkb-editor *,
+    .nrchkb-editor *::before,
+    .nrchkb-editor *::after {
+        box-sizing: border-box;
+    }
+
+    .nrchkb-editor .nrchkb-section {
+        margin: 0 0 10px;
+        border: 1px solid var(--nrchkb-section-border);
+        border-radius: 7px;
+        background: var(--nrchkb-section-bg);
+        background: color-mix(in srgb, var(--red-ui-secondary-background, #fff) 88%, transparent);
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    .nrchkb-editor .nrchkb-section > summary {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 34px;
+        min-width: 0;
+        padding: 7px 10px;
+        list-style: none;
+        cursor: pointer;
+        font-weight: 600;
+        background: var(--nrchkb-section-header-bg);
+        background: color-mix(in srgb, var(--red-ui-tertiary-background, #f6f6f6) 82%, transparent);
+        user-select: none;
+    }
+
+    .nrchkb-editor .nrchkb-section > summary:focus-visible,
+    .nrchkb-editor button:focus-visible,
+    .nrchkb-editor [role="button"]:focus-visible,
+    .nrchkb-plugin-picker-item:focus-visible {
+        outline: 2px solid var(--nrchkb-focus-ring);
+        outline-offset: 2px;
+    }
+
+    .nrchkb-editor .nrchkb-section > summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .nrchkb-editor .nrchkb-section > summary::before {
+        width: 12px;
+        color: var(--nrchkb-muted-text);
+        content: "\f0da";
+        font-family: FontAwesome;
+        text-align: center;
+    }
+
+    .nrchkb-editor .nrchkb-section[open] > summary::before {
+        content: "\f0d7";
+    }
+
+    .nrchkb-editor .nrchkb-section > summary i {
+        flex: 0 0 14px;
+        width: 14px;
+        color: var(--nrchkb-muted-text);
+        text-align: center;
+    }
+
+    .nrchkb-editor .nrchkb-section-body {
+        min-width: 0;
+        padding: 10px 10px 2px;
+    }
+
+    .nrchkb-editor .nrchkb-nested-panel {
+        margin: 4px 0 8px;
+        padding: 10px 10px 2px;
+        border: 1px solid var(--nrchkb-section-border);
+        border-radius: 6px;
+        background: var(--nrchkb-section-bg);
+        background: color-mix(in srgb, var(--red-ui-secondary-background, #fff) 72%, transparent);
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .nrchkb-editor .form-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+        margin-bottom: 8px;
+    }
+
+    .nrchkb-editor .form-row > label:first-child {
+        flex: 0 1 150px;
+        width: auto;
+        min-width: 98px;
+        max-width: min(150px, 42%);
+        margin: 0;
+        line-height: 1.25;
+    }
+
+    .nrchkb-editor .form-row > label:first-child:not(.nrchkb-checkbox-label) i {
+        display: inline-block;
+        width: 14px;
+        color: var(--nrchkb-muted-text);
+        text-align: center;
+    }
+
+    .nrchkb-editor .form-row > label.nrchkb-checkbox-label {
+        flex: 1 1 auto;
+        width: auto;
+    }
+
+    .nrchkb-editor input[type="text"],
+    .nrchkb-editor input[type="number"],
+    .nrchkb-editor input:not([type]),
+    .nrchkb-editor select,
+    .nrchkb-editor .red-ui-typedInput-container {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .nrchkb-editor .form-row > input[type="text"],
+    .nrchkb-editor .form-row > input[type="number"],
+    .nrchkb-editor .form-row > input:not([type]),
+    .nrchkb-editor .form-row > select,
+    .nrchkb-editor .form-row > .red-ui-typedInput-container {
+        flex: 1 1 auto;
+        width: auto !important;
+    }
+
+    .nrchkb-editor .form-row > div {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .nrchkb-editor .form-row > div[style*="inline-flex"] {
+        flex: 1 1 auto;
+        width: auto !important;
+    }
+
+    .nrchkb-editor .form-row > div[style*="inline-flex"] > select {
+        min-width: 0;
+    }
+
+    .nrchkb-editor .form-row > .red-ui-typedInput-container input {
+        width: 100% !important;
+    }
+
+    .nrchkb-editor .form-row > .red-ui-typedInput-container {
+        min-height: 34px;
+    }
+
+    .nrchkb-editor .nrchkb-checkbox-row {
+        align-items: flex-start;
+    }
+
+    .nrchkb-editor input[type="checkbox"] {
+        position: relative;
+        flex: 0 0 auto;
+        width: 36px;
+        height: 22px;
+        margin: 0;
+        border: 1px solid var(--nrchkb-toggle-border);
+        border-radius: 999px;
+        appearance: none;
+        -webkit-appearance: none;
+        background: var(--nrchkb-toggle-off);
+        box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .03);
+        cursor: pointer;
+        vertical-align: middle;
+        transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .nrchkb-editor input[type="checkbox"]::before {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--nrchkb-toggle-thumb);
+        box-shadow: var(--nrchkb-toggle-shadow);
+        content: "";
+        transition: transform .18s ease;
+    }
+
+    .nrchkb-editor input[type="checkbox"]:checked {
+        border-color: color-mix(in srgb, var(--nrchkb-toggle-on) 82%, #000);
+        background: var(--nrchkb-toggle-on);
+    }
+
+    .nrchkb-editor input[type="checkbox"]:checked::before {
+        transform: translateX(14px);
+    }
+
+    .nrchkb-editor input[type="checkbox"]:focus-visible {
+        outline: 2px solid var(--nrchkb-focus-ring);
+        outline-offset: 2px;
+    }
+
+    .nrchkb-editor input[type="checkbox"]:disabled {
+        cursor: not-allowed;
+        opacity: .55;
+    }
+
+    .nrchkb-editor .nrchkb-checkbox-label {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: auto;
+        margin: 0;
+        line-height: 1.35;
+        cursor: pointer;
+    }
+
+    .nrchkb-editor .nrchkb-checkbox-label input[type="checkbox"] {
+        margin-top: 0;
+    }
+
+    .nrchkb-editor .nrchkb-checkbox-label span {
+        min-width: 0;
+    }
+
+    .nrchkb-editor .nrchkb-checkbox-label i {
+        position: absolute;
+        top: 50%;
+        left: 6px;
+        z-index: 1;
+        width: 10px;
+        color: color-mix(in srgb, var(--nrchkb-muted-text) 72%, transparent);
+        font-size: 9px;
+        line-height: 1;
+        text-align: center;
+        pointer-events: none;
+        transform: translateY(-50%);
+        transition: transform .18s ease, color .18s ease;
+    }
+
+    .nrchkb-editor .nrchkb-checkbox-label input[type="checkbox"]:checked + span i {
+        color: color-mix(in srgb, var(--nrchkb-toggle-on) 72%, #1f6f35);
+        transform: translate(14px, -50%);
+    }
+
+    .nrchkb-editor .form-row > label:not(.nrchkb-checkbox-label) i {
+        color: var(--nrchkb-muted-text);
+    }
+
+    .nrchkb-editor .nrchkb-warning {
+        margin: 0 0 10px;
+    }
+
+    .nrchkb-editor .nrchkb-advertiser-recommendation {
+        display: block;
+        flex: 1 1 100%;
+        margin: -2px 0 8px;
+        padding: 7px 9px;
+        border: 1px solid var(--nrchkb-section-border);
+        border-radius: 6px;
+        color: var(--nrchkb-muted-text);
+        background: color-mix(in srgb, var(--red-ui-tertiary-background, #f6f6f6) 78%, transparent);
+        line-height: 1.35;
+    }
+
+    .nrchkb-editor .nrchkb-advertiser-recommendation strong {
+        color: var(--red-ui-primary-text-color, #333);
+    }
+
+    .nrchkb-editor .nrchkb-pairing-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+        margin: 0 0 8px;
+    }
+
+    .nrchkb-editor .nrchkb-pairing-setup-card,
+    .nrchkb-sidebar-pairing .nrchkb-pairing-setup-card {
+        flex: 0 0 220px;
+        width: 220px;
+        min-width: 0;
+        height: auto;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        box-sizing: border-box;
+    }
+
+    .nrchkb-editor .nrchkb-pairing-qr,
+    .nrchkb-sidebar-pairing .nrchkb-pairing-qr {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    .nrchkb-editor .nrchkb-pairing-details {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .nrchkb-editor .nrchkb-pairing-state {
+        margin: 0 0 6px;
+        font-weight: 600;
+    }
+
+    .nrchkb-editor .nrchkb-pairing-code,
+    .nrchkb-editor .nrchkb-pairing-uri {
+        display: block;
+        min-width: 0;
+        overflow-wrap: anywhere;
+        color: var(--nrchkb-muted-text);
+        font-family: monospace;
+        line-height: 1.35;
+    }
+
+    .nrchkb-editor .nrchkb-pairing-message {
+        margin: 0 0 8px;
+        color: var(--nrchkb-muted-text);
+        line-height: 1.35;
+    }
+
+    .nrchkb-sidebar-pairing {
+        height: 100%;
+        overflow-y: auto;
+        min-width: 0;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .nrchkb-sidebar-pairing-status {
+        margin: 0 0 10px;
+        color: var(--nrchkb-muted-text);
+        line-height: 1.35;
+    }
+
+    .nrchkb-sidebar-pairing label.nrchkb-sidebar-setting {
+        display: grid !important;
+        grid-template-columns: 16px minmax(0, 1fr);
+        align-items: center;
+        column-gap: 6px;
+        margin: 0 0 10px !important;
+        line-height: 16px;
+    }
+
+    .nrchkb-sidebar-pairing label.nrchkb-sidebar-setting input {
+        width: 16px;
+        height: 16px;
+        margin: 0 !important;
+    }
+
+    .nrchkb-sidebar-pairing label.nrchkb-sidebar-setting span {
+        display: block;
+        min-width: 0;
+    }
+
+    .nrchkb-sidebar-pairing-card {
+        display: grid;
+        grid-template-rows: auto auto auto 1fr;
+        margin: 0 0 12px;
+        padding: 10px;
+        border: 1px solid var(--nrchkb-section-border);
+        border-radius: 7px;
+        background: var(--nrchkb-section-bg);
+        container-type: inline-size;
+        min-width: 0;
+    }
+
+    .nrchkb-sidebar-pairing-card h3 {
+        margin: 0 0 8px;
+        font-size: 14px;
+        line-height: 1.35;
+    }
+
+    .nrchkb-sidebar-pairing-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+        gap: 10px;
+    }
+
+    .nrchkb-sidebar-pairing .nrchkb-pairing-setup-card {
+        margin: 0 auto 8px;
+        width: min(100%, 220px);
+    }
+
+    .nrchkb-sidebar-meta {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 3px 8px;
+        min-height: 66px;
+        margin: 0 0 8px;
+        color: var(--nrchkb-muted-text);
+        font-size: 12px;
+        line-height: 1.35;
+    }
+
+    .nrchkb-sidebar-meta dt {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .nrchkb-sidebar-meta dd {
+        min-width: 0;
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .nrchkb-sidebar-accessories {
+        margin: 8px 0 0;
+        padding: 8px 0 0;
+        border-top: 1px solid var(--nrchkb-section-border);
+    }
+
+    .nrchkb-sidebar-accessories-title {
+        margin: 0 0 5px;
+        color: var(--nrchkb-muted-text);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.35;
+    }
+
+    .nrchkb-sidebar-accessories ul {
+        margin: 0;
+        padding: 0;
+        color: var(--nrchkb-muted-text);
+        line-height: 1.4;
+        list-style: none;
+    }
+
+    .nrchkb-sidebar-accessories li {
+        margin: 0 0 7px;
+    }
+
+    .nrchkb-sidebar-accessory-name {
+        display: block;
+        color: var(--red-ui-primary-text-color, #333);
+        font-weight: 600;
+    }
+
+    .nrchkb-sidebar-accessory-meta {
+        display: block;
+        overflow-wrap: anywhere;
+        font-size: 12px;
+    }
+
+    .nrchkb-sidebar-pairing-control {
+        margin: 0 0 10px;
+    }
+
+    .nrchkb-sidebar-toolbar {
+        display: flex;
+        justify-content: flex-end;
+        gap: 6px;
+        padding: 6px;
+        border-top: 1px solid var(--nrchkb-section-border);
+    }
+
+    .fa-nrchkb::before {
+        content: "";
+        display: inline-block;
+        width: 1.25em;   
+        height: 1.25em;  
+        vertical-align: -20%; 
+        background-image: url("icons/node-red-contrib-homekit-bridged/nrchkb.png");
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .nrchkb-help {
+        --nrchkb-help-border: var(--red-ui-secondary-border-color, #d8d8d8);
+        --nrchkb-help-bg: var(--red-ui-secondary-background, #fff);
+        --nrchkb-help-heading-bg: var(--red-ui-tertiary-background, #f6f6f6);
+        --nrchkb-help-muted: var(--red-ui-secondary-text-color, #666);
+    }
+
+    .nrchkb-help .nrchkb-help-section {
+        margin: 10px 0;
+        border: 1px solid var(--nrchkb-help-border);
+        border-radius: 7px;
+        background: var(--nrchkb-help-bg);
+        overflow: hidden;
+    }
+
+    .nrchkb-help .nrchkb-help-section > h4 {
+        margin: 0;
+        padding: 7px 10px;
+        font-size: 13px;
+        line-height: 1.35;
+        background: var(--nrchkb-help-heading-bg);
+    }
+
+    .nrchkb-help .nrchkb-help-section > h4 i {
+        width: 14px;
+        margin-right: 6px;
+        color: var(--nrchkb-help-muted);
+        text-align: center;
+    }
+
+    .nrchkb-help .nrchkb-help-section-body {
+        padding: 8px 10px;
+    }
+
+    .nrchkb-help .nrchkb-help-section-body > :first-child {
+        margin-top: 0;
+    }
+
+    .nrchkb-help .nrchkb-help-section-body > :last-child {
+        margin-bottom: 0;
+    }
+
+    .nrchkb-help .nrchkb-advertiser-dynamic {
+        margin: 8px 0;
+        padding: 7px 9px;
+        border-left: 3px solid var(--red-ui-primary-background, #8f0000);
+        border-radius: 4px;
+        background: color-mix(in srgb, var(--red-ui-tertiary-background, #f6f6f6) 78%, transparent);
+    }
+
+    .nrchkb-editor .nrchkb-characteristic-item {
+        overflow: hidden;
+        white-space: normal;
+    }
+
+    .nrchkb-editor .nrchkb-characteristic-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+        margin-bottom: 8px;
+    }
+
+    .nrchkb-editor .nrchkb-characteristic-fields {
+        margin-top: 8px;
+        min-width: 0;
+    }
+
+    .nrchkb-editor .nrchkb-characteristic-label {
+        flex: 0 1 120px;
+        min-width: 98px;
+        max-width: min(120px, 42%);
+        padding-left: 10px;
+        text-align: left;
+    }
+
+    .nrchkb-editor .nrchkb-characteristic-label i,
+    .nrchkb-editor .nrchkb-characteristic-property-label i,
+    .nrchkb-editor .properties-accordion h3 i {
+        width: 14px;
+        color: var(--nrchkb-muted-text);
+        text-align: center;
+    }
+
+    .nrchkb-editor .nrchkb-characteristic-row input,
+    .nrchkb-editor .nrchkb-characteristic-row select,
+    .nrchkb-editor .nrchkb-characteristic-fields input,
+    .nrchkb-editor .nrchkb-characteristic-fields select {
+        flex: 1 1 0;
+        min-width: 0;
+        width: auto !important;
+    }
+
+    .nrchkb-editor .nrchkb-characteristic-fields .property-validValueRanges {
+        flex: 1 1 0;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .nrchkb-editor #node-input-customCharacteristics-container {
+        width: 100%;
+        min-width: 0;
+        min-height: 150px;
+    }
+
+    .nrchkb-editor ol#node-input-customCharacteristics-container .red-ui-typedInput-container {
+        flex: 1;
+    }
+
+    .nrchkb-editor .node-input-customCharacteristics-container-row {
+        display: block;
+        min-width: 0;
+    }
+
+    .nrchkb-editor .red-ui-editableList,
+    .nrchkb-editor .red-ui-editableList-border,
+    .nrchkb-editor .red-ui-editableList-container,
+    .nrchkb-editor .red-ui-editableList-list,
+    .nrchkb-editor .red-ui-editableList-list > li {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .nrchkb-editor .ui-slider .ui-slider-handle {
+        background: var(--nrchkb-accent);
+    }
+
+    @container (max-width: 520px) {
+        .nrchkb-editor .form-row {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nrchkb-editor .form-row > label:first-child {
+            flex: 0 0 auto;
+            max-width: 100%;
+            min-width: 0;
+            width: auto;
+        }
+
+        .nrchkb-editor .form-row > input[type="text"],
+        .nrchkb-editor .form-row > input[type="number"],
+        .nrchkb-editor .form-row > input:not([type]),
+        .nrchkb-editor .form-row > select,
+        .nrchkb-editor .form-row > .red-ui-typedInput-container,
+        .nrchkb-editor .form-row > div[style*="inline-flex"] {
+            flex: 0 0 auto;
+            width: 100% !important;
+        }
+
+        .nrchkb-editor .nrchkb-checkbox-row {
+            display: block;
+        }
+
+        .nrchkb-editor .nrchkb-characteristic-row {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nrchkb-editor .nrchkb-characteristic-label {
+            flex: 0 0 auto;
+            max-width: 100%;
+            min-width: 0;
+            padding-left: 0;
+        }
+
+        .nrchkb-editor .nrchkb-pairing-card {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+
+    @media (max-width: 520px) {
+        .nrchkb-editor .form-row {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nrchkb-editor .form-row > label:first-child {
+            flex: 0 0 auto;
+            max-width: 100%;
+            min-width: 0;
+            width: auto;
+        }
+
+        .nrchkb-editor .form-row > input[type="text"],
+        .nrchkb-editor .form-row > input[type="number"],
+        .nrchkb-editor .form-row > input:not([type]),
+        .nrchkb-editor .form-row > select,
+        .nrchkb-editor .form-row > .red-ui-typedInput-container,
+        .nrchkb-editor .form-row > div[style*="inline-flex"] {
+            flex: 0 0 auto;
+            width: 100% !important;
+        }
+
+        .nrchkb-editor .nrchkb-checkbox-row {
+            display: block;
+        }
+
+        .nrchkb-editor .nrchkb-characteristic-row {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nrchkb-editor .nrchkb-characteristic-label {
+            flex: 0 0 auto;
+            max-width: 100%;
+            min-width: 0;
+            padding-left: 0;
+        }
+
+        .nrchkb-editor .nrchkb-pairing-card {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+
+    .nrchkb-editor .alert {
         position: relative;
         padding: .75rem 1.25rem;
         margin-bottom: 1rem;
-        border: 1px solid transparent;
+        border: 1px solid var(--nrchkb-section-border);
         border-radius: .25rem;
-        margin-right: 60px;
+        margin-right: 0;
+        color: var(--red-ui-primary-text-color, #333);
+        background: var(--red-ui-tertiary-background, #f6f6f6);
     }
 
-    .alert-warning {
-        color: #856404;
-        background-color: #fff3cd;
-        border-color: #ffeeba;
+    .nrchkb-editor .alert-warning {
+        color: var(--nrchkb-warning-text);
+        background: var(--nrchkb-warning-bg);
+        border-color: var(--nrchkb-warning-border);
+    }
+
+    .nrchkb-editor .alert-info {
+        color: var(--nrchkb-info-text);
+        background: var(--nrchkb-info-bg);
+        border-color: var(--nrchkb-info-border);
     }
 </style>
 
 <script type="text/javascript">
-    const initExperimental = function () {
+    const initNRCHKBConfigNode = function () {
         //NRCHKB Custom Characteristics
         $.ajax({
             url: 'nrchkb/config',
@@ -43,6 +761,9 @@
             labelStyle: function () {
                 return 'node_label_italic'
             },
+            onadd: function () {
+                applyDefaultNodeDocumentation(this, 'nrchkb')
+            },
             oneditsave: function () {
                 const self = this
                 saveCustomCharacteristics(self)
@@ -55,38 +776,45 @@
                         types: ["json"]
                     })*/
 
-                $('#node-input-customCharacteristics-container').css('min-height', '150px').css('min-width', '550px').editableList({
+                $('#node-input-customCharacteristics-container').editableList({
                     addItem: function (container, i, opt) {
                         $('.properties-accordion').accordion('option', 'active', false)
 
                         const {name, UUID, ...props} = opt
 
-                        container.css({
-                            overflow: 'hidden',
-                            whiteSpace: 'nowrap'
-                        })
+                        container.addClass('nrchkb-characteristic-item')
 
                         const fragment = document.createDocumentFragment()
-                        const row1 = $('<div/>', {style: 'display:flex; align-items: center;'}).appendTo(fragment)
-                        const row2 = $('<div/>', {style: 'display:flex; margin-top:8px; align-items: center;'}).appendTo(fragment)
-                        const row3 = $('<div/>', {style: 'margin-top:8px; align-items: center;'}).appendTo(fragment)
+                        const row1 = $('<div/>', {class: 'nrchkb-characteristic-row'}).appendTo(fragment)
+                        const row2 = $('<div/>', {class: 'nrchkb-characteristic-row'}).appendTo(fragment)
+                        const row3 = $('<div/>', {class: 'nrchkb-characteristic-fields'}).appendTo(fragment)
+                        const setIconLabelText = function (target, iconClass, text) {
+                            target.empty()
+                            $('<i/>', {class: 'fa ' + iconClass}).appendTo(target)
+                            target.append(document.createTextNode(' ' + text))
+                        }
+                        const createPropertyLabel = function (attrs, iconClass, text) {
+                            const label = $('<label/>', attrs)
+                            setIconLabelText(label, iconClass, text)
+                            return label
+                        }
 
-                        $('<div/>', {
-                            style: 'display:inline-block;text-align:left; width:120px; padding-left:10px; box-sizing:border-box;',
+                        const uuidLabel = $('<div/>', {
+                            class: 'nrchkb-characteristic-label',
                             required: 'required'
                         })
-                            .text('UUID ')
                             .appendTo(row1)
+                        setIconLabelText(uuidLabel, 'fa-key', 'UUID')
                         $('<input/>', {class: 'property-uuid', type: 'text'})
                             .val(UUID ? UUID : uuidv4)
                             .appendTo(row1)
 
-                        $('<div/>', {
-                            style: 'display:inline-block;text-align:left; width:120px; padding-left:10px; box-sizing:border-box;',
+                        const nameLabel = $('<div/>', {
+                            class: 'nrchkb-characteristic-label',
                             required: 'required'
                         })
-                            .text('Name ')
                             .appendTo(row2)
+                        setIconLabelText(nameLabel, 'fa-tag', 'Name')
                         $('<input/>', {class: 'property-name', type: 'text'})
                             .val(name)
                             .appendTo(row2)
@@ -94,15 +822,17 @@
                         const row3_properties_accordion = $('<div/>', {class: 'properties-accordion'})
                             .appendTo(row3)
 
-                        $('<h3/>').text('Properties').appendTo(row3_properties_accordion)
+                        $('<h3/>')
+                            .append($('<i/>', {class: 'fa fa-sliders'}), document.createTextNode(' Properties'))
+                            .appendTo(row3_properties_accordion)
 
                         const row3_properties = $('<div/>', {class: 'properties'}).appendTo(row3_properties_accordion)
 
                         const formatRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
-                        $('<label/>', {
-                            class: 'form-row',
+                        createPropertyLabel({
+                            class: 'nrchkb-characteristic-property-label',
                             htmlFor: 'property-format'
-                        }).text('Format *').appendTo(formatRow)
+                        }, 'fa-code', 'Format *').appendTo(formatRow)
                         const formatInput = $('<select/>', {
                             class: 'property-format',
                             required: 'required'
@@ -123,7 +853,10 @@
                         formatInput.val(props.format)
 
                         const unitRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
-                        $('<label/>', {class: 'form-row', htmlFor: 'property-unit'}).text('Unit').appendTo(unitRow)
+                        createPropertyLabel({
+                            class: 'nrchkb-characteristic-property-label',
+                            htmlFor: 'property-unit'
+                        }, 'fa-balance-scale', 'Unit').appendTo(unitRow)
                         const unitSelect = $('<select/>', {class: 'property-unit'}).appendTo(unitRow)
                         $('<option/>').val(undefined).text('Choose...').appendTo(unitSelect)
                         $('<option/>').val('celsius').text('CELSIUS').appendTo(unitSelect)
@@ -134,10 +867,10 @@
                         unitSelect.val(props.unit)
 
                         const permsRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
-                        $('<label/>', {
-                            class: 'form-row',
+                        createPropertyLabel({
+                            class: 'nrchkb-characteristic-property-label',
                             htmlFor: 'property-perms'
-                        }).text('Permissions').appendTo(permsRow)
+                        }, 'fa-lock', 'Permissions').appendTo(permsRow)
                         const permsSelect = $('<select/>', {
                             class: 'property-perms',
                             multiple: 'multiple'
@@ -152,10 +885,10 @@
                         permsSelect.val(props.perms)
 
                         const evRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
-                        $('<label/>', {
-                            class: 'form-row',
+                        createPropertyLabel({
+                            class: 'nrchkb-characteristic-property-label',
                             htmlFor: 'property-ev'
-                        }).text('Event Notifications').appendTo(evRow)
+                        }, 'fa-bell-o', 'Event Notifications').appendTo(evRow)
                         $('<input/>', {
                             class: 'property-ev',
                             type: 'checkbox',
@@ -163,80 +896,80 @@
                         }).appendTo(evRow)
 
                         const descriptionRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
-                        $('<label/>', {
-                            class: 'form-row',
+                        createPropertyLabel({
+                            class: 'nrchkb-characteristic-property-label',
                             htmlFor: 'property-description'
-                        }).text('Description').appendTo(descriptionRow)
+                        }, 'fa-align-left', 'Description').appendTo(descriptionRow)
                         $('<input/>', {
                             class: 'property-description',
                             type: 'text'
                         }).appendTo(descriptionRow).val(props.description)
 
                         const minValueRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
-                        $('<label/>', {
-                            class: 'form-row',
+                        createPropertyLabel({
+                            class: 'nrchkb-characteristic-property-label',
                             htmlFor: 'property-minValue'
-                        }).text('Minimum Value').appendTo(minValueRow)
+                        }, 'fa-sort-numeric-asc', 'Minimum Value').appendTo(minValueRow)
                         $('<input/>', {
                             class: 'property-minValue',
                             type: 'number'
                         }).appendTo(minValueRow).val(props.minValue)
 
                         const maxValueRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
-                        $('<label/>', {
-                            class: 'form-row',
+                        createPropertyLabel({
+                            class: 'nrchkb-characteristic-property-label',
                             htmlFor: 'property-maxValue'
-                        }).text('Maximum Value').appendTo(maxValueRow)
+                        }, 'fa-sort-numeric-desc', 'Maximum Value').appendTo(maxValueRow)
                         $('<input/>', {
                             class: 'property-maxValue',
                             type: 'number'
                         }).appendTo(maxValueRow).val(props.maxValue)
 
                         const minStepRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
-                        $('<label/>', {
-                            class: 'form-row',
+                        createPropertyLabel({
+                            class: 'nrchkb-characteristic-property-label',
                             htmlFor: 'property-minStep'
-                        }).text('Minimum Step').appendTo(minStepRow)
+                        }, 'fa-step-forward', 'Minimum Step').appendTo(minStepRow)
                         $('<input/>', {
                             class: 'property-minStep',
                             type: 'number'
                         }).appendTo(minStepRow).val(props.minStep)
 
                         const maxLenRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
-                        $('<label/>', {
-                            class: 'form-row',
+                        createPropertyLabel({
+                            class: 'nrchkb-characteristic-property-label',
                             htmlFor: 'property-maxLen'
-                        }).text('Maximum Length').appendTo(maxLenRow)
+                        }, 'fa-text-width', 'Maximum Length').appendTo(maxLenRow)
                         $('<input/>', {
                             class: 'property-maxLen',
                             type: 'number'
                         }).appendTo(maxLenRow).val(props.maxLen)
 
                         const maxDataLenRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
-                        $('<label/>', {
-                            class: 'form-row',
+                        createPropertyLabel({
+                            class: 'nrchkb-characteristic-property-label',
                             htmlFor: 'property-maxDataLen'
-                        }).text('Maximum Data Length').appendTo(maxDataLenRow)
+                        }, 'fa-database', 'Maximum Data Length').appendTo(maxDataLenRow)
                         $('<input/>', {
                             class: 'property-maxDataLen',
                             type: 'number'
                         }).appendTo(maxDataLenRow).val(props.maxDataLen)
 
                         const validValuesRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
-                        $('<label/>', {
-                            class: 'form-row',
+                        createPropertyLabel({
+                            class: 'nrchkb-characteristic-property-label',
                             htmlFor: 'property-validValues'
-                        }).text('Valid Values').appendTo(validValuesRow)
+                        }, 'fa-check-square-o', 'Valid Values').appendTo(validValuesRow)
                         $('<input/>', {
                             class: 'property-validValues',
                             type: 'text'
                         }).appendTo(validValuesRow).val(props.validValues)
 
                         const validValueRangesRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
-                        const validValueRangesLabel = $('<label/>', {
-                            class: 'form-row property-validValueRanges-label',
+                        const validValueRangesLabel = createPropertyLabel({
+                            class: 'nrchkb-characteristic-property-label property-validValueRanges-label',
                             htmlFor: 'property-validValueRanges'
-                        }).text('Valid Value Ranges: ').appendTo(validValueRangesRow)
+                        }, 'fa-sliders', 'Valid Value Ranges').appendTo(validValueRangesRow)
                         const validValueRangesSlider = $('<div/>', {
                             class: 'property-validValueRanges',
                             type: 'text'
@@ -248,16 +981,16 @@
                             max: 500,
                             values: props.validValueRanges,
                             slide: function (event, ui) {
-                                validValueRangesLabel.text('Valid Value Ranges: [' + ui.values[0] + ', ' + ui.values[1] + ']')
+                                setIconLabelText(validValueRangesLabel, 'fa-sliders', 'Valid Value Ranges: [' + ui.values[0] + ', ' + ui.values[1] + ']')
                             }
                         })
-                        validValueRangesLabel.text('Valid Value Ranges: [' + validValueRangesSlider.slider('values', 0) + ', ' + validValueRangesSlider.slider('values', 1) + ']')
+                        setIconLabelText(validValueRangesLabel, 'fa-sliders', 'Valid Value Ranges: [' + validValueRangesSlider.slider('values', 0) + ', ' + validValueRangesSlider.slider('values', 1) + ']')
 
                         const adminOnlyAccessRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
-                        $('<label/>', {
-                            class: 'form-row',
+                        createPropertyLabel({
+                            class: 'nrchkb-characteristic-property-label',
                             htmlFor: 'property-adminOnlyAccess'
-                        }).text('Admin Only Access').appendTo(adminOnlyAccessRow)
+                        }, 'fa-user-secret', 'Admin Only Access').appendTo(adminOnlyAccessRow)
                         const adminOnlyAccessSelect = $('<select/>', {
                             class: 'property-adminOnlyAccess',
                             multiple: 'multiple'
@@ -285,15 +1018,15 @@
                 }
             },
             oneditresize: function (size) {
-                const rows = $('#dialog-form>div:not(.node-input-customCharacteristics-container-row)')
+                const rows = $('#dialog-form .nrchkb-section > summary, #dialog-form .nrchkb-section-body > .form-row:not(.node-input-customCharacteristics-container-row)')
                 let height = size.height
                 for (let i = 0; i < rows.length; i++) {
                     height -= $(rows[i]).outerHeight(true)
                 }
-                const editorRow = $('#dialog-form>div.node-input-customCharacteristics-container-row')
+                const editorRow = $('#dialog-form .node-input-customCharacteristics-container-row')
                 height -= (parseInt(editorRow.css('marginTop')) + parseInt(editorRow.css('marginBottom')))
                 height += 16
-                $('#node-input-customCharacteristics-container').editableList('height', height)
+                $('#node-input-customCharacteristics-container').editableList('height', Math.max(150, height))
             }
         })
     }
@@ -304,15 +1037,18 @@
         return port !== 1880 && port >= 1 && port <= 65535 && port === port.toString()
     }
 
+    // biome-ignore lint/correctness/noUnusedVariables: Shared editor helper consumed by node templates loaded after nrchkb.html.
     const isValueDefined = function (value) {
         return 'undefined' === typeof value ? false : null !== value
     }
 
-    let serviceTypes
-    let accessoryCategories
+    // biome-ignore lint/correctness/noUnusedVariables: Shared editor data consumed by service editors loaded after nrchkb.html.
+    let serviceTypes = {}
+    let accessoryCategories = {}
+    // biome-ignore lint/correctness/noUnusedVariables: Shared editor data consumed by config and service editors loaded after nrchkb.html.
     let nrchkbVersion = '0.0.0'
-    let nrchkbExperimental = false
     let nrchkbConfig = {}
+    let nrchkbAdvertiserRecommendation = null
 
     //HomeKit Service Types
     $.getJSON('nrchkb/service/types', function (data) {
@@ -331,24 +1067,111 @@
         async: false,
         success: function (data) {
             nrchkbVersion = data.version
-            nrchkbExperimental = data.experimental
-
-            if (nrchkbExperimental) {
-                initExperimental()
-            }
+            initNRCHKBConfigNode()
         },
     })
 
+    const renderAdvertiserRecommendation = function (recommendation) {
+        if (!recommendation || !recommendation.recommended) {
+            return 'Recommendation unavailable.'
+        }
+
+        const caveats = Array.isArray(recommendation.caveats)
+            ? recommendation.caveats
+            : []
+        const caveatText = caveats.length
+            ? ' ' + caveats.join(' ')
+            : ''
+        const reason = recommendation.reason || ''
+        const reasonText = reason.replace(/[.!?]+$/, '') + '.'
+
+        return (
+            '<strong>' +
+            recommendation.title +
+            '</strong>: ' +
+            reasonText +
+            caveatText
+        )
+    }
+
+    const updateAdvertiserHelpTemplates = function () {
+        const renderedRecommendation = renderAdvertiserRecommendation(
+            nrchkbAdvertiserRecommendation,
+        )
+
+        $('script[data-help-name="homekit-bridge"], script[data-help-name="homekit-standalone"]').each(function () {
+            this.innerHTML = this.innerHTML.replace(
+                /<p class="nrchkb-advertiser-dynamic">[\s\S]*?<\/p>/,
+                '<p class="nrchkb-advertiser-dynamic">' +
+                    renderedRecommendation +
+                    '</p>',
+            )
+        })
+    }
+
+    const applyAdvertiserRecommendation = function (select) {
+        const selectAdvertiser = $(select)
+
+        if (!selectAdvertiser.length) {
+            return
+        }
+
+        const recommendation = nrchkbAdvertiserRecommendation
+
+        selectAdvertiser.find('option').each(function () {
+            const option = $(this)
+            const originalText = option.data('nrchkbOriginalText') || option.text()
+            option.data('nrchkbOriginalText', originalText)
+            option.text(originalText)
+        })
+
+        selectAdvertiser
+            .closest('.form-row')
+            .next('.nrchkb-advertiser-recommendation')
+            .remove()
+
+        if (!recommendation || !recommendation.recommended) {
+            return
+        }
+
+        const recommendedOption = selectAdvertiser.find(
+            'option[value="' + recommendation.recommended + '"]',
+        )
+
+        if (recommendedOption.length) {
+            recommendedOption.text(
+                recommendedOption.data('nrchkbOriginalText') + ' (recommended)',
+            )
+        }
+
+        selectAdvertiser
+            .closest('.form-row')
+            .after(
+                '<div class="nrchkb-advertiser-recommendation">' +
+                    renderAdvertiserRecommendation(recommendation) +
+                    '</div>',
+            )
+    }
+
+    $.getJSON('nrchkb/advertiser/recommendation', function (data) {
+        nrchkbAdvertiserRecommendation = data
+        updateAdvertiserHelpTemplates()
+        applyAdvertiserRecommendation('#node-config-input-advertiser')
+    })
+
+    // biome-ignore lint/correctness/noUnusedVariables: Shared editor validator consumed by node templates loaded after nrchkb.html.
     const versionValidator = function (value) {
         return value ? /^(\d+\.)?(\d+\.)?(\.|\d+)$/.test(value) : true
     }
 
+    // biome-ignore lint/correctness/noUnusedVariables: Shared editor validator consumed by config node templates loaded after nrchkb.html.
     const hostNameValidator = function (value) {
         return value ? /^[^.]{1,64}$/.test(value) : false
     }
 
+    // biome-ignore lint/correctness/noUnusedVariables: Shared editor validator consumed by service templates loaded after nrchkb.html.
     const cameraConfigRequiredField = function (value) {
-        return 'CameraControl' === this.serviceName ? (value || '').toString().trim() : true
+        return ['CameraControl', 'Camera'].includes(this.serviceName) ? (value || '').toString().trim() : true
     }
 
     const saveCustomCharacteristics = function (self) {
@@ -440,6 +1263,7 @@
         return `${a}${b}${c}${d}-${e}${f}${g}${h}`
     }
 
+    // biome-ignore lint/correctness/noUnusedVariables: Shared editor validator consumed by config node templates loaded after nrchkb.html.
     const validatePinCode = function (value) {
         if (!value) {
             return false
@@ -451,23 +1275,712 @@
 
         return !forbiddenPinCodes.includes(value.replaceAll('-', ''))
     }
+
+    // biome-ignore lint/correctness/noUnusedVariables: Shared editor helper consumed by node templates loaded after nrchkb.html.
+    const sortSelectOptionsByLabel = function (select, options) {
+        const selectElement = $(select)
+        const sortedOptions = (options || []).sort(function (left, right) {
+            return left.text.localeCompare(right.text, undefined, {
+                numeric: true,
+                sensitivity: 'base'
+            })
+        })
+
+        sortedOptions.forEach(function (option) {
+            selectElement.append(option.element)
+        })
+    }
+
+    const nrchkbLegacyDefaultNodeInfo = {
+        'homekit-status': [
+            '# HomeKit Status',
+            '',
+            '> [!NOTE]',
+            '> Any input message reads the selected HomeKit service and emits a serialized service description.',
+        ].join('\n'),
+        nrchkb: [
+            '# NRCHKB Custom Characteristics',
+            '',
+            '> [!CAUTION]',
+            '> Custom characteristics should be used only when a standard HAP characteristic cannot represent the device state.',
+        ].join('\n'),
+    }
+
+    const nrchkbDefaultNodeInfo = {
+        'homekit-service2': [
+            '# HomeKit Service 2',
+            '',
+            '> [!IMPORTANT]',
+            '> Send characteristic updates as `msg.payload` keys using HomeKit characteristic names, for example `{\"On\": true}`.',
+            '',
+            '> [!NOTE]',
+            '> Use the node Help sidebar for the full characteristic, plugin, and migration reference.',
+        ].join('\n'),
+        'homekit-bridge': [
+            '# HomeKit Bridge',
+            '',
+            '> [!IMPORTANT]',
+            '> Keep the bridge name, PIN, serial number, and model stable after pairing. HomeKit uses them as accessory identity.',
+            '',
+            '> [!WARNING]',
+            '> Leave insecure requests disabled unless you are deliberately testing with a trusted local client.',
+        ].join('\n'),
+        'homekit-standalone': [
+            '# HomeKit Standalone Accessory',
+            '',
+            '> [!IMPORTANT]',
+            '> Standalone accessories publish independently. Prefer a bridge for most multi-service setups to reduce mDNS load.',
+            '',
+            '> [!WARNING]',
+            '> Leave insecure requests disabled unless you are deliberately testing with a trusted local client.',
+        ].join('\n'),
+        'homekit-service': [
+            '# HomeKit Service',
+            '',
+            '> [!WARNING]',
+            '> This legacy node is kept for existing flows. Use `homekit-service2` for new work and migrate when practical.',
+            '',
+            '> [!NOTE]',
+            '> The migration button prepares changes in the editor. Click Done and then Deploy to commit them.',
+        ].join('\n'),
+        'homekit-status': [
+            '# HomeKit Status',
+            '',
+            'Reads the selected `homekit-service` or `homekit-service2` node and outputs a serialized description of its current HomeKit service shape.',
+            '',
+            '> [!NOTE]',
+            '> Any input message triggers a fresh read. The incoming payload is not used as a command.',
+            '',
+            'Use this node for diagnostics, dashboards, migration checks, or flows that need to inspect which characteristics and values a service currently exposes.',
+            '',
+            'The output includes the selected service metadata, characteristics, properties, and current values where the runtime can read them.',
+        ].join('\n'),
+        'homekit-unifi-controller': [
+            '# UniFi Controller',
+            '',
+            '> [!IMPORTANT]',
+            '> Use a dedicated local UniFi account with the minimum permissions needed to read Protect camera data.',
+            '',
+            '> [!WARNING]',
+            '> Allow self-signed certificates only for controllers you administer and trust on your local network.',
+        ].join('\n'),
+        'homekit-plugin-instance': [
+            '# HomeKit Plugin Instance',
+            '',
+            '> [!NOTE]',
+            '> This internal config node lets Node-RED track plugin dependencies used by NRCHKB service nodes.',
+        ].join('\n'),
+        nrchkb: [
+            '# NRCHKB Custom Characteristics',
+            '',
+            'Defines custom HAP characteristics that can be attached to HomeKit services when the standard HAP catalog does not contain the value you need.',
+            '',
+            '> [!CAUTION]',
+            '> Custom characteristics should be used only when a standard HAP characteristic cannot represent the device state.',
+            '',
+            'Each entry needs a stable name and UUID. Changing either one after HomeKit has seen it can make the characteristic appear as a different field to clients.',
+            '',
+            'Configure value format, permissions, unit, min/max range, step size, and valid values to match the data your flow sends. The runtime loads these definitions before services are built.',
+        ].join('\n'),
+    }
+
+    const applyDefaultNodeDocumentation = function (node, type) {
+        if ((!node.info || node.info === nrchkbLegacyDefaultNodeInfo[type]) && nrchkbDefaultNodeInfo[type]) {
+            node.info = nrchkbDefaultNodeInfo[type]
+            node.dirty = true
+            return true
+        }
+
+        return false
+    }
+
+    const backfillDefaultNodeDocumentation = function (nodes) {
+        let changed = false
+        const applyToNode = function (node) {
+            if (node && applyDefaultNodeDocumentation(node, node.type)) {
+                changed = true
+            }
+        }
+
+        if (Array.isArray(nodes)) {
+            nodes.forEach(applyToNode)
+        } else if (nodes) {
+            applyToNode(nodes)
+        } else if (RED.nodes) {
+            RED.nodes.eachNode(applyToNode)
+
+            if (typeof RED.nodes.eachConfig === 'function') {
+                RED.nodes.eachConfig(applyToNode)
+            }
+        }
+
+        if (changed && RED.view && typeof RED.view.redraw === 'function') {
+            RED.view.redraw(true)
+        }
+    }
+
+    if (RED.events) {
+        RED.events.on('flows:loaded', function () {
+            setTimeout(backfillDefaultNodeDocumentation, 0)
+        })
+
+        RED.events.on('nodes:add', function (node) {
+            setTimeout(function () {
+                backfillDefaultNodeDocumentation(node)
+            }, 0)
+        })
+    }
+
+    window.NRCHKBPairingQR = (function () {
+        const stateByHost = {}
+        const settingsStorageKey = 'nrchkb.pairingQR.settings'
+        let initialized = false
+        let refreshTimer
+        let sidebarContent
+        let sidebarList
+        let sidebarStatus
+        let settings = {
+            autoShowWhenPairingAvailable: true,
+        }
+        const text = function (key, fallback) {
+            const keys = [
+                'node-red-contrib-homekit-bridged/' + key,
+                'node-red-contrib-homekit-bridged:' + key,
+            ]
+            try {
+                for (let i = 0; i < keys.length; i++) {
+                    const value = RED._(keys[i])
+                    if (value && value !== keys[i] && value !== key) {
+                        return value
+                    }
+                }
+            } catch (_error) {
+            }
+            return fallback
+        }
+
+        const loadSettings = function () {
+            try {
+                const storedSettings = JSON.parse(localStorage.getItem(settingsStorageKey) || '{}')
+                settings = {
+                    ...settings,
+                    ...storedSettings,
+                    autoShowWhenPairingAvailable: storedSettings.autoShowWhenPairingAvailable !== false,
+                }
+            } catch (_error) {
+                settings.autoShowWhenPairingAvailable = true
+            }
+        }
+
+        const saveSettings = function () {
+            try {
+                localStorage.setItem(settingsStorageKey, JSON.stringify(settings))
+            } catch (_error) {
+            }
+        }
+
+        const resolveHostId = function (node) {
+            if (!node) {
+                return ''
+            }
+
+            if ((node.type === 'homekit-service' || node.type === 'homekit-service2') && node.bridge) {
+                return node.bridge
+            }
+
+            if ((node.type === 'homekit-service' || node.type === 'homekit-service2') && node.accessoryId) {
+                return node.accessoryId
+            }
+
+            if (node.type === 'homekit-status' && node.serviceNodeId) {
+                return resolveHostId(RED.nodes.node(node.serviceNodeId))
+            }
+
+            return ''
+        }
+
+        const fetchHostState = function (hostId) {
+            if (!hostId) {
+                return Promise.resolve(undefined)
+            }
+
+            return new Promise(function (resolve) {
+                $.ajax({
+                    dataType: 'json',
+                    url: 'nrchkb/bridge/' + encodeURIComponent(hostId) + '/pairing',
+                })
+                    .done(function (data) {
+                        stateByHost[hostId] = data
+                        resolve(data)
+                    })
+                    .fail(function (xhr) {
+                        const data = xhr.responseJSON || {
+                            paired: false,
+                            published: false,
+                            status: xhr.status === 404 ? 'missing' : 'error',
+                        }
+                        stateByHost[hostId] = data
+                        resolve(data)
+                    })
+            })
+        }
+
+        const getPairingHostNodes = function () {
+            const hosts = []
+            const hostTypes = {
+                'homekit-bridge': true,
+                'homekit-standalone': true,
+            }
+
+            if (typeof RED.nodes.eachConfig === 'function') {
+                RED.nodes.eachConfig(function (node) {
+                    if (node && hostTypes[node.type]) {
+                        hosts.push(node)
+                    }
+                })
+            }
+
+            if (hosts.length === 0) {
+                return [
+                    ...RED.nodes.filterNodes({type: 'homekit-bridge'}),
+                    ...RED.nodes.filterNodes({type: 'homekit-standalone'}),
+                ]
+            }
+
+            return hosts
+        }
+
+        const getCandidateNodes = function () {
+            return [
+                ...RED.nodes.filterNodes({type: 'homekit-service'}),
+                ...RED.nodes.filterNodes({type: 'homekit-service2'}),
+                ...RED.nodes.filterNodes({type: 'homekit-status'}),
+            ]
+        }
+
+        const getReferencingNodes = function (hostId) {
+            return getCandidateNodes().filter(function (node) {
+                return resolveHostId(node) === hostId
+            })
+        }
+
+        const formatPinCode = function (formattedPinCode) {
+            return formattedPinCode ? formattedPinCode.top + ' ' + formattedPinCode.bottom : ''
+        }
+
+        const createPairingSetupCard = function (bridgeState) {
+            const setupCard = $('<div/>', {class: 'nrchkb-pairing-setup-card'})
+            $('<img/>', {
+                alt: text('qr.imageAlt', 'HomeKit pairing QR code'),
+                class: 'nrchkb-pairing-qr',
+                src: bridgeState.qrCodeDataUrl,
+            }).appendTo(setupCard)
+            return setupCard
+        }
+
+        const isPairingAvailable = function (bridgeState) {
+            return !!bridgeState && bridgeState.published && !bridgeState.paired && !!bridgeState.qrCodeDataUrl
+        }
+
+        const nodeDisplayName = function (node) {
+            return node.name || node.serviceName || node.id || text('qr.unknownAccessory', 'Accessory')
+        }
+
+        const serviceTypeName = function (node) {
+            if (!node) {
+                return ''
+            }
+
+            if (node.type === 'homekit-status' && node.serviceNodeId) {
+                return serviceTypeName(RED.nodes.node(node.serviceNodeId))
+            }
+
+            return node.serviceName || node.service || node.type || ''
+        }
+
+        const hostCategoryName = function (hostNode) {
+            if (!hostNode || hostNode.type !== 'homekit-standalone') {
+                return ''
+            }
+
+            return accessoryCategories[hostNode.accessoryCategory] || hostNode.accessoryCategory || ''
+        }
+
+        const hostTypeName = function (hostNode) {
+            return hostNode && hostNode.type === 'homekit-standalone' ? 'Standalone accessory' : 'Bridge'
+        }
+
+        const appendMeta = function (container, items) {
+            const meta = $('<dl/>', {class: 'nrchkb-sidebar-meta'}).appendTo(container)
+            items.forEach(function (item) {
+                if (!item.value) {
+                    return
+                }
+                $('<dt/>', {text: item.label}).appendTo(meta)
+                $('<dd/>', {text: item.value}).appendTo(meta)
+            })
+            return meta
+        }
+
+        const renderAccessoryListItem = function (list, node) {
+            const item = $('<li/>').appendTo(list)
+            $('<span/>', {
+                class: 'nrchkb-sidebar-accessory-name',
+                text: nodeDisplayName(node),
+            }).appendTo(item)
+            $('<span/>', {
+                class: 'nrchkb-sidebar-accessory-meta',
+                text: 'id: ' + node.id + ', service: ' + serviceTypeName(node),
+            }).appendTo(item)
+        }
+
+        const renderSidebarCardContent = function (card, hostNode, hostState) {
+            card.empty()
+            $('<h3/>', {
+                text: hostState.bridgeName || hostNode.name || hostNode.bridgeName || hostNode.id,
+            }).appendTo(card)
+            appendMeta(card, [
+                {label: 'Type', value: hostTypeName(hostNode)},
+                {label: 'ID', value: hostNode.id},
+                {label: 'Category', value: hostCategoryName(hostNode)},
+            ])
+            createPairingSetupCard(hostState).appendTo(card)
+
+            const accessories = getReferencingNodes(hostNode.id)
+            const accessorySection = $('<div/>', {class: 'nrchkb-sidebar-accessories'}).appendTo(card)
+            $('<p/>', {
+                class: 'nrchkb-sidebar-accessories-title',
+                text: text('qr.accessories', 'Accessories'),
+            }).appendTo(accessorySection)
+
+            if (accessories.length === 0) {
+                $('<p/>', {
+                    class: 'nrchkb-pairing-message',
+                    text: text('qr.noAccessories', 'No flow nodes reference this pairing host.'),
+                }).appendTo(accessorySection)
+            } else {
+                const list = $('<ul/>').appendTo(accessorySection)
+                accessories.forEach(function (node) {
+                    renderAccessoryListItem(list, node)
+                })
+            }
+        }
+
+        const createSidebarCard = function (hostNode, hostState) {
+            const card = $('<div/>', {
+                class: 'nrchkb-sidebar-pairing-card',
+                'data-host-id': hostNode.id,
+                role: 'listitem',
+            })
+            renderSidebarCardContent(card, hostNode, hostState)
+            return card
+        }
+
+        const sidebarCardSignature = function (hostNode, hostState) {
+            return JSON.stringify({
+                accessories: getReferencingNodes(hostNode.id).map(function (node) {
+                    return {
+                        id: node.id,
+                        name: nodeDisplayName(node),
+                        serviceType: serviceTypeName(node),
+                    }
+                }),
+                category: hostCategoryName(hostNode),
+                hostId: hostNode.id,
+                hostName: hostState.bridgeName || hostNode.name || hostNode.bridgeName || hostNode.id,
+                hostType: hostTypeName(hostNode),
+                qrCodeDataUrl: hostState.qrCodeDataUrl,
+            })
+        }
+
+        const findSidebarCard = function (hostId) {
+            return sidebarList.children('.nrchkb-sidebar-pairing-card').filter(function () {
+                return $(this).attr('data-host-id') === hostId
+            })
+        }
+
+        const removeSidebarCard = function (card, onComplete) {
+            if (card.data('nrchkbRemoving')) {
+                return
+            }
+
+            card.data('nrchkbRemoving', true)
+            card.stop(true, true).slideUp(180, function () {
+                card.remove()
+                if (onComplete) {
+                    onComplete()
+                }
+            })
+        }
+
+        const updateEmptySidebarState = function () {
+            if (sidebarList.children('.nrchkb-sidebar-pairing-card').length === 0) {
+                sidebarStatus.text(text('qr.noUnpaired', 'Nothing to be paired.'))
+            }
+        }
+
+        const refreshSidebar = function (options) {
+            options = options || {}
+
+            if (!sidebarList || !sidebarStatus) {
+                return Promise.resolve()
+            }
+
+            const pairingHosts = getPairingHostNodes()
+
+            if (pairingHosts.length === 0) {
+                sidebarList.children('.nrchkb-sidebar-pairing-card').each(function () {
+                    removeSidebarCard($(this), updateEmptySidebarState)
+                })
+                updateEmptySidebarState()
+                return Promise.resolve()
+            }
+
+            return Promise.all(pairingHosts.map(function (hostNode) {
+                return fetchHostState(hostNode.id).then(function (hostState) {
+                    return {hostNode, hostState}
+                })
+            })).then(function (results) {
+                const available = results.filter(function (result) {
+                    return isPairingAvailable(result.hostState)
+                })
+                const availableById = {}
+
+                available.forEach(function (result) {
+                    availableById[result.hostNode.id] = result
+                })
+
+                sidebarList.children('.nrchkb-sidebar-pairing-card').each(function () {
+                    const card = $(this)
+                    const hostId = card.attr('data-host-id')
+
+                    if (!availableById[hostId]) {
+                        removeSidebarCard(card, updateEmptySidebarState)
+                    }
+                })
+
+                if (available.length === 0) {
+                    updateEmptySidebarState()
+                } else {
+                    sidebarStatus.text('')
+                    available.forEach(function (result) {
+                        const signature = sidebarCardSignature(result.hostNode, result.hostState)
+                        const card = findSidebarCard(result.hostNode.id)
+
+                        if (card.length > 0) {
+                            if (card.attr('data-signature') !== signature) {
+                                renderSidebarCardContent(card, result.hostNode, result.hostState)
+                                card.attr('data-signature', signature)
+                            }
+                            return
+                        }
+
+                        const newCard = createSidebarCard(result.hostNode, result.hostState)
+                            .attr('data-signature', signature)
+                            .hide()
+                        sidebarList.append(newCard)
+                        newCard.slideDown(180)
+                    })
+                }
+
+                if (options.show && available.length > 0 && settings.autoShowWhenPairingAvailable && RED.sidebar) {
+                    RED.sidebar.show('nrchkb')
+                }
+            })
+        }
+
+        const registerSidebar = function () {
+            sidebarContent = $('<div/>', {class: 'nrchkb-editor nrchkb-sidebar-pairing'})
+            const section = $('<details/>', {class: 'nrchkb-section', open: true}).appendTo(sidebarContent)
+            $('<summary/>')
+                .append($('<i/>', {class: 'fa fa-qrcode'}))
+                .append(' ')
+                .append($('<span/>', {text: text('qr.sectionTitle', 'Pairing QR Code')}))
+                .appendTo(section)
+            const sectionBody = $('<div/>', {class: 'nrchkb-section-body'}).appendTo(section)
+            const autoShowLabel = $('<label/>', {
+                class: 'nrchkb-sidebar-setting nrchkb-sidebar-pairing-control',
+            }).appendTo(sectionBody)
+            $('<input/>', {
+                checked: settings.autoShowWhenPairingAvailable,
+                type: 'checkbox',
+            })
+                .on('change', function () {
+                    settings.autoShowWhenPairingAvailable = this.checked
+                    saveSettings()
+                })
+                .appendTo(autoShowLabel)
+            $('<span/>', {
+                text: text('qr.autoShowWhenPairingAvailable', 'Auto show if something needs pairing'),
+            }).appendTo(autoShowLabel)
+            sidebarStatus = $('<p/>', {
+                class: 'nrchkb-sidebar-pairing-status',
+                'aria-live': 'polite',
+            }).appendTo(sectionBody)
+            sidebarList = $('<div/>', {
+                class: 'nrchkb-sidebar-pairing-list',
+                role: 'list',
+            }).appendTo(sectionBody)
+
+            const toolbar = $('<div/>', {class: 'nrchkb-sidebar-toolbar'})
+            $('<button/>', {
+                class: 'red-ui-button red-ui-button-small',
+                'aria-label': text('qr.refresh', 'Refresh'),
+                title: text('qr.refresh', 'Refresh'),
+                type: 'button',
+            })
+                .append($('<i/>', {class: 'fa fa-refresh'}))
+                .on('click', function () {
+                    refreshSidebar()
+                })
+                .appendTo(toolbar)
+
+            RED.sidebar.addTab({
+                action: 'nrchkb:show-pairing-tab',
+                content: sidebarContent,
+                enableOnEdit: true,
+                iconClass: 'fa fa-nrchkb',
+                id: 'nrchkb',
+                label: text('qr.sidebarTitle', 'NRCHKB'),
+                name: text('qr.sidebarTitle', 'NRCHKB'),
+                pinned: true,
+                toolbar,
+            })
+
+            RED.actions.add('nrchkb:show-pairing-tab', function () {
+                RED.sidebar.show('nrchkb')
+                refreshSidebar()
+            })
+        }
+
+        const renderHostEditor = function (hostId, selector) {
+            const container = $(selector)
+            container.empty().append($('<p/>', {
+                class: 'nrchkb-pairing-message',
+                text: text('qr.loading', 'Loading pairing state...'),
+            }))
+
+            fetchHostState(hostId).then(function (hostState) {
+                container.empty()
+
+                if (!hostState || hostState.status === 'missing' || !hostState.published) {
+                    container.append($('<p/>', {
+                        class: 'nrchkb-pairing-message',
+                        text: text('qr.deployFirst', 'Deploy this bridge or accessory to generate a pairing QR code.'),
+                    }))
+                    return
+                }
+
+                if (hostState.paired) {
+                    container.append($('<p/>', {
+                        class: 'nrchkb-pairing-message',
+                        text: text('qr.alreadyPaired', 'This bridge or accessory is already paired.'),
+                    }))
+                    return
+                }
+
+                const card = $('<div/>', {class: 'nrchkb-pairing-card'})
+                createPairingSetupCard(hostState).appendTo(card)
+                const details = $('<div/>', {class: 'nrchkb-pairing-details'}).appendTo(card)
+                $('<p/>', {
+                    class: 'nrchkb-pairing-state',
+                    text: text('qr.ready', 'Ready to pair'),
+                }).appendTo(details)
+                $('<span/>', {
+                    class: 'nrchkb-pairing-code',
+                    text: formatPinCode(hostState.formattedPinCode),
+                }).appendTo(details)
+                $('<span/>', {
+                    class: 'nrchkb-pairing-uri',
+                    text: hostState.setupUri,
+                }).appendTo(details)
+                container.append(card)
+            })
+        }
+
+        const init = function () {
+            if (initialized) {
+                return
+            }
+
+            initialized = true
+
+            loadSettings()
+            registerSidebar()
+
+            if (RED.events) {
+                RED.events.on('deploy', function () {
+                    setTimeout(function () {
+                        refreshSidebar({show: true})
+                    }, 1500)
+                })
+
+                ;['flows:loaded', 'nodes:add', 'nodes:change', 'nodes:remove'].forEach(function (eventName) {
+                    RED.events.on(eventName, function () {
+                        setTimeout(refreshSidebar, 250)
+                    })
+                })
+            }
+
+            refreshTimer = setInterval(refreshSidebar, 10000)
+            window.addEventListener('beforeunload', function () {
+                clearInterval(refreshTimer)
+            })
+            setTimeout(function () {
+                refreshSidebar({show: true})
+            }, 1000)
+        }
+
+        return {
+            init,
+            refreshSidebar,
+            renderBridgeEditor: renderHostEditor,
+            renderHostEditor,
+        }
+    })()
+    RED.NRCHKBPairingQR = window.NRCHKBPairingQR
+
+    setTimeout(function () {
+        if (RED.NRCHKBPairingQR) {
+            RED.NRCHKBPairingQR.init()
+        }
+    }, 1000)
 </script>
 
 <script data-template-name="nrchkb" type="text/x-red">
-    <style>
-        ol#node-input-customCharacteristics-container .red-ui-typedInput-container {
-            flex:1;
-        }
-        .ui-slider .ui-slider-handle {
-            background: #ad1625;
-        }
-    </style>
-
-    <div class="form-row" style="margin-bottom:0;">
-        <label><i class="fa fa-list"></i> Custom Characteristics</label>
+    <div class="nrchkb-editor">
+        <details class="nrchkb-section" open>
+            <summary><i class="fa fa-list-alt"></i> Custom Characteristics</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row node-input-customCharacteristics-container-row">
+                    <ol id="node-input-customCharacteristics-container"></ol>
+                </div>
+            </div>
+        </details>
     </div>
+</script>
 
-    <div class="form-row node-input-customCharacteristics-container-row">
-        <ol id="node-input-customCharacteristics-container"></ol>
-    </div>
+<script data-help-name="nrchkb" type="text/markdown">
+# NRCHKB Custom Characteristics
+
+Defines custom HAP characteristics that can be attached to HomeKit services when the standard HAP catalog does not contain the value you need.
+
+> [!CAUTION]
+> Prefer standard HAP characteristics whenever possible. Custom characteristics may not be shown or interpreted consistently by every HomeKit client.
+
+## Characteristic Identity
+
+- **Name**: Display name used by NRCHKB when selecting or reporting the characteristic.
+- **UUID**: Stable HAP UUID for the custom characteristic. Keep it unchanged once HomeKit clients have seen it.
+
+## Value Shape
+
+- **Format**: HAP value format such as boolean, integer, float, string, or data.
+- **Unit**: Optional HomeKit unit metadata for numeric values.
+- **Minimum / Maximum / Step**: Numeric constraints exposed to HomeKit clients.
+- **Valid Values**: Optional list of allowed values for enumerated characteristics.
+
+## Permissions
+
+Use read, write, and notify permissions to describe how HomeKit can interact with the value. Runtime flows must still send values matching the configured format and constraints.
 </script>

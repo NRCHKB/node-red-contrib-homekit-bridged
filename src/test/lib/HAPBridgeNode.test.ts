@@ -4,37 +4,42 @@ import { describe, expect, it } from 'vitest'
 const HAPHostNode = require('../../../build/lib/HAPHostNode')()
 
 loggerSetup({
-  debugEnabled: true,
-  errorEnabled: true,
-  traceEnabled: false
+    debugEnabled: true,
+    errorEnabled: true,
+    traceEnabled: false,
 })
 
 describe('HAPHostNode', () => {
-  // allow longer for this suite (configured via package.json vitest.test.testTimeout)
+    // allow longer for this suite (configured via package.json vitest.test.testTimeout)
 
-  it('string macify should pass', () => {
-    const stringToMacify = 'BRIDGE NAME'
-    HAPHostNode.macify(stringToMacify)
-  })
+    it('macify should preserve strings without dots', () => {
+        const stringToMacify = 'BRIDGE'
+        expect(HAPHostNode.macify(stringToMacify)).toBe('BR:ID:GE:00:00:00')
+    })
 
-  it('null string macify should fail', () => {
-    const stringToMacify = null as unknown as string
-    expect(() => {
-      HAPHostNode.macify(stringToMacify)
-    }).toThrow('nodeId cannot be empty in macify process')
-  })
+    it('macify should remove every dot from the node id', () => {
+        const stringToMacify = 'bridge.1.2'
+        expect(HAPHostNode.macify(stringToMacify)).toBe('BR:ID:GE:12:00:00')
+    })
 
-  it('undefined string macify should fail', () => {
-    const stringToMacify = undefined as unknown as string
-    expect(() => {
-      HAPHostNode.macify(stringToMacify)
-    }).toThrow('nodeId cannot be empty in macify process')
-  })
+    it('null string macify should fail', () => {
+        const stringToMacify = null as unknown as string
+        expect(() => {
+            HAPHostNode.macify(stringToMacify)
+        }).toThrow('nodeId cannot be empty in macify process')
+    })
 
-  it('empty string macify should fail', () => {
-    const stringToMacify = ''
-    expect(() => {
-      HAPHostNode.macify(stringToMacify)
-    }).toThrow('nodeId cannot be empty in macify process')
-  })
+    it('undefined string macify should fail', () => {
+        const stringToMacify = undefined as unknown as string
+        expect(() => {
+            HAPHostNode.macify(stringToMacify)
+        }).toThrow('nodeId cannot be empty in macify process')
+    })
+
+    it('empty string macify should fail', () => {
+        const stringToMacify = ''
+        expect(() => {
+            HAPHostNode.macify(stringToMacify)
+        }).toThrow('nodeId cannot be empty in macify process')
+    })
 })

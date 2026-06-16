@@ -319,3 +319,5 @@ build/**/*.js
 .npm-upgrade.json
 
 persist/*
+
+AGENTS.md

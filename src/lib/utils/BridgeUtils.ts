@@ -3,51 +3,95 @@ import { logger } from '@nrchkb/logger'
 import type HAPServiceNodeType from '../types/HAPServiceNodeType'
 import HostType from '../types/HostType'
 
-module.exports = () => {
-  // Publish accessory after the service has been added
-  // BUT ONLY after 5 seconds with no new service have passed
-  // otherwise, our bridge would get published too early during startup and
-  // services being added after that point would be seen as "new" in iOS,
-  // removing all parameters set (Rooms, Groups, Scenes...)
-  const delayedPublish = (node: HAPServiceNodeType) => {
-    const log = logger('NRCHKB', 'BridgeUtils', node.config.name, node)
+const PUBLISH_CHECK_INTERVAL_MS = 250
 
-    if (!node.hostNode.published) {
-      if (node.publishTimers[node.hostNode.id] !== undefined) {
-        clearTimeout(node.publishTimers[node.hostNode.id])
-      }
+const buildBridgeUtils = () => {
+    const canPublishHost = (node: HAPServiceNodeType): boolean => {
+        let hasPendingService = false
 
-      const hostTypeName =
-        // biome-ignore lint/suspicious/noDoubleEquals: hostType can be a string or a number
-        node.hostNode.hostType == HostType.BRIDGE
-          ? 'Bridge'
-          : 'Standalone Accessory'
-
-      node.publishTimers[node.hostNode.id] = setTimeout(() => {
-        try {
-          if (!node.hostNode.published) {
-            const published = node.hostNode.publish()
-
-            if (published) {
-              log.debug(`${hostTypeName} published`)
-            } else {
-              log.error(`${hostTypeName} not published`)
+        node.RED.nodes.eachNode((currentNode) => {
+            if (hasPendingService) {
+                return
             }
-          }
-        } catch (error) {
-          log.error(`${hostTypeName} publish failed due to ${error}`)
 
-          node.nodeStatusUtils.setStatus({
-            fill: 'red',
-            shape: 'ring',
-            text: `Error while publishing ${hostTypeName}`
-          })
-        }
-      }, 5000)
+            if (
+                currentNode.type !== 'homekit-service' &&
+                currentNode.type !== 'homekit-service2'
+            ) {
+                return
+            }
+
+            const serviceNode = node.RED.nodes.getNode(currentNode.id) as
+                | HAPServiceNodeType
+                | undefined
+
+            if (
+                serviceNode?.hostNode?.id === node.hostNode.id &&
+                !serviceNode.configured
+            ) {
+                hasPendingService = true
+            }
+        })
+
+        return !hasPendingService
     }
-  }
 
-  return {
-    delayedPublish: delayedPublish
-  }
+    // Publish accessory after the service has been added
+    // BUT ONLY after the host's service nodes are fully configured.
+    // This keeps startup responsive while still avoiding premature publish.
+    const delayedPublish = (node: HAPServiceNodeType) => {
+        const log = logger('NRCHKB', 'BridgeUtils', node.config.name, node)
+
+        if (!node.hostNode.published) {
+            if (node.publishTimers[node.hostNode.id] !== undefined) {
+                clearTimeout(node.publishTimers[node.hostNode.id])
+            }
+
+            const hostTypeName =
+                node.hostNode.hostType == HostType.BRIDGE
+                    ? 'Bridge'
+                    : 'Standalone Accessory'
+
+            const tryPublish = () => {
+                try {
+                    if (!node.hostNode.published) {
+                        if (!canPublishHost(node)) {
+                            node.publishTimers[node.hostNode.id] = setTimeout(
+                                tryPublish,
+                                PUBLISH_CHECK_INTERVAL_MS
+                            )
+                            return
+                        }
+
+                        const published = node.hostNode.publish()
+
+                        if (published) {
+                            log.debug(`${hostTypeName} published`)
+                        } else {
+                            log.error(`${hostTypeName} not published`)
+                        }
+                    }
+                } catch (error) {
+                    log.error(`${hostTypeName} publish failed due to ${error}`)
+
+                    node.nodeStatusUtils.setStatus({
+                        fill: 'red',
+                        shape: 'ring',
+                        text: `Error while publishing ${hostTypeName}`,
+                    })
+                }
+            }
+
+            node.publishTimers[node.hostNode.id] = setTimeout(
+                tryPublish,
+                PUBLISH_CHECK_INTERVAL_MS
+            )
+        }
+    }
+
+    return {
+        delayedPublish: delayedPublish,
+    }
 }
+
+export = buildBridgeUtils

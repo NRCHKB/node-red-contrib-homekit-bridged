@@ -3,8 +3,9 @@ import type HAPServiceNodeType from './HAPServiceNodeType'
 import type NodeType from './NodeType'
 
 type HAPService2NodeType = NodeType &
-  HAPServiceNodeType & {
-    config: HAPService2ConfigType
-  }
+    HAPServiceNodeType & {
+        config: HAPService2ConfigType
+        nrchkbClosing: boolean
+    }
 
 export default HAPService2NodeType

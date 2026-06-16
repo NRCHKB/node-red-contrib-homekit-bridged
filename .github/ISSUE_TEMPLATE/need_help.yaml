@@ -1,7 +1,7 @@
 name: Need help
 description: Click it if you need help
 title: "[Help needed]: "
-labels: ["question"]
+labels: [ "question" ]
 assignees:
   - crxporter
 body:

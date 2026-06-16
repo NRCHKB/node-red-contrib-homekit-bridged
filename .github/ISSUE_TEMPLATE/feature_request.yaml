@@ -1,7 +1,7 @@
 name: Feature request
 description: If you have an idea for a new feature
 title: "[Feature]: "
-labels: ["enhancement :+1:"]
+labels: [ "enhancement :+1:" ]
 assignees:
   - shaquu
   - crxporter

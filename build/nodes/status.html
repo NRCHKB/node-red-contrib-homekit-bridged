@@ -1,22 +1,48 @@
 <!--suppress EqualityComparisonWithCoercionJS -->
 <script data-template-name="homekit-status" type="text/x-red">
-    <div class="form-row">
-        <label for="node-input-name">
-          <i class="fa fa-tag"></i>
-          Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+    <div class="nrchkb-editor">
+        <details class="nrchkb-section" open>
+            <summary><i class="fa fa-crosshairs"></i> Target Service</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row">
+                    <label for="node-input-name">
+                        <i class="fa fa-tag"></i>
+                        Name
+                    </label>
+                    <input type="text" id="node-input-name" placeholder="Name">
+                </div>
+                <div class="form-row">
+                    <label for="node-input-serviceNode">
+                        <i class="fa fa-puzzle-piece"></i>
+                        Service Node
+                    </label>
+                    <select id="node-input-serviceNode">
+                        <option value="">Choose...</option>
+                    </select>
+                </div>
+            </div>
+        </details>
     </div>
-    <div class="form-row">
-            <label for="node-input-serviceNode">
-              <i class="fa fa-cog"></i>
-              Service Node</label>
-            <select id="node-input-serviceNode">
-              <option value="">Choose...</option>
-          </select>
-        </div>
 </script>
 
-<script data-help-name="homekit-status" type="text/x-red">
+<script data-help-name="homekit-status" type="text/markdown">
+# HomeKit Status
+
+Reads the selected `homekit-service` or `homekit-service2` node and outputs a serialized description of its current HomeKit service shape.
+
+> [!NOTE]
+> Any input message triggers a fresh read. The incoming payload is not used as a command.
+
+## Target Service
+
+- **Name**: Optional label for this status node in the flow.
+- **Service Node**: The `homekit-service` or `homekit-service2` node to inspect. In a subflow, only service nodes from the same subflow are listed.
+
+## Output Messages
+
+Use the output for debugging, diagnostics, dashboards, migration checks, or flows that need to inspect which characteristics and values a service currently exposes.
+
+The output includes the selected service metadata, characteristics, properties, and current values where the runtime can read them.
 </script>
 
 <script type="text/javascript">
@@ -52,6 +78,9 @@
         labelStyle: function () {
             return this.name ? 'node_label_italic' : ''
         },
+        onadd: function () {
+            applyDefaultNodeDocumentation(this, 'homekit-status')
+        },
         oneditprepare: function () {
             const node = this
             const selectServiceNode = $('#node-input-serviceNode')
@@ -66,6 +95,8 @@
             ]
 
             const inSubflow = !!RED.nodes.subflow(node.z)
+
+            const serviceOptions = []
 
             candidateNodes.forEach(function (n) {
                 if (!n.name || (n.name.length && n.name.length < 1)) {
@@ -98,12 +129,15 @@
                 const value = n.id
                 const text = n.name + ' (' + sublabel + ')'
 
-                selectServiceNode.append(
-                    $('<option></option>')
+                serviceOptions.push({
+                    text,
+                    element: $('<option></option>')
                         .val(value)
                         .text(text)
-                )
+                })
             })
+
+            sortSelectOptionsByLabel(selectServiceNode, serviceOptions)
 
             selectServiceNode
                 .find('option')
@@ -121,4 +155,3 @@
         },
     })
 </script>
-

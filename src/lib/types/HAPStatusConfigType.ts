@@ -1,7 +1,7 @@
 import type { NodeDef } from 'node-red'
 
 type HAPStatusConfigType = NodeDef & {
-  serviceNodeId: string
+    serviceNodeId: string
 }
 
 export default HAPStatusConfigType

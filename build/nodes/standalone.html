@@ -1,189 +1,188 @@
 <script data-template-name="homekit-standalone" type="text/x-red">
-    <div class="form-row">
-        <label for="node-config-input-accessoryCategory">
-          <i class="fa fa-cog"></i>
-          Accessory Category</label>
-        <select id="node-config-input-accessoryCategory">
-          <option value="">Choose...</option>
-      </select>
+    <div class="nrchkb-editor">
+        <details class="nrchkb-section" open>
+            <summary><i class="fa fa-key"></i> Pairing</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row">
+                    <label for="node-config-input-bridgeName"><i class="fa fa-home"></i> Name</label>
+                    <input type="text" id="node-config-input-bridgeName" placeholder="Name">
+                </div>
+                <div class="form-row">
+                    <label for="node-config-input-accessoryCategory">
+                        <i class="fa fa-cubes"></i>
+                        Accessory Category
+                    </label>
+                    <select id="node-config-input-accessoryCategory">
+                        <option value="">Choose...</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="node-config-input-pinCode"><i class="fa fa-key"></i> Pin Code</label>
+                    <input type="text" id="node-config-input-pinCode" placeholder="xxxx-xxxx">
+                </div>
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-config-input-allowInsecureRequest">
+                        <input type="checkbox" id="node-config-input-allowInsecureRequest">
+                        <span><i class="fa fa-unlock-alt"></i> Allow Insecure Request</span>
+                    </label>
+                </div>
+                <details class="nrchkb-section" open>
+                    <summary><i class="fa fa-qrcode"></i> <span data-i18n="node-red-contrib-homekit-bridged/qr.sectionTitle">Pairing QR Code</span></summary>
+                    <div class="nrchkb-section-body" id="nrchkb-standalone-pairing-qr">
+                        <p class="nrchkb-pairing-message" data-i18n="node-red-contrib-homekit-bridged/qr.loading">Loading pairing state...</p>
+                    </div>
+                </details>
+            </div>
+        </details>
+
+        <details class="nrchkb-section" open>
+            <summary><i class="fa fa-wifi"></i> Network &amp; Advertising</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row">
+                    <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
+                    <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign">
+                </div>
+                <div class="form-row">
+                    <label for="node-config-input-advertiser"><i class="fa fa-bullhorn"></i> Advertiser</label>
+                    <select id="node-config-input-advertiser">
+                        <option value="bonjour-hap" selected="selected">BONJOUR</option>
+                        <option value="ciao">CIAO</option>
+                        <option value="avahi">AVAHI</option>
+                        <option value="resolved">RESOLVED</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="node-config-input-bind"><i class="fa fa-sitemap"></i> Bind</label>
+                    <input type="text" id="node-config-input-bind" placeholder="::">
+                    <input type="hidden" id="node-config-input-bindType">
+                </div>
+            </div>
+        </details>
+
+        <details class="nrchkb-section">
+            <summary><i class="fa fa-id-card-o"></i> Accessory Metadata</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row">
+                    <label for="node-config-input-manufacturer"><i class="fa fa-industry"></i> Manufacturer</label>
+                    <input type="text" id="node-config-input-manufacturer" placeholder="Manufacturer">
+                </div>
+                <div class="form-row">
+                    <label for="node-config-input-serialNo"><i class="fa fa-barcode"></i> Serial Number</label>
+                    <input type="text" id="node-config-input-serialNo" placeholder="Serial Number">
+                </div>
+                <div class="form-row">
+                    <label for="node-config-input-model"><i class="fa fa-cube"></i> Model</label>
+                    <input type="text" id="node-config-input-model" placeholder="Model">
+                </div>
+                <div class="form-row">
+                    <label for="node-config-input-firmwareRev"><i class="fa fa-microchip"></i> Firmware Revision</label>
+                    <input type="text" id="node-config-input-firmwareRev" placeholder="Firmware Revision">
+                </div>
+                <div class="form-row">
+                    <label for="node-config-input-hardwareRev"><i class="fa fa-hdd-o"></i> Hardware Revision</label>
+                    <input type="text" id="node-config-input-hardwareRev" placeholder="Hardware Revision">
+                </div>
+                <div class="form-row">
+                    <label for="node-config-input-softwareRev"><i class="fa fa-code"></i> Software Revision</label>
+                    <input type="text" id="node-config-input-softwareRev" placeholder="Software Revision">
+                </div>
+            </div>
+        </details>
+
+        <details class="nrchkb-section">
+            <summary><i class="fa fa-exchange"></i> Message Handling</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-config-input-allowMessagePassthrough">
+                        <input type="checkbox" id="node-config-input-allowMessagePassthrough">
+                        <span><i class="fa fa-share"></i> Allow Message Passthrough</span>
+                    </label>
+                </div>
+            </div>
+        </details>
+
+        <details class="nrchkb-section">
+            <summary><i class="fa fa-exclamation-triangle"></i> Deprecated mDNS</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-config-input-customMdnsConfig">
+                        <input type="checkbox" id="node-config-input-customMdnsConfig">
+                        <span><i class="fa fa-exclamation-triangle"></i> Custom MDNS Configuration (DEPRECATED, use Bind)</span>
+                    </label>
+                </div>
+                <div id="mdns-configuration" class="nrchkb-nested-panel" style="display: none;">
+                    <div class="form-row nrchkb-checkbox-row">
+                        <label class="nrchkb-checkbox-label" for="node-config-input-mdnsMulticast">
+                            <input type="checkbox" id="node-config-input-mdnsMulticast" checked>
+                            <span><i class="fa fa-share-alt"></i> Multicast</span>
+                        </label>
+                    </div>
+                    <div class="form-row">
+                        <label for="node-config-input-mdnsInterface"><i class="fa fa-sitemap"></i> Multicast Interface IP</label>
+                        <input type="text" id="node-config-input-mdnsInterface" placeholder="">
+                    </div>
+                    <div class="form-row">
+                        <label for="node-config-input-mdnsPort"><i class="fa fa-plug"></i> Port</label>
+                        <input type="text" id="node-config-input-mdnsPort" placeholder="">
+                    </div>
+                    <div class="form-row">
+                        <label for="node-config-input-mdnsIp"><i class="fa fa-map-marker"></i> Multicast Address IP</label>
+                        <input type="text" id="node-config-input-mdnsIp" placeholder="">
+                    </div>
+                    <div class="form-row">
+                        <label for="node-config-input-mdnsTtl"><i class="fa fa-clock-o"></i> TTL</label>
+                        <input type="text" id="node-config-input-mdnsTtl" placeholder="255">
+                    </div>
+                    <div class="form-row nrchkb-checkbox-row">
+                        <label class="nrchkb-checkbox-label" for="node-config-input-mdnsLoopback">
+                            <input type="checkbox" id="node-config-input-mdnsLoopback" checked>
+                            <span><i class="fa fa-refresh"></i> Loopback</span>
+                        </label>
+                    </div>
+                    <div class="form-row nrchkb-checkbox-row">
+                        <label class="nrchkb-checkbox-label" for="node-config-input-mdnsReuseAddr">
+                            <input type="checkbox" id="node-config-input-mdnsReuseAddr" checked>
+                            <span><i class="fa fa-recycle"></i> Reuse Address</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </details>
     </div>
-    <div class="form-row">
-        <label for="node-config-input-pinCode"><i class="fa fa-lock"></i> Pin Code</label>
-        <input type="text" id="node-config-input-pinCode" placeholder="xxxx-xxxx">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
-        <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-advertiser"><i class="fa fa-globe"></i> Advertiser</label>
-        <select id="node-config-input-advertiser">
-            <option value="bonjour-hap" selected="selected">BONJOUR</option>
-            <option value="ciao">CIAO</option>
-            <option value="avahi">AVAHI</option>
-            <option value="resolved">RESOLVED</option>
-        </select>
-    </div>
-    <div class="form-row">
-        <label>&nbsp;</label>
-        <input type="checkbox" id="node-config-input-allowInsecureRequest" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-config-input-allowInsecureRequest" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-shield"></i> Allow Insecure Request</label>
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
-        <input type="text" id="node-config-input-manufacturer" placeholder="Manufacturer">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
-        <input type="text" id="node-config-input-serialNo" placeholder="Serial Number">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-model"><i class="fa fa-wrench"></i> Model</label>
-        <input type="text" id="node-config-input-model" placeholder="Model">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-firmwareRev"><i class="fa fa-wrench"></i> Firmware Revision</label>
-        <input type="text" id="node-config-input-firmwareRev" placeholder="Firmware Revision">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-hardwareRev"><i class="fa fa-wrench"></i> Hardware Revision</label>
-        <input type="text" id="node-config-input-hardwareRev" placeholder="Hardware Revision">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-softwareRev"><i class="fa fa-wrench"></i> Software Revision</label>
-        <input type="text" id="node-config-input-softwareRev" placeholder="Software Revision">
-    </div>
-    <div class="form-row">
-        <label for="node-config-input-bridgeName"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-config-input-bridgeName" placeholder="Name">
-    </div>
-    <hr>
-    <div class="form-row">
-        <input type="checkbox" id="node-config-input-allowMessagePassthrough" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-config-input-allowMessagePassthrough" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-step-forward"></i> Allow Message Passthrough</label>
-    </div>
-    <hr>
-    <div class="form-row">
-        <label for="node-config-input-bind"><i class="fa fa-filter"></i> Bind</label>
-        <input type="text" id="node-config-input-bind" placeholder="::">
-        <input type="hidden" id="node-config-input-bindType">
-    </div>
-    <div class="form-row">
-        <input type="checkbox" id="node-config-input-customMdnsConfig" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-config-input-customMdnsConfig" style="width: 70%;">&nbsp;&nbsp;<i class="fa fa-filter"></i> Custom MDNS Configuration (DEPRECATED, use Bind)</label>
-    </div>
-    <div id="mdns-configuration" style="display: none;">
-        <div class="form-row">
-            <label for="node-config-input-mdnsMulticast"><i class="fa fa-ellipsis-v"></i> Multicast</label>
-            <input type="checkbox" id="node-config-input-mdnsMulticast" checked>
-        </div>
-        <div class="form-row">
-            <label for="node-config-input-mdnsInterface"><i class="fa fa-location-arrow"></i> Multicast Interface IP</label>
-            <input type="text" id="node-config-input-mdnsInterface" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-config-input-mdnsPort"><i class="fa fa-location-arrow"></i> Port</label>
-            <input type="text" id="node-config-input-mdnsPort" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-config-input-mdnsIp"><i class="fa fa-location-arrow"></i> Multicast Address IP</label>
-            <input type="text" id="node-config-input-mdnsIp" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-config-input-mdnsTtl"><i class="fa fa-repeat"></i> TTL</label>
-            <input type="text" id="node-config-input-mdnsTtl" placeholder="255">
-        </div>
-        <div class="form-row">
-            <label for="node-config-input-mdnsLoopback"><i class="fa fa-undo"></i> Loopback</label>
-            <input type="checkbox" id="node-config-input-mdnsLoopback" checked>
-        </div>
-        <div class="form-row">
-            <label for="node-config-input-mdnsReuseAddr"><i class="fa fa-location-arrow"></i> Reuse Address</label>
-            <input type="checkbox" id="node-config-input-mdnsReuseAddr" checked>
-        </div>
-    </div>
-    <hr>
 </script>
-<script data-help-name="homekit-standalone" type="text/x-red">
-    <h3 id="toc_4">Bridge</h3>
-    <p>The Bridge node is a configuration node, specifying the <em>bridge</em> that iOS sees, i.e. the device that is manually being added by the user. All accessories behind a bridge node are then automatically added by iOS.
-    </p>
-    <ul>
-        <li><strong>Accessory Category</strong>: What kind of category is this Accessory, default <em>OTHER</em></li>
-        <li><strong>Pin Code</strong>: Specify the Pin for the pairing process.</li>
-        <li><strong>Port</strong>: If you are behind a Firewall, you may want to specify a port. Cannot be 1880 as it is reserved for node-red. Otherwise, leave empty.</li>
-        <li><strong>Advertiser</strong>: Which MDNS advertiser to use <em>ciao</em> (new, improved but not yet proved) or (good old) <em>bonjour</em> or experimental <em>avahi</em> and <em>resolved</em>. Default <em>bonjour</em>.</li>
-        <li><strong>Allow Insecure Request</strong>: Should we allow insecure request? Default false.</li>
-        <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
-        <li><strong>Firmware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
-        <li><strong>Hardware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
-        <li><strong>Software Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
-        <li><strong>Name</strong>: If you intend to simulate a rocket, then why don&#39;t you call it <em>Rocket</em>. Name should be maximum 64 chars long and not contain <pre>.</pre></li>
-        <li><strong>Allow Message Passthrough</strong>: If you allow then message from node input will be sent to node output.</li>
-        <li><strong>Bind</strong>: Defines the host where the HAP server will be bound to. </li>
-        <ul>
-         <li>
-   Defines the host where the HAP server will be bound to.
-   When undefined the HAP server will bind to all available interfaces
-   (see https://nodejs.org/api/net.html#net_server_listen_port_host_backlog_callback).
+<script data-help-name="homekit-standalone" type="text/markdown">
+# Standalone HomeKit Accessory
 
-   This property accepts a mixture of IPAddresses and network interface names.
-   Depending on the mixture of supplied addresses/names hap-nodejs will bind differently.
+Defines a HomeKit accessory that is paired directly in the Apple Home app. Use it when a service must be published as its own accessory instead of behind a shared bridge.
 
-   It is advised to not just bind to a specific address, but specifying the interface name
-   in oder to bind on all address records (and ip version) available.
+> [!IMPORTANT]
+> Use a stable accessory name, category, PIN, serial number, and model. Changing identity fields can make HomeKit treat the accessory as a different device.
 
-   HAP-NodeJS (or the underlying ciao library) will not report about misspelled interface names,
-   as it could be that the interface is currently just down and will come up later.
+> [!WARNING]
+> **Allow Insecure Request** permits unencrypted HomeKit requests. Leave it disabled unless a deliberate test client requires it.
 
-   Here are a few examples:
-    - bind: "::"
-        Pretty much identical to not specifying anything, as most systems (with ipv6 support)
-        will default to the unspecified ipv6 address (with dual stack support).
+## Pairing
 
-    - bind: "0.0.0.0"
-        Binding TCP socket to the unspecified ipv4 address.
-        The mdns advertisement will exclude any ipv6 address records.
+- **Name**: Accessory name shown during pairing. HomeKit names can be up to 64 characters and must not contain a period.
+- **Accessory Category**: Category HomeKit uses for the accessory icon and grouping. Defaults to `OTHER`.
+- **Pin Code**: HomeKit setup code used when pairing this accessory.
+- **Pairing QR Code**: Shows after the accessory is deployed and only while it is not paired.
 
-    - bind: ["en0", "lo0"]
-        The mdns advertising will advertise all records of the en0 and loopback interface (if available) and
-        will also react to address changes on those interfaces.
-        In order for the HAP server to accept all those address records (which may contain ipv6 records)
-        it will bind on the unspecified ipv6 address "::" (assuming dual stack is supported).
+## Network & Advertising
 
-    - bind: ["en0", "lo0", "0.0.0.0"]
-        Same as above, only that the HAP server will bind on the unspecified ipv4 address "0.0.0.0".
-        The mdns advertisement will not advertise any ipv6 records.
+- **Port**: Optional HAP server port. Leave blank to auto-assign. Do not use `1880`, which is reserved for Node-RED.
+- **Advertiser**: Selects the mDNS/DNS-SD backend used to announce this accessory to HomeKit.
+- **Bind**: Restricts the network interfaces or IP addresses used by the HAP server and mDNS advertisement.
 
-    - bind: "169.254.104.90"
-        This will bind the HAP server to the address 0.0.0.0.
-        The mdns advertisement will only advertise the A record 169.254.104.90.
-        If the given network interface of that address encounters an ip address change (to a different address),
-        the mdns advertisement will result in not advertising an address at all.
-        So it is advised to specify an interface name instead of a specific address.
-        This is identical with ipv6 addresses.
+<p class="nrchkb-advertiser-dynamic">Recommendation unavailable.</p>
 
-    - bind: ["169.254.104.90", "192.168.1.4"]
-        As the HAP TCP socket can only bind to a single address, when specifying multiple ip addresses
-        the HAP server will bind to the unspecified ip address (0.0.0.0 if only ipv4 addresses are supplied,
-        :: if a mixture or only ipv6 addresses are supplied).
-        The mdns advertisement will only advertise the specified ip addresses.
-        If the given network interface of that address encounters an ip address change (to different addresses),
-        the mdns advertisement will result in not advertising an address at all.
-        So it is advised to specify an interface name instead of a specific address.
-         </li>
-        </ul>
-        <li><strong>Custom MDNS Configuration (DEPRECATED, use Bind)</strong>: Check if you would like to use custom mdns configuration.</li>
-        <ul>
-            <li><strong>Multicast</strong>: Use udp multicasting. Optional. Default true.</li>
-            <li><strong>Multicast Interface IP:</strong>: Explicitly specify a network interface. Optional. Defaults to all.</li>
-            <li><strong>Port</strong>: Set the udp port. Cannot be 1880 as it is reserved for node-red. Optional. Default 5353.</li>
-            <li><strong>Multicast Address IP</strong>: Set the udp ip. Optional. </li>
-            <li><strong>TTL</strong>: Set the multicast ttl. Optional. </li>
-            <li><strong>Loopback</strong>: Receive your own packets. Optional. Default true.</li>
-            <li><strong>Reuse Address</strong>: Set the reuseAddr option when creating the socket. Optional. Default true.</li>
-        </ul>
-    </ul>
+> [!NOTE]
+> If HomeKit discovery is unreliable, also check Docker networking, VLAN mDNS reflection, Wi-Fi isolation, VPN or container interfaces, duplicate accessory identifiers, and other mDNS responders using UDP 5353.
+
+## Deprecated mDNS
+
+> [!CAUTION]
+> **Custom MDNS Configuration** is kept only so older flows can still open in the editor. It is ignored by the current runtime. Use **Bind** and **Advertiser** for active network configuration.
 </script>
 <script type="text/javascript">
     RED.nodes.registerType('homekit-standalone', {
@@ -300,6 +299,9 @@
         labelStyle: function () {
             return this.bridgeName ? 'node_label_italic' : ''
         },
+        onadd: function () {
+            applyDefaultNodeDocumentation(this, 'homekit-standalone')
+        },
         oneditprepare: function () {
             const node = this
 
@@ -317,10 +319,12 @@
                 '#node-config-input-customMdnsConfig',
             )
             let mdnsConfiguration = $('#mdns-configuration')
+            let mdnsConfigurationSection = mdnsConfiguration.closest('details')
 
             customMdnsConfigCheckbox
                 .change(function () {
                     if (this.checked) {
+                        mdnsConfigurationSection.prop('open', true)
                         mdnsConfiguration.fadeIn('fast')
                     } else {
                         mdnsConfiguration.fadeOut('fast')
@@ -350,6 +354,15 @@
                 default: 'str',
                 types: ['json', 'str']
             })
+
+            applyAdvertiserRecommendation('#node-config-input-advertiser')
+
+            if (RED.NRCHKBPairingQR) {
+                RED.NRCHKBPairingQR.renderHostEditor(
+                    node.id,
+                    '#nrchkb-standalone-pairing-qr',
+                )
+            }
         },
     })
 </script>

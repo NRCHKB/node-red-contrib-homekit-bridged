@@ -1,322 +1,330 @@
 <!--suppress EqualityComparisonWithCoercionJS -->
 <script data-template-name="homekit-service" type="text/x-red">
-    <div class="form-row">
-        <label for="node-config-input-isParent"><i class="fa fa-tasks"></i> Service Hierarchy</label>
-        <select id="node-config-input-isParent" style="width: 70%">
-            <option value="true" selected="selected">Parent</option>
-            <option value="false">Linked</option>
-        </select>
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-serviceName">
-          <i class="fa fa-cog"></i>
-          Service</label>
-        <select id="node-input-serviceName" style="width: 70%">
-          <option value="">Choose...</option>
-      </select>
-    </div>
-
-    <div id="isParent">
-        <div class="form-row">
-            <label for="node-config-input-hostType"><i class="fa fa-tasks"></i> Host Type</label>
-            <select id="node-config-input-hostType" style="width: 70%">
-                <option value="0" selected="selected">Bridge</option>
-                <option value="1">Accessory</option>
-            </select>
-        </div>
-        <div id="isOnBridge">
-            <div id="isBridgeInSubflow" class="alert alert-warning" role="alert">
-              Read more <b><a href="#" id="bridgeInSubflowNotice">here</a></b> about adding Bridge in a Subflow.
+    <div class="nrchkb-editor">
+        <div class="alert alert-warning nrchkb-warning" role="alert">
+            <strong>Deprecated:</strong> homekit-service will be disabled soon. Migrate this node to homekit-service2 to keep it working in NRCHKB 2.x.
+            <div style="margin-top: 8px;">
+                <button type="button" class="red-ui-button" id="nrchkb-migrate-service2">
+                    <i class="fa fa-exchange"></i> Migrate this node
+                </button>
             </div>
-            <div class="form-row" style="height: 34px;">
-                <label for="node-input-bridge">
-              <i class="fa fa-rocket"></i>
-              Bridge</label>
-                <input id="node-input-bridge">
+            <div id="nrchkb-migration-result" class="alert alert-info nrchkb-info" role="alert" style="display: none; margin-top: 8px;"></div>
+        </div>
+
+        <details class="nrchkb-section" open>
+            <summary><i class="fa fa-sliders"></i> Essentials</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row">
+                    <label for="node-config-input-isParent"><i class="fa fa-sitemap"></i> Service Hierarchy</label>
+                    <select id="node-config-input-isParent">
+                        <option value="true" selected="selected">Parent</option>
+                        <option value="false">Linked</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label for="node-input-serviceName">
+                        <i class="fa fa-puzzle-piece"></i>
+                        Service
+                    </label>
+                    <select id="node-input-serviceName">
+                        <option value="">Choose...</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label for="node-input-name">
+                        <i class="fa fa-tag"></i>
+                        Name
+                    </label>
+                    <input type="text" id="node-input-name" placeholder="Name">
+                </div>
             </div>
-            <div class="form-row">
-                <label for="node-input-manufacturer"><i class="fa fa-wrench"></i> Manufacturer</label>
-                <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
+        </details>
+
+        <details class="nrchkb-section" open>
+            <summary><i class="fa fa-map-marker"></i> Placement</summary>
+            <div class="nrchkb-section-body">
+                <div id="isParent">
+                    <div class="form-row">
+                        <label for="node-config-input-hostType"><i class="fa fa-server"></i> Host Type</label>
+                        <select id="node-config-input-hostType">
+                            <option value="0" selected="selected">Bridge</option>
+                            <option value="1">Accessory</option>
+                        </select>
+                    </div>
+                    <div id="isOnBridge">
+                        <div id="isBridgeInSubflow" class="alert alert-warning nrchkb-warning" role="alert">
+                            Read more <b><a href="#" id="bridgeInSubflowNotice">here</a></b> about adding Bridge in a Subflow.
+                        </div>
+                        <div class="form-row">
+                            <label for="node-input-bridge">
+                                <i class="fa fa-link"></i>
+                                Bridge
+                            </label>
+                            <input id="node-input-bridge">
+                        </div>
+                        <details class="nrchkb-section">
+                            <summary><i class="fa fa-id-card-o"></i> Accessory Metadata</summary>
+                            <div class="nrchkb-section-body">
+                                <div class="form-row">
+                                    <label for="node-input-manufacturer"><i class="fa fa-industry"></i> Manufacturer</label>
+                                    <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
+                                </div>
+                                <div class="form-row">
+                                    <label for="node-input-serialNo"><i class="fa fa-barcode"></i> Serial Number</label>
+                                    <input type="text" id="node-input-serialNo" placeholder="Serial Number">
+                                </div>
+                                <div class="form-row">
+                                    <label for="node-input-model"><i class="fa fa-cube"></i> Model</label>
+                                    <input type="text" id="node-input-model" placeholder="Model">
+                                </div>
+                                <div class="form-row">
+                                    <label for="node-input-firmwareRev"><i class="fa fa-microchip"></i> Firmware Revision</label>
+                                    <input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision">
+                                </div>
+                                <div class="form-row">
+                                    <label for="node-input-hardwareRev"><i class="fa fa-hdd-o"></i> Hardware Revision</label>
+                                    <input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision">
+                                </div>
+                                <div class="form-row">
+                                    <label for="node-input-softwareRev"><i class="fa fa-code"></i> Software Revision</label>
+                                    <input type="text" id="node-input-softwareRev" placeholder="Software Revision">
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                    <div id="isAccessory">
+                        <div class="form-row">
+                            <label for="node-input-accessoryId">
+                                <i class="fa fa-home"></i>
+                                Accessory
+                            </label>
+                            <input id="node-input-accessoryId">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="isLinked" style="display: none;">
+                    <div class="form-row">
+                        <label for="node-input-parentService">
+                            <i class="fa fa-level-up"></i>
+                            Parent Service
+                        </label>
+                        <select id="node-input-parentService">
+                            <option value="">Choose...</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="form-row">
-                <label for="node-input-serialNo"><i class="fa fa-wrench"></i> Serial Number</label>
-                <input type="text" id="node-input-serialNo" placeholder="Serial Number">
+        </details>
+
+        <details class="nrchkb-section" open>
+            <summary><i class="fa fa-exchange"></i> Message Routing</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row">
+                    <label for="node-input-topic"><i class="fa fa-comment-o"></i> Topic</label>
+                    <input type="text" id="node-input-topic" placeholder="Topic">
+                </div>
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-input-filter">
+                        <input type="checkbox" id="node-input-filter">
+                        <span><i class="fa fa-filter"></i> Filter on Topic</span>
+                    </label>
+                </div>
             </div>
-            <div class="form-row">
-                <label for="node-input-model"><i class="fa fa-wrench"></i> Model</label>
-                <input type="text" id="node-input-model" placeholder="Model">
+        </details>
+
+        <details id="camera-configuration" class="nrchkb-section" open style="display: none;">
+            <summary><i class="fa fa-video-camera"></i> Camera Configuration</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row">
+                    <label for="node-input-cameraConfigVideoProcessor"><i class="fa fa-terminal"></i> Video Processor</label>
+                    <input type="text" id="node-input-cameraConfigVideoProcessor" placeholder="ffmpeg">
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigSource"><i class="fa fa-sign-in"></i> Source</label>
+                    <input type="text" id="node-input-cameraConfigSource" placeholder="">
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigStillImageSource"><i class="fa fa-picture-o"></i> Still Image Source</label>
+                    <input type="text" id="node-input-cameraConfigStillImageSource" placeholder="">
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigMaxStreams"><i class="fa fa-random"></i> Max Streams</label>
+                    <input type="text" id="node-input-cameraConfigMaxStreams" placeholder="">
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigMaxWidth"><i class="fa fa-arrows-h"></i> Max Width</label>
+                    <input type="text" id="node-input-cameraConfigMaxWidth" placeholder="">
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigMaxHeight"><i class="fa fa-arrows-v"></i> Max Height</label>
+                    <input type="text" id="node-input-cameraConfigMaxHeight" placeholder="">
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigMaxFPS"><i class="fa fa-clock-o"></i> Max FPS</label>
+                    <input type="text" id="node-input-cameraConfigMaxFPS" placeholder="">
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigMaxBitrate"><i class="fa fa-tachometer"></i> Max Bitrate</label>
+                    <input type="text" id="node-input-cameraConfigMaxBitrate" placeholder="">
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigVideoCodec"><i class="fa fa-film"></i> Video Codec</label>
+                    <input type="text" id="node-input-cameraConfigVideoCodec" placeholder="">
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigAudioCodec"><i class="fa fa-volume-up"></i> Audio Codec</label>
+                    <input type="text" id="node-input-cameraConfigAudioCodec" placeholder="">
+                </div>
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-input-cameraConfigAudio">
+                        <input type="checkbox" id="node-input-cameraConfigAudio">
+                        <span><i class="fa fa-headphones"></i> Audio</span>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigPacketSize"><i class="fa fa-archive"></i> Packet Size</label>
+                    <input type="text" id="node-input-cameraConfigPacketSize" placeholder="">
+                </div>
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-input-cameraConfigVerticalFlip">
+                        <input type="checkbox" id="node-input-cameraConfigVerticalFlip">
+                        <span><i class="fa fa-arrows-v"></i> Vertical Flip</span>
+                    </label>
+                </div>
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-input-cameraConfigHorizontalFlip">
+                        <input type="checkbox" id="node-input-cameraConfigHorizontalFlip">
+                        <span><i class="fa fa-arrows-h"></i> Horizontal Flip</span>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigMapVideo"><i class="fa fa-film"></i> Map Video</label>
+                    <input type="text" id="node-input-cameraConfigMapVideo" placeholder="">
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigMapAudio"><i class="fa fa-volume-up"></i> Map Audio</label>
+                    <input type="text" id="node-input-cameraConfigMapAudio" placeholder="">
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigVideoFilter"><i class="fa fa-filter"></i> Video Filter</label>
+                    <input type="text" id="node-input-cameraConfigVideoFilter" placeholder="">
+                </div>
+                <div class="form-row">
+                    <label for="node-input-cameraConfigAdditionalCommandLine"><i class="fa fa-terminal"></i> Additional Command Line</label>
+                    <input type="text" id="node-input-cameraConfigAdditionalCommandLine" placeholder="">
+                </div>
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-input-cameraConfigDebug">
+                        <input type="checkbox" id="node-input-cameraConfigDebug">
+                        <span><i class="fa fa-bug"></i> Debug</span>
+                    </label>
+                </div>
+
+                <div class="form-row">
+                    <label for="node-input-cameraConfigSnapshotOutput"><i class="fa fa-camera"></i> Snapshot output</label>
+                    <select id="node-input-cameraConfigSnapshotOutput">
+                        <option value="disabled" selected="selected">Disabled</option>
+                        <option value="path">Path</option>
+                        <option value="content">Content</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label for="node-input-cameraConfigInterfaceName"><i class="fa fa-sitemap"></i> Interface Name</label>
+                    <input type="text" id="node-input-cameraConfigInterfaceName" placeholder="">
+                </div>
             </div>
-            <div class="form-row">
-                <label for="node-input-firmwareRev"><i class="fa fa-wrench"></i> Firmware Revision</label>
-                <input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision">
+        </details>
+
+        <details id="adaptive-lightning-configuration" class="nrchkb-section" open style="display: none;">
+            <summary><i class="fa fa-sun-o"></i> Adaptive Lighting Configuration</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-input-adaptiveLightingOptionsEnable">
+                        <input type="checkbox" id="node-input-adaptiveLightingOptionsEnable">
+                        <span><i class="fa fa-toggle-on"></i> Enable</span>
+                    </label>
+                </div>
+                <div class="form-row">
+                    <label for="node-input-adaptiveLightingOptionsMode"><i class="fa fa-magic"></i> Mode</label>
+                    <select id="node-input-adaptiveLightingOptionsMode">
+                        <option value="" selected hidden disabled>AUTOMATIC</option>
+                        <option value="1">AUTOMATIC</option>
+                        <option value="2">MANUAL</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label for="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment"><i class="fa fa-thermometer-half"></i> Custom Temperature Adjustment</label>
+                    <input type="number" id="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment" placeholder="0">
+                </div>
             </div>
-            <div class="form-row">
-                <label for="node-input-hardwareRev"><i class="fa fa-wrench"></i> Hardware Revision</label>
-                <input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision">
+        </details>
+
+        <details class="nrchkb-section">
+            <summary><i class="fa fa-sliders"></i> Advanced Behavior</summary>
+            <div class="nrchkb-section-body">
+                <div class="form-row">
+                    <label for="node-input-characteristicProperties"><i class="fa fa-list-alt"></i> Characteristic Properties</label>
+                    <input type="text" id="node-input-characteristicProperties">
+                </div>
+
+                <div class="form-row nrchkb-checkbox-row">
+                    <label class="nrchkb-checkbox-label" for="node-input-waitForSetupMsg">
+                        <input type="checkbox" id="node-input-waitForSetupMsg">
+                        <span><i class="fa fa-hourglass-half"></i> Wait for Setup message</span>
+                    </label>
+                </div>
             </div>
-            <div class="form-row">
-                <label for="node-input-softwareRev"><i class="fa fa-wrench"></i> Software Revision</label>
-                <input type="text" id="node-input-softwareRev" placeholder="Software Revision">
-            </div>
-        </div>
-        <div id="isAccessory">
-            <div class="form-row" style="height: 34px;">
-                <label for="node-input-accessoryId">
-              <i class="fa fa-rocket"></i>
-              Accessory</label>
-                <input id="node-input-accessoryId">
-            </div>
-        </div>
-    </div>
-
-    <div id="isLinked" style="display: none;">
-        <div class="form-row">
-            <label for="node-input-parentService">
-              <i class="fa fa-cog"></i>
-              Parent Service</label>
-            <select id="node-input-parentService">
-              <option value="">Choose...</option>
-          </select>
-        </div>
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
-        <input type="text" id="node-input-topic" placeholder="Topic">
-    </div>
-    <div class="form-row">
-        <label class="visibleDesktop">&nbsp;</label>
-        <div style="display: inline;">
-            <input type="checkbox" id="node-input-filter" style="display: inline-block; width: auto; vertical-align: top;">
-            <label for="node-input-filter" style="width: 120px;">&nbsp;&nbsp;<i class="fa fa-filter"></i> Filter on Topic</label>
-        </div>
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-name">
-          <i class="fa fa-tag"></i>
-          Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
-    </div>
-
-    <div id="camera-configuration" style="display: none;">
-        <label>&nbsp;&nbsp;<i class="fa fa-video-camera"></i> Camera Configuration</label>
-        <div class="form-row">
-            <label for="node-input-cameraConfigVideoProcessor"><i class="fa fa-cog"></i> Video Processor</label>
-            <input type="text" id="node-input-cameraConfigVideoProcessor" placeholder="ffmpeg">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigSource"><i class="fa fa-tint"></i> Source</label>
-            <input type="text" id="node-input-cameraConfigSource" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigStillImageSource"><i class="fa fa-picture-o"></i> Still Image Source</label>
-            <input type="text" id="node-input-cameraConfigStillImageSource" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMaxStreams"><i class="fa fa-tint"></i> Max Streams</label>
-            <input type="text" id="node-input-cameraConfigMaxStreams" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMaxWidth"><i class="fa fa-text-width"></i> Max Width</label>
-            <input type="text" id="node-input-cameraConfigMaxWidth" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMaxHeight"><i class="fa fa-text-height"></i> Max Height</label>
-            <input type="text" id="node-input-cameraConfigMaxHeight" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMaxFPS"><i class="fa fa-clock-o"></i> Max FPS</label>
-            <input type="text" id="node-input-cameraConfigMaxFPS" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMaxBitrate"><i class="fa fa-clock-o"></i> Max Bitrate</label>
-            <input type="text" id="node-input-cameraConfigMaxBitrate" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigVideoCodec"><i class="fa fa-video-camera"></i> Video Codec</label>
-            <input type="text" id="node-input-cameraConfigVideoCodec" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigAudioCodec"><i class="fa fa-video-camera"></i> Audio Codec</label>
-            <input type="text" id="node-input-cameraConfigAudioCodec" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigAudio"><i class="fa fa-headphones"></i> Audio</label>
-            <input type="checkbox" id="node-input-cameraConfigAudio">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigPacketSize"><i class="fa fa-get-pocket"></i> Packet Size</label>
-            <input type="text" id="node-input-cameraConfigPacketSize" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigVerticalFlip"><i class="fa fa-undo"></i> Vertical Flip</label>
-            <input type="checkbox" id="node-input-cameraConfigVerticalFlip">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigHorizontalFlip"><i class="fa fa-undo"></i> Horizontal Flip</label>
-            <input type="checkbox" id="node-input-cameraConfigHorizontalFlip">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMapVideo"><i class="fa fa-video-camera"></i> Map Video</label>
-            <input type="text" id="node-input-cameraConfigMapVideo" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigMapAudio"><i class="fa fa-headphones"></i> Map Audio</label>
-            <input type="text" id="node-input-cameraConfigMapAudio" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigVideoFilter"><i class="fa fa-filter"></i> Video Filter</label>
-            <input type="text" id="node-input-cameraConfigVideoFilter" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigAdditionalCommandLine"><i class="fa fa-plus"></i> Additional Command Line</label>
-            <input type="text" id="node-input-cameraConfigAdditionalCommandLine" placeholder="">
-        </div>
-        <div class="form-row">
-            <label for="node-input-cameraConfigDebug"><i class="fa fa-bug"></i> Debug</label>
-            <input type="checkbox" id="node-input-cameraConfigDebug">
-        </div>
-
-        <div class="form-row">
-            <label for="node-input-cameraConfigSnapshotOutput"><i class="fa fa-picture-o"></i> Snapshot output</label>
-            <select id="node-input-cameraConfigSnapshotOutput">
-                <option value="disabled" selected="selected">Disabled</option>
-                <option value="path">Path</option>
-                <option value="content">Content</option>
-            </select>
-        </div>
-
-        <div class="form-row">
-            <label for="node-input-cameraConfigInterfaceName"><i class="fa fa-smile-o"></i> Interface Name</label>
-            <input type="text" id="node-input-cameraConfigInterfaceName" placeholder="">
-        </div>
-    </div>
-
-    <div id="adaptive-lightning-configuration" style="display: none; border: 1px solid var(--red-ui-secondary-border-color); padding: 12px 12px 0 12px; margin-bottom: 12px;">
-        <label>&nbsp;&nbsp;<i class="fa fa-cog"></i> Adaptive Lightning Configuration</label>
-        <div class="form-row">
-            <label for="node-input-adaptiveLightingOptionsEnable"><i class="fa fa-toggle-on"></i> Enable</label>
-            <input type="checkbox" id="node-input-adaptiveLightingOptionsEnable">
-        </div>
-        <div class="form-row">
-            <label for="node-input-adaptiveLightingOptionsMode"><i class="fa fa-hand-o-up"></i> Mode</label>
-            <select id="node-input-adaptiveLightingOptionsMode">
-                <option value="" selected hidden disabled>AUTOMATIC</option>
-                <option value="1">AUTOMATIC</option>
-                <option value="2">MANUAL</option>
-            </select>
-        </div>
-        <div class="form-row">
-            <label for="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment"><i class="fa fa-thermometer-quarter"></i> Custom Temperature Adjustment</label>
-            <input type="number" id="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment" placeholder="0">
-        </div>
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-characteristicProperties"><i class="fa fa-wrench"></i> Characteristic Properties</label>
-        <input type="text" id="node-input-characteristicProperties" style="width: 70%">
-    </div>
-
-    <div class="form-row">
-        <label for="node-input-waitForSetupMsg"><i class="fa fa-bug"></i> Wait for Setup message</label>
-        <input type="checkbox" id="node-input-waitForSetupMsg">
+        </details>
     </div>
 </script>
 
-<script data-help-name="homekit-service" type="text/x-red">
-<h3 id="toc_5">Service</h3>
-<p>The Service node represents the single device you want to control or query.</p>
-<p>Every service node creates its own HAP accessory to keep things simple.</p>
-<ul>
-   <li><strong>Service Hierarchy</strong>: Choose if this Service is Parent or Linked</li>
-   <ul>
-      <li>Parent has <strong>Bridge</strong> and <strong>Accessory Category</strong>: On what Bridge to host this Service and its Accessory and what kind of category is this Accessory, default <em>OTHER</em></li>
-      <li>Linked has <strong>Parent Service</strong>: On what Parent Service link this Service.</li>
-   </ul>
-   <li><strong>Topic</strong>: An optional property that can be configured in the node or, if left blank, can be set by <code>msg.topic</code>. If <em>Filter on Topic</em> is selected <code>msg.topic</code> of incoming messages must match the configured
-      value for the message to be accepted. If <em>Filter on Topic</em> is selected and no <em>Topic</em> is set on the node, then <code>msg.topic</code> must match the nodes <em>Name</em>
-   </li>
-   <li><strong>Manufacturer, Model, Serial Number</strong>: Can be anything you want.</li>
-   <li><strong>Firmware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
-   <li><strong>Hardware Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
-   <li><strong>Software Revision</strong>: Should be a version number string in the form of <em>MAJOR.MINOR.REVISION</em> e.g. <em>1.2.0</em>. Other types of strings are ignored and won't be displayed.</li>
-   <li><strong>Service</strong>: Choose the type of Service from the list.</li>
-   <li><strong>Name</strong>: <em>optional</em></li>
-   <li><strong>Camera Configuration</strong>: Additional configuration for CameraControl service.</li>
-   <ul>
-      <li><strong>Video Processor</strong>: Video processor used for Camera. Default is <em>ffmpeg</em>.</li>
-      <li><strong>Source</strong>: Camera source used for video processor. Example for ffmpeg <em>-re -i rtsp://192.168.0.227:8554/unicast</em></li>
-      <li><strong>Still Image Source</strong>: Camera snapshot source used for video processor. Example for ffmpeg <em>-i http://faster_still_image_grab_url/this_is_optional.jpg</em></li>
-      <li><strong>Max Streams</strong>: Maximum number of streams that will be generated for this camera, default <em>2</em>.</li>
-      <li><strong>Max Width</strong>: Maximum width reported to HomeKit, default <em>1280</em>.</li>
-      <li><strong>Max Height</strong>: Maximum height reported to HomeKit, default <em>720</em>.</li>
-      <li><strong>Max FPS</strong>: Maximum frame rate of the stream, default <em>10</em>.</li>
-      <li><strong>Max Bitrate</strong>: Maximum bit rate of the stream in kbit/s, default <em>300</em>.</li>
-      <li><strong>Video Codec</strong>: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated video codec with this option, default <em>libx264</em>.</li>
-      <li><strong>Audio Codec</strong>: If you're running on a RPi with the omx version of ffmpeg installed, you can change to the hardware accelerated audio codec with this option, default <em>libfdk_aac</em>.</li>
-      <li><strong>Audio</strong>: Can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, default <em>false</em>.</li>
-      <li><strong>Packet Size</strong>: If audio or video is choppy try a smaller value, set to a multiple of 188, default <em>1316</em>.</li>
-      <li><strong>Vertical Flip</strong>: Flips the stream vertically, default <em>false</em>.</li>
-      <li><strong>Horizontal Flip</strong>: Flips the stream horizontally, default <em>false</em>.</li>
-      <li><strong>Map Video</strong>: Select the stream used for video, default <em>0:0</em>.</li>
-      <li><strong>Map Audio</strong>: Select the stream used for audio, default <em>0:1</em>.</li>
-      <li><strong>Video Filter</strong>: Allows a custom video filter to be passed to FFmpeg via -vf, defaults to <em>scale=1280:720</em> but is optional.</li>
-      <li><strong>Additional Command Line</strong>: Allows additional of extra command line options to FFmpeg, default <em>-tune zerolatency</em> but is optional.</li>
-      <li><strong>Debug</strong>: Show the output of ffmpeg in the log, default <em>false</em>.</li>
-      <li><strong>Snapshot output</strong>: Choose how to output camera snapshot</li>
-      <ul>
-         <li><strong>Disabled</strong>: there will be no output</li>
-         <li><strong>Path</strong>: file will be saved and path will be send to output, <em>msg.payload.cameraSnapshot</em> contains path value stored as a string.</li>
-         <li><strong>Content</strong>: file content will be send to output, <em>msg.payload.cameraSnapshot</em> contains Buffer object {"type":"Buffer","data":[]}.</li>
-      </ul>
-      <li><strong>Interface Name</strong>: Selects the IP address of a given network interface.</li>
-   </ul>
-   <li><strong>Characteristic Properties</strong>: Customize the properties of characteristics.</li>
-   <li><strong>Wait for Setup message</strong>: If yes then Service node will wait for a input message with appropriate payload.</li>
-</ul>
-<h2 id="toc_6">Input Messages</h2>
-<p>Input messages can be used to update any <em>Characteristic</em> that the selected <em>Service</em> provides. Simply pass the values-to-update as <code>msg.payload</code> object. </p>
-<p><strong>Example</strong>: to signal that an <em>Outlet</em> is turned on and in use, send the following payload</p>
-<div>
-<pre><code class="language-javascript">
-{
-    &quot;On&quot;: 1,
-    &quot;OutletInUse&quot;: 1
-}
-</code></pre>
-</div>
-<p><strong>Hint</strong>: to find out what <em>Characteristics</em> you can address, just send <code>{&quot;foo&quot;:&quot;bar&quot;}</code> and watch the debug tab ;)</p>
-<h2 id="toc_7">Output Messages</h2>
-<p>Output messages are in the same format as input messages. They are emitted from the node when it receives <em>Characteristics</em> updates from a paired iOS device.</p>
-<h2 id="toc_8">Characteristic Properties</h2>
-<p><strong>Example</strong>: allow temperatures below 0&deg;C</p>
-<div>
-<pre><code class="language-json">
-{
-    &quot;CurrentTemperature&quot;: {
-        &quot;minValue&quot;: -100
-    }
-}
-</code></pre>
-<p><strong>Example</strong>: limit fan speed multiples of 25%</p>
-<div>
-<pre><code class="language-json">
-{
-    &quot;RotationSpeed&quot;: {
-        &quot;minStep&quot;: 25
-    }
-}
-</code></pre>
-</div>
+<script data-help-name="homekit-service" type="text/markdown">
+# HomeKit Service
 
+Represents one legacy HomeKit service. It receives Node-RED messages to update HomeKit characteristics and emits messages when HomeKit changes those characteristics.
+
+> [!WARNING]
+> `homekit-service` is deprecated and kept for existing flows. Use `homekit-service2` for new work.
+
+> [!IMPORTANT]
+> The migration button prepares an editor-side change. Click **Done** and then **Deploy** to commit the migration.
+
+## Message Format
+
+Send a `msg.payload` object whose keys are HomeKit characteristic names.
+
+```json
+{
+  "On": true,
+  "OutletInUse": true
+}
+```
+
+## Placement
+
+- **Host Type**: Publish a parent service behind a shared **Bridge** or behind a standalone **Accessory**.
+- **Bridge**: HomeKit bridge configuration that hosts this service.
+- **Accessory**: Standalone accessory configuration that hosts this service.
+- **Parent Service**: Parent service used by linked services.
+
+## Advanced Behavior
+
+> [!CAUTION]
+> **Wait for Setup message** delays service setup until the node receives the required setup payload. The service will not be published until that message arrives.
+
+- **Characteristic Properties**: JSON object that overrides HAP characteristic metadata such as `minValue`, `maxValue`, or `minStep`.
+- **Camera Configuration**: Shown for camera services and describes FFmpeg streaming and snapshot settings.
 </script>
 
 <script type="text/javascript">
     RED.nodes.registerType('homekit-service', {
         category: "Apple HomeKit",
         paletteLabel: 'service',
+        nrchkbPreventNewInstances: true,
         defaults: {
             isParent: {
                 value: 'false',
@@ -481,8 +489,7 @@
 
                     try {
                         JSON.parse(value)
-                    } catch (e) {
-                        console.log(e, value)
+                    } catch (_) {
                         return false
                     }
 
@@ -530,6 +537,9 @@
         labelStyle: function () {
             return this.name ? 'node_label_italic' : ''
         },
+        onadd: function () {
+            applyDefaultNodeDocumentation(this, 'homekit-service')
+        },
         oneditprepare: function () {
             let node = this
             let isParentToggle = $('#node-config-input-isParent')
@@ -539,6 +549,151 @@
             } else {
                 isParentToggle.val('true')
             }
+
+            const toSerializableValue = function (value) {
+                if (value === undefined || value === null) {
+                    return value
+                }
+
+                if (typeof value !== 'object') {
+                    return value
+                }
+
+                try {
+                    return JSON.parse(JSON.stringify(value))
+                } catch (_) {
+                    return undefined
+                }
+            }
+
+            const readCurrentNodeConfig = function () {
+                const config = {
+                    id: node.id,
+                    type: node.type,
+                    z: node.z,
+                    g: node.g,
+                    wires: toSerializableValue(node.wires),
+                    outputs: node.outputs
+                }
+
+                Object.keys((node._def && node._def.defaults) || {}).forEach(function (key) {
+                    const value = toSerializableValue(node[key])
+
+                    if (value !== undefined) {
+                        config[key] = value
+                    }
+                })
+
+                return $.extend(config, {
+                    name: $('#node-input-name').val(),
+                    serviceName:
+                        $('#node-input-serviceName').val() ||
+                        $('#node-input-serviceName option:selected').attr('value') ||
+                        node.serviceName,
+                    manufacturer: $('#node-input-manufacturer').val(),
+                    model: $('#node-input-model').val(),
+                    serialNo: $('#node-input-serialNo').val(),
+                    firmwareRev: $('#node-input-firmwareRev').val(),
+                    cameraConfigVideoProcessor: $('#node-input-cameraConfigVideoProcessor').val(),
+                    cameraConfigSource: $('#node-input-cameraConfigSource').val(),
+                    cameraConfigStillImageSource: $('#node-input-cameraConfigStillImageSource').val(),
+                    cameraConfigMaxStreams: $('#node-input-cameraConfigMaxStreams').val(),
+                    cameraConfigMaxWidth: $('#node-input-cameraConfigMaxWidth').val(),
+                    cameraConfigMaxHeight: $('#node-input-cameraConfigMaxHeight').val(),
+                    cameraConfigMaxFPS: $('#node-input-cameraConfigMaxFPS').val(),
+                    cameraConfigMaxBitrate: $('#node-input-cameraConfigMaxBitrate').val(),
+                    cameraConfigVideoCodec: $('#node-input-cameraConfigVideoCodec').val(),
+                    cameraConfigAudio: $('#node-input-cameraConfigAudio').is(':checked'),
+                    cameraConfigPacketSize: $('#node-input-cameraConfigPacketSize').val(),
+                    cameraConfigMapVideo: $('#node-input-cameraConfigMapVideo').val(),
+                    cameraConfigMapAudio: $('#node-input-cameraConfigMapAudio').val(),
+                    cameraConfigVideoFilter: $('#node-input-cameraConfigVideoFilter').val(),
+                    cameraConfigAdditionalCommandLine: $('#node-input-cameraConfigAdditionalCommandLine').val(),
+                    cameraConfigDebug: $('#node-input-cameraConfigDebug').is(':checked')
+                })
+            }
+
+            const showMigrationPrepared = function (result) {
+                if (
+                    result.node.serviceName &&
+                    $('#node-input-serviceName option[value="' + result.node.serviceName + '"]').length === 0
+                ) {
+                    $('#node-input-serviceName').append(
+                        $('<option></option>')
+                            .val(result.node.serviceName)
+                            .text(result.node.serviceName)
+                    )
+                }
+
+                if (result.node.serviceName) {
+                    $('#node-input-serviceName')
+                        .val(result.node.serviceName)
+                        .trigger('change')
+                }
+
+                $('#nrchkb-migration-result')
+                    .html(
+                        '<strong>Migration prepared.</strong> Service is now <code>' +
+                        $('<div>').text(result.node.serviceName || '').html() +
+                        '</code>. Click <strong>Done</strong> to commit this editor change, then <strong>Deploy</strong>.'
+                    )
+                    .show()
+            }
+
+            $('#nrchkb-migrate-service2').on('click', function () {
+                $('<div>')
+                    .html('<p>This will prepare this node for conversion to <strong>homekit-service2</strong> in legacy output mode and preserve existing wires.</p><p>CameraControl nodes will become the new <strong>Camera</strong> service with the embedded Homebridge Camera FFmpeg plugin.</p><p>After migration is prepared, click <strong>Done</strong> in this node editor to commit the change, then <strong>Deploy</strong>.</p>')
+                    .dialog({
+                        modal: true,
+                        resizable: false,
+                        width: 420,
+                        title: 'Migrate Service Node',
+                        buttons: {
+                            Migrate: function () {
+                                const dialog = this
+
+                                $.ajax({
+                                    url: 'nrchkb/migration/node',
+                                    type: 'POST',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(readCurrentNodeConfig())
+                                }).done(function (result) {
+                                    if (!result || !result.migrated || !result.node) {
+                                        RED.notify('This node could not be migrated.', 'warning')
+                                        return
+                                    }
+
+                                    node._nrchkbPendingMigration = result.node
+                                    showMigrationPrepared(result)
+
+                                    RED.nodes.dirty(true)
+
+                                    if (RED.view && RED.view.redraw) {
+                                        RED.view.redraw(true)
+                                    }
+
+                                    RED.notify(
+                                        result.cameraMigrated
+                                            ? 'Migration prepared: CameraControl will become homekit-service2 Camera. Click Done, then Deploy.'
+                                            : 'Migration prepared. Click Done, then Deploy.',
+                                        'success'
+                                    )
+
+                                    $(dialog).dialog('destroy')
+                                    $('.ui-dialog-content').dialog('close')
+                                }).fail(function (xhr) {
+                                    const message = xhr.responseJSON && xhr.responseJSON.error
+                                        ? xhr.responseJSON.error
+                                        : 'Migration failed.'
+                                    RED.notify(message, 'error')
+                                })
+                            },
+                            Cancel: function () {
+                                $(this).dialog('destroy')
+                            },
+                        },
+                    })
+            })
 
             let isLinkedDiv = $('#isLinked')
             let isParentDiv = $('#isParent')
@@ -622,6 +777,7 @@
             selectServiceName
                 .change(function () {
                     if (this.value === 'CameraControl') {
+                        cameraConfiguration.prop('open', true)
                         cameraConfiguration.fadeIn('fast')
                         node.outputs = 3
                     } else {
@@ -634,6 +790,7 @@
             selectServiceName
                 .change(function () {
                     if (this.value === 'Lightbulb') {
+                        adaptiveLightningConfiguration.prop('open', true)
                         adaptiveLightningConfiguration.fadeIn('fast')
                     } else {
                         adaptiveLightningConfiguration.fadeOut('fast')
@@ -656,6 +813,8 @@
                     type: 'homekit-service2',
                 })
             ]
+
+            const parentServiceOptions = []
 
             candidateNodes.forEach(function (n) {
                 if (!n.name || n.name.length < 1 || !n.isParent) {
@@ -689,13 +848,16 @@
                 const text = n.name + ' (' + sublabel + ')'
                 const hostType = n.hostType
 
-                selectParentService.append(
-                    $('<option></option>')
+                parentServiceOptions.push({
+                    text,
+                    element: $('<option></option>')
                         .val(value)
                         .text(text)
-                        .attr("hostType", hostType),
-                )
+                        .attr("hostType", hostType)
+                })
             })
+
+            sortSelectOptionsByLabel(selectParentService, parentServiceOptions)
 
             selectParentService
                 .find('option')
@@ -753,8 +915,26 @@
                     })
             })
         },
+        oneditcancel: function () {
+            delete this._nrchkbPendingMigration
+        },
         oneditsave: function () {
             let node = this
+
+            if (node._nrchkbPendingMigration) {
+                const migratedNode = node._nrchkbPendingMigration
+
+                Object.keys(migratedNode).forEach(function (key) {
+                    node[key] = migratedNode[key]
+                })
+
+                if (RED.nodes.getType(migratedNode.type)) {
+                    node._def = RED.nodes.getType(migratedNode.type)
+                }
+
+                delete node._nrchkbPendingMigration
+                return true
+            }
 
             node.isParent = $('#node-config-input-isParent').val() === 'true'
             node.hostType = $('#node-config-input-hostType').val()
@@ -771,5 +951,43 @@
             ).val()
         },
     })
-</script>
 
+    ;(function () {
+        const legacyServiceType = 'homekit-service'
+        const registry = RED.nodes.registry
+        const legacyServiceDefinition = RED.nodes.getType(legacyServiceType)
+
+        if (legacyServiceDefinition) {
+            legacyServiceDefinition.nrchkbPreventNewInstances = true
+        }
+
+        if (registry && !registry._nrchkbPreventNewInstancesPatch) {
+            const originalGetNodeTypes = registry.getNodeTypes
+
+            registry.getNodeTypes = function () {
+                return originalGetNodeTypes.call(registry).filter(function (type) {
+                    const definition = RED.nodes.getType(type)
+                    return !definition || definition.nrchkbPreventNewInstances !== true
+                })
+            }
+
+            registry._nrchkbPreventNewInstancesPatch = true
+        }
+
+        const removeLegacyPaletteNode = function () {
+            $('.red-ui-palette-node[data-palette-type="' + legacyServiceType + '"]').remove()
+        }
+
+        if (registry && RED.events && RED.events.on && !registry._nrchkbLegacyServicePaletteHandler) {
+            RED.events.on('registry:node-type-added', function (type) {
+                if (type === legacyServiceType) {
+                    removeLegacyPaletteNode()
+                }
+            })
+            registry._nrchkbLegacyServicePaletteHandler = true
+        }
+
+        removeLegacyPaletteNode()
+        setTimeout(removeLegacyPaletteNode, 0)
+    })()
+</script>

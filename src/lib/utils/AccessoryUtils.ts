@@ -1,201 +1,236 @@
-import type { Accessory, Service } from '@homebridge/hap-nodejs'
-import { logger } from '@nrchkb/logger'
+import type {
+    Accessory as AccessoryType,
+    Service,
+} from '@homebridge/hap-nodejs'
+import { Accessory } from '@homebridge/hap-nodejs'
+import { logger as nrchkbLogger } from '@nrchkb/logger'
 
 import type AccessoryInformationType from '../types/AccessoryInformationType'
 import type HAPServiceNodeType from '../types/HAPServiceNodeType'
 
-module.exports = (node: HAPServiceNodeType) => {
-  const HapNodeJS = require('@homebridge/hap-nodejs')
-  const Accessory = HapNodeJS.Accessory
-  const Service = HapNodeJS.Service
-  const Characteristic = HapNodeJS.Characteristic
+const accessoryCache = new WeakMap<AccessoryType, Map<string, AccessoryType>>()
 
-  const log = logger('NRCHKB', 'AccessoryUtils', node.config.name, node)
+const buildAccessoryUtils = (node: HAPServiceNodeType) => {
+    const { Service, Characteristic } = require('@homebridge/hap-nodejs')
 
-  const getOrCreate = (
-    host: Accessory,
-    accessoryInformation: AccessoryInformationType,
-    subtypeUUID: string
-  ) => {
-    let accessory: Accessory | undefined
-    const services: Service[] = []
+    const log = nrchkbLogger('NRCHKB', 'AccessoryUtils', node.config.name, node)
 
-    // create accessory object
-    log.debug(`Looking for accessory with service subtype ${subtypeUUID} ...`)
+    const getOrCreate = (
+        host: AccessoryType,
+        accessoryInformation: AccessoryInformationType,
+        subtypeUUID: string
+    ) => {
+        let accessory: AccessoryType | undefined
+        const services: Service[] = []
+        let hostCache = accessoryCache.get(host)
 
-    // Try to find an accessory which contains a service with the same
-    // subtype. Since the UUID of the accessory might have changed the
-    // subtype will be used instead.
-    accessory = host.bridgedAccessories.find((a) => {
-      const service = a.services.find((s) => {
-        return s.subtype === subtypeUUID
-      })
+        if (!hostCache) {
+            hostCache = new Map<string, AccessoryType>()
+            accessoryCache.set(host, hostCache)
+        }
 
-      return service !== undefined
-    })
-
-    if (accessory) {
-      // An accessory was found
-      const accessoryInformationService =
-        accessory.getService(Service.AccessoryInformation) ||
-        accessory.addService(Service.AccessoryInformation)
-
-      if (
-        accessoryInformationService.getCharacteristic(
-          Characteristic.Manufacturer
-        ).value !== accessoryInformation.manufacturer ||
-        accessoryInformationService.getCharacteristic(Characteristic.Model)
-          .value !== accessoryInformation.model ||
-        accessoryInformationService.getCharacteristic(Characteristic.Name)
-          .value !== accessoryInformation.name ||
-        accessoryInformationService.getCharacteristic(
-          Characteristic.SerialNumber
-        ).value !== accessoryInformation.serialNo
-      ) {
+        // create accessory object
         log.debug(
-          '... Manufacturer, Model, Name or Serial Number changed! Replacing it.'
+            `Looking for accessory with service subtype ${subtypeUUID} ...`
         )
 
-        // Removing services from accessory and storing them for later
-        accessory.services
-          .filter(
-            (service) => service.UUID !== Service.AccessoryInformation.UUID
-          )
-          .forEach((service) => {
-            accessory?.removeService(service)
-            services.push(service)
-          })
+        // Check cache first for O(1) lookup
+        if (hostCache.has(subtypeUUID)) {
+            accessory = hostCache.get(subtypeUUID)
+            log.trace(`Found accessory in cache for subtype ${subtypeUUID}`)
+        } else {
+            // Try to find an accessory which contains a service with the same
+            // subtype. Since the UUID of the accessory might have changed the
+            // subtype will be used instead.
+            accessory = host.bridgedAccessories.find((a) => {
+                const service = a.services.find((s) => {
+                    return s.subtype === subtypeUUID
+                })
 
-        // Remove old Accessory
-        host.removeBridgedAccessory(accessory, false)
-        accessory.destroy()
-        accessory = undefined
-      } else {
-        log.debug('... found it! Updating it.')
-      }
-    } else {
-      log.debug(
-        `... didn't find it. Adding new accessory with name ${accessoryInformation.name} and UUID ${accessoryInformation.UUID}`
-      )
-    }
+                return service !== undefined
+            })
 
-    let accessoryInformationService: Service | undefined
+            // Cache the result for future lookups
+            if (accessory) {
+                hostCache.set(subtypeUUID, accessory)
+            }
+        }
 
-    if (!accessory) {
-      // A new accessory will be created.
-      accessory = new Accessory(
-        accessoryInformation.name,
-        accessoryInformation.UUID
-      )
+        if (accessory) {
+            // An accessory was found
+            const accessoryInformationService =
+                accessory.getService(Service.AccessoryInformation) ||
+                accessory.addService(Service.AccessoryInformation)
 
-      // If the accessory is getting replaced then all of the old
-      // services (except AccessoryInformation) will be transferred to
-      // the new accessory.
-      services.forEach((service) => {
-        accessory?.addService(service)
-      })
+            if (
+                accessoryInformationService.getCharacteristic(
+                    Characteristic.Manufacturer
+                ).value !== accessoryInformation.manufacturer ||
+                accessoryInformationService.getCharacteristic(
+                    Characteristic.Model
+                ).value !== accessoryInformation.model ||
+                accessoryInformationService.getCharacteristic(
+                    Characteristic.Name
+                ).value !== accessoryInformation.name ||
+                accessoryInformationService.getCharacteristic(
+                    Characteristic.SerialNumber
+                ).value !== accessoryInformation.serialNo
+            ) {
+                log.debug(
+                    '... Manufacturer, Model, Name or Serial Number changed! Replacing it.'
+                )
 
-      accessoryInformationService =
-        accessory?.getService(Service.AccessoryInformation) ||
-        accessory?.addService(Service.AccessoryInformation)
+                // Removing services from accessory and storing them for later
+                accessory.services
+                    .filter(
+                        (service) =>
+                            service.UUID !== Service.AccessoryInformation.UUID
+                    )
+                    .forEach((service) => {
+                        accessory?.removeService(service)
+                        services.push(service)
+                    })
 
-      // Setting manufacturer data. According to the HomekitADK specs this
-      // data must persist throughout the lifetime of the accessory and
-      // may not be changed.
-      accessoryInformationService
-        ?.setCharacteristic(Characteristic.Name, accessoryInformation.name)
-        .setCharacteristic(
-          Characteristic.Manufacturer,
-          accessoryInformation.manufacturer
-        )
-        .setCharacteristic(
-          Characteristic.SerialNumber,
-          accessoryInformation.serialNo
-        )
-        .setCharacteristic(Characteristic.Model, accessoryInformation.model)
+                // Remove old Accessory
+                host.removeBridgedAccessories([accessory])
+                accessory.destroy()
+                hostCache.delete(subtypeUUID) // Invalidate cache for this subtype
+                accessory = undefined
+            } else {
+                log.debug('... found it! Updating it.')
+            }
+        } else {
+            log.debug(
+                `... didn't find it. Adding new accessory with name ${accessoryInformation.name} and UUID ${accessoryInformation.UUID}`
+            )
+        }
 
-      const revisionRegex = /\d+\.\d+\.\d+/
+        let accessoryInformationService: Service | undefined
 
-      if (accessoryInformation.firmwareRev?.match(revisionRegex)) {
+        if (!accessory) {
+            // A new accessory will be created.
+            accessory = new Accessory(
+                accessoryInformation.name,
+                accessoryInformation.UUID
+            )
+
+            // If the accessory is getting replaced then all of the old
+            // services (except AccessoryInformation) will be transferred to
+            // the new accessory.
+            services.forEach((service) => {
+                accessory?.addService(service)
+            })
+
+            accessoryInformationService =
+                accessory?.getService(Service.AccessoryInformation) ||
+                accessory?.addService(Service.AccessoryInformation)
+
+            // Setting manufacturer data. According to the HomekitADK specs this
+            // data must persist throughout the lifetime of the accessory and
+            // may not be changed.
+            accessoryInformationService
+                ?.setCharacteristic(
+                    Characteristic.Name,
+                    accessoryInformation.name
+                )
+                .setCharacteristic(
+                    Characteristic.Manufacturer,
+                    accessoryInformation.manufacturer
+                )
+                .setCharacteristic(
+                    Characteristic.SerialNumber,
+                    accessoryInformation.serialNo
+                )
+                .setCharacteristic(
+                    Characteristic.Model,
+                    accessoryInformation.model
+                )
+
+            const revisionRegex = /\d+\.\d+\.\d+/
+
+            if (accessoryInformation.firmwareRev?.match(revisionRegex)) {
+                accessoryInformationService?.setCharacteristic(
+                    Characteristic.FirmwareRevision,
+                    accessoryInformation.firmwareRev
+                )
+            }
+
+            if (accessoryInformation.hardwareRev?.match(revisionRegex)) {
+                accessoryInformationService?.setCharacteristic(
+                    Characteristic.HardwareRevision,
+                    accessoryInformation.hardwareRev
+                )
+            }
+
+            if (accessoryInformation.softwareRev?.match(revisionRegex)) {
+                accessoryInformationService?.setCharacteristic(
+                    Characteristic.SoftwareRevision,
+                    accessoryInformation.softwareRev
+                )
+            }
+
+            // Adding new accessory to the bridge.
+            host.addBridgedAccessories([accessory!])
+        } else {
+            accessoryInformationService =
+                accessory?.getService(Service.AccessoryInformation) ||
+                accessory?.addService(Service.AccessoryInformation)
+        }
+
         accessoryInformationService?.setCharacteristic(
-          Characteristic.FirmwareRevision,
-          accessoryInformation.firmwareRev
+            Characteristic.Identify,
+            true
         )
-      }
 
-      if (accessoryInformation.hardwareRev?.match(revisionRegex)) {
-        accessoryInformationService?.setCharacteristic(
-          Characteristic.HardwareRevision,
-          accessoryInformation.hardwareRev
+        log.debug(
+            `Bridge now has ${host.bridgedAccessories.length} accessories.`
         )
-      }
 
-      if (accessoryInformation.softwareRev?.match(revisionRegex)) {
-        accessoryInformationService?.setCharacteristic(
-          Characteristic.SoftwareRevision,
-          accessoryInformation.softwareRev
-        )
-      }
-
-      // Adding new accessory to the bridge.
-      // biome-ignore lint/style/noNonNullAssertion: accessory is not null here
-      host.addBridgedAccessories([accessory!])
-    } else {
-      accessoryInformationService =
-        accessory?.getService(Service.AccessoryInformation) ||
-        accessory?.addService(Service.AccessoryInformation)
+        return accessory
     }
 
-    accessoryInformationService?.setCharacteristic(
-      Characteristic.Identify,
-      true
-    )
+    const onIdentify = (paired: boolean, callback: () => any) => {
+        if (paired) {
+            log.debug(
+                `Identify called on paired Accessory ${node.accessory.displayName}`
+            )
+        } else {
+            log.debug(
+                `Identify called on unpaired Accessory ${node.accessory.displayName}`
+            )
+        }
 
-    log.debug(`Bridge now has ${host.bridgedAccessories.length} accessories.`)
+        const nodes = node.childNodes ?? []
 
-    return accessory
-  }
+        for (let i = 0, len = nodes.length; i < len; i++) {
+            const topic = nodes[i].config.topic
+                ? nodes[i].config.topic
+                : nodes[i].topic_in
+            const msg = {
+                payload: { Identify: 1 },
+                name: nodes[i].name,
+                topic: topic,
+            }
 
-  const onIdentify = (paired: boolean, callback: () => any) => {
-    if (paired) {
-      log.debug(
-        `Identify called on paired Accessory ${node.accessory.displayName}`
-      )
-    } else {
-      log.debug(
-        `Identify called on unpaired Accessory ${node.accessory.displayName}`
-      )
+            const statusId = nodes[i].nodeStatusUtils.setStatus({
+                fill: 'yellow',
+                shape: 'dot',
+                text: 'Identify : 1',
+            })
+
+            setTimeout(() => {
+                nodes[i].nodeStatusUtils.clearStatus(statusId)
+            }, 3000)
+
+            nodes[i].send([msg, msg])
+        }
+        callback()
     }
 
-    const nodes = node.childNodes ?? []
-
-    for (let i = 0, len = nodes.length; i < len; i++) {
-      const topic = nodes[i].config.topic
-        ? nodes[i].config.topic
-        : nodes[i].topic_in
-      const msg = {
-        payload: { Identify: 1 },
-        name: nodes[i].name,
-        topic: topic
-      }
-
-      const statusId = nodes[i].nodeStatusUtils.setStatus({
-        fill: 'yellow',
-        shape: 'dot',
-        text: 'Identify : 1'
-      })
-
-      setTimeout(() => {
-        nodes[i].nodeStatusUtils.clearStatus(statusId)
-      }, 3000)
-
-      nodes[i].send([msg, msg])
+    return {
+        getOrCreate,
+        onIdentify,
     }
-    callback()
-  }
-
-  return {
-    getOrCreate,
-    onIdentify
-  }
 }
+
+export = buildAccessoryUtils
