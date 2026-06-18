@@ -5,6 +5,7 @@
         align-items: center;
         gap: 6px;
         min-width: 0;
+        padding-right: 112px;
     }
 
     .nrchkb-editor .nrchkb-plugins-summary::-webkit-details-marker {
@@ -12,8 +13,10 @@
     }
 
     .nrchkb-editor .nrchkb-plugin-add {
-        margin-left: auto;
-        justify-self: end;
+        position: absolute;
+        top: 5px;
+        right: 8px;
+        z-index: 1;
         white-space: nowrap;
     }
 
@@ -85,6 +88,16 @@
         margin-top: 8px;
     }
 
+    .nrchkb-editor .nrchkb-plugin-shell {
+        position: relative;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-section-toolbar {
+        display: flex;
+        justify-content: flex-end;
+        margin: 0 0 8px;
+    }
+
     .nrchkb-editor .nrchkb-plugin-section summary {
         display: flex;
         align-items: center;
@@ -131,19 +144,24 @@
     }
 
     .nrchkb-plugin-picker-item {
+        display: block;
+        width: 100%;
         padding: 9px 10px;
         border: 1px solid var(--red-ui-secondary-border-color, #d0d0d0);
         border-radius: 6px;
         background: var(--red-ui-primary-background, #fff);
+        color: var(--red-ui-primary-text-color, #333);
         cursor: pointer;
+        font: inherit;
+        text-align: left;
     }
 
-    .nrchkb-plugin-picker-item:not([aria-disabled="true"]):hover,
-    .nrchkb-plugin-picker-item:not([aria-disabled="true"]):focus-visible {
+    .nrchkb-plugin-picker-item:not(:disabled):hover,
+    .nrchkb-plugin-picker-item:not(:disabled):focus-visible {
         border-color: var(--red-ui-focus-color, var(--red-ui-text-color-link, #1a73e8));
     }
 
-    .nrchkb-plugin-picker-item[aria-disabled="true"] {
+    .nrchkb-plugin-picker-item:disabled {
         cursor: default;
         opacity: 0.55;
     }
@@ -173,18 +191,18 @@
 
 <script data-template-name="homekit-service2" type="text/x-red">
     <div class="nrchkb-editor">
-        <details id="plugins-configuration" class="nrchkb-section">
+        <details id="plugins-configuration" class="nrchkb-section nrchkb-plugin-shell">
             <summary class="nrchkb-plugins-summary">
                 <i class="fa fa-plug"></i>
                 <span class="nrchkb-plugin-label">
                     Plugins <span id="node-input-plugin-count" class="nrchkb-plugin-count">0</span>
                     <span id="node-input-plugin-summary-list" class="nrchkb-plugin-summary-list">No plugins attached</span>
                 </span>
-                <button type="button" id="node-input-add-plugin" class="red-ui-button red-ui-button-small nrchkb-plugin-add">
-                    <i class="fa fa-plus"></i>
-                    Add plugin
-                </button>
             </summary>
+            <button type="button" id="node-input-add-plugin" class="red-ui-button red-ui-button-small nrchkb-plugin-add">
+                <i class="fa fa-plus"></i>
+                Add plugin
+            </button>
             <div class="nrchkb-section-body">
                 <div class="nrchkb-plugin-slot-fields" style="display: none;">
                     <input type="hidden" id="node-input-plugins">
@@ -670,6 +688,35 @@ To discover valid characteristic names for the selected service, send a test pay
             let node = this
             let isParentToggle = $('#node-config-input-isParent')
             const cameraPluginId = 'node-red-contrib-homekit-bridged:homebridge-camera-ffmpeg'
+            const prefersReducedMotion = function () {
+                return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            }
+            const showEditorSection = function (section) {
+                if (prefersReducedMotion()) {
+                    section.stop(true, true).show()
+                    return
+                }
+
+                section.stop(true, true).fadeIn('fast')
+            }
+            const hideEditorSection = function (section) {
+                if (prefersReducedMotion()) {
+                    section.stop(true, true).hide()
+                    return
+                }
+
+                section.stop(true, true).fadeOut('fast')
+            }
+            const scrollEditorSectionIntoView = function (element) {
+                if (!element || !element.scrollIntoView) {
+                    return
+                }
+
+                element.scrollIntoView({
+                    behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+                    block: 'start'
+                })
+            }
 
             if (node.isParent === false) {
                 isParentToggle.val('false')
@@ -685,11 +732,11 @@ To discover valid characteristic names for the selected service, send a test pay
             isParentToggle
                 .change(function () {
                     if (isParentToggle.val() === 'true') {
-                        isLinkedDiv.fadeOut('fast')
-                        isParentDiv.fadeIn('fast')
+                        hideEditorSection(isLinkedDiv)
+                        showEditorSection(isParentDiv)
                     } else {
-                        isParentDiv.fadeOut('fast')
-                        isLinkedDiv.fadeIn('fast')
+                        hideEditorSection(isParentDiv)
+                        showEditorSection(isLinkedDiv)
                         selectHostType.val("_ADD_")
                     }
                 })
@@ -1069,6 +1116,21 @@ To discover valid characteristic names for the selected service, send a test pay
                 return sectionId + '-' + (field.path || 'field').replace(/[^a-zA-Z0-9_-]/g, '-')
             }
 
+            const appendPluginFieldHelp = function (row, input, fieldId, field) {
+                const helpText = field.description || field.placeholder || ''
+
+                if (!helpText) {
+                    return
+                }
+
+                const helpId = fieldId + '-help'
+                input.attr('aria-describedby', helpId)
+                $('<div/>', {
+                    id: helpId,
+                    class: 'nrchkb-plugin-instance-help'
+                }).text(helpText).appendTo(row)
+            }
+
             const renderPluginField = function (body, section, field, config) {
                 const sectionId = section.attr('id')
                 const fieldId = createPluginFieldId(sectionId, field)
@@ -1130,14 +1192,6 @@ To discover valid characteristic names for the selected service, send a test pay
                         rows: 4
                     }).appendTo(row)
                     input.val(value === undefined ? '' : value)
-                    if (field.placeholder) {
-                        const helpId = fieldId + '-help'
-                        input.attr('aria-describedby', helpId)
-                        $('<div/>', {
-                            id: helpId,
-                            class: 'nrchkb-plugin-instance-help'
-                        }).text(field.placeholder).appendTo(row)
-                    }
                 } else {
                     input = $('<input/>', {
                         type: field.type === 'number' ? 'number' : field.type === 'password' ? 'password' : 'text',
@@ -1173,6 +1227,8 @@ To discover valid characteristic names for the selected service, send a test pay
                     input.attr('data-plugin-dynamic-select', 'true')
                     input.data('pluginDynamicValue', value === undefined ? '' : value)
                 }
+
+                appendPluginFieldHelp(row, input, fieldId, field)
             }
 
             const loadDynamicPluginSelect = function (section, input) {
@@ -1315,6 +1371,9 @@ To discover valid characteristic names for the selected service, send a test pay
                     const summary = $('<summary/>').appendTo(section)
                     $('<i/>', {class: 'fa fa-plug'}).appendTo(summary)
                     $('<span/>', {class: 'nrchkb-plugin-title'}).text(title).appendTo(summary)
+
+                    const body = $('<div/>', {class: 'nrchkb-section-body'}).appendTo(section)
+                    const toolbar = $('<div/>', {class: 'nrchkb-plugin-section-toolbar'}).appendTo(body)
                     $('<button/>', {
                         type: 'button',
                         class: 'red-ui-button red-ui-button-small nrchkb-plugin-remove',
@@ -1322,15 +1381,19 @@ To discover valid characteristic names for the selected service, send a test pay
                         title: 'Remove plugin'
                     })
                         .append($('<i/>', {class: 'fa fa-remove'}))
-                        .appendTo(summary)
+                        .appendTo(toolbar)
 
-                    const body = $('<div/>', {class: 'nrchkb-section-body'}).appendTo(section)
                     renderPluginEditor(body, entry, plugin || {}, section)
                 })
 
                 configNodeEntries.forEach(function (entry, index) {
                     renderConfigNodePluginSection(entry, getPluginMetadata(entry.id), index)
                 })
+            }
+            let pluginRenderTimer
+            const schedulePluginSectionsRefresh = function () {
+                clearTimeout(pluginRenderTimer)
+                pluginRenderTimer = window.setTimeout(renderPluginSections, 250)
             }
 
             const pluginSlotNames = [
@@ -1448,6 +1511,9 @@ To discover valid characteristic names for the selected service, send a test pay
                 const summary = $('<summary/>').appendTo(section)
                 $('<i/>', {class: 'fa fa-plug'}).appendTo(summary)
                 $('<span/>', {class: 'nrchkb-plugin-title'}).text(title).appendTo(summary)
+
+                const body = $('<div/>', {class: 'nrchkb-section-body'}).appendTo(section)
+                const toolbar = $('<div/>', {class: 'nrchkb-plugin-section-toolbar'}).appendTo(body)
                 $('<button/>', {
                     type: 'button',
                     class: 'red-ui-button red-ui-button-small nrchkb-plugin-remove',
@@ -1456,9 +1522,8 @@ To discover valid characteristic names for the selected service, send a test pay
                     'data-slot': entry.slot
                 })
                     .append($('<i/>', {class: 'fa fa-remove'}))
-                    .appendTo(summary)
+                    .appendTo(toolbar)
 
-                const body = $('<div/>', {class: 'nrchkb-section-body'}).appendTo(section)
                 if (plugin) {
                     body.append(createPluginAbout(plugin))
                 }
@@ -1489,8 +1554,7 @@ To discover valid characteristic names for the selected service, send a test pay
                 }
                 RED.editor.editConfig(slot, 'homekit-plugin-instance', '_ADD_', 'node-input', node)
                 pluginSetupComplete = true
-                window.setTimeout(renderPluginSections, 100)
-                window.setTimeout(renderPluginSections, 500)
+                schedulePluginSectionsRefresh()
             }
 
             const addPluginEntry = function (entry) {
@@ -1540,12 +1604,11 @@ To discover valid characteristic names for the selected service, send a test pay
                         : !duplicateAllowed
                             ? 'Already added'
                             : renderCompatibilityText(plugin)
-                    const item = $('<div/>', {
+                    const item = $('<button/>', {
                         class: 'nrchkb-plugin-picker-item',
-                        'aria-disabled': disabled ? 'true' : 'false',
                         'aria-label': getPluginDisplayLabel(plugin) + '. ' + reason,
-                        role: 'button',
-                        tabindex: disabled ? '-1' : '0'
+                        disabled,
+                        type: 'button'
                     }).appendTo(dialog)
 
                     $('<div/>', {class: 'nrchkb-plugin-picker-title'})
@@ -1573,20 +1636,6 @@ To discover valid characteristic names for the selected service, send a test pay
                         }
 
                         item.on('click', addSelectedPlugin)
-                        item.on('keydown', function (event) {
-                            if (event.key === 'Enter') {
-                                event.preventDefault()
-                                addSelectedPlugin()
-                            } else if (event.key === ' ') {
-                                event.preventDefault()
-                            }
-                        })
-                        item.on('keyup', function (event) {
-                            if (event.key === ' ') {
-                                event.preventDefault()
-                                addSelectedPlugin()
-                            }
-                        })
                     }
                 })
 
@@ -1672,8 +1721,7 @@ To discover valid characteristic names for the selected service, send a test pay
                     const configNodeId = $(this).attr('data-config-id') || getPluginSlotValue(slot)
                     if (RED.editor && RED.editor.editConfig) {
                         RED.editor.editConfig(slot, 'homekit-plugin-instance', configNodeId || '_ADD_', 'node-input', node)
-                        window.setTimeout(renderPluginSections, 100)
-                        window.setTimeout(renderPluginSections, 500)
+                        schedulePluginSectionsRefresh()
                     }
                     return
                 }
@@ -1687,12 +1735,7 @@ To discover valid characteristic names for the selected service, send a test pay
 
                 section.prop('open', true)
 
-                if (section[0] && section[0].scrollIntoView) {
-                    section[0].scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    })
-                }
+                scrollEditorSectionIntoView(section[0])
             })
 
             pluginOverview.on('click', '.nrchkb-plugin-overview-remove', function (event) {
@@ -1832,9 +1875,9 @@ To discover valid characteristic names for the selected service, send a test pay
                 .change(function () {
                     if (this.value === 'Lightbulb') {
                         adaptiveLightningConfiguration.prop('open', true)
-                        adaptiveLightningConfiguration.fadeIn('fast')
+                        showEditorSection(adaptiveLightningConfiguration)
                     } else {
-                        adaptiveLightningConfiguration.fadeOut('fast')
+                        hideEditorSection(adaptiveLightningConfiguration)
                     }
                 })
                 .change()

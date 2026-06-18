@@ -18,7 +18,7 @@
                 </div>
                 <div class="form-row">
                     <label for="node-config-input-pinCode"><i class="fa fa-key"></i> Pin Code</label>
-                    <input type="text" id="node-config-input-pinCode" placeholder="xxxx-xxxx">
+                    <input type="text" id="node-config-input-pinCode" placeholder="xxxx-xxxx" inputmode="numeric" autocomplete="off" spellcheck="false">
                 </div>
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-config-input-allowInsecureRequest">
@@ -40,7 +40,7 @@
             <div class="nrchkb-section-body">
                 <div class="form-row">
                     <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
-                    <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign">
+                    <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign" inputmode="numeric" autocomplete="off" spellcheck="false">
                 </div>
                 <div class="form-row">
                     <label for="node-config-input-advertiser"><i class="fa fa-bullhorn"></i> Advertiser</label>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="form-row">
                     <label for="node-config-input-bind"><i class="fa fa-sitemap"></i> Bind</label>
-                    <input type="text" id="node-config-input-bind" placeholder="::">
+                    <input type="text" id="node-config-input-bind" placeholder="::" autocomplete="off" spellcheck="false">
                     <input type="hidden" id="node-config-input-bindType">
                 </div>
             </div>
@@ -304,6 +304,25 @@ Defines a HomeKit accessory that is paired directly in the Apple Home app. Use i
         },
         oneditprepare: function () {
             const node = this
+            const prefersReducedMotion = function () {
+                return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            }
+            const showEditorSection = function (section) {
+                if (prefersReducedMotion()) {
+                    section.stop(true, true).show()
+                    return
+                }
+
+                section.stop(true, true).fadeIn('fast')
+            }
+            const hideEditorSection = function (section) {
+                if (prefersReducedMotion()) {
+                    section.stop(true, true).hide()
+                    return
+                }
+
+                section.stop(true, true).fadeOut('fast')
+            }
 
             if (!validatePinCode(node.pinCode)) {
                 node.pinCode = generatePinCode()
@@ -325,9 +344,9 @@ Defines a HomeKit accessory that is paired directly in the Apple Home app. Use i
                 .change(function () {
                     if (this.checked) {
                         mdnsConfigurationSection.prop('open', true)
-                        mdnsConfiguration.fadeIn('fast')
+                        showEditorSection(mdnsConfiguration)
                     } else {
-                        mdnsConfiguration.fadeOut('fast')
+                        hideEditorSection(mdnsConfiguration)
                     }
                 })
                 .change()

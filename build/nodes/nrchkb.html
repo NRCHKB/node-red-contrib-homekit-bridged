@@ -364,10 +364,21 @@
         line-height: 16px;
     }
 
+    .nrchkb-sidebar-pairing label.nrchkb-sidebar-setting.nrchkb-checkbox-label {
+        display: inline-flex !important;
+        gap: 8px;
+        line-height: 1.35;
+    }
+
     .nrchkb-sidebar-pairing label.nrchkb-sidebar-setting input {
         width: 16px;
         height: 16px;
         margin: 0 !important;
+    }
+
+    .nrchkb-sidebar-pairing label.nrchkb-sidebar-setting.nrchkb-checkbox-label input[type="checkbox"] {
+        width: 36px;
+        height: 22px;
     }
 
     .nrchkb-sidebar-pairing label.nrchkb-sidebar-setting span {
@@ -615,6 +626,33 @@
         background: var(--nrchkb-accent);
     }
 
+    @supports not (color: color-mix(in srgb, #000 50%, #fff)) {
+        .nrchkb-editor {
+            --nrchkb-toggle-off: var(--red-ui-tertiary-background, #f6f6f6);
+            --nrchkb-toggle-border: var(--red-ui-secondary-border-color, #d8d8d8);
+        }
+
+        .nrchkb-editor .nrchkb-section,
+        .nrchkb-editor .nrchkb-nested-panel,
+        .nrchkb-editor .nrchkb-section > summary,
+        .nrchkb-editor .nrchkb-advertiser-recommendation,
+        .nrchkb-help .nrchkb-advertiser-dynamic {
+            background: var(--red-ui-secondary-background, #fff);
+        }
+
+        .nrchkb-editor input[type="checkbox"]:checked {
+            border-color: #1f8f3d;
+        }
+
+        .nrchkb-editor .nrchkb-checkbox-label i {
+            color: var(--nrchkb-muted-text);
+        }
+
+        .nrchkb-editor .nrchkb-checkbox-label input[type="checkbox"]:checked + span i {
+            color: #1f6f35;
+        }
+    }
+
     @container (max-width: 520px) {
         .nrchkb-editor .form-row {
             align-items: stretch;
@@ -662,50 +700,52 @@
         }
     }
 
-    @media (max-width: 520px) {
-        .nrchkb-editor .form-row {
-            align-items: stretch;
-            flex-direction: column;
-            gap: 4px;
-        }
+    @supports not (container-type: inline-size) {
+        @media (max-width: 520px) {
+            .nrchkb-editor .form-row {
+                align-items: stretch;
+                flex-direction: column;
+                gap: 4px;
+            }
 
-        .nrchkb-editor .form-row > label:first-child {
-            flex: 0 0 auto;
-            max-width: 100%;
-            min-width: 0;
-            width: auto;
-        }
+            .nrchkb-editor .form-row > label:first-child {
+                flex: 0 0 auto;
+                max-width: 100%;
+                min-width: 0;
+                width: auto;
+            }
 
-        .nrchkb-editor .form-row > input[type="text"],
-        .nrchkb-editor .form-row > input[type="number"],
-        .nrchkb-editor .form-row > input:not([type]),
-        .nrchkb-editor .form-row > select,
-        .nrchkb-editor .form-row > .red-ui-typedInput-container,
-        .nrchkb-editor .form-row > div[style*="inline-flex"] {
-            flex: 0 0 auto;
-            width: 100% !important;
-        }
+            .nrchkb-editor .form-row > input[type="text"],
+            .nrchkb-editor .form-row > input[type="number"],
+            .nrchkb-editor .form-row > input:not([type]),
+            .nrchkb-editor .form-row > select,
+            .nrchkb-editor .form-row > .red-ui-typedInput-container,
+            .nrchkb-editor .form-row > div[style*="inline-flex"] {
+                flex: 0 0 auto;
+                width: 100% !important;
+            }
 
-        .nrchkb-editor .nrchkb-checkbox-row {
-            display: block;
-        }
+            .nrchkb-editor .nrchkb-checkbox-row {
+                display: block;
+            }
 
-        .nrchkb-editor .nrchkb-characteristic-row {
-            align-items: stretch;
-            flex-direction: column;
-            gap: 4px;
-        }
+            .nrchkb-editor .nrchkb-characteristic-row {
+                align-items: stretch;
+                flex-direction: column;
+                gap: 4px;
+            }
 
-        .nrchkb-editor .nrchkb-characteristic-label {
-            flex: 0 0 auto;
-            max-width: 100%;
-            min-width: 0;
-            padding-left: 0;
-        }
+            .nrchkb-editor .nrchkb-characteristic-label {
+                flex: 0 0 auto;
+                max-width: 100%;
+                min-width: 0;
+                padding-left: 0;
+            }
 
-        .nrchkb-editor .nrchkb-pairing-card {
-            align-items: flex-start;
-            flex-direction: column;
+            .nrchkb-editor .nrchkb-pairing-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
         }
     }
 
@@ -734,17 +774,7 @@
 </style>
 
 <script type="text/javascript">
-    const initNRCHKBConfigNode = function () {
-        //NRCHKB Custom Characteristics
-        $.ajax({
-            url: 'nrchkb/config',
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-                nrchkbConfig = data
-            },
-        })
-
+    const registerNRCHKBConfigNode = function () {
         RED.nodes.registerType('nrchkb', {
             category: 'Apple HomeKit',
             icon: 'nrchkb.png',
@@ -788,6 +818,10 @@
                         const row1 = $('<div/>', {class: 'nrchkb-characteristic-row'}).appendTo(fragment)
                         const row2 = $('<div/>', {class: 'nrchkb-characteristic-row'}).appendTo(fragment)
                         const row3 = $('<div/>', {class: 'nrchkb-characteristic-fields'}).appendTo(fragment)
+                        const fieldIdPrefix = 'node-input-customCharacteristic-' + i + '-'
+                        const createFieldId = function (name) {
+                            return fieldIdPrefix + name
+                        }
                         const setIconLabelText = function (target, iconClass, text) {
                             target.empty()
                             $('<i/>', {class: 'fa ' + iconClass}).appendTo(target)
@@ -799,23 +833,27 @@
                             return label
                         }
 
-                        const uuidLabel = $('<div/>', {
+                        const uuidFieldId = createFieldId('uuid')
+                        const uuidLabel = $('<label/>', {
                             class: 'nrchkb-characteristic-label',
+                            for: uuidFieldId,
                             required: 'required'
                         })
                             .appendTo(row1)
                         setIconLabelText(uuidLabel, 'fa-key', 'UUID')
-                        $('<input/>', {class: 'property-uuid', type: 'text'})
+                        $('<input/>', {class: 'property-uuid', id: uuidFieldId, type: 'text'})
                             .val(UUID ? UUID : uuidv4)
                             .appendTo(row1)
 
-                        const nameLabel = $('<div/>', {
+                        const nameFieldId = createFieldId('name')
+                        const nameLabel = $('<label/>', {
                             class: 'nrchkb-characteristic-label',
+                            for: nameFieldId,
                             required: 'required'
                         })
                             .appendTo(row2)
                         setIconLabelText(nameLabel, 'fa-tag', 'Name')
-                        $('<input/>', {class: 'property-name', type: 'text'})
+                        $('<input/>', {class: 'property-name', id: nameFieldId, type: 'text'})
                             .val(name)
                             .appendTo(row2)
 
@@ -829,12 +867,14 @@
                         const row3_properties = $('<div/>', {class: 'properties'}).appendTo(row3_properties_accordion)
 
                         const formatRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        const formatFieldId = createFieldId('format')
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
-                            htmlFor: 'property-format'
+                            for: formatFieldId
                         }, 'fa-code', 'Format *').appendTo(formatRow)
                         const formatInput = $('<select/>', {
                             class: 'property-format',
+                            id: formatFieldId,
                             required: 'required'
                         }).appendTo(formatRow)
                         $('<option/>').val(undefined).text('Choose...').appendTo(formatInput)
@@ -853,11 +893,12 @@
                         formatInput.val(props.format)
 
                         const unitRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        const unitFieldId = createFieldId('unit')
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
-                            htmlFor: 'property-unit'
+                            for: unitFieldId
                         }, 'fa-balance-scale', 'Unit').appendTo(unitRow)
-                        const unitSelect = $('<select/>', {class: 'property-unit'}).appendTo(unitRow)
+                        const unitSelect = $('<select/>', {class: 'property-unit', id: unitFieldId}).appendTo(unitRow)
                         $('<option/>').val(undefined).text('Choose...').appendTo(unitSelect)
                         $('<option/>').val('celsius').text('CELSIUS').appendTo(unitSelect)
                         $('<option/>').val('percentage').text('PERCENTAGE').appendTo(unitSelect)
@@ -867,12 +908,14 @@
                         unitSelect.val(props.unit)
 
                         const permsRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        const permsFieldId = createFieldId('perms')
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
-                            htmlFor: 'property-perms'
+                            for: permsFieldId
                         }, 'fa-lock', 'Permissions').appendTo(permsRow)
                         const permsSelect = $('<select/>', {
                             class: 'property-perms',
+                            id: permsFieldId,
                             multiple: 'multiple'
                         }).appendTo(permsRow)
                         $('<option/>').val('pr').text('PAIRED_READ / READ').appendTo(permsSelect)
@@ -885,93 +928,113 @@
                         permsSelect.val(props.perms)
 
                         const evRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        const evFieldId = createFieldId('ev')
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
-                            htmlFor: 'property-ev'
+                            for: evFieldId
                         }, 'fa-bell-o', 'Event Notifications').appendTo(evRow)
                         $('<input/>', {
                             class: 'property-ev',
+                            id: evFieldId,
                             type: 'checkbox',
                             checked: props.ev
                         }).appendTo(evRow)
 
                         const descriptionRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        const descriptionFieldId = createFieldId('description')
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
-                            htmlFor: 'property-description'
+                            for: descriptionFieldId
                         }, 'fa-align-left', 'Description').appendTo(descriptionRow)
                         $('<input/>', {
                             class: 'property-description',
+                            id: descriptionFieldId,
                             type: 'text'
                         }).appendTo(descriptionRow).val(props.description)
 
                         const minValueRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        const minValueFieldId = createFieldId('minValue')
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
-                            htmlFor: 'property-minValue'
+                            for: minValueFieldId
                         }, 'fa-sort-numeric-asc', 'Minimum Value').appendTo(minValueRow)
                         $('<input/>', {
                             class: 'property-minValue',
+                            id: minValueFieldId,
                             type: 'number'
                         }).appendTo(minValueRow).val(props.minValue)
 
                         const maxValueRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        const maxValueFieldId = createFieldId('maxValue')
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
-                            htmlFor: 'property-maxValue'
+                            for: maxValueFieldId
                         }, 'fa-sort-numeric-desc', 'Maximum Value').appendTo(maxValueRow)
                         $('<input/>', {
                             class: 'property-maxValue',
+                            id: maxValueFieldId,
                             type: 'number'
                         }).appendTo(maxValueRow).val(props.maxValue)
 
                         const minStepRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        const minStepFieldId = createFieldId('minStep')
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
-                            htmlFor: 'property-minStep'
+                            for: minStepFieldId
                         }, 'fa-step-forward', 'Minimum Step').appendTo(minStepRow)
                         $('<input/>', {
                             class: 'property-minStep',
+                            id: minStepFieldId,
                             type: 'number'
                         }).appendTo(minStepRow).val(props.minStep)
 
                         const maxLenRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        const maxLenFieldId = createFieldId('maxLen')
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
-                            htmlFor: 'property-maxLen'
+                            for: maxLenFieldId
                         }, 'fa-text-width', 'Maximum Length').appendTo(maxLenRow)
                         $('<input/>', {
                             class: 'property-maxLen',
+                            id: maxLenFieldId,
                             type: 'number'
                         }).appendTo(maxLenRow).val(props.maxLen)
 
                         const maxDataLenRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        const maxDataLenFieldId = createFieldId('maxDataLen')
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
-                            htmlFor: 'property-maxDataLen'
+                            for: maxDataLenFieldId
                         }, 'fa-database', 'Maximum Data Length').appendTo(maxDataLenRow)
                         $('<input/>', {
                             class: 'property-maxDataLen',
+                            id: maxDataLenFieldId,
                             type: 'number'
                         }).appendTo(maxDataLenRow).val(props.maxDataLen)
 
                         const validValuesRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        const validValuesFieldId = createFieldId('validValues')
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
-                            htmlFor: 'property-validValues'
+                            for: validValuesFieldId
                         }, 'fa-check-square-o', 'Valid Values').appendTo(validValuesRow)
                         $('<input/>', {
                             class: 'property-validValues',
+                            id: validValuesFieldId,
                             type: 'text'
                         }).appendTo(validValuesRow).val(props.validValues)
 
                         const validValueRangesRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        const validValueRangesFieldId = createFieldId('validValueRanges')
+                        const validValueRangesLabelId = validValueRangesFieldId + '-label'
                         const validValueRangesLabel = createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label property-validValueRanges-label',
-                            htmlFor: 'property-validValueRanges'
+                            id: validValueRangesLabelId,
                         }, 'fa-sliders', 'Valid Value Ranges').appendTo(validValueRangesRow)
                         const validValueRangesSlider = $('<div/>', {
                             class: 'property-validValueRanges',
+                            id: validValueRangesFieldId,
+                            'aria-labelledby': validValueRangesLabelId,
                             type: 'text'
                         }).appendTo(validValueRangesRow)
 
@@ -984,15 +1047,19 @@
                                 setIconLabelText(validValueRangesLabel, 'fa-sliders', 'Valid Value Ranges: [' + ui.values[0] + ', ' + ui.values[1] + ']')
                             }
                         })
+                        validValueRangesSlider.find('.ui-slider-handle')
+                            .attr('aria-labelledby', validValueRangesLabelId)
                         setIconLabelText(validValueRangesLabel, 'fa-sliders', 'Valid Value Ranges: [' + validValueRangesSlider.slider('values', 0) + ', ' + validValueRangesSlider.slider('values', 1) + ']')
 
                         const adminOnlyAccessRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
+                        const adminOnlyAccessFieldId = createFieldId('adminOnlyAccess')
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
-                            htmlFor: 'property-adminOnlyAccess'
+                            for: adminOnlyAccessFieldId
                         }, 'fa-user-secret', 'Admin Only Access').appendTo(adminOnlyAccessRow)
                         const adminOnlyAccessSelect = $('<select/>', {
                             class: 'property-adminOnlyAccess',
+                            id: adminOnlyAccessFieldId,
                             multiple: 'multiple'
                         }).appendTo(adminOnlyAccessRow)
                         $('<option/>').val(0).text('READ').appendTo(adminOnlyAccessSelect)
@@ -1012,8 +1079,12 @@
                     sortable: true
                 })
 
-                for (let i = 0; i < nrchkbConfig.customCharacteristics.length; i++) {
-                    const customCharacteristic = nrchkbConfig.customCharacteristics[i]
+                const customCharacteristics = Array.isArray(nrchkbConfig.customCharacteristics)
+                    ? nrchkbConfig.customCharacteristics
+                    : []
+
+                for (let i = 0; i < customCharacteristics.length; i++) {
+                    const customCharacteristic = customCharacteristics[i]
                     $('#node-input-customCharacteristics-container').editableList('addItem', customCharacteristic)
                 }
             },
@@ -1029,6 +1100,25 @@
                 $('#node-input-customCharacteristics-container').editableList('height', Math.max(150, height))
             }
         })
+    }
+
+    const initNRCHKBConfigNode = function () {
+        //NRCHKB Custom Characteristics
+        $.ajax({
+            url: 'nrchkb/config',
+            dataType: 'json',
+        })
+            .done(function (data) {
+                nrchkbConfig = data || {}
+                if (!Array.isArray(nrchkbConfig.customCharacteristics)) {
+                    nrchkbConfig.customCharacteristics = []
+                }
+            })
+            .fail(function () {
+                nrchkbConfig = {customCharacteristics: []}
+                RED.notify('Unable to load NRCHKB custom characteristics.', 'warning')
+            })
+            .always(registerNRCHKBConfigNode)
     }
 </script>
 
@@ -1064,12 +1154,14 @@
     $.ajax({
         url: 'nrchkb/info',
         dataType: 'json',
-        async: false,
-        success: function (data) {
-            nrchkbVersion = data.version
-            initNRCHKBConfigNode()
-        },
     })
+        .done(function (data) {
+            nrchkbVersion = data.version
+        })
+        .fail(function () {
+            RED.notify('Unable to load NRCHKB version information.', 'warning')
+        })
+        .always(initNRCHKBConfigNode)
 
     const renderAdvertiserRecommendation = function (recommendation) {
         if (!recommendation || !recommendation.recommended) {
@@ -1436,11 +1528,34 @@
         const settingsStorageKey = 'nrchkb.pairingQR.settings'
         let initialized = false
         let refreshTimer
+        let refreshRequestTimer
         let sidebarContent
         let sidebarList
         let sidebarStatus
         let settings = {
             autoShowWhenPairingAvailable: true,
+        }
+        const prefersReducedMotion = function () {
+            return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        }
+        const slideDownElement = function (element, duration) {
+            if (prefersReducedMotion()) {
+                element.stop(true, true).show()
+                return
+            }
+
+            element.stop(true, true).slideDown(duration)
+        }
+        const slideUpElement = function (element, duration, onComplete) {
+            if (prefersReducedMotion()) {
+                element.stop(true, true).hide()
+                if (onComplete) {
+                    onComplete()
+                }
+                return
+            }
+
+            element.stop(true, true).slideUp(duration, onComplete)
         }
         const text = function (key, fallback) {
             const keys = [
@@ -1705,7 +1820,7 @@
             }
 
             card.data('nrchkbRemoving', true)
-            card.stop(true, true).slideUp(180, function () {
+            slideUpElement(card, 180, function () {
                 card.remove()
                 if (onComplete) {
                     onComplete()
@@ -1779,7 +1894,7 @@
                             .attr('data-signature', signature)
                             .hide()
                         sidebarList.append(newCard)
-                        newCard.slideDown(180)
+                        slideDownElement(newCard, 180)
                     })
                 }
 
@@ -1787,6 +1902,13 @@
                     RED.sidebar.show('nrchkb')
                 }
             })
+        }
+
+        const requestRefreshSidebar = function (delay, options) {
+            clearTimeout(refreshRequestTimer)
+            refreshRequestTimer = setTimeout(function () {
+                refreshSidebar(options)
+            }, delay)
         }
 
         const registerSidebar = function () {
@@ -1799,7 +1921,7 @@
                 .appendTo(section)
             const sectionBody = $('<div/>', {class: 'nrchkb-section-body'}).appendTo(section)
             const autoShowLabel = $('<label/>', {
-                class: 'nrchkb-sidebar-setting nrchkb-sidebar-pairing-control',
+                class: 'nrchkb-checkbox-label nrchkb-sidebar-setting nrchkb-sidebar-pairing-control',
             }).appendTo(sectionBody)
             $('<input/>', {
                 checked: settings.autoShowWhenPairingAvailable,
@@ -1810,9 +1932,11 @@
                     saveSettings()
                 })
                 .appendTo(autoShowLabel)
-            $('<span/>', {
-                text: text('qr.autoShowWhenPairingAvailable', 'Auto show if something needs pairing'),
-            }).appendTo(autoShowLabel)
+            $('<span/>')
+                .append($('<i/>', {class: 'fa fa-eye'}))
+                .append(' ')
+                .append(text('qr.autoShowWhenPairingAvailable', 'Auto show if something needs pairing'))
+                .appendTo(autoShowLabel)
             sidebarStatus = $('<p/>', {
                 class: 'nrchkb-sidebar-pairing-status',
                 'aria-live': 'polite',
@@ -1910,14 +2034,12 @@
 
             if (RED.events) {
                 RED.events.on('deploy', function () {
-                    setTimeout(function () {
-                        refreshSidebar({show: true})
-                    }, 1500)
+                    requestRefreshSidebar(1500, {show: true})
                 })
 
                 ;['flows:loaded', 'nodes:add', 'nodes:change', 'nodes:remove'].forEach(function (eventName) {
                     RED.events.on(eventName, function () {
-                        setTimeout(refreshSidebar, 250)
+                        requestRefreshSidebar(250)
                     })
                 })
             }
@@ -1925,6 +2047,7 @@
             refreshTimer = setInterval(refreshSidebar, 10000)
             window.addEventListener('beforeunload', function () {
                 clearInterval(refreshTimer)
+                clearTimeout(refreshRequestTimer)
             })
             setTimeout(function () {
                 refreshSidebar({show: true})

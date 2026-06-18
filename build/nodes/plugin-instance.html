@@ -268,6 +268,21 @@ Generic NRCHKB plugin instance used by service nodes to track plugin dependencie
         return 'node-config-input-plugin-' + (field.path || 'field').replace(/[^a-zA-Z0-9_-]/g, '-')
     }
 
+    function appendFieldHelp(row, input, fieldId, field) {
+        const helpText = field.description || field.placeholder || ''
+
+        if (!helpText) {
+            return
+        }
+
+        const helpId = fieldId + '-help'
+        input.attr('aria-describedby', helpId)
+        $('<div/>', {
+            id: helpId,
+            class: 'nrchkb-plugin-instance-help'
+        }).text(helpText).appendTo(row)
+    }
+
     function renderPluginEditor(plugin, config) {
         const editorContainer = $('#node-config-input-plugin-instance-editor').empty()
 
@@ -377,6 +392,7 @@ Generic NRCHKB plugin instance used by service nodes to track plugin dependencie
                 .appendTo(label)
             input.prop('checked', !!value)
             attachFieldMetadata(input, field)
+            appendFieldHelp(row, input, fieldId, field)
             return
         }
 
@@ -401,14 +417,6 @@ Generic NRCHKB plugin instance used by service nodes to track plugin dependencie
                 rows: 4
             }).appendTo(row)
             input.val(value === undefined ? '' : value)
-            if (field.placeholder) {
-                const helpId = fieldId + '-help'
-                input.attr('aria-describedby', helpId)
-                $('<div/>', {
-                    id: helpId,
-                    class: 'nrchkb-plugin-instance-help'
-                }).text(field.placeholder).appendTo(row)
-            }
         } else {
             input = $('<input/>', {
                 type: field.type === 'number' ? 'number' : field.type === 'password' ? 'password' : 'text',
@@ -439,6 +447,8 @@ Generic NRCHKB plugin instance used by service nodes to track plugin dependencie
             input.attr('data-plugin-dynamic-select', 'true')
             input.data('pluginDynamicValue', value === undefined ? '' : value)
         }
+
+        appendFieldHelp(row, input, fieldId, field)
     }
 
     function attachFieldMetadata(input, field) {

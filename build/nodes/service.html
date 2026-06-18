@@ -543,6 +543,25 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
         oneditprepare: function () {
             let node = this
             let isParentToggle = $('#node-config-input-isParent')
+            const prefersReducedMotion = function () {
+                return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            }
+            const showEditorSection = function (section) {
+                if (prefersReducedMotion()) {
+                    section.stop(true, true).show()
+                    return
+                }
+
+                section.stop(true, true).fadeIn('fast')
+            }
+            const hideEditorSection = function (section) {
+                if (prefersReducedMotion()) {
+                    section.stop(true, true).hide()
+                    return
+                }
+
+                section.stop(true, true).fadeOut('fast')
+            }
 
             if (node.isParent === false) {
                 isParentToggle.val('false')
@@ -703,11 +722,11 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
             isParentToggle
                 .change(function () {
                     if (isParentToggle.val() === 'true') {
-                        isLinkedDiv.fadeOut('fast')
-                        isParentDiv.fadeIn('fast')
+                        hideEditorSection(isLinkedDiv)
+                        showEditorSection(isParentDiv)
                     } else {
-                        isParentDiv.fadeOut('fast')
-                        isLinkedDiv.fadeIn('fast')
+                        hideEditorSection(isParentDiv)
+                        showEditorSection(isLinkedDiv)
                         selectHostType.val("_ADD_")
                     }
                 })
@@ -778,10 +797,10 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
                 .change(function () {
                     if (this.value === 'CameraControl') {
                         cameraConfiguration.prop('open', true)
-                        cameraConfiguration.fadeIn('fast')
+                        showEditorSection(cameraConfiguration)
                         node.outputs = 3
                     } else {
-                        cameraConfiguration.fadeOut('fast')
+                        hideEditorSection(cameraConfiguration)
                         node.outputs = 2
                     }
                 })
@@ -791,9 +810,9 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
                 .change(function () {
                     if (this.value === 'Lightbulb') {
                         adaptiveLightningConfiguration.prop('open', true)
-                        adaptiveLightningConfiguration.fadeIn('fast')
+                        showEditorSection(adaptiveLightningConfiguration)
                     } else {
-                        adaptiveLightningConfiguration.fadeOut('fast')
+                        hideEditorSection(adaptiveLightningConfiguration)
                     }
                 })
                 .change()

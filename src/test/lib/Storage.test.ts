@@ -1,5 +1,5 @@
+import { CharacteristicEventTypes } from '@homebridge/hap-nodejs/dist/lib/Characteristic'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-
 import { Storage } from '../../lib/Storage'
 
 describe('Storage callback handling', () => {
@@ -14,7 +14,7 @@ describe('Storage callback handling', () => {
         const callback = vi.fn()
         const callbackID = Storage.saveCallback(
             {
-                event: 'get',
+                event: CharacteristicEventTypes.GET,
                 callback,
             },
             1000
@@ -38,7 +38,7 @@ describe('Storage callback handling', () => {
         const callback = vi.fn()
         Storage.saveCallback(
             {
-                event: 'get',
+                event: CharacteristicEventTypes.GET,
                 callback,
             },
             1000
@@ -63,5 +63,12 @@ describe('Storage callback handling', () => {
         await expect(Storage.loadService('corrupt')).rejects.toBe(
             'Service data corrupted'
         )
+    })
+
+    it('rejects when loading a stored service fails', async () => {
+        const error = new Error('storage failed')
+        vi.spyOn(Storage, 'load').mockRejectedValueOnce(error)
+
+        await expect(Storage.loadService('broken')).rejects.toBe(error)
     })
 })

@@ -161,18 +161,22 @@ export class Storage {
         return Storage.load(StorageType.CUSTOM_CHARACTERISTICS)
     }
 
-    static loadService(key: string): Promise<SerializedService> {
-        return new Promise((resolve, reject) => {
-            Storage.load(StorageType.SERVICE, key).then((value) => {
-                if (value === undefined) {
-                    reject('Service data not exists')
-                } else if ('primaryService' in value) {
-                    resolve(value)
-                } else {
-                    reject('Service data corrupted')
-                }
-            })
-        })
+    static async loadService(key: string): Promise<SerializedService> {
+        const value = await Storage.load(StorageType.SERVICE, key)
+
+        if (value === undefined) {
+            throw 'Service data not exists'
+        }
+
+        if (
+            typeof value === 'object' &&
+            value !== null &&
+            'primaryService' in value
+        ) {
+            return value
+        }
+
+        throw 'Service data corrupted'
     }
 
     static loadAccessory(key: string): Promise<SerializedAccessory> {

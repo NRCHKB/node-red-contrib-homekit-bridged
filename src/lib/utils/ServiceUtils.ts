@@ -552,8 +552,6 @@ const buildServiceUtils = (node: HAPServiceNodeType) => {
 
             resolve(newConfig)
         } else {
-            node.removeListener('input', node.handleWaitForSetup)
-
             log.error(
                 'Invalid message (required {"payload":{"nrchkb":{"setup":{}}}})'
             )

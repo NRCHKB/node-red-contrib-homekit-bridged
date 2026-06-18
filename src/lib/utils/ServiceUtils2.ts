@@ -60,14 +60,17 @@ const describeContext = (context: unknown): string => {
 const describeSupported = (supported: Set<string>): string =>
     Array.from(supported).join("', '")
 
-const isPluginEntry = (value: unknown): value is NRCHKBPluginConfigEntry =>
-    typeof value === 'object' &&
-    value !== null &&
-    typeof (value as NRCHKBPluginConfigEntry).id === 'string' &&
-    (value as NRCHKBPluginConfigEntry).id.trim().length > 0
+const isPluginEntry = (value: unknown): value is NRCHKBPluginConfigEntry => {
+    if (typeof value !== 'object' || value === null) {
+        return false
+    }
+
+    const id = (value as Record<string, unknown>).id
+    return typeof id === 'string' && id.trim().length > 0
+}
 
 const parsePluginEntries = (
-    value: HAPService2ConfigType['plugins'],
+    value: unknown,
     log: ReturnType<typeof logger>
 ): NRCHKBPluginConfigEntry[] => {
     if (!value) {
@@ -567,7 +570,7 @@ const buildServiceUtils2 = (node: HAPService2NodeType) => {
             },
         })
 
-        let pluginService: Service | undefined
+        let pluginService: Service | undefined = undefined
         const pluginSlots = [
             serviceInformation.config.plugin1,
             serviceInformation.config.plugin2,
@@ -754,8 +757,6 @@ const buildServiceUtils2 = (node: HAPService2NodeType) => {
 
             resolve(newConfig)
         } else {
-            node.removeListener('input', node.handleWaitForSetup)
-
             log.error(
                 'Invalid message (required {"payload":{"nrchkb":{"setup":{}}}})'
             )

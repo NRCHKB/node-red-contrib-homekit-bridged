@@ -9,7 +9,7 @@
                 </div>
                 <div class="form-row">
                     <label for="node-config-input-pinCode"><i class="fa fa-key"></i> Pin Code</label>
-                    <input type="text" id="node-config-input-pinCode" placeholder="xxxx-xxxx">
+                    <input type="text" id="node-config-input-pinCode" placeholder="xxxx-xxxx" inputmode="numeric" autocomplete="off" spellcheck="false">
                 </div>
                 <details class="nrchkb-section">
                     <summary><i class="fa fa-qrcode"></i> <span data-i18n="node-red-contrib-homekit-bridged/qr.sectionTitle">Pairing QR Code</span></summary>
@@ -31,7 +31,7 @@
             <div class="nrchkb-section-body">
                 <div class="form-row">
                     <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
-                    <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign">
+                    <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign" inputmode="numeric" autocomplete="off" spellcheck="false">
                 </div>
                 <div class="form-row">
                     <label for="node-config-input-advertiser"><i class="fa fa-bullhorn"></i> Advertiser</label>
@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-row">
                     <label for="node-config-input-bind"><i class="fa fa-sitemap"></i> Bind</label>
-                    <input type="text" id="node-config-input-bind" placeholder="::">
+                    <input type="text" id="node-config-input-bind" placeholder="::" autocomplete="off" spellcheck="false">
                     <input type="hidden" id="node-config-input-bindType">
                 </div>
             </div>
@@ -298,6 +298,26 @@ Advertiser guide:
             applyDefaultNodeDocumentation(this, 'homekit-bridge')
         },
         oneditprepare: function () {
+            const prefersReducedMotion = function () {
+                return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            }
+            const showEditorSection = function (section) {
+                if (prefersReducedMotion()) {
+                    section.stop(true, true).show()
+                    return
+                }
+
+                section.stop(true, true).fadeIn('fast')
+            }
+            const hideEditorSection = function (section) {
+                if (prefersReducedMotion()) {
+                    section.stop(true, true).hide()
+                    return
+                }
+
+                section.stop(true, true).fadeOut('fast')
+            }
+
             if (!validatePinCode(this.pinCode)) {
                 this.pinCode = generatePinCode()
                 $('#node-config-input-pinCode').val(this.pinCode)
@@ -321,9 +341,9 @@ Advertiser guide:
                 .change(function () {
                     if (this.checked) {
                         mdnsConfigurationSection.prop('open', true)
-                        mdnsConfiguration.fadeIn('fast')
+                        showEditorSection(mdnsConfiguration)
                     } else {
-                        mdnsConfiguration.fadeOut('fast')
+                        hideEditorSection(mdnsConfiguration)
                     }
                 })
                 .change()

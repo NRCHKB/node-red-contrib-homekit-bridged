@@ -3,17 +3,16 @@ import { describe, expect, it, vi } from 'vitest'
 const buildServiceUtils = require('../../../build/lib/utils/ServiceUtils')
 const buildServiceUtils2 = require('../../../build/lib/utils/ServiceUtils2')
 
-const createNode = () =>
-    ({
-        config: {
-            name: 'Example',
-            waitForSetupMsg: true,
-        },
-        handleWaitForSetup: vi.fn(),
-        error: vi.fn(),
-        removeListener: vi.fn(),
-        setupDone: false,
-    }) as never
+const createNode = () => ({
+    config: {
+        name: 'Example',
+        waitForSetupMsg: true,
+    },
+    handleWaitForSetup: vi.fn(),
+    error: vi.fn(),
+    removeListener: vi.fn(),
+    setupDone: false,
+})
 
 describe.each([
     ['ServiceUtils', buildServiceUtils],
@@ -30,6 +29,22 @@ describe.each([
 
         expect(resolve).not.toHaveBeenCalled()
         expect(node.setupDone).toBe(false)
+    })
+
+    it('keeps waiting for setup after malformed setup messages', () => {
+        const node = createNode()
+        const utils = build(node)
+        const resolve = vi.fn()
+
+        utils.handleWaitForSetup(
+            node.config,
+            { payload: { notNrchkb: true } },
+            resolve
+        )
+
+        expect(resolve).not.toHaveBeenCalled()
+        expect(node.setupDone).toBe(false)
+        expect(node.removeListener).not.toHaveBeenCalled()
     })
 
     it('accepts valid setup messages', () => {
