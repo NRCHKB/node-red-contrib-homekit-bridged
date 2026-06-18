@@ -8,14 +8,18 @@ on:
     branches:
       - dev
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: '24'
       - run: |
           npm ci
           npm run build
@@ -26,11 +30,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org/
-          always-auth: true
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
       - name: Extract PACKAGE_VERSION
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
@@ -45,8 +49,6 @@ jobs:
           npm ci
           npm run build
           npm publish --tag dev
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NODE_TKN}}
       - name: Discord notification
         if: contains(steps.package-version.outputs.current-version, 'dev') == true
         env:
