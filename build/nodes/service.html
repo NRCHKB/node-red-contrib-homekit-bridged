@@ -963,6 +963,20 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
                 const selectedParentService = $('#node-input-parentService option:selected')
                 node.parentService = selectedParentService.val()
                 node.hostType = selectedParentService.attr("hostType")
+                node.bridge = ''
+                node.accessoryId = ''
+                $('#node-input-bridge').val('')
+                $('#node-input-accessoryId').val('')
+            } else if (node.hostType === '0') {
+                node.accessoryId = ''
+                node.parentService = ''
+                $('#node-input-accessoryId').val('')
+                $('#node-input-parentService').val('')
+            } else if (node.hostType === '1') {
+                node.bridge = ''
+                node.parentService = ''
+                $('#node-input-bridge').val('')
+                $('#node-input-parentService').val('')
             }
 
             node.serviceName = $(

@@ -108,6 +108,8 @@ installations and Docker-based deployments.
 - Fixed custom characteristic refresh so removed definitions are deleted and existing listeners are not duplicated.
 - Fixed Service 2 `NO_RESPONSE` handling to update reachability while writing a HomeKit-compatible characteristic
   value.
+- Fixed linked Service nodes retaining stale Bridge or Standalone Accessory references after switching from parent
+  service mode [#503](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/503).
 - Fixed legacy camera migration so `CameraControl` nodes migrate to `homekit-service2` as `Camera` nodes with embedded
   Homebridge Camera FFmpeg plugin configuration instead of leaving an unsupported service in Service 2.
 
