@@ -13,12 +13,12 @@ import {
     HapStatusError,
     type Service,
 } from '@homebridge/hap-nodejs'
-import { logger } from '@nrchkb/logger'
 import { configureCamera } from '../camera/CameraControl'
 import type { HAPConnection } from '../hap/hap-nodejs'
 import NRCHKBError from '../NRCHKBError'
 import type HAPServiceConfigType from '../types/HAPServiceConfigType'
 import type HAPServiceNodeType from '../types/HAPServiceNodeType'
+import { scopedLogger } from './LogUtils'
 
 const buildAdaptiveLightingOptions = (
     config: Pick<
@@ -65,7 +65,7 @@ const describeSupported = (supported: Set<string>): string =>
     Array.from(supported).join("', '")
 
 const buildServiceUtils = (node: HAPServiceNodeType) => {
-    const log = logger('NRCHKB', 'ServiceUtils', node.config.name, node)
+    const log = scopedLogger('NRCHKB', 'ServiceUtils', node.config.name, node)
 
     const { Service, Characteristic } = require('@homebridge/hap-nodejs')
 

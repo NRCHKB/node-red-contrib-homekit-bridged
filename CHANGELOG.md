@@ -51,6 +51,8 @@ installations and Docker-based deployments.
   [#67](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/67).
 - Pairing state tracking for Bridge and Standalone Accessory nodes so the editor can show pairing help only when it is
   still useful.
+- Per-node **Log Level** settings for standard and config nodes, with scoped `inherit`, `error`, `debug`, `trace`, and
+  `disabled` behavior backed by `@nrchkb/logger` [#479](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/479).
 - Always-on custom characteristic API with duplicate-key protection, stale characteristic cleanup, and listener
   rebinding [#52](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/52).
 - Additional unit and integration coverage for camera delegates, custom characteristics, lightbulb flows, Service 2
@@ -90,6 +92,7 @@ installations and Docker-based deployments.
 - Migrated formatting and linting from ESLint and Prettier to Biome.
 - Migrated the test runner from Mocha to Vitest.
 - Updated TypeScript, Node-RED, Node-RED registry/test helper, logger, semver, uuid, Husky, and related dependencies.
+- Updated `@nrchkb/logger` to `3.3.0` for scoped log-level support.
 - Updated CI to run on Node.js `22`, `24`, and `26` across Ubuntu, Windows, and macOS, with `test:ci`, linting, and
   fail-fast disabled for the matrix.
 - Updated CodeQL, publish workflows, and security support documentation for the 2.x release line.

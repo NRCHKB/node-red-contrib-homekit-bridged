@@ -1,5 +1,4 @@
 import { uuid } from '@homebridge/hap-nodejs'
-import { logger } from '@nrchkb/logger'
 import type { NodeAPI } from 'node-red'
 
 import NRCHKBError from './NRCHKBError'
@@ -7,6 +6,7 @@ import type HAPHostNodeType from './types/HAPHostNodeType'
 import type HAPService2ConfigType from './types/HAPService2ConfigType'
 import type HAPService2NodeType from './types/HAPService2NodeType'
 import HostType from './types/HostType'
+import { scopedLogger } from './utils/LogUtils'
 import { NodeStatusUtils } from './utils/NodeStatusUtils'
 
 module.exports = (RED: NodeAPI) => {
@@ -16,7 +16,12 @@ module.exports = (RED: NodeAPI) => {
     const nrchkbConfigCompatibilityOverride = function (
         this: HAPService2NodeType
     ) {
-        const log = logger('NRCHKB', 'HAPServiceNode2', this.config.name, this)
+        const log = scopedLogger(
+            'NRCHKB',
+            'HAPServiceNode2',
+            this.config.name,
+            this
+        )
 
         if (this.config.isParent === undefined) {
             log.trace(
@@ -45,7 +50,12 @@ module.exports = (RED: NodeAPI) => {
         this.name = this.config.name
         this.nrchkbClosing = false
 
-        const log = logger('NRCHKB', 'HAPServiceNode2', this.config.name, this)
+        const log = scopedLogger(
+            'NRCHKB',
+            'HAPServiceNode2',
+            this.config.name,
+            this
+        )
 
         this.RED = RED
         this.publishTimers = {}
@@ -90,7 +100,12 @@ module.exports = (RED: NodeAPI) => {
     ) {
         this.config = config
 
-        const log = logger('NRCHKB', 'HAPServiceNode2', this.config.name, this)
+        const log = scopedLogger(
+            'NRCHKB',
+            'HAPServiceNode2',
+            this.config.name,
+            this
+        )
 
         const ServiceUtils = require('./utils/ServiceUtils2')(this)
 
@@ -126,7 +141,12 @@ module.exports = (RED: NodeAPI) => {
     }
 
     const configure = async function (this: HAPService2NodeType) {
-        const log = logger('NRCHKB', 'HAPServiceNode2', this.config.name, this)
+        const log = scopedLogger(
+            'NRCHKB',
+            'HAPServiceNode2',
+            this.config.name,
+            this
+        )
 
         const Utils = require('./utils')(this)
         const AccessoryUtils = Utils.AccessoryUtils

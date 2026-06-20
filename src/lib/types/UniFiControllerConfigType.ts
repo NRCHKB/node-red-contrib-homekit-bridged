@@ -1,4 +1,5 @@
 import type { NodeDef } from 'node-red'
+import type { NRCHKBLogLevel } from '../utils/LogUtils'
 
 export type UniFiApplicationType = 'protect'
 
@@ -8,6 +9,7 @@ type UniFiControllerConfigType = NodeDef & {
     application?: UniFiApplicationType
     allowSelfSigned?: boolean
     overrideAddress?: string
+    logLevel?: NRCHKBLogLevel
 }
 
 export type UniFiControllerCredentials = {

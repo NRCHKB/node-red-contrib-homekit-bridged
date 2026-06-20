@@ -89,6 +89,7 @@
                         <span><i class="fa fa-share"></i> Allow Message Passthrough</span>
                     </label>
                 </div>
+                <div id="node-config-input-logLevel-container"></div>
             </div>
         </details>
 
@@ -164,6 +165,7 @@ Defines the HomeKit bridge that users pair in the Apple Home app. Services assig
 - **Port**: Optional HAP server port. Leave blank to auto-assign. Do not use `1880`, which is reserved for Node-RED.
 - **Advertiser**: Selects the mDNS/DNS-SD backend used to announce this bridge to HomeKit.
 - **Bind**: Restricts the network interfaces or IP addresses used by the HAP server and mDNS advertisement.
+- **Log Level**: Controls logging for this bridge and its accessories unless an accessory overrides it. `Inherit` keeps the global logger and `DEBUG` behavior.
 
 <p class="nrchkb-advertiser-dynamic">Recommendation unavailable.</p>
 
@@ -287,6 +289,10 @@ Advertiser guide:
                 value: true,
                 required: true,
             },
+            logLevel: {
+                value: 'inherit',
+                required: false,
+            },
         },
         label: function () {
             return this.bridgeName || 'Bridge'
@@ -298,6 +304,12 @@ Advertiser guide:
             applyDefaultNodeDocumentation(this, 'homekit-bridge')
         },
         oneditprepare: function () {
+            appendNRCHKBLogLevelRow(
+                '#node-config-input-logLevel-container',
+                'node-config-input-logLevel',
+                this.logLevel,
+            )
+
             const prefersReducedMotion = function () {
                 return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
             }

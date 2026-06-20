@@ -1,7 +1,8 @@
 import type { Service } from '@homebridge/hap-nodejs'
 import { logger } from '@nrchkb/logger'
 import type { NodeAPI, NodeDef } from 'node-red'
-
+import type { NRCHKBLogLevel } from '../lib/utils/LogUtils'
+import { scopedLogger } from '../lib/utils/LogUtils'
 import type { NRCHKBPluginAttachContext } from '../plugins/registry'
 import { getPlugin } from '../plugins/registry'
 
@@ -11,6 +12,7 @@ type PluginInstanceNode = NodeDef & {
     pluginId?: string
     pluginConfig?: string
     controller?: string
+    logLevel?: NRCHKBLogLevel
     attachNRCHKBPlugin: (
         context: NRCHKBPluginAttachContext
     ) => Service | Promise<Service>
@@ -48,17 +50,28 @@ module.exports = (RED: NodeAPI) => {
     ) {
         RED.nodes.createNode(this, config)
         Object.assign(this, config)
+        const nodeLog = scopedLogger(
+            'NRCHKB',
+            'PluginInstance',
+            this.name,
+            this
+        )
 
         this.attachNRCHKBPlugin = (context) => {
             const pluginId = this.pluginId
 
             if (!pluginId) {
+                nodeLog.error('NRCHKB plugin instance has no plugin id.', false)
                 throw new Error('NRCHKB plugin instance has no plugin id.')
             }
 
             const plugin = getPlugin(pluginId)
 
             if (!plugin) {
+                nodeLog.error(
+                    `NRCHKB plugin "${pluginId}" is not registered.`,
+                    false
+                )
                 throw new Error(
                     `NRCHKB plugin "${pluginId}" is not registered.`
                 )

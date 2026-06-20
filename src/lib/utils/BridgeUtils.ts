@@ -1,7 +1,6 @@
-import { logger } from '@nrchkb/logger'
-
 import type HAPServiceNodeType from '../types/HAPServiceNodeType'
 import HostType from '../types/HostType'
+import { scopedLogger } from './LogUtils'
 
 const PUBLISH_CHECK_INTERVAL_MS = 250
 
@@ -68,7 +67,12 @@ const buildBridgeUtils = () => {
     // BUT ONLY after the host's service nodes are fully configured.
     // This keeps startup responsive while still avoiding premature publish.
     const delayedPublish = (node: HAPServiceNodeType) => {
-        const log = logger('NRCHKB', 'BridgeUtils', node.config.name, node)
+        const log = scopedLogger(
+            'NRCHKB',
+            'BridgeUtils',
+            node.config.name,
+            node
+        )
 
         if (!node.hostNode.published) {
             if (node.publishTimers[node.hostNode.id] !== undefined) {

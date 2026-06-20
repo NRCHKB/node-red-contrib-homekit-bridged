@@ -98,6 +98,7 @@
                         <span><i class="fa fa-share"></i> Allow Message Passthrough</span>
                     </label>
                 </div>
+                <div id="node-config-input-logLevel-container"></div>
             </div>
         </details>
 
@@ -173,6 +174,7 @@ Defines a HomeKit accessory that is paired directly in the Apple Home app. Use i
 - **Port**: Optional HAP server port. Leave blank to auto-assign. Do not use `1880`, which is reserved for Node-RED.
 - **Advertiser**: Selects the mDNS/DNS-SD backend used to announce this accessory to HomeKit.
 - **Bind**: Restricts the network interfaces or IP addresses used by the HAP server and mDNS advertisement.
+- **Log Level**: Controls logging for this standalone accessory unless a service overrides it. `Inherit` keeps the global logger and `DEBUG` behavior.
 
 <p class="nrchkb-advertiser-dynamic">Recommendation unavailable.</p>
 
@@ -292,6 +294,10 @@ Defines a HomeKit accessory that is paired directly in the Apple Home app. Use i
                 value: true,
                 required: true
             },
+            logLevel: {
+                value: 'inherit',
+                required: false
+            },
         },
         label: function () {
             return this.bridgeName || 'Bridge'
@@ -304,6 +310,12 @@ Defines a HomeKit accessory that is paired directly in the Apple Home app. Use i
         },
         oneditprepare: function () {
             const node = this
+            appendNRCHKBLogLevelRow(
+                '#node-config-input-logLevel-container',
+                'node-config-input-logLevel',
+                node.logLevel,
+            )
+
             const prefersReducedMotion = function () {
                 return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
             }

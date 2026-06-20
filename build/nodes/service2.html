@@ -347,6 +347,7 @@
                         <option value="legacy">Legacy onChange/onSet</option>
                     </select>
                 </div>
+                <div id="node-input-logLevel-container"></div>
             </div>
         </details>
 
@@ -431,6 +432,7 @@ Represents one HomeKit service, such as a Switch, Outlet, Lightbulb, Sensor, or 
 - **Topic**: Optional route key. If blank, incoming messages may provide `msg.topic`.
 - **Filter on Topic**: Accept incoming messages only when `msg.topic` matches the configured Topic. If Topic is blank, `msg.topic` must match the node Name.
 - **Output mode**: **Events** emits all HomeKit events through one output; **Legacy onChange/onSet** preserves the old output layout.
+- **Log Level**: Overrides the host log level for this bridged accessory. Linked services inherit from their parent.
 
 ## Plugins
 
@@ -522,6 +524,10 @@ To discover valid characteristic names for the selected service, send a test pay
             },
             filter: {
                 value: false,
+            },
+            logLevel: {
+                value: 'inherit',
+                required: false,
             },
             manufacturer: {
                 value: 'NRCHKB',
@@ -686,6 +692,12 @@ To discover valid characteristic names for the selected service, send a test pay
         },
         oneditprepare: function () {
             let node = this
+            appendNRCHKBLogLevelRow(
+                '#node-input-logLevel-container',
+                'node-input-logLevel',
+                node.logLevel,
+            )
+
             let isParentToggle = $('#node-config-input-isParent')
             const cameraPluginId = 'node-red-contrib-homekit-bridged:homebridge-camera-ffmpeg'
             const prefersReducedMotion = function () {

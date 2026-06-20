@@ -1,7 +1,7 @@
 import type { MDNSAdvertiser } from '@homebridge/hap-nodejs'
 import type { NodeDef } from 'node-red'
 import type { SemVer } from 'semver'
-
+import type { NRCHKBLogLevel } from '../utils/LogUtils'
 import type HapCategories from './hap-nodejs/HapCategories'
 
 type HAPHostConfigType = NodeDef & {
@@ -26,6 +26,7 @@ type HAPHostConfigType = NodeDef & {
     mdnsReuseAddr?: boolean
     mdnsTtl?: string
     allowMessagePassthrough: boolean
+    logLevel?: NRCHKBLogLevel
     accessoryCategory: HapCategories
     advertiser: MDNSAdvertiser
 }

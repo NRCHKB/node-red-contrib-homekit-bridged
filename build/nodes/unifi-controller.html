@@ -32,9 +32,10 @@
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-config-input-allowSelfSigned">
                         <input type="checkbox" id="node-config-input-allowSelfSigned">
-                        <span><i class="fa fa-certificate"></i> Allow self-signed certificates</span>
+                        <span><i class="fa fa-shield"></i> Allow self-signed certificates</span>
                     </label>
                 </div>
+                <div id="node-config-input-logLevel-container"></div>
             </div>
         </details>
     </div>
@@ -73,6 +74,10 @@ Stores connection details for UniFi application integrations. Protect is support
             overrideAddress: {
                 value: '',
             },
+            logLevel: {
+                value: 'inherit',
+                required: false,
+            },
         },
         credentials: {
             username: {
@@ -87,6 +92,13 @@ Stores connection details for UniFi application integrations. Protect is support
         },
         onadd: function () {
             applyDefaultNodeDocumentation(this, 'homekit-unifi-controller')
+        },
+        oneditprepare: function () {
+            appendNRCHKBLogLevelRow(
+                '#node-config-input-logLevel-container',
+                'node-config-input-logLevel',
+                this.logLevel,
+            )
         },
     })
 </script>

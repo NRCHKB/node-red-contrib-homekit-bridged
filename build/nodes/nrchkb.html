@@ -174,6 +174,7 @@
 
     .nrchkb-editor .nrchkb-checkbox-row {
         align-items: flex-start;
+        padding-block: 4px;
     }
 
     .nrchkb-editor input[type="checkbox"] {
@@ -246,7 +247,7 @@
 
     .nrchkb-editor .nrchkb-checkbox-label i {
         position: absolute;
-        top: 50%;
+        top: 11px;
         left: 6px;
         z-index: 1;
         width: 10px;
@@ -783,7 +784,11 @@
             defaults: {
                 customCharacteristics: {
                     value: []
-                }
+                },
+                logLevel: {
+                    value: 'inherit',
+                    required: false,
+                },
             },
             label: function () {
                 return 'NRCHKB'
@@ -799,6 +804,12 @@
                 saveCustomCharacteristics(self)
             },
             oneditprepare: function () {
+                appendNRCHKBLogLevelRow(
+                    '#node-input-logLevel-container',
+                    'node-input-logLevel',
+                    this.logLevel,
+                )
+
                 /*$("#node-input-customCharacteristics")
                     .val(JSON.stringify(config.customCharacteristics) || [])
                     .typedInput({
@@ -1381,6 +1392,34 @@
         sortedOptions.forEach(function (option) {
             selectElement.append(option.element)
         })
+    }
+
+    const appendNRCHKBLogLevelRow = function (containerSelector, inputId, value) {
+        const container = $(containerSelector)
+        if (!container.length || $('#' + inputId).length) {
+            return
+        }
+
+        const row = $('<div/>', {class: 'form-row nrchkb-log-level-row'}).appendTo(container)
+        const label = $('<label/>', {for: inputId}).appendTo(row)
+        $('<i/>', {class: 'fa fa-list-alt'}).appendTo(label)
+        label.append(document.createTextNode(' Log Level'))
+
+        const select = $('<select/>', {id: inputId}).appendTo(row)
+        ;[
+            ['inherit', 'Inherit'],
+            ['error', 'Error'],
+            ['debug', 'Debug'],
+            ['trace', 'Trace'],
+            ['disabled', 'Disabled'],
+        ].forEach(function (option) {
+            $('<option/>', {
+                value: option[0],
+                text: option[1],
+            }).appendTo(select)
+        })
+
+        select.val(value || 'inherit')
     }
 
     const nrchkbLegacyDefaultNodeInfo = {
@@ -2075,6 +2114,7 @@
         <details class="nrchkb-section" open>
             <summary><i class="fa fa-list-alt"></i> Custom Characteristics</summary>
             <div class="nrchkb-section-body">
+                <div id="node-input-logLevel-container"></div>
                 <div class="form-row node-input-customCharacteristics-container-row">
                     <ol id="node-input-customCharacteristics-container"></ol>
                 </div>

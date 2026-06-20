@@ -26,6 +26,7 @@ import NRCHKBError from '../NRCHKBError'
 import { Storage } from '../Storage'
 import type HAPService2ConfigType from '../types/HAPService2ConfigType'
 import type HAPService2NodeType from '../types/HAPService2NodeType'
+import { scopedLogger } from './LogUtils'
 
 import buildServiceUtils = require('./ServiceUtils')
 
@@ -104,7 +105,7 @@ const parsePluginEntries = (
 }
 
 const buildServiceUtils2 = (node: HAPService2NodeType) => {
-    const log = logger('NRCHKB', 'ServiceUtils2', node.config.name, node)
+    const log = scopedLogger('NRCHKB', 'ServiceUtils2', node.config.name, node)
 
     registerNodeRedPlugins(node.RED)
 

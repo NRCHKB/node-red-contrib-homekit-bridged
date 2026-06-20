@@ -20,6 +20,7 @@
                         <option value="">Choose...</option>
                     </select>
                 </div>
+                <div id="node-input-logLevel-container"></div>
             </div>
         </details>
     </div>
@@ -57,6 +58,10 @@ The output includes the selected service metadata, characteristics, properties, 
             name: {
                 value: ''
             },
+            logLevel: {
+                value: 'inherit',
+                required: false,
+            },
             outputs: {
                 value: 1,
             }
@@ -83,6 +88,12 @@ The output includes the selected service metadata, characteristics, properties, 
         },
         oneditprepare: function () {
             const node = this
+            appendNRCHKBLogLevelRow(
+                '#node-input-logLevel-container',
+                'node-input-logLevel',
+                node.logLevel,
+            )
+
             const selectServiceNode = $('#node-input-serviceNode')
 
             const candidateNodes = [

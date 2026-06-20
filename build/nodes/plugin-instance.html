@@ -104,6 +104,7 @@
         <input type="hidden" id="node-config-input-pluginId">
         <input type="hidden" id="node-config-input-pluginConfig">
 
+        <div id="node-config-input-logLevel-container"></div>
         <div id="node-config-input-plugin-instance-editor"></div>
     </div>
 </script>
@@ -129,6 +130,10 @@ Generic NRCHKB plugin instance used by service nodes to track plugin dependencie
                 required: false,
                 validate: function () { return true }
             },
+            logLevel: {
+                value: 'inherit',
+                required: false,
+            },
         },
         label: function () {
             const plugin = (window.NRCHKBAvailablePlugins || []).find(function (entry) {
@@ -141,6 +146,12 @@ Generic NRCHKB plugin instance used by service nodes to track plugin dependencie
         },
         oneditprepare: function () {
             const node = this
+            appendNRCHKBLogLevelRow(
+                '#node-config-input-logLevel-container',
+                'node-config-input-logLevel',
+                node.logLevel,
+            )
+
             const draft = window.NRCHKBPluginInstanceDraft || {}
             const pluginId = node.pluginId || draft.pluginId || ''
             const pluginConfig = $.extend(true, {}, draft.pluginConfig || {}, parsePluginConfig(node.pluginConfig))

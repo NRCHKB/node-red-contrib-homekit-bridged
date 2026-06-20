@@ -3,17 +3,17 @@ import type {
     Service,
 } from '@homebridge/hap-nodejs'
 import { Accessory } from '@homebridge/hap-nodejs'
-import { logger as nrchkbLogger } from '@nrchkb/logger'
 
 import type AccessoryInformationType from '../types/AccessoryInformationType'
 import type HAPServiceNodeType from '../types/HAPServiceNodeType'
+import { scopedLogger } from './LogUtils'
 
 const accessoryCache = new WeakMap<AccessoryType, Map<string, AccessoryType>>()
 
 const buildAccessoryUtils = (node: HAPServiceNodeType) => {
     const { Service, Characteristic } = require('@homebridge/hap-nodejs')
 
-    const log = nrchkbLogger('NRCHKB', 'AccessoryUtils', node.config.name, node)
+    const log = scopedLogger('NRCHKB', 'AccessoryUtils', node.config.name, node)
 
     const getOrCreate = (
         host: AccessoryType,

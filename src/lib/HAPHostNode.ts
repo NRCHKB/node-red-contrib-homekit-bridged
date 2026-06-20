@@ -7,7 +7,6 @@ import {
     Service,
     uuid,
 } from '@homebridge/hap-nodejs'
-import { logger } from '@nrchkb/logger'
 import type { NodeAPI } from 'node-red'
 import { SemVer } from 'semver'
 import semver from 'semver/preload'
@@ -17,6 +16,7 @@ import type HAPHostConfigType from './types/HAPHostConfigType'
 import type HAPHostNodeType from './types/HAPHostNodeType'
 import HostType from './types/HostType'
 import HapCategories from './types/hap-nodejs/HapCategories'
+import { scopedLoggerForLevel } from './utils/LogUtils'
 
 module.exports = (RED: NodeAPI, hostType: HostType) => {
     const normalizePort = (port: HAPHostConfigType['port']): number => {
@@ -29,7 +29,13 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
     }
 
     const init = function (this: HAPHostNodeType, config: HAPHostConfigType) {
-        const log = logger('NRCHKB', 'HAPHostNode', config.bridgeName, this)
+        const log = scopedLoggerForLevel(
+            'NRCHKB',
+            'HAPHostNode',
+            config.bridgeName,
+            this,
+            config.logLevel
+        )
 
         this.hostType = hostType
         RED.nodes.createNode(this, config)

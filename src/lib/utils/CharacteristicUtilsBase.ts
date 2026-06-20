@@ -3,9 +3,9 @@ import {
     type CharacteristicProps,
     type Service,
 } from '@homebridge/hap-nodejs'
-import { logger } from '@nrchkb/logger'
 
 import type HAPServiceNodeType from '../types/HAPServiceNodeType'
+import { scopedLogger } from './LogUtils'
 
 const ENV_VAR_REGEX = /\${(.*?)}/g
 
@@ -37,7 +37,12 @@ const buildCharacteristicUtilsBase = <
         getHandlerUsesCharacteristics: boolean
     }
 ) => {
-    const log = logger('NRCHKB', 'CharacteristicUtils', node.config.name, node)
+    const log = scopedLogger(
+        'NRCHKB',
+        'CharacteristicUtils',
+        node.config.name,
+        node
+    )
     const ServiceUtils = serviceUtilsFactory(node)
 
     const load = (

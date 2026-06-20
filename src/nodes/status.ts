@@ -5,6 +5,7 @@ import type { NodeAPI } from 'node-red'
 import type HAPServiceNodeType from '../lib/types/HAPServiceNodeType'
 import type HAPStatusConfigType from '../lib/types/HAPStatusConfigType'
 import type HAPStatusNodeType from '../lib/types/HAPStatusNodeType'
+import { scopedLogger } from '../lib/utils/LogUtils'
 import { NodeStatusUtils } from '../lib/utils/NodeStatusUtils'
 
 const log = logger('NRCHKB', 'HAPStatusNode')
@@ -16,6 +17,12 @@ module.exports = (RED: NodeAPI) => {
         function (this: HAPStatusNodeType, config: HAPStatusConfigType) {
             this.config = config
             RED.nodes.createNode(this, config)
+            const nodeLog = scopedLogger(
+                'NRCHKB',
+                'HAPStatusNode',
+                this.name,
+                this
+            )
 
             this.nodeStatusUtils = new NodeStatusUtils(this)
 
@@ -24,7 +31,7 @@ module.exports = (RED: NodeAPI) => {
                     this.config.serviceNodeId
                 ) as HAPServiceNodeType
             } catch (error: any) {
-                log.error(error)
+                nodeLog.error(error)
             }
 
             this.on('input', (_: Record<string, any>) => {

@@ -1,6 +1,6 @@
 {
     "name": "node-red-contrib-homekit-bridged",
-    "version": "2.0.0-dev.10",
+    "version": "2.0.0-dev.11",
     "description": "Node-RED nodes to simulate Apple HomeKit devices.",
     "main": "build/nodes/nrchkb.js",
     "scripts": {
@@ -55,7 +55,7 @@
     "dependencies": {
         "@homebridge-plugins/homebridge-camera-ffmpeg": "^4.1.0",
         "@homebridge/hap-nodejs": "2.1.7",
-        "@nrchkb/logger": "~3.2.1",
+        "@nrchkb/logger": "~3.3.0",
         "homebridge-unifi-protect": "^7.29.0",
         "homekit-code": "^1.2.13",
         "node-persist": "^3.1.3",

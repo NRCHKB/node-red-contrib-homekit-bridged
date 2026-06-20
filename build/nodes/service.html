@@ -132,6 +132,7 @@
                         <span><i class="fa fa-filter"></i> Filter on Topic</span>
                     </label>
                 </div>
+                <div id="node-input-logLevel-container"></div>
             </div>
         </details>
 
@@ -378,6 +379,10 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
             filter: {
                 value: false,
             },
+            logLevel: {
+                value: 'inherit',
+                required: false,
+            },
             manufacturer: {
                 value: 'NRCHKB',
                 required: true,
@@ -542,6 +547,12 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
         },
         oneditprepare: function () {
             let node = this
+            appendNRCHKBLogLevelRow(
+                '#node-input-logLevel-container',
+                'node-input-logLevel',
+                node.logLevel,
+            )
+
             let isParentToggle = $('#node-config-input-isParent')
             const prefersReducedMotion = function () {
                 return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
