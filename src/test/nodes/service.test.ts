@@ -10,10 +10,10 @@ import {
     it,
     vi,
 } from 'vitest'
+import HAPServiceNodeType from '../../lib/types/HAPServiceNodeType'
 import { describeCommonSwitchServiceBehavior } from '../test-utils/common-switch-service-tests'
 import { switchServiceBridgeFlow } from '../test-utils/data'
 import { configureNodeRedTestSettings } from '../test-utils/vitest-helper'
-import HAPServiceNodeType from '../../lib/types/HAPServiceNodeType'
 
 const homekitBridgeNode = require('../../../build/nodes/bridge')
 const nrchkb = require('../../../build/nodes/nrchkb')
