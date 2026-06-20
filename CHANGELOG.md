@@ -102,6 +102,8 @@ installations and Docker-based deployments.
   blocked because it is reserved for Node-RED.
 - Fixed pending wait-for-parent timers, publish timers, characteristic listeners, identify listeners, and status
   timeouts being left behind after node close/redeploy.
+- Fixed Bridge publishing so delayed `wait for setup` services are included before publish, preserving stable HomeKit
+  identity for those services [#482](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/482).
 - Fixed callback storage growth by expiring callbacks, clearing timeout handles, and pruning old callback entries at
   capacity.
 - Fixed setup-message handling so invalid setup messages detach the temporary listener and report a clear error.

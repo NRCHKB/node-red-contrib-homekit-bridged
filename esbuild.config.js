@@ -1,11 +1,12 @@
 const esbuild = require('esbuild')
 const { globSync } = require('glob')
+const path = require('node:path')
 
 const isWatch = process.argv.includes('--watch')
 
 const entryPoints = globSync('src/**/*.ts', {
     ignore: ['src/test/**', 'src/test**'],
-})
+}).map((entryPoint) => path.resolve(entryPoint))
 
 async function run() {
     if (entryPoints.length === 0) {
@@ -14,7 +15,7 @@ async function run() {
     }
 
     const ctx = await esbuild.context({
-        outbase: 'src',
+        outbase: path.resolve('src'),
         entryPoints: entryPoints,
         format: 'cjs',
         outdir: 'build',

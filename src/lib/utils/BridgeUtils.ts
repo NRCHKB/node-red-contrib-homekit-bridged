@@ -6,6 +6,33 @@ import HostType from '../types/HostType'
 const PUBLISH_CHECK_INTERVAL_MS = 250
 
 const buildBridgeUtils = () => {
+    const getConfiguredHostId = (
+        node: HAPServiceNodeType,
+        serviceNode: HAPServiceNodeType | undefined
+    ): string | undefined => {
+        if (!serviceNode) {
+            return undefined
+        }
+
+        if (serviceNode.config.isParent) {
+            return serviceNode.config.hostType == HostType.BRIDGE
+                ? serviceNode.config.bridge
+                : serviceNode.config.accessoryId
+        }
+
+        const parentNode = node.RED.nodes.getNode(
+            serviceNode.config.parentService
+        ) as HAPServiceNodeType | undefined
+
+        return parentNode?.hostNode?.id ?? getConfiguredHostId(node, parentNode)
+    }
+
+    const getServiceHostId = (
+        node: HAPServiceNodeType,
+        serviceNode: HAPServiceNodeType
+    ): string | undefined =>
+        serviceNode.hostNode?.id ?? getConfiguredHostId(node, serviceNode)
+
     const canPublishHost = (node: HAPServiceNodeType): boolean => {
         let hasPendingService = false
 
@@ -26,7 +53,8 @@ const buildBridgeUtils = () => {
                 | undefined
 
             if (
-                serviceNode?.hostNode?.id === node.hostNode.id &&
+                serviceNode &&
+                getServiceHostId(node, serviceNode) === node.hostNode.id &&
                 !serviceNode.configured
             ) {
                 hasPendingService = true
