@@ -1,23 +1,23 @@
-<!--suppress EqualityComparisonWithCoercionJS -->
+﻿<!--suppress EqualityComparisonWithCoercionJS -->
 <script data-template-name="homekit-status" type="text/x-red">
     <div class="nrchkb-editor">
         <details class="nrchkb-section" open>
-            <summary><i class="fa fa-crosshairs"></i> Target Service</summary>
+            <summary><i class="fa fa-crosshairs"></i> <span data-i18n="status.status.targetService">Target Service</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row">
                     <label for="node-input-name">
                         <i class="fa fa-tag"></i>
-                        Name
+                        <span data-i18n="status.common.name">Name</span>
                     </label>
-                    <input type="text" id="node-input-name" placeholder="Name">
+                    <input type="text" id="node-input-name" placeholder="Name" data-i18n="[placeholder]status.common.name">
                 </div>
                 <div class="form-row">
                     <label for="node-input-serviceNode">
                         <i class="fa fa-puzzle-piece"></i>
-                        Service Node
+                        <span data-i18n="status.status.serviceNode">Service Node</span>
                     </label>
                     <select id="node-input-serviceNode">
-                        <option value="">Choose...</option>
+                        <option value="" data-i18n="status.common.choose">Choose...</option>
                     </select>
                 </div>
                 <div id="node-input-logLevel-container"></div>
@@ -70,7 +70,7 @@ The output includes the selected service metadata, characteristics, properties, 
         outputs: 1,
         outputLabels: function (index) {
             if (index === 0) {
-                return 'serialized service'
+                return nrchkbText('status.serializedService', 'serialized service')
             }
 
             return ''
@@ -78,7 +78,7 @@ The output includes the selected service metadata, characteristics, properties, 
         icon: 'homekit.png',
         color: '#fcc127',
         label: function () {
-            return this.name || 'Status'
+            return this.name || nrchkbText('status.label', 'Status')
         },
         labelStyle: function () {
             return this.name ? 'node_label_italic' : ''
@@ -134,7 +134,7 @@ The output includes the selected service metadata, characteristics, properties, 
                     sublabel = tab.label || tab.id
                 } else {
                     tab = RED.nodes.subflow(n.z)
-                    sublabel = 'subflow : ' + tab.name
+                    sublabel = nrchkbText('common.subflow', 'subflow') + ' : ' + tab.name
                 }
 
                 const value = n.id
@@ -166,3 +166,4 @@ The output includes the selected service metadata, characteristics, properties, 
         },
     })
 </script>
+

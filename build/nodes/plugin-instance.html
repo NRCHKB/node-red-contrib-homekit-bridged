@@ -1,4 +1,4 @@
-<style>
+﻿<style>
     .nrchkb-editor .nrchkb-plugin-instance-about {
         margin-bottom: 10px;
         padding: 7px 9px;
@@ -169,7 +169,7 @@ Generic NRCHKB plugin instance used by service nodes to track plugin dependencie
                 })
                 renderPluginEditor(plugin, pluginConfig)
             }).fail(function () {
-                RED.notify('Unable to load NRCHKB plugin metadata.', 'warning')
+                RED.notify(nrchkbText('plugins.metadataLoadFailed', 'Unable to load NRCHKB plugin metadata.'), 'warning')
                 renderPluginEditor(undefined, pluginConfig)
             })
         },
@@ -299,7 +299,7 @@ Generic NRCHKB plugin instance used by service nodes to track plugin dependencie
 
         if (!plugin) {
             $('<div/>', {class: 'nrchkb-plugin-instance-about'})
-                .text('Plugin metadata is not available.')
+                .text(nrchkbText('plugins.metadataUnavailable', 'Plugin metadata is not available.'))
                 .appendTo(editorContainer)
             return
         }
@@ -314,7 +314,7 @@ Generic NRCHKB plugin instance used by service nodes to track plugin dependencie
 
         if (!sections.length) {
             $('<div/>', {class: 'nrchkb-plugin-instance-about'})
-                .text('This plugin does not provide editor fields.')
+                .text(nrchkbText('plugins.noEditorFields', 'This plugin does not provide editor fields.'))
                 .appendTo(editorContainer)
             return
         }
@@ -331,7 +331,7 @@ Generic NRCHKB plugin instance used by service nodes to track plugin dependencie
             const summary = $('<summary/>').appendTo(details)
             $('<i/>', {class: 'fa ' + (section.icon || 'fa-sliders')}).appendTo(summary)
             $('<span/>', {class: 'nrchkb-plugin-instance-section-title'})
-                .text(section.title || 'Settings ' + (index + 1))
+                .text(section.title || nrchkbText('plugins.settings', 'Settings') + ' ' + (index + 1))
                 .appendTo(summary)
 
             const body = $('<div/>', {class: 'nrchkb-section-body'}).appendTo(details)
@@ -483,7 +483,7 @@ Generic NRCHKB plugin instance used by service nodes to track plugin dependencie
 
             if (!dependsValue) {
                 input.empty()
-                $('<option/>').val('').text('Choose a dependency first').appendTo(input)
+                $('<option/>').val('').text(nrchkbText('plugins.chooseDependencyFirst', 'Choose a dependency first')).appendTo(input)
                 input.val('')
                 return
             }
@@ -492,29 +492,30 @@ Generic NRCHKB plugin instance used by service nodes to track plugin dependencie
         }
 
         input.empty()
-        $('<option/>').val('').text('Loading...').appendTo(input)
+        $('<option/>').val('').text(nrchkbText('common.loading', 'Loading...')).appendTo(input)
 
         $.getJSON(url, function (options) {
             input.empty()
-            $('<option/>').val('').text('Choose...').appendTo(input)
+            $('<option/>').val('').text(nrchkbText('common.choose', 'Choose...')).appendTo(input)
             ;(options || []).forEach(function (option) {
                 $('<option/>').val(option.value).text(option.label).appendTo(input)
             })
             if (selectedValue && input.find('option').filter(function () {
                 return $(this).val() === selectedValue
             }).length === 0) {
-                $('<option/>').val(selectedValue).text('Saved value (' + selectedValue + ')').appendTo(input)
+                $('<option/>').val(selectedValue).text(nrchkbText('plugins.savedValue', 'Saved value') + ' (' + selectedValue + ')').appendTo(input)
             }
             input.val(selectedValue)
             input.data('pluginDynamicValue', input.val() || selectedValue)
         }).fail(function () {
             input.empty()
-            $('<option/>').val('').text('Unable to load options').appendTo(input)
+            $('<option/>').val('').text(nrchkbText('plugins.optionsLoadFailed', 'Unable to load options')).appendTo(input)
             if (selectedValue) {
-                $('<option/>').val(selectedValue).text('Saved value (' + selectedValue + ')').appendTo(input)
+                $('<option/>').val(selectedValue).text(nrchkbText('plugins.savedValue', 'Saved value') + ' (' + selectedValue + ')').appendTo(input)
                 input.val(selectedValue)
             }
             input.data('pluginDynamicValue', input.val() || selectedValue)
         })
     }
 </script>
+

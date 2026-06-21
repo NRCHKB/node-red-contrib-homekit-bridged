@@ -775,6 +775,40 @@
 </style>
 
 <script type="text/javascript">
+    const nrchkbText = function (key, fallback, namespace) {
+        const namespaces = namespace
+            ? [namespace]
+            : [
+                'nrchkb',
+                'bridge',
+                'standalone',
+                'service',
+                'service2',
+                'status',
+                'unifi-controller',
+                'plugin-instance',
+            ]
+        const keys = []
+
+        namespaces.forEach(function (nodeNamespace) {
+            keys.push(nodeNamespace + '.' + key)
+            keys.push('node-red-contrib-homekit-bridged/' + nodeNamespace + ':' + nodeNamespace + '.' + key)
+            keys.push('node-red-contrib-homekit-bridged/' + nodeNamespace + ':' + key)
+        })
+
+        try {
+            for (let i = 0; i < keys.length; i++) {
+                const value = RED._(keys[i])
+                if (value && value !== keys[i] && value !== key) {
+                    return value
+                }
+            }
+        } catch (_error) {
+        }
+
+        return fallback
+    }
+
     const registerNRCHKBConfigNode = function () {
         RED.nodes.registerType('nrchkb', {
             category: 'Apple HomeKit',
@@ -863,7 +897,7 @@
                             required: 'required'
                         })
                             .appendTo(row2)
-                        setIconLabelText(nameLabel, 'fa-tag', 'Name')
+                        setIconLabelText(nameLabel, 'fa-tag', nrchkbText('common.name', 'Name'))
                         $('<input/>', {class: 'property-name', id: nameFieldId, type: 'text'})
                             .val(name)
                             .appendTo(row2)
@@ -872,7 +906,7 @@
                             .appendTo(row3)
 
                         $('<h3/>')
-                            .append($('<i/>', {class: 'fa fa-sliders'}), document.createTextNode(' Properties'))
+                            .append($('<i/>', {class: 'fa fa-sliders'}), document.createTextNode(' ' + nrchkbText('customCharacteristics.properties', 'Properties')))
                             .appendTo(row3_properties_accordion)
 
                         const row3_properties = $('<div/>', {class: 'properties'}).appendTo(row3_properties_accordion)
@@ -882,13 +916,13 @@
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
                             for: formatFieldId
-                        }, 'fa-code', 'Format *').appendTo(formatRow)
+                        }, 'fa-code', nrchkbText('customCharacteristics.formatRequired', 'Format *')).appendTo(formatRow)
                         const formatInput = $('<select/>', {
                             class: 'property-format',
                             id: formatFieldId,
                             required: 'required'
                         }).appendTo(formatRow)
-                        $('<option/>').val(undefined).text('Choose...').appendTo(formatInput)
+                        $('<option/>').val(undefined).text(nrchkbText('common.choose', 'Choose...')).appendTo(formatInput)
                         $('<option/>').val('bool').text('BOOL').appendTo(formatInput)
                         $('<option/>').val('int').text('INT').appendTo(formatInput)
                         $('<option/>').val('float').text('FLOAT').appendTo(formatInput)
@@ -908,9 +942,9 @@
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
                             for: unitFieldId
-                        }, 'fa-balance-scale', 'Unit').appendTo(unitRow)
+                        }, 'fa-balance-scale', nrchkbText('customCharacteristics.unit', 'Unit')).appendTo(unitRow)
                         const unitSelect = $('<select/>', {class: 'property-unit', id: unitFieldId}).appendTo(unitRow)
-                        $('<option/>').val(undefined).text('Choose...').appendTo(unitSelect)
+                        $('<option/>').val(undefined).text(nrchkbText('common.choose', 'Choose...')).appendTo(unitSelect)
                         $('<option/>').val('celsius').text('CELSIUS').appendTo(unitSelect)
                         $('<option/>').val('percentage').text('PERCENTAGE').appendTo(unitSelect)
                         $('<option/>').val('arcdegrees').text('ARC_DEGREE').appendTo(unitSelect)
@@ -923,7 +957,7 @@
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
                             for: permsFieldId
-                        }, 'fa-lock', 'Permissions').appendTo(permsRow)
+                        }, 'fa-lock', nrchkbText('customCharacteristics.permissions', 'Permissions')).appendTo(permsRow)
                         const permsSelect = $('<select/>', {
                             class: 'property-perms',
                             id: permsFieldId,
@@ -943,7 +977,7 @@
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
                             for: evFieldId
-                        }, 'fa-bell-o', 'Event Notifications').appendTo(evRow)
+                        }, 'fa-bell-o', nrchkbText('customCharacteristics.eventNotifications', 'Event Notifications')).appendTo(evRow)
                         $('<input/>', {
                             class: 'property-ev',
                             id: evFieldId,
@@ -956,7 +990,7 @@
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
                             for: descriptionFieldId
-                        }, 'fa-align-left', 'Description').appendTo(descriptionRow)
+                        }, 'fa-align-left', nrchkbText('customCharacteristics.description', 'Description')).appendTo(descriptionRow)
                         $('<input/>', {
                             class: 'property-description',
                             id: descriptionFieldId,
@@ -968,7 +1002,7 @@
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
                             for: minValueFieldId
-                        }, 'fa-sort-numeric-asc', 'Minimum Value').appendTo(minValueRow)
+                        }, 'fa-sort-numeric-asc', nrchkbText('customCharacteristics.minimumValue', 'Minimum Value')).appendTo(minValueRow)
                         $('<input/>', {
                             class: 'property-minValue',
                             id: minValueFieldId,
@@ -980,7 +1014,7 @@
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
                             for: maxValueFieldId
-                        }, 'fa-sort-numeric-desc', 'Maximum Value').appendTo(maxValueRow)
+                        }, 'fa-sort-numeric-desc', nrchkbText('customCharacteristics.maximumValue', 'Maximum Value')).appendTo(maxValueRow)
                         $('<input/>', {
                             class: 'property-maxValue',
                             id: maxValueFieldId,
@@ -992,7 +1026,7 @@
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
                             for: minStepFieldId
-                        }, 'fa-step-forward', 'Minimum Step').appendTo(minStepRow)
+                        }, 'fa-step-forward', nrchkbText('customCharacteristics.minimumStep', 'Minimum Step')).appendTo(minStepRow)
                         $('<input/>', {
                             class: 'property-minStep',
                             id: minStepFieldId,
@@ -1004,7 +1038,7 @@
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
                             for: maxLenFieldId
-                        }, 'fa-text-width', 'Maximum Length').appendTo(maxLenRow)
+                        }, 'fa-text-width', nrchkbText('customCharacteristics.maximumLength', 'Maximum Length')).appendTo(maxLenRow)
                         $('<input/>', {
                             class: 'property-maxLen',
                             id: maxLenFieldId,
@@ -1016,7 +1050,7 @@
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
                             for: maxDataLenFieldId
-                        }, 'fa-database', 'Maximum Data Length').appendTo(maxDataLenRow)
+                        }, 'fa-database', nrchkbText('customCharacteristics.maximumDataLength', 'Maximum Data Length')).appendTo(maxDataLenRow)
                         $('<input/>', {
                             class: 'property-maxDataLen',
                             id: maxDataLenFieldId,
@@ -1028,7 +1062,7 @@
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
                             for: validValuesFieldId
-                        }, 'fa-check-square-o', 'Valid Values').appendTo(validValuesRow)
+                        }, 'fa-check-square-o', nrchkbText('customCharacteristics.validValues', 'Valid Values')).appendTo(validValuesRow)
                         $('<input/>', {
                             class: 'property-validValues',
                             id: validValuesFieldId,
@@ -1041,7 +1075,7 @@
                         const validValueRangesLabel = createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label property-validValueRanges-label',
                             id: validValueRangesLabelId,
-                        }, 'fa-sliders', 'Valid Value Ranges').appendTo(validValueRangesRow)
+                        }, 'fa-sliders', nrchkbText('customCharacteristics.validValueRanges', 'Valid Value Ranges')).appendTo(validValueRangesRow)
                         const validValueRangesSlider = $('<div/>', {
                             class: 'property-validValueRanges',
                             id: validValueRangesFieldId,
@@ -1055,19 +1089,19 @@
                             max: 500,
                             values: props.validValueRanges,
                             slide: function (event, ui) {
-                                setIconLabelText(validValueRangesLabel, 'fa-sliders', 'Valid Value Ranges: [' + ui.values[0] + ', ' + ui.values[1] + ']')
+                                setIconLabelText(validValueRangesLabel, 'fa-sliders', nrchkbText('customCharacteristics.validValueRanges', 'Valid Value Ranges') + ': [' + ui.values[0] + ', ' + ui.values[1] + ']')
                             }
                         })
                         validValueRangesSlider.find('.ui-slider-handle')
                             .attr('aria-labelledby', validValueRangesLabelId)
-                        setIconLabelText(validValueRangesLabel, 'fa-sliders', 'Valid Value Ranges: [' + validValueRangesSlider.slider('values', 0) + ', ' + validValueRangesSlider.slider('values', 1) + ']')
+                        setIconLabelText(validValueRangesLabel, 'fa-sliders', nrchkbText('customCharacteristics.validValueRanges', 'Valid Value Ranges') + ': [' + validValueRangesSlider.slider('values', 0) + ', ' + validValueRangesSlider.slider('values', 1) + ']')
 
                         const adminOnlyAccessRow = $('<div/>', {class: 'form-row'}).appendTo(row3_properties)
                         const adminOnlyAccessFieldId = createFieldId('adminOnlyAccess')
                         createPropertyLabel({
                             class: 'nrchkb-characteristic-property-label',
                             for: adminOnlyAccessFieldId
-                        }, 'fa-user-secret', 'Admin Only Access').appendTo(adminOnlyAccessRow)
+                        }, 'fa-user-secret', nrchkbText('customCharacteristics.adminOnlyAccess', 'Admin Only Access')).appendTo(adminOnlyAccessRow)
                         const adminOnlyAccessSelect = $('<select/>', {
                             class: 'property-adminOnlyAccess',
                             id: adminOnlyAccessFieldId,
@@ -1127,7 +1161,7 @@
             })
             .fail(function () {
                 nrchkbConfig = {customCharacteristics: []}
-                RED.notify('Unable to load NRCHKB custom characteristics.', 'warning')
+            RED.notify(nrchkbText('notifications.customCharacteristicsLoadFailed', 'Unable to load NRCHKB custom characteristics.'), 'warning')
             })
             .always(registerNRCHKBConfigNode)
     }
@@ -1170,27 +1204,83 @@
             nrchkbVersion = data.version
         })
         .fail(function () {
-            RED.notify('Unable to load NRCHKB version information.', 'warning')
+            RED.notify(nrchkbText('notifications.versionLoadFailed', 'Unable to load NRCHKB version information.'), 'warning')
         })
         .always(initNRCHKBConfigNode)
 
     const renderAdvertiserRecommendation = function (recommendation) {
         if (!recommendation || !recommendation.recommended) {
-            return 'Recommendation unavailable.'
+            return nrchkbText('advertiser.recommendationUnavailable', 'Recommendation unavailable.')
         }
 
+        const advertiserText = function (key, fallback, params) {
+            let value = nrchkbText('advertiser.' + key, fallback, 'nrchkb')
+
+            if (params) {
+                Object.keys(params).forEach(function (name) {
+                    value = value.replace(
+                        new RegExp('\\{\\{' + name + '\\}\\}', 'g'),
+                        params[name],
+                    )
+                })
+            }
+
+            return value
+        }
+        const title = advertiserText(
+            'title.' + recommendation.recommended,
+            recommendation.title || recommendation.recommended,
+        )
+        const detected = recommendation.detected || {}
+        let reasonKey = 'reason.unsupportedPlatform'
+        let reasonParams = {
+            platform: detected.platform || '',
+        }
+
+        if (detected.platform === 'linux') {
+            reasonKey = detected.avahiAvailable
+                ? 'reason.linuxAvahiAvailable'
+                : detected.container
+                    ? 'reason.linuxContainerNoAvahi'
+                    : 'reason.linuxNoAvahi'
+        } else if (detected.platform === 'darwin') {
+            reasonKey = 'reason.macosHost'
+        } else if (detected.platform === 'win32') {
+            reasonKey = 'reason.windowsHost'
+        }
+
+        const reasonText = advertiserText(
+            reasonKey,
+            recommendation.reason || '',
+            reasonParams,
+        )
+        const translateCaveat = function (caveat) {
+            const caveatKeys = {
+                'Container detected. HomeKit discovery still depends on host networking and multicast visibility.':
+                    'caveat.containerWithAvahi',
+                'Container detected without usable host Avahi. Docker bridge networking can prevent mDNS discovery even with the recommended advertiser.':
+                    'caveat.containerNoAvahi',
+                'Host platform is uncommon for HomeKit. Verify multicast and mDNS behavior on this system.':
+                    'caveat.uncommonPlatform',
+                'Install and run avahi-daemon with D-Bus if you prefer the Linux-native advertiser.':
+                    'caveat.installAvahi',
+                'systemd-resolved mDNS appears available, but RESOLVED is an advanced experimental choice. CIAO is safer unless you intentionally manage mDNS through systemd-resolved.':
+                    'caveat.resolvedAdvanced',
+            }
+            const key = caveatKeys[caveat]
+
+            return key ? advertiserText(key, caveat) : caveat
+        }
         const caveats = Array.isArray(recommendation.caveats)
             ? recommendation.caveats
             : []
         const caveatText = caveats.length
-            ? ' ' + caveats.join(' ')
+            ? ' ' + caveats.map(translateCaveat).join(' ')
             : ''
-        const reason = recommendation.reason || ''
-        const reasonText = reason.replace(/[.!?]+$/, '') + '.'
 
         return (
             '<strong>' +
-            recommendation.title +
+            title +
             '</strong>: ' +
             reasonText +
             caveatText
@@ -1243,7 +1333,10 @@
 
         if (recommendedOption.length) {
             recommendedOption.text(
-                recommendedOption.data('nrchkbOriginalText') + ' (recommended)',
+                recommendedOption.data('nrchkbOriginalText') +
+                    ' (' +
+                    nrchkbText('advertiser.recommendedSuffix', 'recommended', 'nrchkb') +
+                    ')',
             )
         }
 
@@ -1403,15 +1496,15 @@
         const row = $('<div/>', {class: 'form-row nrchkb-log-level-row'}).appendTo(container)
         const label = $('<label/>', {for: inputId}).appendTo(row)
         $('<i/>', {class: 'fa fa-list-alt'}).appendTo(label)
-        label.append(document.createTextNode(' Log Level'))
+        label.append(document.createTextNode(' ' + nrchkbText('common.logLevel', 'Log Level')))
 
         const select = $('<select/>', {id: inputId}).appendTo(row)
         ;[
-            ['inherit', 'Inherit'],
-            ['error', 'Error'],
-            ['debug', 'Debug'],
-            ['trace', 'Trace'],
-            ['disabled', 'Disabled'],
+            ['inherit', nrchkbText('logLevel.inherit', 'Inherit')],
+            ['error', nrchkbText('logLevel.error', 'Error')],
+            ['debug', nrchkbText('logLevel.debug', 'Debug')],
+            ['trace', nrchkbText('logLevel.trace', 'Trace')],
+            ['disabled', nrchkbText('logLevel.disabled', 'Disabled')],
         ].forEach(function (option) {
             $('<option/>', {
                 value: option[0],
@@ -1597,20 +1690,7 @@
             element.stop(true, true).slideUp(duration, onComplete)
         }
         const text = function (key, fallback) {
-            const keys = [
-                'node-red-contrib-homekit-bridged/' + key,
-                'node-red-contrib-homekit-bridged:' + key,
-            ]
-            try {
-                for (let i = 0; i < keys.length; i++) {
-                    const value = RED._(keys[i])
-                    if (value && value !== keys[i] && value !== key) {
-                        return value
-                    }
-                }
-            } catch (_error) {
-            }
-            return fallback
+            return nrchkbText(key, fallback, 'nrchkb')
         }
 
         const loadSettings = function () {
@@ -2004,8 +2084,8 @@
                 enableOnEdit: true,
                 iconClass: 'fa fa-nrchkb',
                 id: 'nrchkb',
-                label: text('qr.sidebarTitle', 'NRCHKB'),
-                name: text('qr.sidebarTitle', 'NRCHKB'),
+                label: text('qr.sidebarName', 'HomeKit Pairing'),
+                name: text('qr.sidebarName', 'HomeKit Pairing'),
                 pinned: true,
                 toolbar,
             })
@@ -2112,7 +2192,7 @@
 <script data-template-name="nrchkb" type="text/x-red">
     <div class="nrchkb-editor">
         <details class="nrchkb-section" open>
-            <summary><i class="fa fa-list-alt"></i> Custom Characteristics</summary>
+            <summary><i class="fa fa-list-alt"></i> <span data-i18n="nrchkb.customCharacteristics.title">Custom Characteristics</span></summary>
             <div class="nrchkb-section-body">
                 <div id="node-input-logLevel-container"></div>
                 <div class="form-row node-input-customCharacteristics-container-row">
@@ -2147,3 +2227,4 @@ Defines custom HAP characteristics that can be attached to HomeKit services when
 
 Use read, write, and notify permissions to describe how HomeKit can interact with the value. Runtime flows must still send values matching the configured format and constraints.
 </script>
+

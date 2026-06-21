@@ -1,49 +1,49 @@
-<script data-template-name="homekit-standalone" type="text/x-red">
+﻿<script data-template-name="homekit-standalone" type="text/x-red">
     <div class="nrchkb-editor">
         <details class="nrchkb-section" open>
-            <summary><i class="fa fa-key"></i> Pairing</summary>
+            <summary><i class="fa fa-key"></i> <span data-i18n="standalone.bridge.pairing">Pairing</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row">
-                    <label for="node-config-input-bridgeName"><i class="fa fa-home"></i> Name</label>
-                    <input type="text" id="node-config-input-bridgeName" placeholder="Name">
+                    <label for="node-config-input-bridgeName"><i class="fa fa-home"></i> <span data-i18n="standalone.common.name">Name</span></label>
+                    <input type="text" id="node-config-input-bridgeName" placeholder="Name" data-i18n="[placeholder]standalone.common.name">
                 </div>
                 <div class="form-row">
                     <label for="node-config-input-accessoryCategory">
                         <i class="fa fa-cubes"></i>
-                        Accessory Category
+                        <span data-i18n="standalone.standalone.accessoryCategory">Accessory Category</span>
                     </label>
                     <select id="node-config-input-accessoryCategory">
-                        <option value="">Choose...</option>
+                        <option value="" data-i18n="standalone.common.choose">Choose...</option>
                     </select>
                 </div>
                 <div class="form-row">
-                    <label for="node-config-input-pinCode"><i class="fa fa-key"></i> Pin Code</label>
+                    <label for="node-config-input-pinCode"><i class="fa fa-key"></i> <span data-i18n="standalone.common.pinCode">Pin Code</span></label>
                     <input type="text" id="node-config-input-pinCode" placeholder="xxxx-xxxx" inputmode="numeric" autocomplete="off" spellcheck="false">
                 </div>
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-config-input-allowInsecureRequest">
                         <input type="checkbox" id="node-config-input-allowInsecureRequest">
-                        <span><i class="fa fa-unlock-alt"></i> Allow Insecure Request</span>
+                        <span><i class="fa fa-unlock-alt"></i> <span data-i18n="standalone.common.allowInsecureRequest">Allow Insecure Request</span></span>
                     </label>
                 </div>
                 <details class="nrchkb-section" open>
-                    <summary><i class="fa fa-qrcode"></i> <span data-i18n="node-red-contrib-homekit-bridged/qr.sectionTitle">Pairing QR Code</span></summary>
+                    <summary><i class="fa fa-qrcode"></i> <span data-i18n="standalone.qr.sectionTitle">Pairing QR Code</span></summary>
                     <div class="nrchkb-section-body" id="nrchkb-standalone-pairing-qr">
-                        <p class="nrchkb-pairing-message" data-i18n="node-red-contrib-homekit-bridged/qr.loading">Loading pairing state...</p>
+                        <p class="nrchkb-pairing-message" data-i18n="standalone.qr.loading">Loading pairing state...</p>
                     </div>
                 </details>
             </div>
         </details>
 
         <details class="nrchkb-section" open>
-            <summary><i class="fa fa-wifi"></i> Network &amp; Advertising</summary>
+            <summary><i class="fa fa-wifi"></i> <span data-i18n="standalone.common.networkAdvertising">Network &amp; Advertising</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row">
-                    <label for="node-config-input-port"><i class="fa fa-plug"></i> Port</label>
-                    <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign" inputmode="numeric" autocomplete="off" spellcheck="false">
+                    <label for="node-config-input-port"><i class="fa fa-plug"></i> <span data-i18n="standalone.common.port">Port</span></label>
+                    <input type="text" id="node-config-input-port" placeholder="Leave blank to auto assign" data-i18n="[placeholder]standalone.common.autoAssignPortPlaceholder" inputmode="numeric" autocomplete="off" spellcheck="false">
                 </div>
                 <div class="form-row">
-                    <label for="node-config-input-advertiser"><i class="fa fa-bullhorn"></i> Advertiser</label>
+                    <label for="node-config-input-advertiser"><i class="fa fa-bullhorn"></i> <span data-i18n="standalone.common.advertiser">Advertiser</span></label>
                     <select id="node-config-input-advertiser">
                         <option value="bonjour-hap" selected="selected">BONJOUR</option>
                         <option value="ciao">CIAO</option>
@@ -52,7 +52,7 @@
                     </select>
                 </div>
                 <div class="form-row">
-                    <label for="node-config-input-bind"><i class="fa fa-sitemap"></i> Bind</label>
+                    <label for="node-config-input-bind"><i class="fa fa-sitemap"></i> <span data-i18n="standalone.common.bind">Bind</span></label>
                     <input type="text" id="node-config-input-bind" placeholder="::" autocomplete="off" spellcheck="false">
                     <input type="hidden" id="node-config-input-bindType">
                 </div>
@@ -60,42 +60,42 @@
         </details>
 
         <details class="nrchkb-section">
-            <summary><i class="fa fa-id-card-o"></i> Accessory Metadata</summary>
+            <summary><i class="fa fa-id-card-o"></i> <span data-i18n="standalone.common.accessoryMetadata">Accessory Metadata</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row">
-                    <label for="node-config-input-manufacturer"><i class="fa fa-industry"></i> Manufacturer</label>
-                    <input type="text" id="node-config-input-manufacturer" placeholder="Manufacturer">
+                    <label for="node-config-input-manufacturer"><i class="fa fa-industry"></i> <span data-i18n="standalone.common.manufacturer">Manufacturer</span></label>
+                    <input type="text" id="node-config-input-manufacturer" placeholder="Manufacturer" data-i18n="[placeholder]standalone.common.manufacturer">
                 </div>
                 <div class="form-row">
-                    <label for="node-config-input-serialNo"><i class="fa fa-barcode"></i> Serial Number</label>
-                    <input type="text" id="node-config-input-serialNo" placeholder="Serial Number">
+                    <label for="node-config-input-serialNo"><i class="fa fa-barcode"></i> <span data-i18n="standalone.common.serialNumber">Serial Number</span></label>
+                    <input type="text" id="node-config-input-serialNo" placeholder="Serial Number" data-i18n="[placeholder]standalone.common.serialNumber">
                 </div>
                 <div class="form-row">
-                    <label for="node-config-input-model"><i class="fa fa-cube"></i> Model</label>
-                    <input type="text" id="node-config-input-model" placeholder="Model">
+                    <label for="node-config-input-model"><i class="fa fa-cube"></i> <span data-i18n="standalone.common.model">Model</span></label>
+                    <input type="text" id="node-config-input-model" placeholder="Model" data-i18n="[placeholder]standalone.common.model">
                 </div>
                 <div class="form-row">
-                    <label for="node-config-input-firmwareRev"><i class="fa fa-microchip"></i> Firmware Revision</label>
-                    <input type="text" id="node-config-input-firmwareRev" placeholder="Firmware Revision">
+                    <label for="node-config-input-firmwareRev"><i class="fa fa-microchip"></i> <span data-i18n="standalone.common.firmwareRevision">Firmware Revision</span></label>
+                    <input type="text" id="node-config-input-firmwareRev" placeholder="Firmware Revision" data-i18n="[placeholder]standalone.common.firmwareRevision">
                 </div>
                 <div class="form-row">
-                    <label for="node-config-input-hardwareRev"><i class="fa fa-hdd-o"></i> Hardware Revision</label>
-                    <input type="text" id="node-config-input-hardwareRev" placeholder="Hardware Revision">
+                    <label for="node-config-input-hardwareRev"><i class="fa fa-hdd-o"></i> <span data-i18n="standalone.common.hardwareRevision">Hardware Revision</span></label>
+                    <input type="text" id="node-config-input-hardwareRev" placeholder="Hardware Revision" data-i18n="[placeholder]standalone.common.hardwareRevision">
                 </div>
                 <div class="form-row">
-                    <label for="node-config-input-softwareRev"><i class="fa fa-code"></i> Software Revision</label>
-                    <input type="text" id="node-config-input-softwareRev" placeholder="Software Revision">
+                    <label for="node-config-input-softwareRev"><i class="fa fa-code"></i> <span data-i18n="standalone.common.softwareRevision">Software Revision</span></label>
+                    <input type="text" id="node-config-input-softwareRev" placeholder="Software Revision" data-i18n="[placeholder]standalone.common.softwareRevision">
                 </div>
             </div>
         </details>
 
         <details class="nrchkb-section">
-            <summary><i class="fa fa-exchange"></i> Message Handling</summary>
+            <summary><i class="fa fa-exchange"></i> <span data-i18n="standalone.common.messageHandling">Message Handling</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-config-input-allowMessagePassthrough">
                         <input type="checkbox" id="node-config-input-allowMessagePassthrough">
-                        <span><i class="fa fa-share"></i> Allow Message Passthrough</span>
+                        <span><i class="fa fa-share"></i> <span data-i18n="standalone.common.allowMessagePassthrough">Allow Message Passthrough</span></span>
                     </label>
                 </div>
                 <div id="node-config-input-logLevel-container"></div>
@@ -103,47 +103,47 @@
         </details>
 
         <details class="nrchkb-section">
-            <summary><i class="fa fa-exclamation-triangle"></i> Deprecated mDNS</summary>
+            <summary><i class="fa fa-exclamation-triangle"></i> <span data-i18n="standalone.common.deprecatedMdns">Deprecated mDNS</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-config-input-customMdnsConfig">
                         <input type="checkbox" id="node-config-input-customMdnsConfig">
-                        <span><i class="fa fa-exclamation-triangle"></i> Custom MDNS Configuration (DEPRECATED, use Bind)</span>
+                        <span><i class="fa fa-exclamation-triangle"></i> <span data-i18n="standalone.common.customMdnsConfigDeprecated">Custom MDNS Configuration (DEPRECATED, use Bind)</span></span>
                     </label>
                 </div>
                 <div id="mdns-configuration" class="nrchkb-nested-panel" style="display: none;">
                     <div class="form-row nrchkb-checkbox-row">
                         <label class="nrchkb-checkbox-label" for="node-config-input-mdnsMulticast">
                             <input type="checkbox" id="node-config-input-mdnsMulticast" checked>
-                            <span><i class="fa fa-share-alt"></i> Multicast</span>
+                            <span><i class="fa fa-share-alt"></i> <span data-i18n="standalone.common.multicast">Multicast</span></span>
                         </label>
                     </div>
                     <div class="form-row">
-                        <label for="node-config-input-mdnsInterface"><i class="fa fa-sitemap"></i> Multicast Interface IP</label>
+                        <label for="node-config-input-mdnsInterface"><i class="fa fa-sitemap"></i> <span data-i18n="standalone.common.multicastInterfaceIp">Multicast Interface IP</span></label>
                         <input type="text" id="node-config-input-mdnsInterface" placeholder="">
                     </div>
                     <div class="form-row">
-                        <label for="node-config-input-mdnsPort"><i class="fa fa-plug"></i> Port</label>
+                        <label for="node-config-input-mdnsPort"><i class="fa fa-plug"></i> <span data-i18n="standalone.common.port">Port</span></label>
                         <input type="text" id="node-config-input-mdnsPort" placeholder="">
                     </div>
                     <div class="form-row">
-                        <label for="node-config-input-mdnsIp"><i class="fa fa-map-marker"></i> Multicast Address IP</label>
+                        <label for="node-config-input-mdnsIp"><i class="fa fa-map-marker"></i> <span data-i18n="standalone.common.multicastAddressIp">Multicast Address IP</span></label>
                         <input type="text" id="node-config-input-mdnsIp" placeholder="">
                     </div>
                     <div class="form-row">
-                        <label for="node-config-input-mdnsTtl"><i class="fa fa-clock-o"></i> TTL</label>
+                        <label for="node-config-input-mdnsTtl"><i class="fa fa-clock-o"></i> <span data-i18n="standalone.common.ttl">TTL</span></label>
                         <input type="text" id="node-config-input-mdnsTtl" placeholder="255">
                     </div>
                     <div class="form-row nrchkb-checkbox-row">
                         <label class="nrchkb-checkbox-label" for="node-config-input-mdnsLoopback">
                             <input type="checkbox" id="node-config-input-mdnsLoopback" checked>
-                            <span><i class="fa fa-refresh"></i> Loopback</span>
+                            <span><i class="fa fa-refresh"></i> <span data-i18n="standalone.common.loopback">Loopback</span></span>
                         </label>
                     </div>
                     <div class="form-row nrchkb-checkbox-row">
                         <label class="nrchkb-checkbox-label" for="node-config-input-mdnsReuseAddr">
                             <input type="checkbox" id="node-config-input-mdnsReuseAddr" checked>
-                            <span><i class="fa fa-recycle"></i> Reuse Address</span>
+                            <span><i class="fa fa-recycle"></i> <span data-i18n="standalone.common.reuseAddress">Reuse Address</span></span>
                         </label>
                     </div>
                 </div>
@@ -397,3 +397,4 @@ Defines a HomeKit accessory that is paired directly in the Apple Home app. Use i
         },
     })
 </script>
+

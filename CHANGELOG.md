@@ -51,6 +51,8 @@ installations and Docker-based deployments.
   [#67](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/67).
 - Pairing state tracking for Bridge and Standalone Accessory nodes so the editor can show pairing help only when it is
   still useful.
+- Node-RED editor translations for en-US, German, French, and Spanish, using per-node i18n catalogs
+  [#85](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/85).
 - Per-node **Log Level** settings for standard and config nodes, with scoped `inherit`, `error`, `debug`, `trace`, and
   `disabled` behavior backed by `@nrchkb/logger` [#479](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/479).
 - Always-on custom characteristic API with duplicate-key protection, stale characteristic cleanup, and listener

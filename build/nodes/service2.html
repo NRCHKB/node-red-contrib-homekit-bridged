@@ -1,4 +1,4 @@
-<!--suppress EqualityComparisonWithCoercionJS -->
+﻿<!--suppress EqualityComparisonWithCoercionJS -->
 <style>
     .nrchkb-editor .nrchkb-plugins-summary {
         display: flex !important;
@@ -195,13 +195,13 @@
             <summary class="nrchkb-plugins-summary">
                 <i class="fa fa-plug"></i>
                 <span class="nrchkb-plugin-label">
-                    Plugins <span id="node-input-plugin-count" class="nrchkb-plugin-count">0</span>
-                    <span id="node-input-plugin-summary-list" class="nrchkb-plugin-summary-list">No plugins attached</span>
+                    <span data-i18n="service2.plugins.plugins">Plugins</span> <span id="node-input-plugin-count" class="nrchkb-plugin-count">0</span>
+                    <span id="node-input-plugin-summary-list" class="nrchkb-plugin-summary-list" data-i18n="service2.plugins.noPluginsAttached">No plugins attached</span>
                 </span>
             </summary>
             <button type="button" id="node-input-add-plugin" class="red-ui-button red-ui-button-small nrchkb-plugin-add">
                 <i class="fa fa-plus"></i>
-                Add plugin
+                <span data-i18n="service2.plugins.addPlugin">Add plugin</span>
             </button>
             <div class="nrchkb-section-body">
                 <div class="nrchkb-plugin-slot-fields" style="display: none;">
@@ -220,84 +220,84 @@
         </details>
 
         <details class="nrchkb-section" open>
-            <summary><i class="fa fa-sliders"></i> Essentials</summary>
+            <summary><i class="fa fa-sliders"></i> <span data-i18n="service2.service.essentials">Essentials</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row">
-                    <label for="node-config-input-isParent"><i class="fa fa-sitemap"></i> Service Hierarchy</label>
+                    <label for="node-config-input-isParent"><i class="fa fa-sitemap"></i> <span data-i18n="service2.service.serviceHierarchy">Service Hierarchy</span></label>
                     <select id="node-config-input-isParent">
-                        <option value="true" selected="selected">Parent</option>
-                        <option value="false">Linked</option>
+                        <option value="true" selected="selected" data-i18n="service2.service.parent">Parent</option>
+                        <option value="false" data-i18n="service2.service.linked">Linked</option>
                     </select>
                 </div>
 
                 <div class="form-row">
                     <label for="node-input-serviceName">
                         <i class="fa fa-puzzle-piece"></i>
-                        Service
+                        <span data-i18n="service2.service.service">Service</span>
                     </label>
                     <select id="node-input-serviceName">
-                        <option value="">Choose...</option>
+                        <option value="" data-i18n="service2.common.choose">Choose...</option>
                     </select>
                 </div>
 
                 <div class="form-row">
                     <label for="node-input-name">
                         <i class="fa fa-tag"></i>
-                        Name
+                        <span data-i18n="service2.common.name">Name</span>
                     </label>
-                    <input type="text" id="node-input-name" placeholder="Name">
+                    <input type="text" id="node-input-name" placeholder="Name" data-i18n="[placeholder]service2.common.name">
                 </div>
             </div>
         </details>
 
         <details class="nrchkb-section" open>
-            <summary><i class="fa fa-map-marker"></i> Placement</summary>
+            <summary><i class="fa fa-map-marker"></i> <span data-i18n="service2.service.placement">Placement</span></summary>
             <div class="nrchkb-section-body">
                 <div id="isParent">
                     <div class="form-row">
-                        <label for="node-config-input-hostType"><i class="fa fa-server"></i> Host Type</label>
+                        <label for="node-config-input-hostType"><i class="fa fa-server"></i> <span data-i18n="service2.service.hostType">Host Type</span></label>
                         <select id="node-config-input-hostType">
-                            <option value="0" selected="selected">Bridge</option>
-                            <option value="1">Accessory</option>
+                            <option value="0" selected="selected" data-i18n="service2.service.bridge">Bridge</option>
+                            <option value="1" data-i18n="service2.service.accessory">Accessory</option>
                         </select>
                     </div>
                     <div id="isOnBridge">
                         <div id="isBridgeInSubflow" class="alert alert-warning nrchkb-warning" role="alert">
-                            Read more <b><a href="#" id="bridgeInSubflowNotice">here</a></b> about adding Bridge in a Subflow.
+                            <span data-i18n="service2.service.bridgeInSubflowPrefix">Read more</span> <b><a href="#" id="bridgeInSubflowNotice" data-i18n="service2.service.here">here</a></b> <span data-i18n="service2.service.bridgeInSubflowSuffix">about adding Bridge in a Subflow.</span>
                         </div>
                         <div class="form-row">
                             <label for="node-input-bridge">
                                 <i class="fa fa-link"></i>
-                                Bridge
+                                <span data-i18n="service2.service.bridge">Bridge</span>
                             </label>
                             <input id="node-input-bridge">
                         </div>
                         <details class="nrchkb-section">
-                            <summary><i class="fa fa-id-card-o"></i> Accessory Metadata</summary>
+                            <summary><i class="fa fa-id-card-o"></i> <span data-i18n="service2.common.accessoryMetadata">Accessory Metadata</span></summary>
                             <div class="nrchkb-section-body">
                                 <div class="form-row">
-                                    <label for="node-input-manufacturer"><i class="fa fa-industry"></i> Manufacturer</label>
-                                    <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
+                                    <label for="node-input-manufacturer"><i class="fa fa-industry"></i> <span data-i18n="service2.common.manufacturer">Manufacturer</span></label>
+                                    <input type="text" id="node-input-manufacturer" placeholder="Manufacturer" data-i18n="[placeholder]service2.common.manufacturer">
                                 </div>
                                 <div class="form-row">
-                                    <label for="node-input-serialNo"><i class="fa fa-barcode"></i> Serial Number</label>
-                                    <input type="text" id="node-input-serialNo" placeholder="Serial Number">
+                                    <label for="node-input-serialNo"><i class="fa fa-barcode"></i> <span data-i18n="service2.common.serialNumber">Serial Number</span></label>
+                                    <input type="text" id="node-input-serialNo" placeholder="Serial Number" data-i18n="[placeholder]service2.common.serialNumber">
                                 </div>
                                 <div class="form-row">
-                                    <label for="node-input-model"><i class="fa fa-cube"></i> Model</label>
-                                    <input type="text" id="node-input-model" placeholder="Model">
+                                    <label for="node-input-model"><i class="fa fa-cube"></i> <span data-i18n="service2.common.model">Model</span></label>
+                                    <input type="text" id="node-input-model" placeholder="Model" data-i18n="[placeholder]service2.common.model">
                                 </div>
                                 <div class="form-row">
-                                    <label for="node-input-firmwareRev"><i class="fa fa-microchip"></i> Firmware Revision</label>
-                                    <input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision">
+                                    <label for="node-input-firmwareRev"><i class="fa fa-microchip"></i> <span data-i18n="service2.common.firmwareRevision">Firmware Revision</span></label>
+                                    <input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision" data-i18n="[placeholder]service2.common.firmwareRevision">
                                 </div>
                                 <div class="form-row">
-                                    <label for="node-input-hardwareRev"><i class="fa fa-hdd-o"></i> Hardware Revision</label>
-                                    <input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision">
+                                    <label for="node-input-hardwareRev"><i class="fa fa-hdd-o"></i> <span data-i18n="service2.common.hardwareRevision">Hardware Revision</span></label>
+                                    <input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision" data-i18n="[placeholder]service2.common.hardwareRevision">
                                 </div>
                                 <div class="form-row">
-                                    <label for="node-input-softwareRev"><i class="fa fa-code"></i> Software Revision</label>
-                                    <input type="text" id="node-input-softwareRev" placeholder="Software Revision">
+                                    <label for="node-input-softwareRev"><i class="fa fa-code"></i> <span data-i18n="service2.common.softwareRevision">Software Revision</span></label>
+                                    <input type="text" id="node-input-softwareRev" placeholder="Software Revision" data-i18n="[placeholder]service2.common.softwareRevision">
                                 </div>
                             </div>
                         </details>
@@ -306,7 +306,7 @@
                         <div class="form-row">
                             <label for="node-input-accessoryId">
                                 <i class="fa fa-home"></i>
-                                Accessory
+                                <span data-i18n="service2.service.accessory">Accessory</span>
                             </label>
                             <input id="node-input-accessoryId">
                         </div>
@@ -317,10 +317,10 @@
                     <div class="form-row">
                         <label for="node-input-parentService">
                             <i class="fa fa-level-up"></i>
-                            Parent Service
+                            <span data-i18n="service2.service.parentService">Parent Service</span>
                         </label>
                         <select id="node-input-parentService">
-                            <option value="">Choose...</option>
+                            <option value="" data-i18n="service2.common.choose">Choose...</option>
                         </select>
                     </div>
                 </div>
@@ -328,23 +328,23 @@
         </details>
 
         <details class="nrchkb-section" open>
-            <summary><i class="fa fa-exchange"></i> Message Routing</summary>
+            <summary><i class="fa fa-exchange"></i> <span data-i18n="service2.service.messageRouting">Message Routing</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row">
-                    <label for="node-input-topic"><i class="fa fa-comment-o"></i> Topic</label>
-                    <input type="text" id="node-input-topic" placeholder="Topic">
+                    <label for="node-input-topic"><i class="fa fa-comment-o"></i> <span data-i18n="service2.service.topic">Topic</span></label>
+                    <input type="text" id="node-input-topic" placeholder="Topic" data-i18n="[placeholder]service2.service.topic">
                 </div>
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-input-filter">
                         <input type="checkbox" id="node-input-filter">
-                        <span><i class="fa fa-filter"></i> Filter on Topic</span>
+                        <span><i class="fa fa-filter"></i> <span data-i18n="service2.service.filterOnTopic">Filter on Topic</span></span>
                     </label>
                 </div>
                 <div class="form-row">
-                    <label for="node-input-outputMode"><i class="fa fa-random"></i> Output mode</label>
+                    <label for="node-input-outputMode"><i class="fa fa-random"></i> <span data-i18n="service2.service.outputMode">Output mode</span></label>
                     <select id="node-input-outputMode">
-                        <option value="events" selected="selected">Events</option>
-                        <option value="legacy">Legacy onChange/onSet</option>
+                        <option value="events" selected="selected" data-i18n="service2.service.events">Events</option>
+                        <option value="legacy" data-i18n="service2.service.legacyOutputMode">Legacy onChange/onSet</option>
                     </select>
                 </div>
                 <div id="node-input-logLevel-container"></div>
@@ -352,16 +352,16 @@
         </details>
 
         <details id="adaptive-lightning-configuration" class="nrchkb-section" open style="display: none;">
-            <summary><i class="fa fa-sun-o"></i> Adaptive Lighting Configuration</summary>
+            <summary><i class="fa fa-sun-o"></i> <span data-i18n="service2.adaptiveLighting.configuration">Adaptive Lighting Configuration</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-input-adaptiveLightingOptionsEnable">
                         <input type="checkbox" id="node-input-adaptiveLightingOptionsEnable">
-                        <span><i class="fa fa-toggle-on"></i> Enable</span>
+                        <span><i class="fa fa-toggle-on"></i> <span data-i18n="service2.common.enable">Enable</span></span>
                     </label>
                 </div>
                 <div class="form-row">
-                    <label for="node-input-adaptiveLightingOptionsMode"><i class="fa fa-magic"></i> Mode</label>
+                    <label for="node-input-adaptiveLightingOptionsMode"><i class="fa fa-magic"></i> <span data-i18n="service2.adaptiveLighting.mode">Mode</span></label>
                     <select id="node-input-adaptiveLightingOptionsMode">
                         <option value="" selected hidden disabled>AUTOMATIC</option>
                         <option value="1">AUTOMATIC</option>
@@ -369,31 +369,31 @@
                     </select>
                 </div>
                 <div class="form-row">
-                    <label for="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment"><i class="fa fa-thermometer-half"></i> Custom Temperature Adjustment</label>
+                    <label for="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment"><i class="fa fa-thermometer-half"></i> <span data-i18n="service2.adaptiveLighting.customTemperatureAdjustment">Custom Temperature Adjustment</span></label>
                     <input type="number" id="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment" placeholder="0">
                 </div>
             </div>
         </details>
 
         <details class="nrchkb-section">
-            <summary><i class="fa fa-sliders"></i> Advanced Behavior</summary>
+            <summary><i class="fa fa-sliders"></i> <span data-i18n="service2.service.advancedBehavior">Advanced Behavior</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row">
-                    <label for="node-input-characteristicProperties"><i class="fa fa-list-alt"></i> Characteristic Properties</label>
+                    <label for="node-input-characteristicProperties"><i class="fa fa-list-alt"></i> <span data-i18n="service2.service.characteristicProperties">Characteristic Properties</span></label>
                     <input type="text" id="node-input-characteristicProperties">
                 </div>
 
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-input-waitForSetupMsg">
                         <input type="checkbox" id="node-input-waitForSetupMsg">
-                        <span><i class="fa fa-hourglass-half"></i> Wait for Setup message</span>
+                        <span><i class="fa fa-hourglass-half"></i> <span data-i18n="service2.service.waitForSetupMessage">Wait for Setup message</span></span>
                     </label>
                 </div>
 
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-input-useEventCallback">
                         <input type="checkbox" id="node-input-useEventCallback">
-                        <span><i class="fa fa-code-fork"></i> Use Event callback</span>
+                        <span><i class="fa fa-code-fork"></i> <span data-i18n="service2.service.useEventCallback">Use Event callback</span></span>
                     </label>
                 </div>
             </div>
@@ -655,26 +655,26 @@ To discover valid characteristic names for the selected service, send a test pay
 
             if (outputMode === 'legacy') {
                 if (index === 0) {
-                    return 'onChange'
+                    return nrchkbText('service.outputOnChange', 'onChange')
                 }
 
                 if (index === 1) {
-                    return 'onSet'
+                    return nrchkbText('service.outputOnSet', 'onSet')
                 }
 
                 if (index === 2) {
-                    return 'camera snapshot'
+                    return nrchkbText('service.outputCameraSnapshot', 'camera snapshot')
                 }
 
                 return ''
             }
 
             if (index === 0) {
-                return 'events'
+                return nrchkbText('service.outputEvents', 'events')
             }
 
             if (index === 1 && this.serviceName === 'Camera') {
-                return 'camera snapshot'
+                return nrchkbText('service.outputCameraSnapshot', 'camera snapshot')
             }
 
             return ''
@@ -682,7 +682,7 @@ To discover valid characteristic names for the selected service, send a test pay
         icon: 'homekit.png',
         color: '#fcc127',
         label: function () {
-            return this.name || this.serviceName || 'Service2'
+            return this.name || this.serviceName || nrchkbText('service.service2Label', 'Service2')
         },
         labelStyle: function () {
             return this.name ? 'node_label_italic' : ''
@@ -864,16 +864,16 @@ To discover valid characteristic names for the selected service, send a test pay
                 const serviceNames = getPluginPrerequisiteServiceNames(plugin)
 
                 if (!serviceNames.length) {
-                    return 'Works with any service'
+                    return nrchkbText('plugins.worksWithAnyService', 'Works with any service')
                 }
 
-                return 'Works with: ' + serviceNames.join(', ')
+                return nrchkbText('plugins.worksWith', 'Works with:') + ' ' + serviceNames.join(', ')
             }
 
             const renderMultipleInstancesText = function (plugin) {
                 return plugin && plugin.multipleInstances === false
-                    ? 'Single instance'
-                    : 'Multiple instances allowed'
+                    ? nrchkbText('plugins.singleInstance', 'Single instance')
+                    : nrchkbText('plugins.multipleInstancesAllowed', 'Multiple instances allowed')
             }
 
             const getPluginSectionId = function (entry, index) {
@@ -891,17 +891,17 @@ To discover valid characteristic names for the selected service, send a test pay
 
                 return (
                     '<strong>' + $('<div>').text(plugin.displayName).html() + '</strong> ' +
-                    'v' + $('<div>').text(plugin.version).html() + ' by ' +
+                    'v' + $('<div>').text(plugin.version).html() + ' ' + nrchkbText('plugins.by', 'by') + ' ' +
                     $('<div>').text(plugin.author).html() + '<br>' +
                     $('<div>').text(plugin.description).html() + '<br>' +
                     '<small>' + $('<div>').text(renderCompatibilityText(plugin)).html() + '. ' +
                     $('<div>').text(renderMultipleInstancesText(plugin)).html() + '.</small><br>' +
-                    (capabilities ? '<small>Features: ' + $('<div>').text(capabilities).html() + '</small><br>' : '') +
-                    '<small>Package: ' + $('<div>').text(plugin.packageName).html() + '</small>' +
+                    (capabilities ? '<small>' + nrchkbText('plugins.features', 'Features:') + ' ' + $('<div>').text(capabilities).html() + '</small><br>' : '') +
+                    '<small>' + nrchkbText('plugins.package', 'Package:') + ' ' + $('<div>').text(plugin.packageName).html() + '</small>' +
                     (upstream.packageName
-                        ? '<br><small>Uses upstream ' + $('<div>').text(upstream.packageName).html() +
+                        ? '<br><small>' + nrchkbText('plugins.usesUpstream', 'Uses upstream') + ' ' + $('<div>').text(upstream.packageName).html() +
                             (upstream.packageVersion ? ' v' + $('<div>').text(upstream.packageVersion).html() : '') +
-                            '. Upstream authors are credited for the original plugin, not this NRCHKB integration.</small>'
+                            '. ' + nrchkbText('plugins.upstreamCredit', 'Upstream authors are credited for the original plugin, not this NRCHKB integration.') + '</small>'
                         : '')
                 )
             }
@@ -1258,7 +1258,7 @@ To discover valid characteristic names for the selected service, send a test pay
 
                     if (!dependsValue) {
                         input.empty()
-                        $('<option/>').val('').text('Choose a controller first').appendTo(input)
+                        $('<option/>').val('').text(nrchkbText('plugins.chooseControllerFirst', 'Choose a controller first')).appendTo(input)
                         input.val('')
                         syncPluginsInput()
                         return
@@ -1268,11 +1268,11 @@ To discover valid characteristic names for the selected service, send a test pay
                 }
 
                 input.empty()
-                $('<option/>').val('').text('Loading...').appendTo(input)
+                $('<option/>').val('').text(nrchkbText('common.loading', 'Loading...')).appendTo(input)
 
                 $.getJSON(url, function (options) {
                     input.empty()
-                    $('<option/>').val('').text('Choose...').appendTo(input)
+                    $('<option/>').val('').text(nrchkbText('common.choose', 'Choose...')).appendTo(input)
                     ;(options || []).forEach(function (option) {
                         $('<option/>')
                             .val(option.value)
@@ -1284,7 +1284,7 @@ To discover valid characteristic names for the selected service, send a test pay
                     }).length === 0) {
                         $('<option/>')
                             .val(selectedValue)
-                            .text('Saved camera (' + selectedValue + ')')
+                            .text(nrchkbText('plugins.savedCamera', 'Saved camera') + ' (' + selectedValue + ')')
                             .appendTo(input)
                     }
                     input.val(selectedValue)
@@ -1292,7 +1292,7 @@ To discover valid characteristic names for the selected service, send a test pay
                     syncPluginsInput()
                 }).fail(function () {
                     input.empty()
-                    $('<option/>').val('').text('Unable to load cameras').appendTo(input)
+                    $('<option/>').val('').text(nrchkbText('plugins.camerasLoadFailed', 'Unable to load cameras')).appendTo(input)
                     if (selectedValue) {
                         $('<option/>').val(selectedValue).text(selectedValue).appendTo(input)
                         input.val(selectedValue)
@@ -1311,7 +1311,7 @@ To discover valid characteristic names for the selected service, send a test pay
 
                 if (!editorSections.length) {
                     $('<div/>', {class: 'alert alert-info nrchkb-info'})
-                        .text('This plugin does not provide editor fields.')
+                        .text(nrchkbText('plugins.noEditorFields', 'This plugin does not provide editor fields.'))
                         .appendTo(body)
                     return
                 }
@@ -1350,9 +1350,9 @@ To discover valid characteristic names for the selected service, send a test pay
                 pluginCount.text(allEntries.length)
 
                 if (!allEntries.length) {
-                    pluginSummaryList.text('No plugins attached')
+                    pluginSummaryList.text(nrchkbText('plugins.noPluginsAttached', 'No plugins attached'))
                     $('<div/>', {class: 'nrchkb-plugin-empty'})
-                        .text('No plugins attached.')
+                        .text(nrchkbText('plugins.noPluginsAttachedSentence', 'No plugins attached.'))
                         .appendTo(pluginOverview)
                     return
                 }
@@ -1389,8 +1389,8 @@ To discover valid characteristic names for the selected service, send a test pay
                     $('<button/>', {
                         type: 'button',
                         class: 'red-ui-button red-ui-button-small nrchkb-plugin-remove',
-                        'aria-label': 'Remove plugin ' + title,
-                        title: 'Remove plugin'
+                        'aria-label': nrchkbText('plugins.removePlugin', 'Remove plugin') + ' ' + title,
+                        title: nrchkbText('plugins.removePlugin', 'Remove plugin')
                     })
                         .append($('<i/>', {class: 'fa fa-remove'}))
                         .appendTo(toolbar)
@@ -1483,25 +1483,25 @@ To discover valid characteristic names for the selected service, send a test pay
                 $('<button/>', {
                     type: 'button',
                     class: 'red-ui-button red-ui-button-small nrchkb-plugin-overview-edit',
-                    'aria-label': 'Edit plugin settings for ' + title,
-                    title: 'Edit plugin settings',
+                    'aria-label': nrchkbText('plugins.editPluginSettingsFor', 'Edit plugin settings for') + ' ' + title,
+                    title: nrchkbText('plugins.editPluginSettings', 'Edit plugin settings'),
                     'data-target': sectionId,
                     'data-slot': options && options.slot ? options.slot : '',
                     'data-config-id': options && options.configNodeId ? options.configNodeId : ''
                 })
                     .append($('<i/>', {class: 'fa fa-pencil'}))
-                    .append(' Edit')
+                    .append(' ' + nrchkbText('common.edit', 'Edit'))
                     .appendTo(overviewActions)
                 $('<button/>', {
                     type: 'button',
                     class: 'red-ui-button red-ui-button-small nrchkb-plugin-overview-remove',
-                    'aria-label': 'Remove plugin ' + title,
-                    title: 'Remove plugin',
+                    'aria-label': nrchkbText('plugins.removePlugin', 'Remove plugin') + ' ' + title,
+                    title: nrchkbText('plugins.removePlugin', 'Remove plugin'),
                     'data-target': sectionId,
                     'data-slot': options && options.slot ? options.slot : ''
                 })
                     .append($('<i/>', {class: 'fa fa-remove'}))
-                    .append(' Remove')
+                    .append(' ' + nrchkbText('common.remove', 'Remove'))
                     .appendTo(overviewActions)
             }
 
@@ -1529,8 +1529,8 @@ To discover valid characteristic names for the selected service, send a test pay
                 $('<button/>', {
                     type: 'button',
                     class: 'red-ui-button red-ui-button-small nrchkb-plugin-remove',
-                    'aria-label': 'Remove plugin ' + title,
-                    title: 'Remove plugin',
+                    'aria-label': nrchkbText('plugins.removePlugin', 'Remove plugin') + ' ' + title,
+                    title: nrchkbText('plugins.removePlugin', 'Remove plugin'),
                     'data-slot': entry.slot
                 })
                     .append($('<i/>', {class: 'fa fa-remove'}))
@@ -1551,12 +1551,12 @@ To discover valid characteristic names for the selected service, send a test pay
                 const slot = getFirstEmptyPluginSlot()
 
                 if (!slot) {
-                    RED.notify('This service already has the maximum number of plugin config nodes.', 'warning')
+                    RED.notify(nrchkbText('plugins.maxConfigNodes', 'This service already has the maximum number of plugin config nodes.'), 'warning')
                     return
                 }
 
                 if (!RED.editor || !RED.editor.editConfig) {
-                    RED.notify('This plugin does not provide a config node editor.', 'warning')
+                    RED.notify(nrchkbText('plugins.noConfigNodeEditor', 'This plugin does not provide a config node editor.'), 'warning')
                     return
                 }
 
@@ -1573,17 +1573,17 @@ To discover valid characteristic names for the selected service, send a test pay
                 const plugin = getPluginMetadata(entry.id)
 
                 if (!plugin) {
-                    RED.notify('Plugin metadata is not available.', 'warning')
+                    RED.notify(nrchkbText('plugins.metadataUnavailable', 'Plugin metadata is not available.'), 'warning')
                     return
                 }
 
                 if (!isPluginCompatibleWithSelectedService(plugin)) {
-                    RED.notify('Plugin is not compatible with this service.', 'warning')
+                    RED.notify(nrchkbText('plugins.notCompatible', 'Plugin is not compatible with this service.'), 'warning')
                     return
                 }
 
                 if (!allowsAnotherPluginInstance(plugin, entry.id)) {
-                    RED.notify('This plugin can only be added once to this node.', 'warning')
+                    RED.notify(nrchkbText('plugins.onlyOnce', 'This plugin can only be added once to this node.'), 'warning')
                     return
                 }
 
@@ -1612,9 +1612,9 @@ To discover valid characteristic names for the selected service, send a test pay
                     const duplicateAllowed = allowsAnotherPluginInstance(plugin, plugin.id)
                     const disabled = !compatible || !duplicateAllowed
                     const reason = !compatible
-                        ? 'Not compatible with ' + (selectServiceName.val() || 'this service')
+                        ? nrchkbText('plugins.notCompatibleWith', 'Not compatible with') + ' ' + (selectServiceName.val() || nrchkbText('plugins.thisService', 'this service'))
                         : !duplicateAllowed
-                            ? 'Already added'
+                            ? nrchkbText('plugins.alreadyAdded', 'Already added')
                             : renderCompatibilityText(plugin)
                     const item = $('<button/>', {
                         class: 'nrchkb-plugin-picker-item',
@@ -1633,7 +1633,7 @@ To discover valid characteristic names for the selected service, send a test pay
                         .text(plugin.description)
                         .appendTo(item)
                     $('<div/>', {class: 'nrchkb-plugin-picker-meta'})
-                        .text(reason + ' · ' + renderMultipleInstancesText(plugin))
+                        .text(reason + ' Â· ' + renderMultipleInstancesText(plugin))
                         .appendTo(item)
 
                     if (!disabled) {
@@ -1653,7 +1653,7 @@ To discover valid characteristic names for the selected service, send a test pay
 
                 if (!availablePlugins.length) {
                     $('<div/>', {class: 'nrchkb-plugin-empty'})
-                        .text('No plugins are registered.')
+                        .text(nrchkbText('plugins.noneRegistered', 'No plugins are registered.'))
                         .appendTo(dialog)
                 }
 
@@ -1661,12 +1661,12 @@ To discover valid characteristic names for the selected service, send a test pay
                     modal: true,
                     resizable: false,
                     width: Math.min(560, $(window).width() - 80),
-                    title: 'Add plugin',
+                    title: nrchkbText('plugins.addPlugin', 'Add plugin'),
                     close: function () {
                         dialog.dialog('destroy').remove()
                     },
                     buttons: {
-                        Cancel: function () {
+                        [nrchkbText('common.cancel', 'Cancel')]: function () {
                             $(this).dialog('close')
                         }
                     }
@@ -1983,7 +1983,7 @@ To discover valid characteristic names for the selected service, send a test pay
 
                     const accessoryOption = $("#node-input-accessoryId option[value='" + n.accessoryId + "']");
                     accessoryOption.attr("disabled", true);
-                    accessoryOption.text(accessoryOption.text() + " already used by " + n.name)
+                    accessoryOption.text(accessoryOption.text() + ' ' + nrchkbText('service.alreadyUsedBy', 'already used by') + ' ' + n.name)
                 }
             })
 
@@ -1991,20 +1991,20 @@ To discover valid characteristic names for the selected service, send a test pay
                 $('<div>')
                     .css({maxHeight: '80%'})
                     .html("<ul>" +
-                        "<li>If a Bridge is created within the Flow, then each Service node in a Subflow will be added to the existing (single) Bridge.</li>" +
-                        "<li>If a Bridge is created within the Subflow, a new Bridge will be created for each Subflow instance.</li>" +
-                        "<li>If a Standalone Accessory is being used, it is recommended to set it up completly within the Subflow editor. This will add a new Standalone Accessory for each Subflow instance in your Flow.</li>" +
-                        "<li>Visit our <b><a href=\"https://nrchkb.github.io/wiki/introduction/service-node/#bridge\">wiki</a></b> for more informations.</li>" +
+                        "<li>" + nrchkbText('service.bridgeInFlowNotice', 'If a Bridge is created within the Flow, then each Service node in a Subflow will be added to the existing (single) Bridge.') + "</li>" +
+                        "<li>" + nrchkbText('service.bridgeInSubflowNotice', 'If a Bridge is created within the Subflow, a new Bridge will be created for each Subflow instance.') + "</li>" +
+                        "<li>" + nrchkbText('service.standaloneInSubflowNotice', 'If a Standalone Accessory is being used, it is recommended to set it up completely within the Subflow editor. This will add a new Standalone Accessory for each Subflow instance in your Flow.') + "</li>" +
+                        "<li>" + nrchkbText('service.visitWikiPrefix', 'Visit our') + " <b><a href=\"https://nrchkb.github.io/wiki/introduction/service-node/#bridge\">wiki</a></b> " + nrchkbText('service.visitWikiSuffix', 'for more information.') + "</li>" +
                         "</ul>")
                     .dialog({
                         draggable: true,
                         modal: true,
                         resizable: false,
                         width: 'auto',
-                        title: 'Important Notice',
+                        title: nrchkbText('service.importantNotice', 'Important Notice'),
                         minHeight: 75,
                         buttons: {
-                            Close: function () {
+                            [nrchkbText('common.close', 'Close')]: function () {
                                 $(this).dialog('destroy')
                             }
                         }
@@ -2068,3 +2068,4 @@ To discover valid characteristic names for the selected service, send a test pay
         },
     })
 </script>
+

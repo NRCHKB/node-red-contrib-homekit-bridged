@@ -1,95 +1,95 @@
-<!--suppress EqualityComparisonWithCoercionJS -->
+﻿<!--suppress EqualityComparisonWithCoercionJS -->
 <script data-template-name="homekit-service" type="text/x-red">
     <div class="nrchkb-editor">
         <div class="alert alert-warning nrchkb-warning" role="alert">
-            <strong>Deprecated:</strong> homekit-service will be disabled soon. Migrate this node to homekit-service2 to keep it working in NRCHKB 2.x.
+            <strong data-i18n="service.service.deprecated">Deprecated:</strong> <span data-i18n="service.service.deprecatedWarning">homekit-service will be disabled soon. Migrate this node to homekit-service2 to keep it working in NRCHKB 2.x.</span>
             <div style="margin-top: 8px;">
                 <button type="button" class="red-ui-button" id="nrchkb-migrate-service2">
-                    <i class="fa fa-exchange"></i> Migrate this node
+                    <i class="fa fa-exchange"></i> <span data-i18n="service.service.migrateThisNode">Migrate this node</span>
                 </button>
             </div>
             <div id="nrchkb-migration-result" class="alert alert-info nrchkb-info" role="alert" style="display: none; margin-top: 8px;"></div>
         </div>
 
         <details class="nrchkb-section" open>
-            <summary><i class="fa fa-sliders"></i> Essentials</summary>
+            <summary><i class="fa fa-sliders"></i> <span data-i18n="service.service.essentials">Essentials</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row">
-                    <label for="node-config-input-isParent"><i class="fa fa-sitemap"></i> Service Hierarchy</label>
+                    <label for="node-config-input-isParent"><i class="fa fa-sitemap"></i> <span data-i18n="service.service.serviceHierarchy">Service Hierarchy</span></label>
                     <select id="node-config-input-isParent">
-                        <option value="true" selected="selected">Parent</option>
-                        <option value="false">Linked</option>
+                        <option value="true" selected="selected" data-i18n="service.service.parent">Parent</option>
+                        <option value="false" data-i18n="service.service.linked">Linked</option>
                     </select>
                 </div>
 
                 <div class="form-row">
                     <label for="node-input-serviceName">
                         <i class="fa fa-puzzle-piece"></i>
-                        Service
+                        <span data-i18n="service.service.service">Service</span>
                     </label>
                     <select id="node-input-serviceName">
-                        <option value="">Choose...</option>
+                        <option value="" data-i18n="service.common.choose">Choose...</option>
                     </select>
                 </div>
 
                 <div class="form-row">
                     <label for="node-input-name">
                         <i class="fa fa-tag"></i>
-                        Name
+                        <span data-i18n="service.common.name">Name</span>
                     </label>
-                    <input type="text" id="node-input-name" placeholder="Name">
+                    <input type="text" id="node-input-name" placeholder="Name" data-i18n="[placeholder]service.common.name">
                 </div>
             </div>
         </details>
 
         <details class="nrchkb-section" open>
-            <summary><i class="fa fa-map-marker"></i> Placement</summary>
+            <summary><i class="fa fa-map-marker"></i> <span data-i18n="service.service.placement">Placement</span></summary>
             <div class="nrchkb-section-body">
                 <div id="isParent">
                     <div class="form-row">
-                        <label for="node-config-input-hostType"><i class="fa fa-server"></i> Host Type</label>
+                        <label for="node-config-input-hostType"><i class="fa fa-server"></i> <span data-i18n="service.service.hostType">Host Type</span></label>
                         <select id="node-config-input-hostType">
-                            <option value="0" selected="selected">Bridge</option>
-                            <option value="1">Accessory</option>
+                            <option value="0" selected="selected" data-i18n="service.service.bridge">Bridge</option>
+                            <option value="1" data-i18n="service.service.accessory">Accessory</option>
                         </select>
                     </div>
                     <div id="isOnBridge">
                         <div id="isBridgeInSubflow" class="alert alert-warning nrchkb-warning" role="alert">
-                            Read more <b><a href="#" id="bridgeInSubflowNotice">here</a></b> about adding Bridge in a Subflow.
+                            <span data-i18n="service.service.bridgeInSubflowPrefix">Read more</span> <b><a href="#" id="bridgeInSubflowNotice" data-i18n="service.service.here">here</a></b> <span data-i18n="service.service.bridgeInSubflowSuffix">about adding Bridge in a Subflow.</span>
                         </div>
                         <div class="form-row">
                             <label for="node-input-bridge">
                                 <i class="fa fa-link"></i>
-                                Bridge
+                                <span data-i18n="service.service.bridge">Bridge</span>
                             </label>
                             <input id="node-input-bridge">
                         </div>
                         <details class="nrchkb-section">
-                            <summary><i class="fa fa-id-card-o"></i> Accessory Metadata</summary>
+                            <summary><i class="fa fa-id-card-o"></i> <span data-i18n="service.common.accessoryMetadata">Accessory Metadata</span></summary>
                             <div class="nrchkb-section-body">
                                 <div class="form-row">
-                                    <label for="node-input-manufacturer"><i class="fa fa-industry"></i> Manufacturer</label>
-                                    <input type="text" id="node-input-manufacturer" placeholder="Manufacturer">
+                                    <label for="node-input-manufacturer"><i class="fa fa-industry"></i> <span data-i18n="service.common.manufacturer">Manufacturer</span></label>
+                                    <input type="text" id="node-input-manufacturer" placeholder="Manufacturer" data-i18n="[placeholder]service.common.manufacturer">
                                 </div>
                                 <div class="form-row">
-                                    <label for="node-input-serialNo"><i class="fa fa-barcode"></i> Serial Number</label>
-                                    <input type="text" id="node-input-serialNo" placeholder="Serial Number">
+                                    <label for="node-input-serialNo"><i class="fa fa-barcode"></i> <span data-i18n="service.common.serialNumber">Serial Number</span></label>
+                                    <input type="text" id="node-input-serialNo" placeholder="Serial Number" data-i18n="[placeholder]service.common.serialNumber">
                                 </div>
                                 <div class="form-row">
-                                    <label for="node-input-model"><i class="fa fa-cube"></i> Model</label>
-                                    <input type="text" id="node-input-model" placeholder="Model">
+                                    <label for="node-input-model"><i class="fa fa-cube"></i> <span data-i18n="service.common.model">Model</span></label>
+                                    <input type="text" id="node-input-model" placeholder="Model" data-i18n="[placeholder]service.common.model">
                                 </div>
                                 <div class="form-row">
-                                    <label for="node-input-firmwareRev"><i class="fa fa-microchip"></i> Firmware Revision</label>
-                                    <input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision">
+                                    <label for="node-input-firmwareRev"><i class="fa fa-microchip"></i> <span data-i18n="service.common.firmwareRevision">Firmware Revision</span></label>
+                                    <input type="text" id="node-input-firmwareRev" placeholder="Firmware Revision" data-i18n="[placeholder]service.common.firmwareRevision">
                                 </div>
                                 <div class="form-row">
-                                    <label for="node-input-hardwareRev"><i class="fa fa-hdd-o"></i> Hardware Revision</label>
-                                    <input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision">
+                                    <label for="node-input-hardwareRev"><i class="fa fa-hdd-o"></i> <span data-i18n="service.common.hardwareRevision">Hardware Revision</span></label>
+                                    <input type="text" id="node-input-hardwareRev" placeholder="Hardware Revision" data-i18n="[placeholder]service.common.hardwareRevision">
                                 </div>
                                 <div class="form-row">
-                                    <label for="node-input-softwareRev"><i class="fa fa-code"></i> Software Revision</label>
-                                    <input type="text" id="node-input-softwareRev" placeholder="Software Revision">
+                                    <label for="node-input-softwareRev"><i class="fa fa-code"></i> <span data-i18n="service.common.softwareRevision">Software Revision</span></label>
+                                    <input type="text" id="node-input-softwareRev" placeholder="Software Revision" data-i18n="[placeholder]service.common.softwareRevision">
                                 </div>
                             </div>
                         </details>
@@ -98,7 +98,7 @@
                         <div class="form-row">
                             <label for="node-input-accessoryId">
                                 <i class="fa fa-home"></i>
-                                Accessory
+                                <span data-i18n="service.service.accessory">Accessory</span>
                             </label>
                             <input id="node-input-accessoryId">
                         </div>
@@ -109,10 +109,10 @@
                     <div class="form-row">
                         <label for="node-input-parentService">
                             <i class="fa fa-level-up"></i>
-                            Parent Service
+                            <span data-i18n="service.service.parentService">Parent Service</span>
                         </label>
                         <select id="node-input-parentService">
-                            <option value="">Choose...</option>
+                            <option value="" data-i18n="service.common.choose">Choose...</option>
                         </select>
                     </div>
                 </div>
@@ -120,16 +120,16 @@
         </details>
 
         <details class="nrchkb-section" open>
-            <summary><i class="fa fa-exchange"></i> Message Routing</summary>
+            <summary><i class="fa fa-exchange"></i> <span data-i18n="service.service.messageRouting">Message Routing</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row">
-                    <label for="node-input-topic"><i class="fa fa-comment-o"></i> Topic</label>
-                    <input type="text" id="node-input-topic" placeholder="Topic">
+                    <label for="node-input-topic"><i class="fa fa-comment-o"></i> <span data-i18n="service.service.topic">Topic</span></label>
+                    <input type="text" id="node-input-topic" placeholder="Topic" data-i18n="[placeholder]service.service.topic">
                 </div>
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-input-filter">
                         <input type="checkbox" id="node-input-filter">
-                        <span><i class="fa fa-filter"></i> Filter on Topic</span>
+                        <span><i class="fa fa-filter"></i> <span data-i18n="service.service.filterOnTopic">Filter on Topic</span></span>
                     </label>
                 </div>
                 <div id="node-input-logLevel-container"></div>
@@ -137,120 +137,120 @@
         </details>
 
         <details id="camera-configuration" class="nrchkb-section" open style="display: none;">
-            <summary><i class="fa fa-video-camera"></i> Camera Configuration</summary>
+            <summary><i class="fa fa-video-camera"></i> <span data-i18n="service.camera.configuration">Camera Configuration</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row">
-                    <label for="node-input-cameraConfigVideoProcessor"><i class="fa fa-terminal"></i> Video Processor</label>
+                    <label for="node-input-cameraConfigVideoProcessor"><i class="fa fa-terminal"></i> <span data-i18n="service.camera.videoProcessor">Video Processor</span></label>
                     <input type="text" id="node-input-cameraConfigVideoProcessor" placeholder="ffmpeg">
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigSource"><i class="fa fa-sign-in"></i> Source</label>
+                    <label for="node-input-cameraConfigSource"><i class="fa fa-sign-in"></i> <span data-i18n="service.camera.source">Source</span></label>
                     <input type="text" id="node-input-cameraConfigSource" placeholder="">
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigStillImageSource"><i class="fa fa-picture-o"></i> Still Image Source</label>
+                    <label for="node-input-cameraConfigStillImageSource"><i class="fa fa-picture-o"></i> <span data-i18n="service.camera.stillImageSource">Still Image Source</span></label>
                     <input type="text" id="node-input-cameraConfigStillImageSource" placeholder="">
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigMaxStreams"><i class="fa fa-random"></i> Max Streams</label>
+                    <label for="node-input-cameraConfigMaxStreams"><i class="fa fa-random"></i> <span data-i18n="service.camera.maxStreams">Max Streams</span></label>
                     <input type="text" id="node-input-cameraConfigMaxStreams" placeholder="">
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigMaxWidth"><i class="fa fa-arrows-h"></i> Max Width</label>
+                    <label for="node-input-cameraConfigMaxWidth"><i class="fa fa-arrows-h"></i> <span data-i18n="service.camera.maxWidth">Max Width</span></label>
                     <input type="text" id="node-input-cameraConfigMaxWidth" placeholder="">
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigMaxHeight"><i class="fa fa-arrows-v"></i> Max Height</label>
+                    <label for="node-input-cameraConfigMaxHeight"><i class="fa fa-arrows-v"></i> <span data-i18n="service.camera.maxHeight">Max Height</span></label>
                     <input type="text" id="node-input-cameraConfigMaxHeight" placeholder="">
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigMaxFPS"><i class="fa fa-clock-o"></i> Max FPS</label>
+                    <label for="node-input-cameraConfigMaxFPS"><i class="fa fa-clock-o"></i> <span data-i18n="service.camera.maxFps">Max FPS</span></label>
                     <input type="text" id="node-input-cameraConfigMaxFPS" placeholder="">
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigMaxBitrate"><i class="fa fa-tachometer"></i> Max Bitrate</label>
+                    <label for="node-input-cameraConfigMaxBitrate"><i class="fa fa-tachometer"></i> <span data-i18n="service.camera.maxBitrate">Max Bitrate</span></label>
                     <input type="text" id="node-input-cameraConfigMaxBitrate" placeholder="">
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigVideoCodec"><i class="fa fa-film"></i> Video Codec</label>
+                    <label for="node-input-cameraConfigVideoCodec"><i class="fa fa-film"></i> <span data-i18n="service.camera.videoCodec">Video Codec</span></label>
                     <input type="text" id="node-input-cameraConfigVideoCodec" placeholder="">
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigAudioCodec"><i class="fa fa-volume-up"></i> Audio Codec</label>
+                    <label for="node-input-cameraConfigAudioCodec"><i class="fa fa-volume-up"></i> <span data-i18n="service.camera.audioCodec">Audio Codec</span></label>
                     <input type="text" id="node-input-cameraConfigAudioCodec" placeholder="">
                 </div>
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-input-cameraConfigAudio">
                         <input type="checkbox" id="node-input-cameraConfigAudio">
-                        <span><i class="fa fa-headphones"></i> Audio</span>
+                        <span><i class="fa fa-headphones"></i> <span data-i18n="service.camera.audio">Audio</span></span>
                     </label>
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigPacketSize"><i class="fa fa-archive"></i> Packet Size</label>
+                    <label for="node-input-cameraConfigPacketSize"><i class="fa fa-archive"></i> <span data-i18n="service.camera.packetSize">Packet Size</span></label>
                     <input type="text" id="node-input-cameraConfigPacketSize" placeholder="">
                 </div>
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-input-cameraConfigVerticalFlip">
                         <input type="checkbox" id="node-input-cameraConfigVerticalFlip">
-                        <span><i class="fa fa-arrows-v"></i> Vertical Flip</span>
+                        <span><i class="fa fa-arrows-v"></i> <span data-i18n="service.camera.verticalFlip">Vertical Flip</span></span>
                     </label>
                 </div>
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-input-cameraConfigHorizontalFlip">
                         <input type="checkbox" id="node-input-cameraConfigHorizontalFlip">
-                        <span><i class="fa fa-arrows-h"></i> Horizontal Flip</span>
+                        <span><i class="fa fa-arrows-h"></i> <span data-i18n="service.camera.horizontalFlip">Horizontal Flip</span></span>
                     </label>
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigMapVideo"><i class="fa fa-film"></i> Map Video</label>
+                    <label for="node-input-cameraConfigMapVideo"><i class="fa fa-film"></i> <span data-i18n="service.camera.mapVideo">Map Video</span></label>
                     <input type="text" id="node-input-cameraConfigMapVideo" placeholder="">
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigMapAudio"><i class="fa fa-volume-up"></i> Map Audio</label>
+                    <label for="node-input-cameraConfigMapAudio"><i class="fa fa-volume-up"></i> <span data-i18n="service.camera.mapAudio">Map Audio</span></label>
                     <input type="text" id="node-input-cameraConfigMapAudio" placeholder="">
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigVideoFilter"><i class="fa fa-filter"></i> Video Filter</label>
+                    <label for="node-input-cameraConfigVideoFilter"><i class="fa fa-filter"></i> <span data-i18n="service.camera.videoFilter">Video Filter</span></label>
                     <input type="text" id="node-input-cameraConfigVideoFilter" placeholder="">
                 </div>
                 <div class="form-row">
-                    <label for="node-input-cameraConfigAdditionalCommandLine"><i class="fa fa-terminal"></i> Additional Command Line</label>
+                    <label for="node-input-cameraConfigAdditionalCommandLine"><i class="fa fa-terminal"></i> <span data-i18n="service.camera.additionalCommandLine">Additional Command Line</span></label>
                     <input type="text" id="node-input-cameraConfigAdditionalCommandLine" placeholder="">
                 </div>
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-input-cameraConfigDebug">
                         <input type="checkbox" id="node-input-cameraConfigDebug">
-                        <span><i class="fa fa-bug"></i> Debug</span>
+                        <span><i class="fa fa-bug"></i> <span data-i18n="service.logLevel.debug">Debug</span></span>
                     </label>
                 </div>
 
                 <div class="form-row">
-                    <label for="node-input-cameraConfigSnapshotOutput"><i class="fa fa-camera"></i> Snapshot output</label>
+                    <label for="node-input-cameraConfigSnapshotOutput"><i class="fa fa-camera"></i> <span data-i18n="service.camera.snapshotOutput">Snapshot output</span></label>
                     <select id="node-input-cameraConfigSnapshotOutput">
-                        <option value="disabled" selected="selected">Disabled</option>
-                        <option value="path">Path</option>
-                        <option value="content">Content</option>
+                        <option value="disabled" selected="selected" data-i18n="service.logLevel.disabled">Disabled</option>
+                        <option value="path" data-i18n="service.camera.path">Path</option>
+                        <option value="content" data-i18n="service.camera.content">Content</option>
                     </select>
                 </div>
 
                 <div class="form-row">
-                    <label for="node-input-cameraConfigInterfaceName"><i class="fa fa-sitemap"></i> Interface Name</label>
+                    <label for="node-input-cameraConfigInterfaceName"><i class="fa fa-sitemap"></i> <span data-i18n="service.camera.interfaceName">Interface Name</span></label>
                     <input type="text" id="node-input-cameraConfigInterfaceName" placeholder="">
                 </div>
             </div>
         </details>
 
         <details id="adaptive-lightning-configuration" class="nrchkb-section" open style="display: none;">
-            <summary><i class="fa fa-sun-o"></i> Adaptive Lighting Configuration</summary>
+            <summary><i class="fa fa-sun-o"></i> <span data-i18n="service.adaptiveLighting.configuration">Adaptive Lighting Configuration</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-input-adaptiveLightingOptionsEnable">
                         <input type="checkbox" id="node-input-adaptiveLightingOptionsEnable">
-                        <span><i class="fa fa-toggle-on"></i> Enable</span>
+                        <span><i class="fa fa-toggle-on"></i> <span data-i18n="service.common.enable">Enable</span></span>
                     </label>
                 </div>
                 <div class="form-row">
-                    <label for="node-input-adaptiveLightingOptionsMode"><i class="fa fa-magic"></i> Mode</label>
+                    <label for="node-input-adaptiveLightingOptionsMode"><i class="fa fa-magic"></i> <span data-i18n="service.adaptiveLighting.mode">Mode</span></label>
                     <select id="node-input-adaptiveLightingOptionsMode">
                         <option value="" selected hidden disabled>AUTOMATIC</option>
                         <option value="1">AUTOMATIC</option>
@@ -258,24 +258,24 @@
                     </select>
                 </div>
                 <div class="form-row">
-                    <label for="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment"><i class="fa fa-thermometer-half"></i> Custom Temperature Adjustment</label>
+                    <label for="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment"><i class="fa fa-thermometer-half"></i> <span data-i18n="service.adaptiveLighting.customTemperatureAdjustment">Custom Temperature Adjustment</span></label>
                     <input type="number" id="node-input-adaptiveLightingOptionsCustomTemperatureAdjustment" placeholder="0">
                 </div>
             </div>
         </details>
 
         <details class="nrchkb-section">
-            <summary><i class="fa fa-sliders"></i> Advanced Behavior</summary>
+            <summary><i class="fa fa-sliders"></i> <span data-i18n="service.service.advancedBehavior">Advanced Behavior</span></summary>
             <div class="nrchkb-section-body">
                 <div class="form-row">
-                    <label for="node-input-characteristicProperties"><i class="fa fa-list-alt"></i> Characteristic Properties</label>
+                    <label for="node-input-characteristicProperties"><i class="fa fa-list-alt"></i> <span data-i18n="service.service.characteristicProperties">Characteristic Properties</span></label>
                     <input type="text" id="node-input-characteristicProperties">
                 </div>
 
                 <div class="form-row nrchkb-checkbox-row">
                     <label class="nrchkb-checkbox-label" for="node-input-waitForSetupMsg">
                         <input type="checkbox" id="node-input-waitForSetupMsg">
-                        <span><i class="fa fa-hourglass-half"></i> Wait for Setup message</span>
+                        <span><i class="fa fa-hourglass-half"></i> <span data-i18n="service.service.waitForSetupMessage">Wait for Setup message</span></span>
                     </label>
                 </div>
             </div>
@@ -521,15 +521,15 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
         outputs: 2,
         outputLabels: function (index) {
             if (index === 0) {
-                return 'onChange'
+                return nrchkbText('service.outputOnChange', 'onChange')
             }
 
             if (index === 1) {
-                return 'onSet'
+                return nrchkbText('service.outputOnSet', 'onSet')
             }
 
             if (index === 2) {
-                return 'camera snapshot'
+                return nrchkbText('service.outputCameraSnapshot', 'camera snapshot')
             }
 
             return ''
@@ -537,7 +537,7 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
         icon: 'homekit.png',
         color: '#fcc127',
         label: function () {
-            return this.name || this.serviceName || 'Service'
+            return this.name || this.serviceName || nrchkbText('service.serviceLabel', 'Service')
         },
         labelStyle: function () {
             return this.name ? 'node_label_italic' : ''
@@ -663,23 +663,23 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
 
                 $('#nrchkb-migration-result')
                     .html(
-                        '<strong>Migration prepared.</strong> Service is now <code>' +
+                        '<strong>' + nrchkbText('service.migrationPrepared', 'Migration prepared.') + '</strong> ' + nrchkbText('service.serviceIsNow', 'Service is now') + ' <code>' +
                         $('<div>').text(result.node.serviceName || '').html() +
-                        '</code>. Click <strong>Done</strong> to commit this editor change, then <strong>Deploy</strong>.'
+                        '</code>. ' + nrchkbText('service.clickDoneDeploy', 'Click Done to commit this editor change, then Deploy.') + '.'
                     )
                     .show()
             }
 
             $('#nrchkb-migrate-service2').on('click', function () {
                 $('<div>')
-                    .html('<p>This will prepare this node for conversion to <strong>homekit-service2</strong> in legacy output mode and preserve existing wires.</p><p>CameraControl nodes will become the new <strong>Camera</strong> service with the embedded Homebridge Camera FFmpeg plugin.</p><p>After migration is prepared, click <strong>Done</strong> in this node editor to commit the change, then <strong>Deploy</strong>.</p>')
+                    .html('<p>' + nrchkbText('service.migrationDialogIntro', 'This will prepare this node for conversion to homekit-service2 in legacy output mode and preserve existing wires.') + '</p><p>' + nrchkbText('service.migrationDialogCamera', 'CameraControl nodes will become the new Camera service with the embedded Homebridge Camera FFmpeg plugin.') + '</p><p>' + nrchkbText('service.migrationDialogDoneDeploy', 'After migration is prepared, click Done in this node editor to commit the change, then Deploy.') + '</p>')
                     .dialog({
                         modal: true,
                         resizable: false,
                         width: 420,
-                        title: 'Migrate Service Node',
+                        title: nrchkbText('service.migrateServiceNode', 'Migrate Service Node'),
                         buttons: {
-                            Migrate: function () {
+                            [nrchkbText('service.migrate', 'Migrate')]: function () {
                                 const dialog = this
 
                                 $.ajax({
@@ -689,7 +689,7 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
                                     data: JSON.stringify(readCurrentNodeConfig())
                                 }).done(function (result) {
                                     if (!result || !result.migrated || !result.node) {
-                                        RED.notify('This node could not be migrated.', 'warning')
+                                        RED.notify(nrchkbText('service.migrationFailed', 'This node could not be migrated.'), 'warning')
                                         return
                                     }
 
@@ -704,8 +704,8 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
 
                                     RED.notify(
                                         result.cameraMigrated
-                                            ? 'Migration prepared: CameraControl will become homekit-service2 Camera. Click Done, then Deploy.'
-                                            : 'Migration prepared. Click Done, then Deploy.',
+                                            ? nrchkbText('service.migrationPreparedCameraNotify', 'Migration prepared: CameraControl will become homekit-service2 Camera. Click Done, then Deploy.')
+                                            : nrchkbText('service.migrationPreparedNotify', 'Migration prepared. Click Done, then Deploy.'),
                                         'success'
                                     )
 
@@ -714,11 +714,11 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
                                 }).fail(function (xhr) {
                                     const message = xhr.responseJSON && xhr.responseJSON.error
                                         ? xhr.responseJSON.error
-                                        : 'Migration failed.'
+                                        : nrchkbText('service.migrationFailedShort', 'Migration failed.')
                                     RED.notify(message, 'error')
                                 })
                             },
-                            Cancel: function () {
+                            [nrchkbText('common.cancel', 'Cancel')]: function () {
                                 $(this).dialog('destroy')
                             },
                         },
@@ -925,20 +925,20 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
                 $('<div>')
                     .css({maxHeight: '80%'})
                     .html("<ul>" +
-                        "<li>If a Bridge is created within the Flow, then each Service node in a Subflow will be added to the existing (single) Bridge.</li>" +
-                        "<li>If a Bridge is created within the Subflow, a new Bridge will be created for each Subflow instance.</li>" +
-                        "<li>If a Standalone Accessory is being used, it is recommended to set it up completly within the Subflow editor. This will add a new Standalone Accessory for each Subflow instance in your Flow.</li>" +
-                        "<li>Visit our <b><a href=\"https://nrchkb.github.io/wiki/introduction/service-node/#bridge\">wiki</a></b> for more informations.</li>" +
+                        "<li>" + nrchkbText('service.bridgeInFlowNotice', 'If a Bridge is created within the Flow, then each Service node in a Subflow will be added to the existing (single) Bridge.') + "</li>" +
+                        "<li>" + nrchkbText('service.bridgeInSubflowNotice', 'If a Bridge is created within the Subflow, a new Bridge will be created for each Subflow instance.') + "</li>" +
+                        "<li>" + nrchkbText('service.standaloneInSubflowNotice', 'If a Standalone Accessory is being used, it is recommended to set it up completely within the Subflow editor. This will add a new Standalone Accessory for each Subflow instance in your Flow.') + "</li>" +
+                        "<li>" + nrchkbText('service.visitWikiPrefix', 'Visit our') + " <b><a href=\"https://nrchkb.github.io/wiki/introduction/service-node/#bridge\">wiki</a></b> " + nrchkbText('service.visitWikiSuffix', 'for more information.') + "</li>" +
                         "</ul>")
                     .dialog({
                         draggable: true,
                         modal: true,
                         resizable: false,
                         width: 'auto',
-                        title: 'Important Notice',
+                        title: nrchkbText('service.importantNotice', 'Important Notice'),
                         minHeight: 75,
                         buttons: {
-                            Close: function () {
+                            [nrchkbText('common.close', 'Close')]: function () {
                                 $(this).dialog('destroy')
                             }
                         }
@@ -1035,3 +1035,4 @@ Send a `msg.payload` object whose keys are HomeKit characteristic names.
         setTimeout(removeLegacyPaletteNode, 0)
     })()
 </script>
+
