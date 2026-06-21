@@ -1,19 +1,19 @@
-import { logger } from '@nrchkb/logger'
-import {
+import path from 'node:path'
+import type {
     CharacteristicEventTypes,
     SerializedAccessory,
     SerializedService,
-} from 'hap-nodejs'
-import storage, { InitOptions } from 'node-persist'
-import path from 'path'
+} from '@homebridge/hap-nodejs'
+import { logger } from '@nrchkb/logger'
+import storage, { type InitOptions } from 'node-persist'
 import {
-    v4 as uuidv4,
     validate as uuidValidate,
     version as uuidVersion,
+    v4 as uuidv4,
 } from 'uuid'
 
 import NRCHKBError from './NRCHKBError'
-import { SerializedHostType } from './types/storage/SerializedHostType'
+import type { SerializedHostType } from './types/storage/SerializedHostType'
 import { StorageType } from './types/storage/StorageType'
 
 type EventCallback = {
@@ -21,11 +21,17 @@ type EventCallback = {
     callback: (value?: any) => void
 }
 
+type CallbackEntry = {
+    eventCallback: EventCallback
+    timeoutHandle: NodeJS.Timeout
+}
+
 export class Storage {
     private static customStoragePath: string
     private static storageInitialized = false
 
-    private static memoryStorage: { [key: string]: any } = {}
+    private static memoryStorage = new Map<string, CallbackEntry>()
+    private static readonly MAX_CALLBACKS = 1000
 
     private static log = logger('NRCHKB', 'Storage')
 
@@ -58,17 +64,46 @@ export class Storage {
 
     static saveCallback(eventCallback: EventCallback, ttl = 10000) {
         const callbackID = uuidv4()
-        Storage.memoryStorage[callbackID] = eventCallback
 
-        setTimeout(() => {
+        // Warn if callback storage is approaching capacity
+        const currentSize = Storage.memoryStorage.size
+        if (currentSize >= Storage.MAX_CALLBACKS) {
+            Storage.log.debug(
+                `Callback storage at maximum capacity (${currentSize}/${Storage.MAX_CALLBACKS}). Dropping oldest callbacks.`
+            )
+            // Remove oldest callbacks to prevent unbounded growth
+            const keysToDelete = Math.ceil(Storage.MAX_CALLBACKS * 0.1)
+            const iterator = Storage.memoryStorage.keys()
+
+            for (let index = 0; index < keysToDelete; index += 1) {
+                const oldestKey = iterator.next()
+                if (oldestKey.done) {
+                    break
+                }
+
+                const entry = Storage.memoryStorage.get(oldestKey.value)
+                if (entry) {
+                    clearTimeout(entry.timeoutHandle)
+                }
+                Storage.memoryStorage.delete(oldestKey.value)
+            }
+        }
+
+        const timeoutHandle = setTimeout(() => {
             // HAP-NodeJS will complain about slow running get handlers after 3 seconds
             // and terminate the request after 10 seconds.
-            if (callbackID in Storage.memoryStorage) {
+            const entry = Storage.memoryStorage.get(callbackID)
+            if (entry) {
                 Storage.log.debug(`Callback ${callbackID} timeout`)
-                eventCallback.callback()
-                delete Storage.memoryStorage[callbackID]
+                Storage.memoryStorage.delete(callbackID)
+                entry.eventCallback.callback()
             }
         }, ttl)
+
+        Storage.memoryStorage.set(callbackID, {
+            eventCallback,
+            timeoutHandle,
+        })
 
         return callbackID
     }
@@ -111,11 +146,12 @@ export class Storage {
     }
 
     static loadCallback(key: string): EventCallback | undefined {
-        if (key in Storage.memoryStorage) {
+        const entry = Storage.memoryStorage.get(key)
+        if (entry) {
             Storage.log.trace(`Returning callback ${key}`)
-            const value = Storage.memoryStorage[key]
-            delete Storage.memoryStorage[key]
-            return value
+            clearTimeout(entry.timeoutHandle)
+            Storage.memoryStorage.delete(key)
+            return entry.eventCallback
         }
 
         return undefined
@@ -125,18 +161,22 @@ export class Storage {
         return Storage.load(StorageType.CUSTOM_CHARACTERISTICS)
     }
 
-    static loadService(key: string): Promise<SerializedService> {
-        return new Promise((resolve, reject) => {
-            Storage.load(StorageType.SERVICE, key).then((value) => {
-                if (value === undefined) {
-                    reject('Service data not exists')
-                } else if ('primaryService' in value) {
-                    resolve(value)
-                } else {
-                    reject('Service data corrupted')
-                }
-            })
-        })
+    static async loadService(key: string): Promise<SerializedService> {
+        const value = await Storage.load(StorageType.SERVICE, key)
+
+        if (value === undefined) {
+            throw 'Service data not exists'
+        }
+
+        if (
+            typeof value === 'object' &&
+            value !== null &&
+            'primaryService' in value
+        ) {
+            return value
+        }
+
+        throw 'Service data corrupted'
     }
 
     static loadAccessory(key: string): Promise<SerializedAccessory> {

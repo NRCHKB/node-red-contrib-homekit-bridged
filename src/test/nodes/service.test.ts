@@ -1,13 +1,23 @@
-import 'should'
-
+import { Accessory, Bridge } from '@homebridge/hap-nodejs'
 import { loggerSetup } from '@nrchkb/logger'
-import { afterEach, before, describe, it } from 'mocha'
 import helper from 'node-red-node-test-helper'
-
+import {
+    afterAll,
+    afterEach,
+    beforeAll,
+    describe,
+    expect,
+    it,
+    vi,
+} from 'vitest'
+import HAPServiceNodeType from '../../lib/types/HAPServiceNodeType'
+import { describeCommonSwitchServiceBehavior } from '../test-utils/common-switch-service-tests'
 import { switchServiceBridgeFlow } from '../test-utils/data'
-const homekitBridgeNode = require('../../nodes/bridge')
-const nrchkb = require('../../nodes/nrchkb')
-const homekitServiceNode = require('../../nodes/service')
+import { configureNodeRedTestSettings } from '../test-utils/vitest-helper'
+
+const homekitBridgeNode = require('../../../build/nodes/bridge')
+const nrchkb = require('../../../build/nodes/nrchkb')
+const homekitServiceNode = require('../../../build/nodes/service')
 
 loggerSetup({
     debugEnabled: true,
@@ -15,158 +25,165 @@ loggerSetup({
     traceEnabled: false,
 })
 
-describe('Service Node', function () {
-    before(function (done) {
-        helper.startServer(done)
+const publishSpy = vi
+    .spyOn(Bridge.prototype, 'publish')
+    .mockImplementation(function () {
+        return true as never
+    })
+vi.spyOn(Bridge.prototype, 'unpublish').mockResolvedValue(undefined)
+vi.spyOn(Accessory.prototype, 'publish').mockImplementation(function () {
+    return true as never
+})
+vi.spyOn(Accessory.prototype, 'unpublish').mockResolvedValue(undefined)
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+const buildWaitForSetupFlow = () => {
+    const bridgeId = `bridge.${Date.now()}`
+    const flowId = `flow.${Date.now()}`
+    const firstServiceId = `service.first.${Date.now()}`
+    const secondServiceId = `service.second.${Date.now()}`
+
+    const createService = (id: string, name: string) => ({
+        accessoryId: '',
+        type: 'homekit-service',
+        bridge: bridgeId,
+        cameraConfigAdditionalCommandLine: '',
+        cameraConfigAudio: false,
+        cameraConfigAudioCodec: 'libfdk_aac',
+        cameraConfigDebug: false,
+        cameraConfigHorizontalFlip: false,
+        cameraConfigInterfaceName: '',
+        cameraConfigMapAudio: '0:1',
+        cameraConfigMapVideo: '0:0',
+        cameraConfigMaxBitrate: 300,
+        cameraConfigMaxFPS: 10,
+        cameraConfigMaxHeight: 720,
+        cameraConfigMaxStreams: 2,
+        cameraConfigMaxWidth: 1280,
+        cameraConfigPacketSize: 1316,
+        cameraConfigSnapshotOutput: 'disabled',
+        cameraConfigSource: '',
+        cameraConfigStillImageSource: '',
+        cameraConfigVideoCodec: 'libx264',
+        cameraConfigVideoFilter: 'scale=1280:720',
+        cameraConfigVideoProcessor: 'ffmpeg',
+        cameraConfigVerticalFlip: false,
+        characteristicProperties: '{}',
+        filter: false,
+        firmwareRev: '1.0.0',
+        hardwareRev: '1.0.0',
+        hostType: '0',
+        id,
+        isParent: true,
+        manufacturer: 'NRCHKB',
+        model: '1.0.0',
+        name,
+        outputs: 2,
+        parentService: '',
+        serviceName: 'Switch',
+        serialNo: name,
+        softwareRev: '1.0.0',
+        topic: '',
+        waitForSetupMsg: true,
+        wires: [[], []],
+        x: 320,
+        y: 180,
+        z: flowId,
     })
 
-    after(function (done) {
-        helper.stopServer(done)
+    return {
+        firstServiceId,
+        flow: [
+            createService(firstServiceId, 'First Switch'),
+            createService(secondServiceId, 'Delayed Switch'),
+            {
+                bridgeName: 'Bridge',
+                customMdnsConfig: false,
+                firmwareRev: '1.0.0',
+                hardwareRev: '1.0.0',
+                id: bridgeId,
+                allowInsecureRequest: false,
+                allowMessagePassthrough: true,
+                mdnsInterface: '',
+                mdnsIp: '',
+                mdnsLoopback: true,
+                mdnsMulticast: true,
+                mdnsPort: '',
+                mdnsReuseAddr: true,
+                mdnsTtl: '',
+                manufacturer: 'NRCHKB',
+                model: '1.0.0',
+                pinCode: '1111-1111',
+                port: '',
+                serialNo: 'Bridge',
+                softwareRev: '1.0.0',
+                type: 'homekit-bridge',
+            },
+        ],
+        secondServiceId,
+    }
+}
+
+describe('Service Node', () => {
+    let cleanupUserDir: (() => void) | undefined
+
+    beforeAll(async () => {
+        cleanupUserDir = configureNodeRedTestSettings()
+        await new Promise<void>((resolve) => helper.startServer(resolve))
     })
 
-    afterEach(function () {
-        helper.unload()
+    afterAll(async () => {
+        await new Promise<void>((resolve) => helper.stopServer(resolve))
+        cleanupUserDir?.()
     })
 
-    it('should be loaded', function (done) {
-        const { serviceId, flow } = switchServiceBridgeFlow()
-        helper
-            .load(
-                [nrchkb, homekitBridgeNode, homekitServiceNode],
-                flow,
-                function () {
-                    try {
-                        const s1 = helper.getNode(serviceId)
-                        s1.should.have.property('type', 'homekit-service')
-                        done()
-                    } catch (err) {
-                        done(err)
-                    }
-                }
-            )
-            .catch((error: any) => {
-                done(new Error(error))
-            })
+    afterEach(() => {
+        vi.clearAllMocks()
+        return helper.unload()
     })
 
-    it('should output ON:true payload', function (done) {
-        const { serviceId, flow } = switchServiceBridgeFlow()
-        helper
-            .load(
-                [nrchkb, homekitBridgeNode, homekitServiceNode],
-                flow,
-                function () {
-                    const s1 = helper.getNode(serviceId)
-
-                    s1.on('input', (msg: any) => {
-                        try {
-                            msg.payload.should.have.property('On', true)
-                            done()
-                        } catch (err) {
-                            done(err)
-                        }
-                    })
-
-                    s1.receive({ payload: { On: true } })
-                }
-            )
-            .catch((error: any) => {
-                done(new Error(error))
-            })
+    describeCommonSwitchServiceBehavior({
+        buildFlow: switchServiceBridgeFlow,
+        expectedType: 'homekit-service',
+        nodes: [nrchkb, homekitBridgeNode, homekitServiceNode],
+        title: 'shared switch behavior',
     })
 
-    it('should output ON:false payload', function (done) {
-        const { serviceId, flow } = switchServiceBridgeFlow()
-        helper
-            .load(
-                [nrchkb, homekitBridgeNode, homekitServiceNode],
-                flow,
-                function () {
-                    const s1 = helper.getNode(serviceId)
+    it('waits for every wait-for-setup service on a bridge before publishing', async () => {
+        const { firstServiceId, flow, secondServiceId } =
+            buildWaitForSetupFlow()
 
-                    s1.on('input', function (msg: any) {
-                        try {
-                            msg.payload.should.have.property('On', false)
-                            done()
-                        } catch (err) {
-                            done(err)
-                        }
-                    })
+        await helper.load([nrchkb, homekitBridgeNode, homekitServiceNode], flow)
 
-                    s1.receive({ payload: { On: false } })
-                }
-            )
-            .catch((error: any) => {
-                done(new Error(error))
-            })
-    })
+        const firstService = helper.getNode(
+            firstServiceId
+        ) as HAPServiceNodeType
+        const secondService = helper.getNode(secondServiceId)
 
-    it('should output reachable true', function (done) {
-        const { serviceId, flow } = switchServiceBridgeFlow()
-        helper
-            .load(
-                [nrchkb, homekitBridgeNode, homekitServiceNode],
-                flow,
-                function () {
-                    const s1 = helper.getNode(serviceId)
-                    const h1 = helper.getNode('h1')
+        firstService.receive({
+            payload: {
+                nrchkb: {
+                    setup: {},
+                },
+            },
+        })
 
-                    let count = 0
+        await wait(350)
 
-                    h1.on('input', function (msg: any) {
-                        if (count === 0) {
-                            try {
-                                msg.payload.should.have.property('On', true)
-                                msg.hap.should.have.property('newValue', true)
-                                msg.hap.should.have.property('reachable', true)
-                                done()
-                            } catch (err) {
-                                done(err)
-                            }
-                            count++
-                        }
-                    })
+        expect(publishSpy).not.toHaveBeenCalled()
 
-                    s1.receive({ payload: { On: true } })
-                }
-            )
-            .catch((error: any) => {
-                done(new Error(error))
-            })
-    })
+        secondService.receive({
+            payload: {
+                nrchkb: {
+                    setup: {},
+                },
+            },
+        })
 
-    it('should output reachable false', function (done) {
-        const { serviceId, flow } = switchServiceBridgeFlow()
-        helper
-            .load(
-                [nrchkb, homekitBridgeNode, homekitServiceNode],
-                flow,
-                function () {
-                    const s1 = helper.getNode(serviceId)
-                    const h1 = helper.getNode('h1')
+        await wait(350)
 
-                    h1.on('input', function (msg: any) {
-                        try {
-                            msg.payload.should.have.property('On', false)
-                            msg.hap.should.have.property('reachable', false)
-                            // @ts-ignore
-                            s1.status.should.be.calledWithExactly({
-                                fill: 'red',
-                                shape: 'ring',
-                                text: 'Not reachable',
-                                type: 'NO_RESPONSE',
-                            })
-                            done()
-                        } catch (err) {
-                            done(err)
-                        }
-                    })
-
-                    s1.receive({ payload: { On: 'NO_RESPONSE' } })
-                }
-            )
-            .catch((error: any) => {
-                done(new Error(error))
-            })
+        expect(publishSpy).toHaveBeenCalledTimes(1)
+        expect(firstService.hostNode.host.bridgedAccessories).toHaveLength(2)
     })
 })

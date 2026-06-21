@@ -1,7 +1,8 @@
-import { AdaptiveLightingControllerMode } from 'hap-nodejs/dist/lib/controller/AdaptiveLightingController'
-import { NodeDef } from 'node-red'
+import type { NodeDef } from 'node-red'
+import type { AdaptiveLightingControllerMode } from '../hap/hap-nodejs'
+import type { NRCHKBLogLevel } from '../utils/LogUtils'
 
-import CameraConfigType from './CameraConfigType'
+import type CameraConfigType from './CameraConfigType'
 
 type HAPServiceConfigType = NodeDef & {
     isParent: boolean
@@ -15,6 +16,7 @@ type HAPServiceConfigType = NodeDef & {
     serviceName: string
     topic: string
     filter: boolean
+    logLevel?: NRCHKBLogLevel
     manufacturer: string
     model: string
     serialNo: string

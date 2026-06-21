@@ -167,6 +167,7 @@ build/Release
 
 # Dependency directories
 node_modules/
+.corepack/
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -174,9 +175,6 @@ typings/
 
 # Optional npm cache directory
 .npm
-
-# Optional eslint cache
-.eslintcache
 
 # Optional REPL history
 .node_repl_history
@@ -322,3 +320,5 @@ build/**/*.js
 .npm-upgrade.json
 
 persist/*
+
+AGENTS.md

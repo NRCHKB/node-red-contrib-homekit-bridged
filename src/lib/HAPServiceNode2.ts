@@ -1,12 +1,12 @@
-import { logger } from '@nrchkb/logger'
-import { uuid } from 'hap-nodejs'
-import { NodeAPI } from 'node-red'
+import { uuid } from '@homebridge/hap-nodejs'
+import type { NodeAPI } from 'node-red'
 
 import NRCHKBError from './NRCHKBError'
-import HAPHostNodeType from './types/HAPHostNodeType'
-import HAPService2ConfigType from './types/HAPService2ConfigType'
-import HAPService2NodeType from './types/HAPService2NodeType'
+import type HAPHostNodeType from './types/HAPHostNodeType'
+import type HAPService2ConfigType from './types/HAPService2ConfigType'
+import type HAPService2NodeType from './types/HAPService2NodeType'
 import HostType from './types/HostType'
+import { scopedLogger } from './utils/LogUtils'
 import { NodeStatusUtils } from './utils/NodeStatusUtils'
 
 module.exports = (RED: NodeAPI) => {
@@ -16,24 +16,27 @@ module.exports = (RED: NodeAPI) => {
     const nrchkbConfigCompatibilityOverride = function (
         this: HAPService2NodeType
     ) {
-        const self = this
+        const log = scopedLogger(
+            'NRCHKB',
+            'HAPServiceNode2',
+            this.config.name,
+            this
+        )
 
-        const log = logger('NRCHKB', 'HAPServiceNode2', self.config.name, self)
-
-        if (self.config.isParent === undefined) {
+        if (this.config.isParent === undefined) {
             log.trace(
-                `nrchkbConfigCompatibilityOverride => self.config.isParent=${self.config.isParent} value changed to true`
+                `nrchkbConfigCompatibilityOverride => self.config.isParent=${this.config.isParent} value changed to true`
             )
             // Services created in pre linked services era where working in 1.2 but due to more typescript in 1.3+ it started to cause some errors
-            self.config.isParent = true
+            this.config.isParent = true
         }
 
-        if (self.config.hostType === undefined) {
+        if (this.config.hostType === undefined) {
             // When moving from 1.2 to 1.3 hostType is not defined on homekit-service
             log.trace(
-                `nrchkbConfigCompatibilityOverride => self.config.hostType=${self.config.hostType} value changed to HostType.BRIDGE`
+                `nrchkbConfigCompatibilityOverride => self.config.hostType=${this.config.hostType} value changed to HostType.BRIDGE`
             )
-            self.config.hostType = HostType.BRIDGE
+            this.config.hostType = HostType.BRIDGE
         }
     }
 
@@ -41,45 +44,50 @@ module.exports = (RED: NodeAPI) => {
         this: HAPService2NodeType,
         config: HAPService2ConfigType
     ) {
-        const self = this
-        self.nodeStatusUtils = new NodeStatusUtils(self)
+        this.nodeStatusUtils = new NodeStatusUtils(this)
 
-        self.config = config
-        self.name = self.config.name
+        this.config = config
+        this.name = this.config.name
+        this.nrchkbClosing = false
 
-        const log = logger('NRCHKB', 'HAPServiceNode2', self.config.name, self)
+        const log = scopedLogger(
+            'NRCHKB',
+            'HAPServiceNode2',
+            this.config.name,
+            this
+        )
 
-        self.RED = RED
-        self.publishTimers = {}
+        this.RED = RED
+        this.publishTimers = {}
 
-        nrchkbConfigCompatibilityOverride.call(self)
-        RED.nodes.createNode(self, self.config)
+        nrchkbConfigCompatibilityOverride.call(this)
+        RED.nodes.createNode(this, this.config)
 
-        const ServiceUtils = require('./utils/ServiceUtils2')(self)
+        const ServiceUtils = require('./utils/ServiceUtils2')(this)
 
         new Promise<HAPService2ConfigType>((resolve) => {
-            if (self.config.waitForSetupMsg) {
+            if (this.config.waitForSetupMsg) {
                 log.debug(
                     'Waiting for Setup message. It should be of format {"payload":{"nrchkb":{"setup":{}}}}'
                 )
 
-                self.setupDone = false
+                this.setupDone = false
 
-                self.nodeStatusUtils.setStatus({
+                this.nodeStatusUtils.setStatus({
                     fill: 'blue',
                     shape: 'dot',
                     text: 'Waiting for Setup',
                 })
 
-                self.handleWaitForSetup = (msg: Record<string, unknown>) =>
-                    ServiceUtils.handleWaitForSetup(self.config, msg, resolve)
-                self.on('input', self.handleWaitForSetup)
+                this.handleWaitForSetup = (msg: Record<string, unknown>) =>
+                    ServiceUtils.handleWaitForSetup(this.config, msg, resolve)
+                this.on('input', this.handleWaitForSetup)
             } else {
-                resolve(self.config)
+                resolve(this.config)
             }
         })
             .then((newConfig) => {
-                init.call(self, newConfig)
+                init.call(this, newConfig)
             })
             .catch((error: any) => {
                 log.error(`Error while starting Service due to ${error}`)
@@ -90,27 +98,39 @@ module.exports = (RED: NodeAPI) => {
         this: HAPService2NodeType,
         config: HAPService2ConfigType
     ) {
-        const self = this
-        self.config = config
+        this.config = config
 
-        const log = logger('NRCHKB', 'HAPServiceNode2', self.config.name, self)
+        const log = scopedLogger(
+            'NRCHKB',
+            'HAPServiceNode2',
+            this.config.name,
+            this
+        )
 
-        const ServiceUtils = require('./utils/ServiceUtils2')(self)
+        const ServiceUtils = require('./utils/ServiceUtils2')(this)
 
-        if (self.config.isParent) {
+        if (this.config.isParent) {
             log.debug('Starting Parent Service')
-            configure.call(self)
-            self.configured = true
-            self.reachable = true
+            configure
+                .call(this)
+                .then(() => {
+                    this.configured = true
+                    this.reachable = true
+                })
+                .catch((error: any) => {
+                    log.error(
+                        `Error while starting Parent Service due to ${error}`
+                    )
+                })
         } else {
             const serviceType =
-                config.serviceName === 'CameraControl' ? 'Camera' : 'Linked'
+                config.serviceName === 'Camera' ? 'Camera' : 'Linked'
 
             ServiceUtils.waitForParent()
-                .then(() => {
+                .then(async () => {
                     log.debug(`Starting  ${serviceType} Service`)
-                    configure.call(self)
-                    self.configured = true
+                    await configure.call(this)
+                    this.configured = true
                 })
                 .catch((error: any) => {
                     log.error(
@@ -120,41 +140,44 @@ module.exports = (RED: NodeAPI) => {
         }
     }
 
-    const configure = function (this: HAPService2NodeType) {
-        const self = this
+    const configure = async function (this: HAPService2NodeType) {
+        const log = scopedLogger(
+            'NRCHKB',
+            'HAPServiceNode2',
+            this.config.name,
+            this
+        )
 
-        const log = logger('NRCHKB', 'HAPServiceNode2', self.config.name, self)
-
-        const Utils = require('./utils')(self)
+        const Utils = require('./utils')(this)
         const AccessoryUtils = Utils.AccessoryUtils
         const BridgeUtils = Utils.BridgeUtils
         const CharacteristicUtils = require('./utils/CharacteristicUtils2')(
-            self
+            this
         )
-        const ServiceUtils = require('./utils/ServiceUtils2')(self)
+        const ServiceUtils = require('./utils/ServiceUtils2')(this)
 
         let parentNode: HAPService2NodeType
 
-        if (self.config.isParent) {
+        if (this.config.isParent) {
             const hostId =
-                self.config.hostType == HostType.BRIDGE
-                    ? self.config.bridge
-                    : self.config.accessoryId
+                this.config.hostType == HostType.BRIDGE
+                    ? this.config.bridge
+                    : this.config.accessoryId
 
-            self.hostNode = RED.nodes.getNode(hostId) as HAPHostNodeType
+            this.hostNode = RED.nodes.getNode(hostId) as HAPHostNodeType
 
-            if (!self.hostNode) {
-                const message = `Host node ${self.config.hostType == HostType.BRIDGE ? 'Bridge' : 'Standalone Accessory'} ${hostId} not found`
+            if (!this.hostNode) {
+                const message = `Host node ${this.config.hostType == HostType.BRIDGE ? 'Bridge' : 'Standalone Accessory'} ${hostId} not found`
                 log.error(message, false)
                 throw new NRCHKBError(message)
             }
 
-            self.childNodes = []
-            self.childNodes.push(self)
+            this.childNodes = []
+            this.childNodes.push(this)
         } else {
             // Retrieve parent service node
             parentNode = RED.nodes.getNode(
-                self.config.parentService
+                this.config.parentService
             ) as HAPService2NodeType
 
             if (!parentNode) {
@@ -162,44 +185,44 @@ module.exports = (RED: NodeAPI) => {
                 throw new NRCHKBError('Parent Node not assigned')
             }
 
-            self.parentNode = parentNode
-            self.parentService = self.parentNode.service
+            this.parentNode = parentNode
+            this.parentService = this.parentNode.service
 
-            if (!self.parentService) {
+            if (!this.parentService) {
                 log.error('Parent Service not assigned', false)
                 throw new NRCHKBError('Parent Service not assigned')
             }
 
-            self.hostNode = self.parentNode.hostNode
-            self.parentNode.childNodes?.push(self)
+            this.hostNode = this.parentNode.hostNode
+            this.parentNode.childNodes?.push(this)
 
-            self.accessory = self.parentNode.accessory
+            this.accessory = this.parentNode.accessory
         }
 
         // Service node properties
-        self.name = self.config.name
+        this.name = this.config.name
 
         // Find a unique identifier for the current service
         if (
-            self.hasOwnProperty('_flow') &&
-            self.hasOwnProperty('_alias') &&
-            self._flow?.hasOwnProperty('TYPE') &&
-            self._flow.TYPE === 'subflow'
+            Object.hasOwn(this, '_flow') &&
+            Object.hasOwn(this, '_alias') &&
+            (this._flow ? Object(this._flow).hasOwn('TYPE') : false) &&
+            this._flow?.TYPE === 'subflow'
         ) {
             // For subflows, use the service node identifier from the subflow template
             // plus the full path from the subflow node identifier to the subflow.
-            self.uniqueIdentifier = self._alias + '/' + self._flow.path
+            this.uniqueIdentifier = `${this._alias}/${this._flow.path}`
         } else {
             // For top level flows, use the node identifier
-            self.uniqueIdentifier = self.id
+            this.uniqueIdentifier = this.id
         }
 
         // Generate UUID from unique identifier
-        const subtypeUUID = uuid.generate(self.uniqueIdentifier)
+        const subtypeUUID = uuid.generate(this.uniqueIdentifier)
 
         // Look for existing Accessory or create a new one
-        if (self.config.hostType == HostType.BRIDGE) {
-            if (self.config.isParent) {
+        if (this.config.hostType == HostType.BRIDGE) {
+            if (this.config.isParent) {
                 // According to the HomeKit Accessory Protocol Specification the value
                 // of the fields Name, Manufacturer, Serial Number and Model must not
                 // change throughout the lifetime of an accessory. Because of that the
@@ -208,67 +231,71 @@ module.exports = (RED: NodeAPI) => {
                 // changes.
                 const accessoryUUID = uuid.generate(
                     'A' +
-                        self.uniqueIdentifier +
-                        self.name +
-                        self.config.manufacturer +
-                        self.config.serialNo +
-                        self.config.model
+                        this.uniqueIdentifier +
+                        this.name +
+                        this.config.manufacturer +
+                        this.config.serialNo +
+                        this.config.model
                 )
 
-                self.accessory = AccessoryUtils.getOrCreate(
-                    self.hostNode.host,
+                this.accessory = AccessoryUtils.getOrCreate(
+                    this.hostNode.host,
                     {
-                        name: self.name,
+                        name: this.name,
                         UUID: accessoryUUID,
-                        manufacturer: self.config.manufacturer,
-                        serialNo: self.config.serialNo,
-                        model: self.config.model,
-                        firmwareRev: self.config.firmwareRev,
-                        hardwareRev: self.config.hardwareRev,
-                        softwareRev: self.config.softwareRev,
+                        manufacturer: this.config.manufacturer,
+                        serialNo: this.config.serialNo,
+                        model: this.config.model,
+                        firmwareRev: this.config.firmwareRev,
+                        hardwareRev: this.config.hardwareRev,
+                        softwareRev: this.config.softwareRev,
                     },
                     subtypeUUID // subtype of the primary service for identification
                 )
 
                 //Respond to identify
-                self.onIdentify = AccessoryUtils.onIdentify
-                self.accessory.on('identify', self.onIdentify)
+                this.onIdentify = AccessoryUtils.onIdentify
+                this.accessory.on('identify', this.onIdentify)
             }
         } else {
             // We are using Standalone Accessory mode so no need to create new Accessory as we have "host" already
             log.debug('Binding Service accessory as Standalone Accessory')
-            self.accessory = self.hostNode.host
+            this.accessory = this.hostNode.host
         }
 
         // Look for existing Service or create a new one
-        self.service = ServiceUtils.getOrCreate(
-            self.accessory,
+        this.service = await ServiceUtils.getOrCreate(
+            this.accessory,
             {
-                name: self.name,
+                name: this.name,
                 UUID: subtypeUUID,
-                serviceName: self.config.serviceName,
-                config: self.config,
+                serviceName: this.config.serviceName,
+                config: this.config,
             },
-            self.parentService
+            this.parentService
         )
 
-        self.characteristicProperties = CharacteristicUtils.load(
-            self.service,
-            self.config
+        if (this.nrchkbClosing) {
+            return
+        }
+
+        this.characteristicProperties = CharacteristicUtils.load(
+            this.service,
+            this.config
         )
 
         ServiceUtils.configureAdaptiveLightning()
 
-        if (self.config.isParent) {
-            BridgeUtils.delayedPublish(self)
+        if (this.config.isParent) {
+            BridgeUtils.delayedPublish(this)
         }
 
         // The pinCode should be shown to the user until interaction with iOS
         // client starts
-        self.nodeStatusUtils.setStatus({
+        this.nodeStatusUtils.setStatus({
             fill: 'yellow',
             shape: 'ring',
-            text: self.hostNode.config.pinCode,
+            text: this.hostNode.config.pinCode,
         })
 
         // Emit message when value changes
@@ -276,14 +303,14 @@ module.exports = (RED: NodeAPI) => {
 
         // Subscribe to set and get on characteristics for that service and get
         // list of all supported
-        self.supported = CharacteristicUtils.subscribeAndGetSupported(
-            self.service
+        this.supported = CharacteristicUtils.subscribeAndGetSupported(
+            this.service
         )
 
         // Respond to inputs
-        self.on('input', ServiceUtils.onInput)
+        this.on('input', ServiceUtils.onInput)
 
-        self.on('close', ServiceUtils.onClose)
+        this.on('close', ServiceUtils.onClose)
     }
 
     return {

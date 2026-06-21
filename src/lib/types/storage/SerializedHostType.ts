@@ -1,7 +1,7 @@
-import { SerializedAccessory } from 'hap-nodejs'
+import type { SerializedAccessory } from '@homebridge/hap-nodejs'
 
 type SerializedHostType = {
     _isBridge: boolean
 } & SerializedAccessory
 
-export { SerializedHostType }
+export type { SerializedHostType }

@@ -1,4 +1,4 @@
-import { Node } from 'node-red'
+import type { Node } from 'node-red'
 
 type NodeType = Node
 

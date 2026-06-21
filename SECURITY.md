@@ -13,8 +13,9 @@ If vulnerability is a serious risk then please consider contacting us directly a
 
 | Version  | Supported          |
 |----------|--------------------|
-| >= 1.x.y | :white_check_mark: |
-| < 1.x.y  | :x: limited        |
+| >= 2.x.y | :white_check_mark: |
+| >= 1.7.3 | :x: limited        |
+| < 1.x.y  | :x: no support     |
 
 ## Reporting a Vulnerability
 
@@ -31,13 +32,14 @@ NRCHKB is a node (plugin/library) for node-red. NRCHKB allow user to simulate Ho
 ### node-red
 
 To use node-red safely you should secure it properly with encryption and password protection
+
 - [here is how in official node-red docs](https://nodered.org/docs/security).
 
 ### Invalid Setup Codes
 
 Since 1.3 random Setup Code will be generated for new Host (Bridge or Standalone Accessory) nodes (instead of default 1111-1111)
 
-The following Setup Codes must not be used due to their trivial, insecure nature. 
+The following Setup Codes must not be used due to their trivial, insecure nature.
 Since 1.7.0 they are forbidden programmatically.
 
 - 0000-0000

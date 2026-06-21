@@ -1,9 +1,13 @@
-import 'should'
-
-import { NodeStatus } from '@node-red/registry'
-import assert from 'assert'
-import { after, before, beforeEach, describe, it } from 'mocha'
-import sinon, { SinonFakeTimers } from 'sinon'
+import type { NodeStatus } from '@node-red/registry'
+import {
+    afterAll,
+    beforeAll,
+    beforeEach,
+    describe,
+    expect,
+    it,
+    vi,
+} from 'vitest'
 
 import { NodeStatusUtils } from '../../lib/utils/NodeStatusUtils'
 
@@ -14,102 +18,91 @@ class NodeWithStatusMock {
     }
 }
 
-describe('NodeStatusUtils', function () {
+describe('NodeStatusUtils', () => {
     let node: NodeWithStatusMock
     let nodeStatusUtils: NodeStatusUtils
-    let clock: SinonFakeTimers
 
-    before(function () {
-        clock = sinon.useFakeTimers()
+    beforeAll(() => {
+        vi.useFakeTimers()
     })
 
-    after(function () {
-        clock.restore()
+    afterAll(() => {
+        vi.useRealTimers()
     })
 
-    beforeEach(function (done) {
+    beforeEach(() => {
         node = new NodeWithStatusMock()
         nodeStatusUtils = new NodeStatusUtils(node)
-        done()
     })
 
-    it('setStatus', function (done) {
-        try {
-            nodeStatusUtils.setStatus('test')
-            assert.strictEqual(node.currentStatus, 'test')
-            done()
-        } catch (error: any) {
-            done(new Error(error))
-        }
+    it('setStatus', () => {
+        nodeStatusUtils.setStatus('test')
+        expect(node.currentStatus).toBe('test')
     })
 
-    it('clearStatus', function (done) {
-        try {
-            nodeStatusUtils.setStatus('test')
-            assert.strictEqual(node.currentStatus, 'test')
-            nodeStatusUtils.clearStatus()
-            assert.strictEqual(node.currentStatus, '')
-            done()
-        } catch (error: any) {
-            done(new Error(error))
-        }
+    it('clearStatus', () => {
+        nodeStatusUtils.setStatus('test')
+        expect(node.currentStatus).toBe('test')
+        nodeStatusUtils.clearStatus()
+        expect(node.currentStatus).toBe('')
     })
 
-    it('setStatusWithTimeout', function (done) {
-        try {
-            nodeStatusUtils.setStatus('test', 2000)
-            assert.strictEqual(node.currentStatus, 'test')
-            clock.tick(1000)
-            assert.strictEqual(node.currentStatus, 'test')
-            clock.tick(1000)
-            assert.strictEqual(node.currentStatus, '')
-            done()
-        } catch (error: any) {
-            done(new Error(error))
-        }
+    it('setStatusWithTimeout', () => {
+        nodeStatusUtils.setStatus('test', 2000)
+        expect(node.currentStatus).toBe('test')
+        vi.advanceTimersByTime(1000)
+        expect(node.currentStatus).toBe('test')
+        vi.advanceTimersByTime(1000)
+        expect(node.currentStatus).toBe('')
     })
 
-    it('setStatusWithTimeout - should not clear status with different id', function (done) {
-        try {
-            nodeStatusUtils.setStatus('test', 2000)
-            assert.strictEqual(node.currentStatus, 'test')
-            clock.tick(1000)
-            assert.strictEqual(node.currentStatus, 'test')
-            nodeStatusUtils.setStatus('test2', 2000)
-            clock.tick(1000)
-            assert.strictEqual(node.currentStatus, 'test2')
-            clock.tick(1000)
-            assert.strictEqual(node.currentStatus, '')
-            done()
-        } catch (error: any) {
-            done(new Error(error))
-        }
+    it('setStatusWithTimeout - should remove fired timeout handles', () => {
+        nodeStatusUtils.setStatus('test', 2000)
+        expect((nodeStatusUtils as any).pendingTimeouts.size).toBe(1)
+
+        vi.advanceTimersByTime(2000)
+
+        expect(node.currentStatus).toBe('')
+        expect((nodeStatusUtils as any).pendingTimeouts.size).toBe(0)
     })
 
-    it('clearStatusByType - should not clear other type', function (done) {
-        try {
-            nodeStatusUtils.setStatus({ text: 'test' })
-            assert.deepStrictEqual(node.currentStatus, { text: 'test' })
-            nodeStatusUtils.clearStatusByType('NO_RESPONSE')
-            assert.deepStrictEqual(node.currentStatus, { text: 'test' })
-            done()
-        } catch (error: any) {
-            done(new Error(error))
-        }
+    it('setStatusWithTimeout - should not clear status with different id', () => {
+        nodeStatusUtils.setStatus('test', 2000)
+        expect(node.currentStatus).toBe('test')
+        vi.advanceTimersByTime(1000)
+        expect(node.currentStatus).toBe('test')
+        nodeStatusUtils.setStatus('test2', 2000)
+        vi.advanceTimersByTime(1000)
+        expect(node.currentStatus).toBe('test2')
+        vi.advanceTimersByTime(1000)
+        expect(node.currentStatus).toBe('')
     })
 
-    it('clearStatusByType - should clear same type', function (done) {
-        try {
-            nodeStatusUtils.setStatus({ text: 'test', type: 'NO_RESPONSE' })
-            assert.deepStrictEqual(node.currentStatus, {
-                text: 'test',
-                type: 'NO_RESPONSE',
-            })
-            nodeStatusUtils.clearStatusByType('NO_RESPONSE')
-            assert.deepStrictEqual(node.currentStatus, '')
-            done()
-        } catch (error: any) {
-            done(new Error(error))
-        }
+    it('cleanup - should cancel pending timeout clears', () => {
+        nodeStatusUtils.setStatus('test', 2000)
+        expect((nodeStatusUtils as any).pendingTimeouts.size).toBe(1)
+
+        nodeStatusUtils.cleanup()
+        vi.advanceTimersByTime(2000)
+
+        expect(node.currentStatus).toBe('test')
+        expect((nodeStatusUtils as any).pendingTimeouts.size).toBe(0)
+    })
+
+    it('clearStatusByType - should not clear other type', () => {
+        nodeStatusUtils.setStatus({ text: 'test' })
+        expect(node.currentStatus).toStrictEqual({ text: 'test' })
+        nodeStatusUtils.clearStatusByType('NO_RESPONSE')
+        expect(node.currentStatus).toStrictEqual({ text: 'test' })
+    })
+
+    it('clearStatusByType - should clear same type', () => {
+        nodeStatusUtils.setStatus({ text: 'test', type: 'NO_RESPONSE' })
+        expect(node.currentStatus).toStrictEqual({
+            text: 'test',
+            type: 'NO_RESPONSE',
+        })
+        nodeStatusUtils.clearStatusByType('NO_RESPONSE')
+        expect(node.currentStatus).toStrictEqual('')
     })
 })

@@ -1,0 +1,108 @@
+{
+    "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
+    "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+    "files": { "ignoreUnknown": false },
+    "formatter": {
+        "enabled": true,
+        "formatWithErrors": false,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineEnding": "lf",
+        "lineWidth": 80,
+        "attributePosition": "auto",
+        "bracketSameLine": false,
+        "bracketSpacing": true,
+        "expand": "auto",
+        "useEditorconfig": true
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "preset": "none",
+            "complexity": {
+                "noBannedTypes": "error",
+                "noUselessThisAlias": "off",
+                "noUselessTypeConstraint": "error",
+                "useArrowFunction": "off"
+            },
+            "correctness": {
+                "noPrecisionLoss": "error",
+                "noUnusedVariables": "error"
+            },
+            "style": {
+                "noCommonJs": "off",
+                "noNamespace": "error",
+                "noNestedTernary": "off",
+                "useArrayLiterals": "error",
+                "useAsConstAssertion": "error",
+                "useBlockStatements": "off",
+                "useConsistentArrowReturn": "off"
+            },
+            "suspicious": {
+                "noExplicitAny": "off",
+                "noExtraNonNullAssertion": "error",
+                "noMisleadingInstantiator": "error",
+                "noNonNullAssertedOptionalChain": "error",
+                "noPrototypeBuiltins": "off",
+                "noTsIgnore": "off",
+                "noUnsafeDeclarationMerging": "error"
+            }
+        }
+    },
+    "javascript": {
+        "formatter": {
+            "jsxQuoteStyle": "double",
+            "quoteProperties": "asNeeded",
+            "trailingCommas": "es5",
+            "semicolons": "asNeeded",
+            "arrowParentheses": "always",
+            "bracketSameLine": false,
+            "quoteStyle": "single",
+            "attributePosition": "auto",
+            "bracketSpacing": true
+        },
+        "globals": ["SharedArrayBuffer", "Atomics"]
+    },
+    "html": {
+        "formatter": {
+            "indentScriptAndStyle": false,
+            "selfCloseVoidElements": "always"
+        }
+    },
+    "overrides": [
+        {
+            "includes": ["*.ts", "*.tsx", "*.mts", "*.cts"],
+            "linter": {
+                "rules": {
+                    "complexity": { "noArguments": "error" },
+                    "correctness": {
+                        "noConstAssign": "off",
+                        "noGlobalObjectCalls": "off",
+                        "noInvalidBuiltinInstantiation": "off",
+                        "noInvalidConstructorSuper": "off",
+                        "noSetterReturn": "off",
+                        "noUndeclaredVariables": "off",
+                        "noUnreachable": "off",
+                        "noUnreachableSuper": "off"
+                    },
+                    "style": { "useConst": "error" },
+                    "suspicious": {
+                        "noDuplicateClassMembers": "off",
+                        "noDuplicateObjectKeys": "off",
+                        "noDuplicateParameters": "off",
+                        "noFunctionAssign": "off",
+                        "noImportAssign": "off",
+                        "noRedeclare": "off",
+                        "noUnsafeNegation": "off",
+                        "noVar": "error",
+                        "useGetterReturn": "off"
+                    }
+                }
+            }
+        }
+    ],
+    "assist": {
+        "enabled": true,
+        "actions": { "source": { "organizeImports": "on" } }
+    }
+}

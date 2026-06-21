@@ -1,40 +1,60 @@
-import { logger } from '@nrchkb/logger'
-import { Accessory, Service } from 'hap-nodejs'
+import type {
+    Accessory as AccessoryType,
+    Service,
+} from '@homebridge/hap-nodejs'
+import { Accessory } from '@homebridge/hap-nodejs'
 
-import AccessoryInformationType from '../types/AccessoryInformationType'
-import HAPServiceNodeType from '../types/HAPServiceNodeType'
+import type AccessoryInformationType from '../types/AccessoryInformationType'
+import type HAPServiceNodeType from '../types/HAPServiceNodeType'
+import { scopedLogger } from './LogUtils'
 
-module.exports = function (node: HAPServiceNodeType) {
-    const HapNodeJS = require('hap-nodejs')
-    const Accessory = HapNodeJS.Accessory
-    const Service = HapNodeJS.Service
-    const Characteristic = HapNodeJS.Characteristic
+const accessoryCache = new WeakMap<AccessoryType, Map<string, AccessoryType>>()
 
-    const log = logger('NRCHKB', 'AccessoryUtils', node.config.name, node)
+const buildAccessoryUtils = (node: HAPServiceNodeType) => {
+    const { Service, Characteristic } = require('@homebridge/hap-nodejs')
 
-    const getOrCreate = function (
-        host: Accessory,
+    const log = scopedLogger('NRCHKB', 'AccessoryUtils', node.config.name, node)
+
+    const getOrCreate = (
+        host: AccessoryType,
         accessoryInformation: AccessoryInformationType,
         subtypeUUID: string
-    ) {
-        let accessory: Accessory | undefined
+    ) => {
+        let accessory: AccessoryType | undefined
         const services: Service[] = []
+        let hostCache = accessoryCache.get(host)
+
+        if (!hostCache) {
+            hostCache = new Map<string, AccessoryType>()
+            accessoryCache.set(host, hostCache)
+        }
 
         // create accessory object
         log.debug(
             `Looking for accessory with service subtype ${subtypeUUID} ...`
         )
 
-        // Try to find an accessory which contains a service with the same
-        // subtype. Since the UUID of the accessory might have changed the
-        // subtype will be used instead.
-        accessory = host.bridgedAccessories.find((a) => {
-            const service = a.services.find((s) => {
-                return s.subtype === subtypeUUID
+        // Check cache first for O(1) lookup
+        if (hostCache.has(subtypeUUID)) {
+            accessory = hostCache.get(subtypeUUID)
+            log.trace(`Found accessory in cache for subtype ${subtypeUUID}`)
+        } else {
+            // Try to find an accessory which contains a service with the same
+            // subtype. Since the UUID of the accessory might have changed the
+            // subtype will be used instead.
+            accessory = host.bridgedAccessories.find((a) => {
+                const service = a.services.find((s) => {
+                    return s.subtype === subtypeUUID
+                })
+
+                return service !== undefined
             })
 
-            return service !== undefined
-        })
+            // Cache the result for future lookups
+            if (accessory) {
+                hostCache.set(subtypeUUID, accessory)
+            }
+        }
 
         if (accessory) {
             // An accessory was found
@@ -72,8 +92,9 @@ module.exports = function (node: HAPServiceNodeType) {
                     })
 
                 // Remove old Accessory
-                host.removeBridgedAccessory(accessory, false)
+                host.removeBridgedAccessories([accessory])
                 accessory.destroy()
+                hostCache.delete(subtypeUUID) // Invalidate cache for this subtype
                 accessory = undefined
             } else {
                 log.debug('... found it! Updating it.')
@@ -127,30 +148,21 @@ module.exports = function (node: HAPServiceNodeType) {
 
             const revisionRegex = /\d+\.\d+\.\d+/
 
-            if (
-                accessoryInformation.firmwareRev &&
-                accessoryInformation.firmwareRev.match(revisionRegex)
-            ) {
+            if (accessoryInformation.firmwareRev?.match(revisionRegex)) {
                 accessoryInformationService?.setCharacteristic(
                     Characteristic.FirmwareRevision,
                     accessoryInformation.firmwareRev
                 )
             }
 
-            if (
-                accessoryInformation.hardwareRev &&
-                accessoryInformation.hardwareRev.match(revisionRegex)
-            ) {
+            if (accessoryInformation.hardwareRev?.match(revisionRegex)) {
                 accessoryInformationService?.setCharacteristic(
                     Characteristic.HardwareRevision,
                     accessoryInformation.hardwareRev
                 )
             }
 
-            if (
-                accessoryInformation.softwareRev &&
-                accessoryInformation.softwareRev.match(revisionRegex)
-            ) {
+            if (accessoryInformation.softwareRev?.match(revisionRegex)) {
                 accessoryInformationService?.setCharacteristic(
                     Characteristic.SoftwareRevision,
                     accessoryInformation.softwareRev
@@ -158,7 +170,6 @@ module.exports = function (node: HAPServiceNodeType) {
             }
 
             // Adding new accessory to the bridge.
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             host.addBridgedAccessories([accessory!])
         } else {
             accessoryInformationService =
@@ -178,7 +189,7 @@ module.exports = function (node: HAPServiceNodeType) {
         return accessory
     }
 
-    const onIdentify = function (paired: boolean, callback: () => any) {
+    const onIdentify = (paired: boolean, callback: () => any) => {
         if (paired) {
             log.debug(
                 `Identify called on paired Accessory ${node.accessory.displayName}`
@@ -207,7 +218,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 text: 'Identify : 1',
             })
 
-            setTimeout(function () {
+            setTimeout(() => {
                 nodes[i].nodeStatusUtils.clearStatus(statusId)
             }, 3000)
 
@@ -221,3 +232,5 @@ module.exports = function (node: HAPServiceNodeType) {
         onIdentify,
     }
 }
+
+export = buildAccessoryUtils

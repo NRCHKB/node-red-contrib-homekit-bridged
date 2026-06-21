@@ -1,39 +1,120 @@
-import { logger } from '@nrchkb/logger'
 import {
-    Accessory,
-    Characteristic,
-    CharacteristicChange,
+    type Accessory,
+    type Characteristic,
+    type CharacteristicChange,
     CharacteristicEventTypes,
-    CharacteristicGetCallback,
-    CharacteristicSetCallback,
-    CharacteristicValue,
+    type CharacteristicGetCallback,
+    type CharacteristicSetCallback,
+    type CharacteristicValue,
     HAPStatus,
     HapStatusError,
-    Service,
-} from 'hap-nodejs'
+    type Service,
+} from '@homebridge/hap-nodejs'
+import { logger } from '@nrchkb/logger'
+import { registerEmbeddedPlugins } from '../../plugins/embedded'
 import {
+    getPlugin,
+    NRCHKBPluginConfigEntry,
+    registerNodeRedPlugins,
+} from '../../plugins/registry'
+import type {
     HAPConnection,
     HAPUsername,
-} from 'hap-nodejs/dist/lib/util/eventedhttp'
-import { SessionIdentifier } from 'hap-nodejs/dist/types'
-
+    SessionIdentifier,
+} from '../hap/hap-nodejs'
 import NRCHKBError from '../NRCHKBError'
 import { Storage } from '../Storage'
-import HAPService2ConfigType from '../types/HAPService2ConfigType'
-import HAPService2NodeType from '../types/HAPService2NodeType'
+import type HAPService2ConfigType from '../types/HAPService2ConfigType'
+import type HAPService2NodeType from '../types/HAPService2NodeType'
+import { scopedLogger } from './LogUtils'
 
-module.exports = function (node: HAPService2NodeType) {
-    const log = logger('NRCHKB', 'ServiceUtils2', node.config.name, node)
+import buildServiceUtils = require('./ServiceUtils')
 
-    const ServiceUtilsLegacy = require('./ServiceUtils')(node)
+// register once in the application
 
-    const HapNodeJS = require('hap-nodejs')
-    const Service = HapNodeJS.Service
-    const Characteristic = HapNodeJS.Characteristic
+registerEmbeddedPlugins()
 
-    const CameraSource = require('../cameraSource').Camera
+const describeContext = (context: unknown): string => {
+    if (context === null) {
+        return 'null'
+    }
+
+    if (context === undefined) {
+        return 'undefined'
+    }
+
+    const type = typeof context
+    if (type !== 'object') {
+        return String(context)
+    }
+
+    if (Array.isArray(context)) {
+        return `Array(${context.length})`
+    }
+
+    const keys = Object.keys(context as Record<string, unknown>)
+    return keys.length > 0
+        ? `Object(${keys.slice(0, 5).join(',')}${keys.length > 5 ? ',...' : ''})`
+        : 'Object'
+}
+
+const describeSupported = (supported: Set<string>): string =>
+    Array.from(supported).join("', '")
+
+const isPluginEntry = (value: unknown): value is NRCHKBPluginConfigEntry => {
+    if (typeof value !== 'object' || value === null) {
+        return false
+    }
+
+    const id = (value as Record<string, unknown>).id
+    return typeof id === 'string' && id.trim().length > 0
+}
+
+const parsePluginEntries = (
+    value: unknown,
+    log: ReturnType<typeof logger>
+): NRCHKBPluginConfigEntry[] => {
+    if (!value) {
+        return []
+    }
+
+    const normalize = (entries: unknown[]): NRCHKBPluginConfigEntry[] => {
+        const validEntries = entries.filter(isPluginEntry)
+        if (validEntries.length !== entries.length) {
+            log.error('Skipping malformed plugin configuration entries.')
+        }
+        return validEntries
+    }
+
+    if (Array.isArray(value)) {
+        return normalize(value)
+    }
+
+    if (typeof value !== 'string') {
+        log.error('Plugin configuration must be an array or JSON string.')
+        return []
+    }
+
+    try {
+        const parsed = JSON.parse(value) as unknown
+        return Array.isArray(parsed) ? normalize(parsed) : []
+    } catch (error) {
+        log.error(`Failed to parse plugin configuration due to ${error}`)
+        return []
+    }
+}
+
+const buildServiceUtils2 = (node: HAPService2NodeType) => {
+    const log = scopedLogger('NRCHKB', 'ServiceUtils2', node.config.name, node)
+
+    registerNodeRedPlugins(node.RED)
+
+    const ServiceUtilsLegacy = buildServiceUtils(node)
+
+    const { Service, Characteristic } = require('@homebridge/hap-nodejs')
 
     const NO_RESPONSE_MSG = 'NO_RESPONSE'
+    const isLegacyOutputMode = () => node.config.outputMode === 'legacy'
 
     type HAPServiceNodeEvent = {
         name: CharacteristicEventTypes // Event type
@@ -47,6 +128,7 @@ module.exports = function (node: HAPService2NodeType) {
     type HAPServiceMessage = {
         payload?: { [key: string]: any }
         hap?: {
+            context?: Record<string, unknown>
             oldValue?: any
             newValue?: any
             reachable?: boolean
@@ -68,7 +150,7 @@ module.exports = function (node: HAPService2NodeType) {
         this: Characteristic,
         allCharacteristics: Characteristic[],
         event: CharacteristicEventTypes | HAPServiceNodeEvent,
-        { oldValue, newValue }: any,
+        { context, oldValue, newValue }: any,
         connection?: HAPConnection
     ) {
         const eventObject = typeof event === 'object' ? event : { name: event }
@@ -82,17 +164,19 @@ module.exports = function (node: HAPService2NodeType) {
             topic: node.config.topic ? node.config.topic : node.topic_in,
         }
         msg.payload = {}
+        const allChars: { [key: string]: any } = {}
+        for (const singleChar of allCharacteristics) {
+            const cKey = singleChar.constructor.name
+            allChars[cKey] = singleChar.value
+        }
         msg.hap = {
             event: eventObject,
-            allChars: allCharacteristics.reduce<{ [key: string]: any }>(
-                (allChars, singleChar) => {
-                    const cKey = singleChar.constructor.name
-                    allChars[cKey] = singleChar.value
-                    return allChars
-                },
-                {}
-            ),
+            allChars,
             oldValue,
+        }
+
+        if (context) {
+            msg.hap.context = context
         }
 
         const key = this.constructor.name
@@ -100,14 +184,14 @@ module.exports = function (node: HAPService2NodeType) {
         msg.hap.reachable = node.reachable ?? node.parentNode?.reachable
 
         if (msg.hap.reachable === false) {
-            ;[node, ...(node.childNodes ?? [])].forEach((n) =>
+            ;[node, ...(node.childNodes ?? [])].forEach((n) => {
                 n.nodeStatusUtils.setStatus({
                     fill: 'red',
                     shape: 'ring',
                     text: 'Not reachable',
                     type: 'NO_RESPONSE',
                 })
-            )
+            })
         } else {
             msg.hap.newValue = newValue
 
@@ -116,15 +200,15 @@ module.exports = function (node: HAPService2NodeType) {
                     fill: 'yellow',
                     shape: 'dot',
                     text: `[${eventObject.name}] ${key}${
-                        newValue != undefined ? `: ${newValue}` : ''
+                        newValue !== undefined ? `: ${newValue}` : ''
                     }`,
                 },
                 3000
             )
 
-            node.childNodes?.forEach((n) =>
+            node.childNodes?.forEach((n) => {
                 n.nodeStatusUtils.clearStatusByType('NO_RESPONSE')
-            )
+            })
             node.parentNode?.nodeStatusUtils.clearStatusByType('NO_RESPONSE')
         }
 
@@ -144,7 +228,11 @@ module.exports = function (node: HAPService2NodeType) {
             `${node.name} received ${eventObject.name} ${key}: ${newValue}`
         )
 
-        if (connection || node.hostNode.config.allowMessagePassthrough) {
+        if (
+            connection ||
+            context ||
+            node.hostNode.config.allowMessagePassthrough
+        ) {
             node.send(msg)
         }
     }
@@ -156,11 +244,20 @@ module.exports = function (node: HAPService2NodeType) {
             _context: any,
             connection?: HAPConnection
         ) {
-            const characteristic = this
-            const oldValue = characteristic.value
+            if (isLegacyOutputMode()) {
+                ServiceUtilsLegacy.onCharacteristicGet.call(
+                    this,
+                    callback,
+                    _context,
+                    connection
+                )
+                return
+            }
+
+            const oldValue = this.value
 
             const delayedCallback = (value?: any) => {
-                const newValue = value ?? characteristic.value
+                const newValue = value ?? this.value
                 if (callback) {
                     try {
                         callback(
@@ -175,7 +272,7 @@ module.exports = function (node: HAPService2NodeType) {
                 }
 
                 output.call(
-                    characteristic,
+                    this,
                     allCharacteristics,
                     {
                         name: CharacteristicEventTypes.GET,
@@ -193,7 +290,7 @@ module.exports = function (node: HAPService2NodeType) {
                 })
 
                 log.debug(
-                    `Registered callback ${callbackID} for Characteristic ${characteristic.displayName}`
+                    `Registered callback ${callbackID} for Characteristic ${this.displayName}`
                 )
 
                 output.call(
@@ -211,7 +308,6 @@ module.exports = function (node: HAPService2NodeType) {
             }
         }
 
-    // eslint-disable-next-line no-unused-vars
     const onCharacteristicSet = (allCharacteristics: Characteristic[]) =>
         function (
             this: Characteristic,
@@ -220,6 +316,17 @@ module.exports = function (node: HAPService2NodeType) {
             _context: any,
             connection?: HAPConnection
         ) {
+            if (isLegacyOutputMode()) {
+                ServiceUtilsLegacy.onCharacteristicSet(allCharacteristics).call(
+                    this,
+                    newValue,
+                    callback,
+                    _context,
+                    connection
+                )
+                return
+            }
+
             try {
                 if (callback) {
                     callback(
@@ -246,9 +353,20 @@ module.exports = function (node: HAPService2NodeType) {
 
     const onCharacteristicChange = (allCharacteristics: Characteristic[]) =>
         function (this: Characteristic, change: CharacteristicChange) {
+            if (isLegacyOutputMode()) {
+                ServiceUtilsLegacy.onCharacteristicChange(
+                    allCharacteristics
+                ).call(this, change)
+                return
+            }
+
             const { oldValue, newValue, context, originator, reason } = change
 
-            if (oldValue != newValue) {
+            log.debug(
+                `onCharacteristicChange with reason: ${reason}, oldValue: ${oldValue}, newValue: ${newValue}, context ${describeContext(context)} on connection ${originator?.sessionID}`
+            )
+
+            if (oldValue !== newValue) {
                 output.call(
                     this,
                     allCharacteristics,
@@ -262,7 +380,7 @@ module.exports = function (node: HAPService2NodeType) {
             }
         }
 
-    const onInput = function (msg: HAPServiceMessage) {
+    const onInput = (msg: HAPServiceMessage) => {
         if (msg.payload) {
             // payload must be an object
             const type = typeof msg.payload
@@ -292,9 +410,14 @@ module.exports = function (node: HAPService2NodeType) {
 
         node.topic_in = msg.topic ?? ''
 
-        Object.keys(msg.payload).map((key: string) => {
-            if (node.supported.indexOf(key) < 0) {
+        for (const key in msg.payload) {
+            if (!Object.hasOwn(msg.payload, key)) {
+                continue
+            }
+
+            if (!node.supported.has(key)) {
                 if (
+                    !isLegacyOutputMode() &&
                     node.config.useEventCallback &&
                     Storage.uuid4Validate(key)
                 ) {
@@ -322,13 +445,13 @@ module.exports = function (node: HAPService2NodeType) {
                     }
                 } else {
                     log.error(
-                        `Instead of '${key}' try one of these characteristics: '${node.supported.join(
-                            "', '"
-                        )}'`
+                        `Instead of '${key}' try one of these characteristics: '${describeSupported(node.supported)}'`
                     )
                 }
             } else {
                 const value = msg.payload?.[key]
+                const normalizedValue =
+                    value === NO_RESPONSE_MSG ? false : value
 
                 const parentNode = node.parentNode ?? node
                 parentNode.reachable = value !== NO_RESPONSE_MSG
@@ -338,48 +461,65 @@ module.exports = function (node: HAPService2NodeType) {
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(value, undefined, context)
+                    characteristic.setValue(normalizedValue, context)
                 } else {
-                    characteristic.setValue(value)
+                    characteristic.setValue(normalizedValue)
                 }
             }
-        })
+        }
     }
 
-    const onClose = function (removed: boolean, done: () => void) {
-        const characteristics = node.service.characteristics.concat(
-            node.service.optionalCharacteristics
-        )
+    const onClose = (removed: boolean, done: () => void) => {
+        node.nrchkbClosing = true
 
-        characteristics.forEach(function (characteristic) {
+        if (node.waitForParentTimer) {
+            clearTimeout(node.waitForParentTimer)
+            node.waitForParentTimer = undefined
+        }
+
+        Object.values(node.publishTimers).forEach((timer) => {
+            clearTimeout(timer)
+        })
+        node.publishTimers = {}
+
+        const characteristics = node.service
+            ? node.service.characteristics.concat(
+                  node.service.optionalCharacteristics
+              )
+            : []
+
+        characteristics.forEach((characteristic) => {
             // cleanup all node specific listeners
             characteristic.removeListener('get', node.onCharacteristicGet)
             characteristic.removeListener('set', node.onCharacteristicSet)
             characteristic.removeListener('change', node.onCharacteristicChange)
         })
 
-        if (node.config.isParent) {
+        if (node.config.isParent && node.accessory && node.onIdentify) {
             // remove identify listener to prevent errors with undefined values
             node.accessory.removeListener('identify', node.onIdentify)
         }
 
-        if (removed) {
+        if (removed && node.accessory) {
             // This node has been deleted
             if (node.config.isParent) {
-                // remove accessory from bridge
+                // remove accessory from the bridge
                 node.hostNode.host.removeBridgedAccessories([node.accessory])
                 node.accessory.destroy()
-            } else {
+            } else if (node.service && node.parentService) {
                 // only remove the service if it is not a parent
                 node.accessory.removeService(node.service)
                 node.parentService.removeLinkedService(node.service)
             }
         }
 
+        // Clean up any pending status timeouts
+        node.nodeStatusUtils.cleanup()
+
         done()
     }
 
-    const getOrCreate = function (
+    const getOrCreate = async (
         accessory: Accessory,
         serviceInformation: {
             name: string
@@ -388,8 +528,128 @@ module.exports = function (node: HAPService2NodeType) {
             config: HAPService2ConfigType
         },
         parentService: Service
-    ) {
-        const newService = new Service[serviceInformation.serviceName](
+    ): Promise<Service> => {
+        type NRCHKBPluginInstanceNode = {
+            id?: string
+            type?: string
+            attachNRCHKBPlugin?: (context: {
+                accessory: Accessory
+                config: unknown
+                node?: {
+                    on: (
+                        event: 'close',
+                        handler: (removed: boolean) => void
+                    ) => void
+                }
+                RED?: {
+                    nodes: {
+                        getNode: (id: string) => unknown
+                    }
+                }
+                serviceInformation: {
+                    name: string
+                    UUID: string
+                    serviceName: string
+                    config: Record<string, unknown>
+                }
+            }) => Service | Promise<Service>
+        }
+
+        const createAttachContext = (config: unknown) => ({
+            accessory,
+            config,
+            node,
+            RED: node.RED,
+            serviceInformation: {
+                name: serviceInformation.name,
+                UUID: serviceInformation.UUID,
+                serviceName: serviceInformation.serviceName,
+                config: serviceInformation.config as unknown as Record<
+                    string,
+                    unknown
+                >,
+            },
+        })
+
+        let pluginService: Service | undefined = undefined
+        const pluginSlots = [
+            serviceInformation.config.plugin1,
+            serviceInformation.config.plugin2,
+            serviceInformation.config.plugin3,
+            serviceInformation.config.plugin4,
+            serviceInformation.config.plugin5,
+            serviceInformation.config.plugin6,
+            serviceInformation.config.plugin7,
+            serviceInformation.config.plugin8,
+        ].filter(
+            (pluginNodeId): pluginNodeId is string =>
+                typeof pluginNodeId === 'string' && pluginNodeId.trim() !== ''
+        )
+
+        for (const pluginNodeId of pluginSlots) {
+            const pluginNode = node.RED.nodes.getNode(pluginNodeId) as
+                | NRCHKBPluginInstanceNode
+                | undefined
+
+            if (!pluginNode) {
+                throw new NRCHKBError(
+                    `Plugin config node "${pluginNodeId}" was not found.`
+                )
+            }
+
+            if (typeof pluginNode.attachNRCHKBPlugin !== 'function') {
+                throw new NRCHKBError(
+                    `Config node "${pluginNodeId}" is not an NRCHKB plugin instance.`
+                )
+            }
+
+            const attachedService = await pluginNode.attachNRCHKBPlugin(
+                createAttachContext({})
+            )
+            pluginService ??= attachedService
+        }
+
+        const pluginEntries = parsePluginEntries(
+            serviceInformation.config.plugins,
+            log
+        )
+
+        if (pluginEntries.length) {
+            const plugins = pluginEntries
+
+            for (const pluginConfig of plugins) {
+                const pluginDefinition = getPlugin(pluginConfig.id)
+                if (!pluginDefinition) {
+                    throw new NRCHKBError(
+                        `Camera plugin "${pluginConfig.id}" is not registered.`
+                    )
+                }
+
+                const attachedService = await pluginDefinition.factory.attach({
+                    ...createAttachContext(pluginConfig.config),
+                })
+                pluginService ??= attachedService
+            }
+        }
+
+        if (pluginService) {
+            return pluginService
+        }
+
+        const serviceName =
+            serviceInformation.serviceName === 'Camera'
+                ? 'CameraRTPStreamManagement'
+                : serviceInformation.serviceName
+
+        const ServiceConstructor = Service[serviceName]
+
+        if (typeof ServiceConstructor !== 'function') {
+            throw new NRCHKBError(
+                `Unknown HomeKit service "${serviceInformation.serviceName}".`
+            )
+        }
+
+        const newService = new ServiceConstructor(
             serviceInformation.name,
             serviceInformation.UUID
         )
@@ -419,18 +679,9 @@ module.exports = function (node: HAPService2NodeType) {
                 `... didn't find it. Adding new ${serviceInformation.serviceName} service.`
             )
 
-            if (serviceInformation.serviceName === 'CameraControl') {
-                configureCameraSource(
-                    accessory,
-                    newService,
-                    serviceInformation.config
-                )
-                service = newService
-            } else {
-                service = accessory.addService(newService)
-            }
+            service = accessory.addService(newService)
         } else {
-            // if a service with the same UUID and subtype was found it will
+            // if a service with the same UUID and subtype was found, it will
             // be updated and used
             log.debug('... found it! Updating it.')
             service
@@ -439,39 +690,13 @@ module.exports = function (node: HAPService2NodeType) {
         }
 
         if (parentService) {
-            if (serviceInformation.serviceName === 'CameraControl') {
-                //We don't add or link it since configureCameraSource do this already.
-                log.debug('... and adding service to accessory.')
-            } else if (service) {
+            if (service) {
                 log.debug('... and linking service to parent.')
                 parentService.addLinkedService(service)
             }
         }
 
-        return service
-    }
-
-    const configureCameraSource = function (
-        accessory: Accessory,
-        service: Service,
-        config: HAPService2ConfigType
-    ) {
-        if (config.cameraConfigSource) {
-            log.debug('Configuring Camera Source')
-
-            if (!config.cameraConfigVideoProcessor) {
-                log.error(
-                    'Missing configuration for CameraControl: videoProcessor cannot be empty!'
-                )
-            } else {
-                // Use of deprecated method to be replaced with new Camera API
-                accessory.configureCameraSource(
-                    new CameraSource(service, config, node)
-                )
-            }
-        } else {
-            log.error('Missing configuration for CameraControl.')
-        }
+        return service ?? newService
     }
 
     const waitForParent = () => {
@@ -489,10 +714,11 @@ module.exports = function (node: HAPService2NodeType) {
                     node.config.parentService
                 ) as HAPService2NodeType
 
-                if (parentNode && parentNode.configured) {
+                if (parentNode?.configured) {
+                    node.waitForParentTimer = undefined
                     resolve(parentNode)
                 } else {
-                    setTimeout(checkAndWait, 1000)
+                    node.waitForParentTimer = setTimeout(checkAndWait, 1000)
                 }
             }
             checkAndWait()
@@ -512,9 +738,14 @@ module.exports = function (node: HAPService2NodeType) {
         }
 
         if (
-            msg.hasOwnProperty('payload') &&
-            msg.payload.hasOwnProperty('nrchkb') &&
-            msg.payload.nrchkb.hasOwnProperty('setup')
+            msg &&
+            Object.hasOwn(msg, 'payload') &&
+            msg.payload &&
+            typeof msg.payload === 'object' &&
+            Object.hasOwn(msg.payload, 'nrchkb') &&
+            msg.payload.nrchkb &&
+            typeof msg.payload.nrchkb === 'object' &&
+            Object.hasOwn(msg.payload.nrchkb, 'setup')
         ) {
             node.setupDone = true
 
@@ -546,3 +777,5 @@ module.exports = function (node: HAPService2NodeType) {
             ServiceUtilsLegacy.configureAdaptiveLightning,
     }
 }
+
+export = buildServiceUtils2
