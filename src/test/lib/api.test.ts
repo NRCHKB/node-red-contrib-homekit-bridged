@@ -1,16 +1,14 @@
 import 'should'
 
+import { SerializedService, Service } from '@homebridge/hap-nodejs'
 import { loggerSetup } from '@nrchkb/logger'
 import assert from 'assert'
 import { afterEach, before, describe, it } from 'mocha'
 import helper from 'node-red-node-test-helper'
 
-import { version } from '../../../package.json'
-import {
-    accessoryCategoriesResponse,
-    serviceTypesResponse,
-} from '../test-utils/data'
+import { accessoryCategoriesResponse } from '../test-utils/data'
 
+const { version } = require('../../../package.json')
 const API = require('../../lib/api')()
 const nrchkb = require('../../nodes/nrchkb')
 
@@ -38,6 +36,53 @@ describe('api', function () {
     })
 
     it('Service API', function (done) {
+        const expectedServiceTypes: Record<
+            string,
+            Partial<SerializedService> & { nrchkbDisabledText?: string }
+        > = {
+            BatteryService: {
+                nrchkbDisabledText:
+                    'BatteryService (deprecated, replaced by Battery)',
+            },
+            BridgeConfiguration: {
+                nrchkbDisabledText: 'BridgeConfiguration (deprecated, unused)',
+            },
+            BridgingState: {
+                nrchkbDisabledText: 'BridgingState (deprecated, unused)',
+            },
+            CameraEventRecordingManagement: {
+                nrchkbDisabledText:
+                    'CameraEventRecordingManagement (deprecated, replaced by CameraRecordingManagement)',
+            },
+            Relay: {
+                nrchkbDisabledText: 'Relay (deprecated, replaced by CloudRelay)',
+            },
+            Slat: {
+                nrchkbDisabledText: 'Slat (deprecated, replaced by Slats)',
+            },
+            TimeInformation: {
+                nrchkbDisabledText: 'TimeInformation (deprecated, unused)',
+            },
+            TunneledBTLEAccessoryService: {
+                nrchkbDisabledText:
+                    'TunneledBTLEAccessoryService (deprecated, replaced by Tunnel)',
+            },
+        }
+
+        Object.values(Service)
+            .filter((service) => service.prototype instanceof Service)
+            .map((service) => {
+                const serialized = Service.serialize(new service())
+                serialized.displayName = service.name
+                return serialized
+            })
+            .forEach((serialized) => {
+                expectedServiceTypes[serialized.displayName] = {
+                    ...expectedServiceTypes[serialized.displayName],
+                    ...serialized,
+                }
+            })
+
         helper
             .load([nrchkb], [], function () {
                 helper
@@ -48,7 +93,7 @@ describe('api', function () {
                     .then((response) => {
                         assert.deepStrictEqual(
                             response.body,
-                            serviceTypesResponse
+                            JSON.parse(JSON.stringify(expectedServiceTypes))
                         )
                         done()
                     })

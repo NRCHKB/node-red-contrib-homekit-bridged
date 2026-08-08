@@ -1,22 +1,23 @@
 import * as util from 'node:util'
 
-import { logger } from '@nrchkb/logger'
 import {
     Accessory,
     ActiveAdaptiveLightingTransition,
     AdaptiveLightingController,
     AdaptiveLightingControllerMode,
     AdaptiveLightingOptions,
+    CameraController,
     Characteristic,
     CharacteristicChange,
     CharacteristicGetCallback,
     CharacteristicSetCallback,
     CharacteristicValue,
+    HAPConnection,
     HAPStatus,
     HapStatusError,
     Service,
-} from 'hap-nodejs'
-import { HAPConnection } from 'hap-nodejs/dist/lib/util/eventedhttp'
+} from '@homebridge/hap-nodejs'
+import { logger } from '@nrchkb/logger'
 
 import NRCHKBError from '../NRCHKBError'
 import HAPServiceConfigType from '../types/HAPServiceConfigType'
@@ -25,7 +26,7 @@ import HAPServiceNodeType from '../types/HAPServiceNodeType'
 module.exports = function (node: HAPServiceNodeType) {
     const log = logger('NRCHKB', 'ServiceUtils', node.config.name, node)
 
-    const HapNodeJS = require('hap-nodejs')
+    const HapNodeJS = require('@homebridge/hap-nodejs')
     const Service = HapNodeJS.Service
     const Characteristic = HapNodeJS.Characteristic
 
@@ -291,7 +292,7 @@ module.exports = function (node: HAPServiceNodeType) {
                 )
 
                 if (context !== null) {
-                    characteristic.setValue(value, undefined, context)
+                    characteristic.setValue(value, context)
                 } else {
                     characteristic.setValue(value)
                 }
@@ -300,6 +301,11 @@ module.exports = function (node: HAPServiceNodeType) {
     }
 
     const onClose = function (removed: boolean, done: () => void) {
+        if (node.cameraController) {
+            node.accessory.removeController(node.cameraController)
+            node.cameraController = undefined
+        }
+
         const characteristics = node.service.characteristics.concat(
             node.service.optionalCharacteristics
         )
@@ -342,10 +348,16 @@ module.exports = function (node: HAPServiceNodeType) {
         },
         parentService: Service
     ) {
-        const newService = new Service[serviceInformation.serviceName](
-            serviceInformation.name,
-            serviceInformation.UUID
-        )
+        const newService =
+            serviceInformation.serviceName === 'CameraControl'
+                ? new Service.CameraRTPStreamManagement(
+                      serviceInformation.name,
+                      serviceInformation.UUID
+                  )
+                : new Service[serviceInformation.serviceName](
+                      serviceInformation.name,
+                      serviceInformation.UUID
+                  )
         log.debug(
             `Looking for service with UUID ${serviceInformation.UUID} ...`
         )
@@ -373,12 +385,11 @@ module.exports = function (node: HAPServiceNodeType) {
             )
 
             if (serviceInformation.serviceName === 'CameraControl') {
-                configureCameraSource(
+                service = configureCameraSource(
                     accessory,
                     newService,
                     serviceInformation.config
                 )
-                service = newService
             } else {
                 service = accessory.addService(newService)
             }
@@ -408,7 +419,7 @@ module.exports = function (node: HAPServiceNodeType) {
         accessory: Accessory,
         service: Service,
         config: HAPServiceConfigType
-    ) {
+    ): Service {
         if (config.cameraConfigSource) {
             log.debug('Configuring Camera Source')
 
@@ -417,14 +428,26 @@ module.exports = function (node: HAPServiceNodeType) {
                     'Missing configuration for CameraControl: videoProcessor cannot be empty!'
                 )
             } else {
-                // Use of deprecated method to be replaced with new Camera API
-                accessory.configureCameraSource(
-                    new CameraSource(service, config, node)
+                const cameraSource = new CameraSource(service, config, node)
+                const cameraController = new CameraController(
+                    {
+                        cameraStreamCount: cameraSource.streamCount,
+                        delegate: cameraSource,
+                        streamingOptions: cameraSource.streamingOptions,
+                    },
+                    true
                 )
+
+                accessory.configureController(cameraController)
+                node.cameraController = cameraController
+
+                return cameraController.streamManagements[0]?.service ?? service
             }
         } else {
             log.error('Missing configuration for CameraControl.')
         }
+
+        return service
     }
 
     const waitForParent = () => {

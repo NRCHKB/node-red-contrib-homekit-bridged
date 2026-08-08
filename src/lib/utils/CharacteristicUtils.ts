@@ -1,5 +1,9 @@
+import {
+    Characteristic,
+    CharacteristicProps,
+    Service,
+} from '@homebridge/hap-nodejs'
 import { logger } from '@nrchkb/logger'
-import { Characteristic, CharacteristicProps, Service } from 'hap-nodejs'
 
 import HAPServiceConfigType from '../types/HAPServiceConfigType'
 import HAPServiceNodeType from '../types/HAPServiceNodeType'

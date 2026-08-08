@@ -1,4 +1,3 @@
-import { logger } from '@nrchkb/logger'
 import {
     Accessory,
     Bridge,
@@ -7,7 +6,8 @@ import {
     MDNSAdvertiser,
     Service,
     uuid,
-} from 'hap-nodejs'
+} from '@homebridge/hap-nodejs'
+import { logger } from '@nrchkb/logger'
 import { NodeAPI } from 'node-red'
 import { SemVer } from 'semver'
 import semver from 'semver/preload'
@@ -43,6 +43,9 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
 
         if (!config.bind?.length && config.customMdnsConfig) {
             log.error('Custom mdns config is deprecated, use bind instead!')
+            log.error(
+                'HAP-NodeJS 2.x no longer supports legacy mdns publish options; only mdnsInterface or mdnsIp will be used as bind fallback.'
+            )
 
             self.mdnsConfig = {} as BonjourMulticastOptions
 
@@ -138,6 +141,10 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                 } else if (self.config.bindType == 'json') {
                     bind = JSON.parse(self.config.bind)
                 }
+            } else if (self.mdnsConfig?.interface) {
+                bind = self.mdnsConfig.interface
+            } else if (self.mdnsConfig?.ip) {
+                bind = self.mdnsConfig.ip
             }
 
             self.host.publish(
@@ -149,7 +156,6 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                             : 0,
                     pincode: oldPinCode,
                     category: self.accessoryCategory,
-                    mdns: self.mdnsConfig,
                     bind: bind,
                     advertiser:
                         self.config.advertiser ?? MDNSAdvertiser.BONJOUR,
@@ -223,7 +229,19 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             const match = paddedStr.match(/.{1,2}/g)
 
             if (match) {
-                return match.join(':').substr(0, 17).toUpperCase()
+                const mac = match.join(':').substr(0, 17).toUpperCase()
+
+                if (/^([0-9A-F]{2}:){5}[0-9A-F]{2}$/.test(mac)) {
+                    return mac
+                }
+
+                return uuid
+                    .generate(nodeId)
+                    .replace(/-/g, '')
+                    .match(/.{1,2}/g)!
+                    .slice(0, 6)
+                    .join(':')
+                    .toUpperCase()
             } else {
                 throw new NRCHKBError(
                     `match failed in macify process for padded string ${paddedStr}`

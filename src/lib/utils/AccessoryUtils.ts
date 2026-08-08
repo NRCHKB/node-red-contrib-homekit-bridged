@@ -1,11 +1,11 @@
+import { Accessory, Service } from '@homebridge/hap-nodejs'
 import { logger } from '@nrchkb/logger'
-import { Accessory, Service } from 'hap-nodejs'
 
 import AccessoryInformationType from '../types/AccessoryInformationType'
 import HAPServiceNodeType from '../types/HAPServiceNodeType'
 
 module.exports = function (node: HAPServiceNodeType) {
-    const HapNodeJS = require('hap-nodejs')
+    const HapNodeJS = require('@homebridge/hap-nodejs')
     const Accessory = HapNodeJS.Accessory
     const Service = HapNodeJS.Service
     const Characteristic = HapNodeJS.Characteristic

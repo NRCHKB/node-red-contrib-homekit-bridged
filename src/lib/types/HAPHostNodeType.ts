@@ -1,4 +1,4 @@
-import { Accessory, Categories } from 'hap-nodejs'
+import { Accessory, Categories } from '@homebridge/hap-nodejs'
 
 import BonjourMulticastOptions from './hap-nodejs/BonjourMulticastOptions'
 import HAPHostConfigType from './HAPHostConfigType'

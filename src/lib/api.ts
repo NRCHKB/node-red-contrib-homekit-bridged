@@ -1,6 +1,11 @@
+import {
+    Characteristic,
+    Perms,
+    SerializedService,
+    Service,
+} from '@homebridge/hap-nodejs'
 import { logger } from '@nrchkb/logger'
 import express from 'express'
-import { Characteristic, Perms, SerializedService, Service } from 'hap-nodejs'
 import { NodeAPI } from 'node-red'
 
 import EveCharacteristics from './hap/eve-app/EveCharacteristics'

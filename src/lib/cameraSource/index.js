@@ -1,10 +1,6 @@
 import { logger } from '@nrchkb/logger'
 import * as util from 'util'
 
-const HapNodeJS = require('hap-nodejs')
-const uuid = HapNodeJS.uuid
-const StreamController = HapNodeJS.StreamController
-
 const crypto = require('crypto')
 const fs = require('fs')
 const os = require('os')
@@ -57,13 +53,10 @@ Camera.prototype.configure = function (config, cameraControlService) {
     this.ffmpegSource = config.cameraConfigSource
     this.ffmpegImageSource = config.cameraConfigStillImageSource
 
-    this.services = []
-    this.streamControllers = []
-
     this.pendingSessions = {}
     this.ongoingSessions = {}
 
-    const numberOfStreams = config.cameraConfigMaxStreams
+    this.streamCount = config.cameraConfigMaxStreams || 1
     const videoResolutions = []
 
     this.maxWidth = config.cameraConfigMaxWidth
@@ -122,14 +115,14 @@ Camera.prototype.configure = function (config, cameraControlService) {
         }
     }
 
-    let options = {
+    this.streamingOptions = {
         proxy: false, // Requires RTP/RTCP MUX Proxy TODO: Should I make it configurable?
         srtp: true, // Supports SRTP AES_CM_128_HMAC_SHA1_80 encryption TODO: Should I make it configurable?
         video: {
             resolutions: videoResolutions,
             codec: {
-                profiles: [0, 1, 2], // Enum, please refer StreamController.VideoCodecParamProfileIDTypes TODO: Should I make it configurable?
-                levels: [0, 1, 2], // Enum, please refer StreamController.VideoCodecParamLevelTypes TODO: Should I make it configurable?
+                profiles: [0, 1, 2], // H264Profile enum values TODO: Should I make it configurable?
+                levels: [0, 1, 2], // H264Level enum values TODO: Should I make it configurable?
             },
         },
         audio: {
@@ -147,11 +140,7 @@ Camera.prototype.configure = function (config, cameraControlService) {
     }
 
     if (cameraControlService) {
-        this._createStreamControllers(
-            cameraControlService,
-            numberOfStreams,
-            options
-        )
+        this.service = cameraControlService
     } else {
         log.error(
             'Camera reconfigure on the fly is not yet supported. ' +
@@ -160,10 +149,8 @@ Camera.prototype.configure = function (config, cameraControlService) {
     }
 }
 
-Camera.prototype.handleCloseConnection = function (connectionID) {
-    this.streamControllers.forEach(function (controller) {
-        controller.handleCloseConnection(connectionID)
-    })
+Camera.prototype.handleCloseConnection = function () {
+    // HAP-NodeJS 2.x CameraController owns connection cleanup.
 }
 
 Camera.prototype.handleSnapshotRequest = function (request, callback) {
@@ -307,23 +294,29 @@ Camera.prototype.prepareStream = function (request, callback) {
         const currentAddress = networkInterfaces[this.interfaceName]
 
         if (currentAddress?.[0]) {
-            response['address'] = {
-                address: currentAddress[0].address,
-                type: currentAddress[0].family === 'IPv4' ? 'v4' : 'v6',
-            }
+            response['addressOverride'] = currentAddress[0].address
         }
     }
 
-    this.pendingSessions[uuid.unparse(sessionID)] = sessionInfo
+    this.pendingSessions[sessionID] = sessionInfo
 
-    callback(response)
+    callback(undefined, response)
 }
 
-Camera.prototype.handleStreamRequest = function (request) {
+Camera.prototype.handleStreamRequest = function (request, callback) {
     const sessionID = request['sessionID']
     const requestType = request['type']
+
+    let callbackCalled = false
+    const complete = function (error) {
+        if (!callbackCalled) {
+            callbackCalled = true
+            callback(error)
+        }
+    }
+
     if (sessionID) {
-        let sessionIdentifier = uuid.unparse(sessionID)
+        let sessionIdentifier = sessionID
 
         log.debug('Request type: ' + requestType)
 
@@ -498,11 +491,14 @@ Camera.prototype.handleStreamRequest = function (request) {
                     }.bind(this)
                 )
 
-                let self = this
-
                 ffmpeg.on('error', function (error) {
                     log.error('An error occurred while making stream request')
                     log.error(util.inspect(error))
+                    complete(error)
+                })
+
+                ffmpeg.on('spawn', function () {
+                    complete()
                 })
 
                 ffmpeg.on('close', (code) => {
@@ -510,23 +506,19 @@ Camera.prototype.handleStreamRequest = function (request) {
                         log.debug('Stopped streaming')
                     } else {
                         log.error('ERROR: FFmpeg exited with code ' + code)
-
-                        for (
-                            let i = 0;
-                            i < self.streamControllers.length;
-                            i++
-                        ) {
-                            const controller = self.streamControllers[i]
-                            if (controller.sessionIdentifier === sessionID) {
-                                controller.forceStop()
-                            }
-                        }
                     }
                 })
                 this.ongoingSessions[sessionIdentifier] = ffmpeg
+            } else {
+                complete(
+                    new Error(
+                        `No prepared camera session found for ${sessionIdentifier}`
+                    )
+                )
             }
 
             delete this.pendingSessions[sessionIdentifier]
+            return
         } else if (requestType === 'stop') {
             const ffmpegProcess = this.ongoingSessions[sessionIdentifier]
 
@@ -539,37 +531,6 @@ Camera.prototype.handleStreamRequest = function (request) {
             //TODO: What to do here?
         }
     }
-}
 
-Camera.prototype._createStreamControllers = function (
-    cameraControlService,
-    maxStreams,
-    options
-) {
-    let self = this
-
-    log.debug('Configuring services for Camera...')
-
-    self.services.push(cameraControlService)
-    log.debug('...added CameraControl Service')
-
-    if (self.audio) {
-        log.debug('...audio available')
-    } else {
-        log.debug('...audio not available')
-    }
-
-    log.debug(
-        'Creating Camera Stream Controllers: ' + maxStreams + ' - Started'
-    )
-    log.debug('Camera options: ' + JSON.stringify(options))
-
-    for (let i = 0; i < maxStreams; i++) {
-        const streamController = new StreamController(i, options, self)
-
-        self.services.push(streamController.service)
-        self.streamControllers.push(streamController)
-    }
-
-    log.debug('Creating Camera Stream Controllers - Finished')
+    complete()
 }

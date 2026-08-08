@@ -1,4 +1,4 @@
-import { AdaptiveLightingControllerMode } from 'hap-nodejs/dist/lib/controller/AdaptiveLightingController'
+import { AdaptiveLightingControllerMode } from '@homebridge/hap-nodejs'
 import { NodeDef } from 'node-red'
 
 import CameraConfigType from './CameraConfigType'

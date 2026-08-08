@@ -1,4 +1,4 @@
-import { Characteristic } from 'hap-nodejs'
+import { Characteristic } from '@homebridge/hap-nodejs'
 
 import {
     EveS2R1,

@@ -1,15 +1,16 @@
 import {
     Accessory,
     AdaptiveLightingController,
+    CameraController,
     Characteristic,
     CharacteristicChange,
     CharacteristicGetCallback,
     CharacteristicProps,
     CharacteristicSetCallback,
     CharacteristicValue,
+    HAPConnection,
     Service,
-} from 'hap-nodejs'
-import { HAPConnection } from 'hap-nodejs/dist/lib/util/eventedhttp'
+} from '@homebridge/hap-nodejs'
 import { NodeAPI } from 'node-red'
 
 import { NodeStatusUtils } from '../utils/NodeStatusUtils'
@@ -58,6 +59,7 @@ type HAPServiceNodeType = NodeType & {
     reachable?: boolean
     nodeStatusUtils: NodeStatusUtils
     adaptiveLightingController?: AdaptiveLightingController
+    cameraController?: CameraController
 }
 
 export default HAPServiceNodeType

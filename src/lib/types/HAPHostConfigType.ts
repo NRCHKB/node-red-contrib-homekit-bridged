@@ -1,4 +1,4 @@
-import { MDNSAdvertiser } from 'hap-nodejs'
+import { MDNSAdvertiser } from '@homebridge/hap-nodejs'
 import { NodeDef } from 'node-red'
 import { SemVer } from 'semver'
 

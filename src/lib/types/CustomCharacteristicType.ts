@@ -1,4 +1,4 @@
-import { CharacteristicProps } from 'hap-nodejs'
+import { CharacteristicProps } from '@homebridge/hap-nodejs'
 
 type CustomCharacteristicType = CharacteristicProps & {
     UUID?: string
