@@ -9,7 +9,7 @@
         "test": "mocha -r ts-node/register \"./src/**/*.test.[tj]s\" --exit --timeout 30000",
         "prettier": "prettier --write \"**/*.{js,ts}\"",
         "eslint": "eslint \"src/**/*.ts\"",
-        "prepare": "husky install"
+        "prepare": "npm run build && husky install"
     },
     "repository": {
         "type": "git",
