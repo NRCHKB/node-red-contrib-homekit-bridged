@@ -1,5 +1,5 @@
 import { loggerSetup } from '@nrchkb/logger'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { version } from '../../../package.json'
 import EveCharacteristics from '../../lib/hap/eve-app/EveCharacteristics'
@@ -11,8 +11,6 @@ import {
 const APIFactory = require('../../../build/lib/api')
 const API = APIFactory()
 const buildStorage = require('../../../build/lib/Storage')
-
-process.env.NRCHKB_EXPERIMENTAL = 'true'
 
 type RouteHandler = (
     _req: unknown,
@@ -150,9 +148,43 @@ loggerSetup({
 })
 
 describe('api', () => {
+    beforeEach(() => vi.stubEnv('NRCHKB_EXPERIMENTAL', 'true'))
     afterEach(() => {
         vi.restoreAllMocks()
+        vi.unstubAllEnvs()
     })
+
+    it.each([
+        ['1.2.3', '1.2.3'],
+        ['2.0.0-dev.13', '0.200.13'],
+        ['2.0.0-dev.14', '0.200.14'],
+        ['1.7.12-dev.4', '0.1712.4'],
+        ['2.0.0-beta.1', '2.0.0'],
+        ['2.0.0-rc.2', '2.0.0'],
+        ['', '0.0.0'],
+        ['invalid', '0.0.0'],
+        ['1.2', '0.0.0'],
+    ])('converts version %s to %s', (input, expected) => {
+        expect(API.stringifyVersion(input)).toBe(expected)
+    })
+
+    it.each(['true', 'false', undefined])(
+        'isolates experimental mode %s',
+        async (value) => {
+            vi.stubEnv('NRCHKB_EXPERIMENTAL', value)
+            const { RED, routes } = createRouteHarness()
+            APIFactory(RED as never).init()
+            const response = await invokeRoute(
+                routes.get.get('/nrchkb/info'),
+                {}
+            )
+            expect(response.body).toHaveProperty(
+                'experimental',
+                value === 'true'
+            )
+            expect(response.body).toHaveProperty('version', '0.200.14')
+        }
+    )
 
     it('registers service, info, advertiser, accessory, and custom-characteristics routes', async () => {
         const { RED, routes } = createRouteHarness()
@@ -560,7 +592,8 @@ describe('api', () => {
 
         const response = await invokeRoute(routes.get.get('/nrchkb/config'), {})
 
-        expect(response.body.customCharacteristics).toStrictEqual(
+        expect(response.body).toHaveProperty(
+            'customCharacteristics',
             EveCharacteristics
         )
     })
@@ -578,7 +611,8 @@ describe('api', () => {
 
         const response = await invokeRoute(routes.get.get('/nrchkb/config'), {})
 
-        expect(response.body.customCharacteristics).toStrictEqual(
+        expect(response.body).toHaveProperty(
+            'customCharacteristics',
             EveCharacteristics
         )
     })

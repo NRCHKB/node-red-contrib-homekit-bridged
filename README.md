@@ -25,6 +25,11 @@ You can also pull a [docker image](https://github.com/NRCHKB/node-red-contrib-ho
 
 [**Discord**](https://discord.gg/uvYac5u) Again, one of us is on Discord every day, always ready to help!
 
+### Development
+
+See [TESTING.md](TESTING.md) for setup, type checking, behavioral tests, coverage,
+mutation testing, and packaged-install checks.
+
 <p align="center">
   <a href="https://discord.gg/uvYac5u">
     <img src="https://discordapp.com/api/guilds/586065987267330068/widget.png?style=banner2" alt="NRCHKB Discord"/>

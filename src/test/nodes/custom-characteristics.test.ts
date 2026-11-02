@@ -1,4 +1,3 @@
-import { Characteristic } from '@homebridge/hap-nodejs'
 import { loggerSetup } from '@nrchkb/logger'
 import {
     afterAll,
@@ -12,6 +11,7 @@ import {
 import APIFactory from '../../lib/api'
 import { Formats, Perms } from '../../lib/hap/hap-nodejs'
 import { Storage } from '../../lib/Storage'
+import type HAPServiceNodeType from '../../lib/types/HAPServiceNodeType'
 import { loadBuildNodes } from '../test-utils/build-node-loader'
 import {
     configureNodeRedTestSettings,
@@ -26,8 +26,6 @@ const {
     nrchkb,
     service: homekitServiceNode,
 } = loadBuildNodes()
-
-process.env.NRCHKB_EXPERIMENTAL = 'true'
 
 loggerSetup({
     debugEnabled: true,
@@ -145,10 +143,12 @@ describe('Custom Characteristics', () => {
     let cleanupUserDir: (() => void) | undefined
 
     beforeAll(async () => {
+        vi.stubEnv('NRCHKB_EXPERIMENTAL', 'true')
         cleanupUserDir = configureNodeRedTestSettings()
     })
 
     afterAll(async () => {
+        vi.unstubAllEnvs()
         cleanupUserDir?.()
     })
 
@@ -212,8 +212,17 @@ describe('Custom Characteristics', () => {
             flow
         )
 
-        const node = helper.getNode(serviceId)
-        const eveVolt = node.service.getCharacteristic(Characteristic.EveVolt)
+        const node = helper.getNode(serviceId) as HAPServiceNodeType
+        const eveVolt = node.service.characteristics.find(
+            (characteristic) =>
+                characteristic.UUID === customCharacteristics[0].UUID
+        )
+        expect(
+            eveVolt,
+            'Custom Eve Volt characteristic was not registered'
+        ).toBeDefined()
+        if (!eveVolt)
+            throw new Error('Custom Eve Volt characteristic was not registered')
 
         expect(eveVolt.props.format).toBe(Formats.FLOAT)
         expect(eveVolt.props.minValue).toBe(0)

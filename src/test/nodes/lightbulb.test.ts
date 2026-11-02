@@ -1,6 +1,12 @@
-import { Characteristic, Formats, Perms } from '@homebridge/hap-nodejs'
+import {
+    ChangeReason,
+    Characteristic,
+    Formats,
+    Perms,
+} from '@homebridge/hap-nodejs'
 import { loggerSetup } from '@nrchkb/logger'
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
+import type HAPServiceNodeType from '../../lib/types/HAPServiceNodeType'
 import { loadBuildNodes } from '../test-utils/build-node-loader'
 import {
     configureNodeRedTestSettings,
@@ -152,7 +158,7 @@ describe('Lightbulb Service', () => {
             flow
         )
 
-        const node = helper.getNode(serviceId)
+        const node = helper.getNode(serviceId) as HAPServiceNodeType
         const helperOutput = helper.getNode('helper-output')
         const context = { traceId: 'brightness-75' }
 
@@ -180,7 +186,7 @@ describe('Lightbulb Service', () => {
             flow
         )
 
-        const node = helper.getNode(serviceId)
+        const node = helper.getNode(serviceId) as HAPServiceNodeType
         const colorTemperature = node.service.getCharacteristic(
             Characteristic.ColorTemperature
         )
@@ -195,7 +201,7 @@ describe('Lightbulb Service', () => {
             newValue: 350,
             oldValue: 300,
             originator: undefined,
-            reason: 'write',
+            reason: ChangeReason.WRITE,
         })
 
         const msg = await message

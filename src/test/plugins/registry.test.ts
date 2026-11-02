@@ -1,4 +1,5 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import type { NodeAPI } from 'node-red'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
     clearPluginsForTest,
     listPlugins,
@@ -9,6 +10,28 @@ import {
     registerPluginFromPackage,
     validatePluginAttachments,
 } from '../../plugins/registry'
+
+const createLog = (): NodeAPI['log'] => ({
+    _: vi.fn(),
+    FATAL: 10,
+    ERROR: 20,
+    WARN: 30,
+    INFO: 40,
+    DEBUG: 50,
+    TRACE: 60,
+    AUDIT: 98,
+    METRIC: 99,
+    addHandler: vi.fn(),
+    removeHandler: vi.fn(),
+    log: vi.fn(),
+    error: vi.fn(),
+    warn: vi.fn(),
+    info: vi.fn(),
+    debug: vi.fn(),
+    trace: vi.fn(),
+    metric: vi.fn(),
+    audit: vi.fn(),
+})
 
 const factory = {
     attach: () => {
@@ -153,6 +176,7 @@ describe('plugin registry', () => {
 
     it('registers Node-RED NRCHKB plugin definitions', () => {
         registerNodeRedPlugins({
+            log: createLog(),
             plugins: {
                 getByType: (type) =>
                     type === NRCHKB_NODE_RED_PLUGIN_TYPE
@@ -181,7 +205,10 @@ describe('plugin registry', () => {
 
         registerNodeRedPlugins({
             log: {
-                warn: (message) => warnings.push(message),
+                ...createLog(),
+                warn: (message) => {
+                    warnings.push(message)
+                },
             },
             plugins: {
                 getByType: (type) =>

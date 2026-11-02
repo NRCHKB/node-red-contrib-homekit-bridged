@@ -7,6 +7,8 @@ describe('UniFi Protect discovery validation', () => {
             assertProtectControllerConfig(
                 {
                     id: 'controller1',
+                    name: 'Protect',
+                    z: '',
                     type: 'homekit-unifi-controller',
                     application: 'protect',
                     address: '192.168.1.1',
@@ -24,6 +26,8 @@ describe('UniFi Protect discovery validation', () => {
             assertProtectControllerConfig(
                 {
                     id: 'controller1',
+                    name: 'Protect',
+                    z: '',
                     type: 'homekit-unifi-controller',
                     application: 'protect',
                 },

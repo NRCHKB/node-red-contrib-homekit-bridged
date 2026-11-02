@@ -51,7 +51,7 @@ module.exports = (RED: NodeAPI) => {
 
     const API = require('../lib/api')(RED)
 
-    Storage.init(rootFolder, 'nrchkb').then(() => {
+    const initialization = Storage.init(rootFolder, 'nrchkb').then(() => {
         log.debug(`nrchkb storage path set to ${Storage.storagePath()}`)
         API.init()
     })
@@ -61,4 +61,6 @@ module.exports = (RED: NodeAPI) => {
     RED.nodes.registerType('nrchkb', function (this: any, config) {
         RED.nodes.createNode(this, config)
     })
+
+    return initialization
 }

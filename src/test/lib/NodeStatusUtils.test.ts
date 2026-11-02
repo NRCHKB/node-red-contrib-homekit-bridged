@@ -1,13 +1,5 @@
 import type { NodeStatus } from '@node-red/registry'
-import {
-    afterAll,
-    beforeAll,
-    beforeEach,
-    describe,
-    expect,
-    it,
-    vi,
-} from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { NodeStatusUtils } from '../../lib/utils/NodeStatusUtils'
 
@@ -22,15 +14,14 @@ describe('NodeStatusUtils', () => {
     let node: NodeWithStatusMock
     let nodeStatusUtils: NodeStatusUtils
 
-    beforeAll(() => {
-        vi.useFakeTimers()
-    })
-
-    afterAll(() => {
+    afterEach(() => {
+        nodeStatusUtils.cleanup()
         vi.useRealTimers()
+        vi.restoreAllMocks()
     })
 
     beforeEach(() => {
+        vi.useFakeTimers()
         node = new NodeWithStatusMock()
         nodeStatusUtils = new NodeStatusUtils(node)
     })

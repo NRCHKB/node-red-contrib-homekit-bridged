@@ -4,8 +4,30 @@ import os from 'node:os'
 import path from 'node:path'
 
 import helper from 'node-red-node-test-helper'
+import type HAPService2ConfigType from '../../lib/types/HAPService2ConfigType'
+import type HAPServiceNodeType from '../../lib/types/HAPServiceNodeType'
+
+// Serialized editor flows can contain string-valued host/audio settings.
+export type TestFlowNode = helper.TestFlowsItem &
+    Partial<Omit<HAPService2ConfigType, 'hostType' | 'cameraConfigAudio'>> & {
+        hostType?: number | string
+        cameraConfigAudio?: boolean | string
+        outputs?: number
+        allowMessagePassthrough?: boolean
+    }
+
+export const getServiceNode = (id: string): HAPServiceNodeType =>
+    helper.getNode(id) as HAPServiceNodeType
 
 let testUserDir: string | undefined
+
+// node-red-node-test-helper deliberately replaces settings.available during
+// load(). Restore it at the module boundary so tests use their temporary path.
+export const withTestStorage =
+    (nodeModule: (RED: any) => unknown) => (RED: any) => {
+        RED.settings.available = () => true
+        return nodeModule(RED)
+    }
 
 export function configureNodeRedTestSettings() {
     if (testUserDir) {
@@ -15,7 +37,6 @@ export function configureNodeRedTestSettings() {
     testUserDir = mkdtempSync(path.join(os.tmpdir(), 'nrchkb-vitest-'))
 
     helper.settings({
-        available: () => true,
         userDir: testUserDir,
     })
 

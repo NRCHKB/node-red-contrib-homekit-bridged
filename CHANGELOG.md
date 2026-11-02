@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2026-06-17
+## [2.0.0] - 2026-11-02
 
 Backward compatibility was lost for custom mDNS configuration.
 Legacy `CameraControl` remains available only in `homekit-service` and is deprecated. New and migrated camera flows
@@ -23,8 +23,9 @@ installations and Docker-based deployments.
 
 ### Added
 
-- New camera controller API with MP4 snapshot/streaming support.
-- Service node migration support for converting legacy `homekit-service` nodes to `homekit-service2` nodes.
+- New camera controller API with snapshots, live streaming, and fragmented MP4 recording support.
+- Service node migration support for converting legacy `homekit-service` nodes to `homekit-service2` nodes,
+  including conversion of `CameraControl` to the plugin-backed `Camera` service.
 - Node migration API endpoints for editor-driven and script-driven migrations:
   `POST /nrchkb/migration/node` and `POST /nrchkb/migration/flow`.
 - `npm run migrate:service2` helper for migrating exported Node-RED flow files.
@@ -38,8 +39,8 @@ installations and Docker-based deployments.
 - Embedded `Homebridge Camera FFmpeg` plugin integration backed by
   `@homebridge-plugins/homebridge-camera-ffmpeg`, with upstream authors credited separately from the NRCHKB
   integration author.
-- Embedded `Homebridge UniFi Protect` plugin integration with UniFi Protect controller configuration and camera
-  discovery.
+- Embedded `Homebridge UniFi Protect` plugin integration backed by `homebridge-unifi-protect` 8.1.0, with UniFi Protect
+  controller configuration and camera discovery.
 - New `homekit-unifi-controller` config node with username/password credentials, controller address, application,
   self-signed certificate, and override address settings.
 - Custom `Camera` service for `homekit-service2`; selecting it automatically attaches the embedded Homebridge Camera
@@ -55,46 +56,31 @@ installations and Docker-based deployments.
   [#85](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/85).
 - Per-node **Log Level** settings for standard and config nodes, with scoped `inherit`, `error`, `debug`, `trace`, and
   `disabled` behavior backed by `@nrchkb/logger` [#479](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/479).
-- Always-on custom characteristic API with duplicate-key protection, stale characteristic cleanup, and listener
-  rebinding [#52](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/52).
 - Additional unit and integration coverage for camera delegates, custom characteristics, lightbulb flows, Service 2
   migration, plugin metadata/registry behavior, host lifecycle cleanup, service utilities, storage callbacks, HAP
   compatibility, and performance.
 
 ### Changed
 
-- Upgraded to [`@homebridge/hap-nodejs` 2.3.0](https://github.com/homebridge/HAP-NodeJS/releases/tag/v2.3.0).
-  Its new atomic HAP storage retains the existing pairing-data format.
-- Upgraded the embedded Homebridge UniFi Protect integration to `8.1.0`. HBUP 8 requires the Homebridge 2 API and
-  uses the timeshift buffer for live views by default. The dev-only integration accepts HBUP 8 feature options only:
-  `Video.Stream.UseApi` is removed, `Video.Stream.Only.*` is now `Video.Rtsp.Only.*`, and
-  `Video.HKSV.Record.Only.*` is now `Video.Timeshift.Only.*`. Node.js 22.20 or newer is required, matching HBUP 8's
-  engine requirement.
-- Replaced the legacy `hap-nodejs` dependency with `@homebridge/hap-nodejs` and added a local compatibility wrapper for
-  HAP-NodeJS types.
-- Updated the package version to the `2.0.0-dev` release line.
+- Replaced `hap-nodejs` 0.12.3 with
+  [`@homebridge/hap-nodejs` 2.3.0](https://github.com/homebridge/HAP-NodeJS/releases/tag/v2.3.0) and added a local
+  compatibility wrapper for HAP-NodeJS types.
 - Updated the Node-RED runtime baseline to `5.0.0` or newer.
 - Node.js `22.20.0` or newer is now required; Node.js `24` is recommended for new installations and Docker-based
   deployments [#578](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/578).
 - Deprecated legacy `CameraControl` for `homekit-service` and removed it from the `homekit-service2` service selector.
-- Replaced the `homekit-service2` camera path with the plugin-backed custom `Camera` service.
-- Removed Homebridge Camera FFmpeg-specific configuration UI from `homekit-service2`; camera fields are now supplied by
-  the plugin through the same metadata contract used by embedded and external plugins.
-- Moved editor migration behavior to the shared migration API instead of duplicating migration mapping in editor code.
+- Made the existing custom characteristic API available without `NRCHKB_EXPERIMENTAL`
+  [#52](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/52).
 - Removed custom mDNS publish settings from host publishing; `bind` and the standard HAP advertiser options are now
   used instead. Legacy custom mDNS fields may still be present in old flows but are ignored by HAP-NodeJS 2.x.
 - Reworked Bridge, Standalone Accessory, Service, Service 2, Status, and NRCHKB editor screens into compact
   inspector-style sections with responsive disclosure groups.
-- Registered the `nrchkb` node type synchronously instead of only inside the experimental runtime path.
-- Initialized HAP storage before async NRCHKB storage setup to avoid late storage-path registration.
 - Improved Service 2 event output to include HomeKit context data when present and to send context-originated updates.
 - Changed supported characteristic tracking to use sets and shared characteristic utility behavior between Service and
   Service 2 nodes.
 - Improved host/service lifecycle handling, including synchronous `nrchkb` registration, cleaner close/unpublish
   behavior, and node status timeout cleanup
   [#477](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/477).
-- Reworked storage callback handling to cap callback growth and clean up expired entries safely.
-- Improved custom characteristic rebinding, setup-message validation, and adaptive lighting handling.
 - Replaced the TypeScript compiler build path with an esbuild-based build and watch workflow.
 - Migrated formatting and linting from ESLint and Prettier to Biome.
 - Migrated the test runner from Mocha to Vitest.
@@ -104,18 +90,22 @@ installations and Docker-based deployments.
 - Updated `@nrchkb/logger` to `3.3.0` for scoped log-level support.
 - Updated CI to run on Node.js `22`, `24`, and `26` across Ubuntu, Windows, and macOS, with `test:ci`, linting, typechecking, and
   fail-fast disabled for the matrix.
+- Added coverage reporting, targeted mutation checks, packaged-install smoke tests, and testing documentation.
 - Updated CodeQL, publish workflows, and security support documentation for the 2.x release line.
 - Refreshed example flows for the current node definitions and updated generated editor assets.
 
 ### Fixed
 
-- Fixed Node-RED plugin discovery to use the registry's `getByType` API.
-- Fixed Service 2 plugin attachment validation to reject multiple live-video plugins on a single service before attaching them.
 - Fixed invalid `bind` JSON handling so publishing fails cleanly instead of throwing during host publish.
 - Fixed host port normalization so empty or string port values are handled consistently and port `1880` remains
   blocked because it is reserved for Node-RED.
 - Fixed pending wait-for-parent timers, publish timers, characteristic listeners, identify listeners, and status
-  timeouts being left behind after node close/redeploy.
+  timeouts being left behind after node close/redeploy, including nodes still waiting for a parent service or setup message.
+- Wait for accessory destruction before completing service close callbacks, and complete host/service cleanup
+  callbacks even when HAP unpublication or destruction fails.
+- Handle synchronous and asynchronous HAP publication failures, log the error, and clear the published state.
+- Return the NRCHKB storage initialization promise so startup can wait for storage and API initialization.
+- Initialize HAP storage before async NRCHKB storage setup to avoid late storage-path registration.
 - Fixed Bridge publishing so delayed `wait for setup` services are included before publish, preserving stable HomeKit
   identity for those services [#482](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/482).
 - Fixed callback storage growth by expiring callbacks, clearing timeout handles, and pruning old callback entries at
@@ -126,8 +116,6 @@ installations and Docker-based deployments.
   value.
 - Fixed linked Service nodes retaining stale Bridge or Standalone Accessory references after switching from parent
   service mode [#503](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/503).
-- Fixed legacy camera migration so `CameraControl` nodes migrate to `homekit-service2` as `Camera` nodes with embedded
-  Homebridge Camera FFmpeg plugin configuration instead of leaving an unsupported service in Service 2.
 
 ### Removed
 

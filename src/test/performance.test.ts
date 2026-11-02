@@ -1,3 +1,4 @@
+import { CharacteristicEventTypes } from '@homebridge/hap-nodejs/dist/lib/Characteristic'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { Storage } from '../lib/Storage'
@@ -14,7 +15,7 @@ describe('Storage callback capacity', () => {
         const firstCallback = vi.fn()
         const firstCallbackID = Storage.saveCallback(
             {
-                event: 'get',
+                event: CharacteristicEventTypes.GET,
                 callback: firstCallback,
             },
             60_000
@@ -25,7 +26,7 @@ describe('Storage callback capacity', () => {
         for (let index = 1; index <= 1000; index += 1) {
             lastCallbackID = Storage.saveCallback(
                 {
-                    event: 'get',
+                    event: CharacteristicEventTypes.GET,
                     callback: vi.fn(),
                 },
                 60_000

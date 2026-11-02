@@ -10,7 +10,20 @@ loggerSetup({
 })
 
 describe('HAPHostNode', () => {
-    // allow longer for this suite (configured via package.json vitest.test.testTimeout)
+    it.each([
+        ['a', 'A0:00:00:00:00:00'],
+        ['a1b2c3d4e5f67890', 'A1:B2:C3:D4:E5:F6'],
+        ['abc.def.123456', 'AB:CD:EF:12:34:56'],
+        ['12.34', '12:34:00:00:00:00'],
+    ])(
+        'macify(%s) is exactly %s across factory restarts',
+        (input, expected) => {
+            expect(HAPHostNode.macify(input)).toBe(expected)
+            expect(
+                require('../../../build/lib/HAPHostNode')().macify(input)
+            ).toBe(expected)
+        }
+    )
 
     it('macify should preserve strings without dots', () => {
         const stringToMacify = 'BRIDGE'

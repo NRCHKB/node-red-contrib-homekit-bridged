@@ -10,21 +10,27 @@ import {
     afterAll,
     afterEach,
     beforeAll,
+    beforeEach,
     describe,
     expect,
     it,
     vi,
 } from 'vitest'
 import { createAutomaticHomebridgeCameraFfmpegPluginEntry } from '../../plugins/embedded'
-import { describeCommonSwitchServiceBehavior } from '../test-utils/common-switch-service-tests'
+import {
+    describeCommonSwitchServiceBehavior,
+    drainMessages,
+} from '../test-utils/common-switch-service-tests'
 import { switchService2BridgeFlow } from '../test-utils/data'
 import {
     configureNodeRedTestSettings,
+    getServiceNode,
     waitForInput,
+    withTestStorage,
 } from '../test-utils/vitest-helper'
 
 const homekitBridgeNode = require('../../../build/nodes/bridge')
-const nrchkb = require('../../../build/nodes/nrchkb')
+const nrchkb = withTestStorage(require('../../../build/nodes/nrchkb'))
 const pluginInstanceNode = require('../../../build/nodes/plugin-instance')
 const homekitService2Node = require('../../../build/nodes/service2')
 const { registerPlugin } = require('../../../build/plugins/registry')
@@ -60,38 +66,45 @@ const waitForService = async (node: { service?: unknown }) => {
     }
 }
 
-process.env.NRCHKB_EXPERIMENTAL = 'true'
-
 loggerSetup({
-    debugEnabled: true,
+    debugEnabled: false,
     errorEnabled: true,
     traceEnabled: false,
 })
 
-vi.spyOn(Bridge.prototype, 'publish').mockImplementation(function () {
-    return true as never
-})
-vi.spyOn(Bridge.prototype, 'unpublish').mockResolvedValue(undefined)
-vi.spyOn(Accessory.prototype, 'publish').mockImplementation(function () {
-    return true as never
-})
-vi.spyOn(Accessory.prototype, 'unpublish').mockResolvedValue(undefined)
+const stubPublication = () => {
+    vi.spyOn(Bridge.prototype, 'publish').mockImplementation(function () {
+        return true as never
+    })
+    vi.spyOn(Bridge.prototype, 'unpublish').mockResolvedValue(undefined)
+    vi.spyOn(Accessory.prototype, 'publish').mockImplementation(function () {
+        return true as never
+    })
+    vi.spyOn(Accessory.prototype, 'unpublish').mockResolvedValue(undefined)
+}
 
-describe('Service Node', () => {
+describe('Service2 Node', () => {
     let cleanupUserDir: (() => void) | undefined
 
     beforeAll(async () => {
         cleanupUserDir = configureNodeRedTestSettings()
-        await new Promise<void>((resolve) => helper.startServer(resolve))
+        await helper.startServer()
     })
 
     afterAll(async () => {
-        await new Promise<void>((resolve) => helper.stopServer(resolve))
+        await helper.stopServer()
         cleanupUserDir?.()
     })
 
-    afterEach(() => {
-        return helper.unload()
+    beforeEach(() => {
+        vi.stubEnv('NRCHKB_EXPERIMENTAL', 'true')
+        stubPublication()
+    })
+
+    afterEach(async () => {
+        await helper.unload()
+        vi.restoreAllMocks()
+        vi.unstubAllEnvs()
     })
 
     describeCommonSwitchServiceBehavior({
@@ -110,14 +123,16 @@ describe('Service Node', () => {
             flow
         )
 
-        const s1 = helper.getNode(serviceId)
+        const s1 = getServiceNode(serviceId)
         const h1 = helper.getNode('h1')
         const onCharacteristic = s1.service.getCharacteristic(Characteristic.On)
         const getCallback = vi.fn()
+        const messages: Record<string, any>[] = []
+        h1.on('input', (msg) => messages.push(msg))
 
         const firstMessage = waitForInput<Record<string, any>>(h1)
 
-        onCharacteristic.emit('get', getCallback, undefined, undefined)
+        const request = onCharacteristic.handleGetRequest().then(getCallback)
 
         const msg1 = await firstMessage
         const callbackID = msg1.hap.event.context.callbackID
@@ -125,17 +140,21 @@ describe('Service Node', () => {
         expect(callbackID).toEqual(expect.any(String))
         expect(getCallback).not.toHaveBeenCalled()
 
-        const secondMessage = waitForInput<Record<string, any>>(h1)
-
         s1.receive({
             payload: {
                 [callbackID]: true,
             },
         })
 
-        const msg2 = await secondMessage
+        await request
+        await drainMessages()
+        const msg2 = messages.find(
+            (msg) => msg.hap.event.name === 'get' && msg.hap.newValue === true
+        )!
 
-        expect(getCallback).toHaveBeenCalledWith(null, true)
+        expect(getCallback).toHaveBeenCalledExactlyOnceWith(true)
+        expect(messages).toHaveLength(3)
+        expect(onCharacteristic.value).toBe(true)
         expect(msg2.payload).toMatchObject({ On: true })
         expect(msg2.hap).toMatchObject({
             event: {
@@ -156,12 +175,13 @@ describe('Service Node', () => {
             flow
         )
 
-        const s1 = helper.getNode(serviceId)
+        const s1 = getServiceNode(serviceId)
         const h1 = helper.getNode('h1')
         const onCharacteristic = s1.service.getCharacteristic(Characteristic.On)
         const output = waitForInput<Record<string, any>>(h1)
 
-        onCharacteristic.emit('set', true, vi.fn(), undefined, undefined)
+        onCharacteristic.value = true
+        await onCharacteristic.handleSetRequest(true)
 
         const msg = await output
 
@@ -187,12 +207,13 @@ describe('Service Node', () => {
             flow
         )
 
-        const s1 = helper.getNode(serviceId)
-        const h1 = helper.getNode('h1')
+        const s1 = getServiceNode(serviceId)
+        const h1 = helper.getNode('h2')
         const onCharacteristic = s1.service.getCharacteristic(Characteristic.On)
         const output = waitForInput<Record<string, any>>(h1)
 
-        onCharacteristic.emit('set', true, vi.fn(), undefined, undefined)
+        onCharacteristic.value = true
+        await onCharacteristic.handleSetRequest(true)
 
         const msg = await output
 
@@ -226,7 +247,7 @@ describe('Service Node', () => {
             flow
         )
 
-        const s1 = helper.getNode(serviceId)
+        const s1 = getServiceNode(serviceId)
         await waitForService(s1)
 
         expect(s1.service.UUID).toBe('00000110-0000-1000-8000-0026BB765291')
@@ -243,18 +264,12 @@ describe('Service Node', () => {
             flow
         )
 
-        const s1 = helper.getNode(serviceId)
+        const s1 = getServiceNode(serviceId)
         const h1 = helper.getNode('h1')
         const onCharacteristic = s1.service.getCharacteristic(Characteristic.On)
         const output = waitForInput<Record<string, any>>(h1)
 
-        onCharacteristic.emit('change', {
-            oldValue: false,
-            newValue: true,
-            context: undefined,
-            originator: undefined,
-            reason: 'write',
-        })
+        onCharacteristic.updateValue(true)
 
         const msg = await output
 
@@ -286,7 +301,7 @@ describe('Service Node', () => {
             flow
         )
 
-        const s1 = helper.getNode(serviceId)
+        const s1 = getServiceNode(serviceId)
         await waitForService(s1)
 
         expect(s1.service.UUID).toBe('00000110-0000-1000-8000-0026BB765291')
@@ -312,7 +327,7 @@ describe('Service Node', () => {
             flow
         )
 
-        const s1 = helper.getNode(serviceId)
+        const s1 = getServiceNode(serviceId)
         await waitForService(s1)
 
         expect(s1.service.UUID).toBe('00000110-0000-1000-8000-0026BB765291')
@@ -339,7 +354,7 @@ describe('Service Node', () => {
             flow
         )
 
-        const s1 = helper.getNode(serviceId)
+        const s1 = getServiceNode(serviceId)
         await waitForService(s1)
 
         expect(order).toEqual(['Fake Plugin 1'])
@@ -366,7 +381,9 @@ describe('Service Node', () => {
                 },
             },
             {
-                attach: (context) => {
+                attach: (
+                    context: import('../../plugins/registry/types').NRCHKBPluginAttachContext
+                ) => {
                     seenConfigs.push(context.config as Record<string, unknown>)
                     return (
                         context.accessory.getService(Service.Switch) ??
@@ -399,7 +416,7 @@ describe('Service Node', () => {
             flow
         )
 
-        const s1 = helper.getNode(serviceId)
+        const s1 = getServiceNode(serviceId)
         await waitForService(s1)
 
         expect(seenConfigs).toEqual([
@@ -419,7 +436,7 @@ describe('Service Node', () => {
             flow
         )
 
-        const s1 = helper.getNode(serviceId)
+        const s1 = getServiceNode(serviceId)
         await waitForService(s1)
 
         expect(s1.service.UUID).toBe(Service.Switch.UUID)
@@ -434,7 +451,7 @@ describe('Service Node', () => {
             flow
         )
 
-        const s1 = helper.getNode(serviceId)
+        const s1 = getServiceNode(serviceId)
         await waitForService(s1)
 
         expect(s1.service.UUID).toBe(Service.Switch.UUID)

@@ -1,8 +1,10 @@
 import {
+    Accessory,
     H264Level,
     H264Profile,
     SRTPCryptoSuites,
     StreamRequestTypes,
+    uuid,
     VideoCodecPacketizationMode,
     VideoCodecType,
 } from '@homebridge/hap-nodejs'
@@ -15,7 +17,9 @@ const mockState = vi.hoisted(() => {
     const childHandlers = new Map<string, Handler>()
     const stdoutHandlers = new Map<string, Handler>()
     const stderrHandlers = new Map<string, Handler>()
-    const spawnMock = vi.fn(() => fakeChild)
+    const spawnMock = vi.fn(
+        (_command: string, _args: string[], _options?: unknown) => fakeChild
+    )
 
     const fakeChild: {
         on: (event: string, handler: Handler) => void
@@ -96,7 +100,7 @@ describe('CameraDelegate', () => {
             { displayName: 'Camera', UUID: 'camera-uuid' } as never,
             {
                 cameraConfigAdditionalCommandLine: '',
-                cameraConfigAudio: false,
+                cameraConfigAudio: 'false',
                 cameraConfigAudioCodec: 'libfdk_aac',
                 cameraConfigDebug: false,
                 cameraConfigHorizontalFlip: false,
@@ -116,17 +120,25 @@ describe('CameraDelegate', () => {
                 cameraConfigVideoFilter: 'scale=1280:720',
                 cameraConfigVideoProcessor: 'ffmpeg',
                 cameraConfigVerticalFlip: false,
-                name: 'Camera',
             }
         )
 
-        const snapshotPromise = new Promise<Buffer>((resolve) => {
+        const snapshotPromise = new Promise<Buffer>((resolve, reject) => {
             camera.handleSnapshotRequest(
                 {
                     height: 720,
                     width: 1280,
                 },
-                (_error, buffer) => {
+                (error, buffer) => {
+                    if (error || !buffer) {
+                        reject(
+                            error ??
+                                new Error(
+                                    'Snapshot callback returned no buffer'
+                                )
+                        )
+                        return
+                    }
                     resolve(buffer)
                 }
             )
@@ -146,7 +158,7 @@ describe('CameraDelegate', () => {
             { displayName: 'Camera', UUID: 'camera-uuid' } as never,
             {
                 cameraConfigAdditionalCommandLine: '',
-                cameraConfigAudio: false,
+                cameraConfigAudio: 'false',
                 cameraConfigAudioCodec: 'libfdk_aac',
                 cameraConfigDebug: false,
                 cameraConfigHorizontalFlip: false,
@@ -167,7 +179,6 @@ describe('CameraDelegate', () => {
                 cameraConfigVideoFilter: 'scale=1280:720',
                 cameraConfigVideoProcessor: 'ffmpeg',
                 cameraConfigVerticalFlip: false,
-                name: 'Camera',
             }
         )
 
@@ -193,9 +204,13 @@ describe('CameraDelegate', () => {
     })
 
     it('registers a camera controller on the accessory', () => {
-        const accessory = {
-            configureController: vi.fn(),
-        } as never
+        const accessory = new Accessory(
+            'Camera',
+            uuid.generate('camera-controller-test')
+        )
+        const configureController = vi
+            .spyOn(accessory, 'configureController')
+            .mockImplementation(() => {})
 
         configureCamera(accessory, {
             cameraConfigAdditionalCommandLine: '',
@@ -219,10 +234,9 @@ describe('CameraDelegate', () => {
             cameraConfigVideoFilter: 'scale=1280:720',
             cameraConfigVideoProcessor: 'ffmpeg',
             cameraConfigVerticalFlip: false,
-            name: 'Camera',
         })
 
-        expect(accessory.configureController).toHaveBeenCalledTimes(1)
+        expect(configureController).toHaveBeenCalledTimes(1)
     })
 
     it('applies flip filters even when no custom video filter is configured', async () => {
@@ -230,7 +244,7 @@ describe('CameraDelegate', () => {
             { displayName: 'Camera', UUID: 'camera-uuid' } as never,
             {
                 cameraConfigAdditionalCommandLine: '',
-                cameraConfigAudio: false,
+                cameraConfigAudio: 'false',
                 cameraConfigAudioCodec: 'libfdk_aac',
                 cameraConfigDebug: false,
                 cameraConfigHorizontalFlip: true,
@@ -250,7 +264,6 @@ describe('CameraDelegate', () => {
                 cameraConfigVideoFilter: '',
                 cameraConfigVideoProcessor: 'ffmpeg',
                 cameraConfigVerticalFlip: false,
-                name: 'Camera',
             }
         )
 

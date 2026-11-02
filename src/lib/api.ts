@@ -47,7 +47,7 @@ type AdvertiserRecommendation = {
     title: string
 }
 
-module.exports = (RED: NodeAPI) => {
+const buildAPI = (RED: NodeAPI) => {
     const log = logger('NRCHKB', 'API')
     const registeredCustomCharacteristicKeys = new Set<string>()
 
@@ -893,3 +893,5 @@ module.exports = (RED: NodeAPI) => {
         stringifyVersion,
     }
 }
+
+export = buildAPI

@@ -65,6 +65,8 @@ module.exports = (RED: NodeAPI) => {
 
         const ServiceUtils = require('./utils/ServiceUtils2')(this)
 
+        this.on('close', ServiceUtils.onClose)
+
         new Promise<HAPService2ConfigType>((resolve) => {
             if (this.config.waitForSetupMsg) {
                 log.debug(
@@ -309,8 +311,6 @@ module.exports = (RED: NodeAPI) => {
 
         // Respond to inputs
         this.on('input', ServiceUtils.onInput)
-
-        this.on('close', ServiceUtils.onClose)
     }
 
     return {

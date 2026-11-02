@@ -69,6 +69,10 @@ module.exports = (RED: NodeAPI) => {
 
         const ServiceUtils = buildServiceUtils(this)
 
+        // Setup can wait indefinitely for a parent or setup message. Register
+        // cleanup before starting it so even unconfigured nodes can close.
+        this.on('close', ServiceUtils.onClose)
+
         new Promise<HAPServiceConfigType>((resolve) => {
             if (this.config.waitForSetupMsg) {
                 log.debug(
@@ -298,8 +302,6 @@ module.exports = (RED: NodeAPI) => {
 
         // Respond to inputs
         this.on('input', ServiceUtils.onInput)
-
-        this.on('close', ServiceUtils.onClose)
     }
 
     return {

@@ -129,18 +129,28 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                 }
             }
 
-            this.host.publish(
-                {
-                    username: this.bridgeUsername,
-                    port,
-                    pincode: oldPinCode,
-                    category: this.accessoryCategory,
-                    bind,
-                    advertiser:
-                        this.config.advertiser ?? MDNSAdvertiser.BONJOUR,
-                },
-                this.config.allowInsecureRequest
-            )
+            try {
+                const publishing = this.host.publish(
+                    {
+                        username: this.bridgeUsername,
+                        port,
+                        pincode: oldPinCode,
+                        category: this.accessoryCategory,
+                        bind,
+                        advertiser:
+                            this.config.advertiser ?? MDNSAdvertiser.BONJOUR,
+                    },
+                    this.config.allowInsecureRequest
+                )
+                Promise.resolve(publishing).catch((error) => {
+                    this.published = false
+                    log.error(`Publication failed: ${error}`)
+                })
+            } catch (error) {
+                this.published = false
+                log.error(`Publication failed: ${error}`)
+                return false
+            }
 
             this.published = true
             this.paired = !!(
@@ -153,18 +163,22 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
         }
 
         this.on('close', async (removed: any, done: () => any) => {
-            if (removed) {
-                log.debug('This node has been deleted')
-                await this.host.destroy()
-            } else {
-                log.debug('This node is being restarted')
-                await this.host.unpublish()
+            try {
+                if (removed) {
+                    log.debug('This node has been deleted')
+                    await this.host.destroy()
+                } else {
+                    log.debug('This node is being restarted')
+                    await this.host.unpublish()
+                }
+            } catch (error) {
+                log.error(`Host cleanup failed: ${error}`)
+            } finally {
+                this.published = false
+                this.paired = false
+
+                done()
             }
-
-            this.published = false
-            this.paired = false
-
-            done()
         })
 
         this.host.on('identify', (paired: any, callback: () => any) => {

@@ -9,6 +9,7 @@ on:
 
 jobs:
     build:
+        timeout-minutes: 20
         runs-on: ${{ matrix.os }}
         strategy:
             fail-fast: false
@@ -20,6 +21,13 @@ jobs:
             - uses: actions/setup-node@v4
               with:
                   node-version: ${{ matrix.node-version }}
+            - name: Verify Node.js environment
+              env:
+                  EXPECTED_NODE_MAJOR: ${{ matrix.node-version }}
+              run: |
+                  node --version
+                  npm --version
+                  node -e "require('node:assert/strict').equal(process.versions.node.split('.')[0], process.env.EXPECTED_NODE_MAJOR)"
             - name: build and test
               run: |
                   npm ci
@@ -29,3 +37,17 @@ jobs:
                   npm run test:ci
               env:
                   CI: true
+            - name: Coverage baseline
+              if: matrix.os == 'ubuntu-latest' && matrix.node-version == 24
+              run: npm run test:coverage
+            - name: Targeted mutations
+              if: matrix.os == 'ubuntu-latest' && matrix.node-version == 24
+              run: npm run test:mutation
+            - name: Packaged install smoke test
+              if: matrix.os == 'ubuntu-latest' && matrix.node-version == 24
+              run: npm run test:package
+            - uses: actions/upload-artifact@v4
+              if: always() && matrix.os == 'ubuntu-latest' && matrix.node-version == 24
+              with:
+                  name: coverage
+                  path: coverage/

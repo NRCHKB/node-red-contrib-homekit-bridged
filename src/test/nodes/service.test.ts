@@ -5,6 +5,7 @@ import {
     afterAll,
     afterEach,
     beforeAll,
+    beforeEach,
     describe,
     expect,
     it,
@@ -13,28 +14,34 @@ import {
 import HAPServiceNodeType from '../../lib/types/HAPServiceNodeType'
 import { describeCommonSwitchServiceBehavior } from '../test-utils/common-switch-service-tests'
 import { switchServiceBridgeFlow } from '../test-utils/data'
-import { configureNodeRedTestSettings } from '../test-utils/vitest-helper'
+import {
+    configureNodeRedTestSettings,
+    withTestStorage,
+} from '../test-utils/vitest-helper'
 
 const homekitBridgeNode = require('../../../build/nodes/bridge')
-const nrchkb = require('../../../build/nodes/nrchkb')
+const nrchkb = withTestStorage(require('../../../build/nodes/nrchkb'))
 const homekitServiceNode = require('../../../build/nodes/service')
 
 loggerSetup({
-    debugEnabled: true,
+    debugEnabled: false,
     errorEnabled: true,
     traceEnabled: false,
 })
 
-const publishSpy = vi
-    .spyOn(Bridge.prototype, 'publish')
-    .mockImplementation(function () {
+let publishSpy: ReturnType<typeof vi.spyOn>
+const stubPublication = () => {
+    publishSpy = vi
+        .spyOn(Bridge.prototype, 'publish')
+        .mockImplementation(function () {
+            return true as never
+        })
+    vi.spyOn(Bridge.prototype, 'unpublish').mockResolvedValue(undefined)
+    vi.spyOn(Accessory.prototype, 'publish').mockImplementation(function () {
         return true as never
     })
-vi.spyOn(Bridge.prototype, 'unpublish').mockResolvedValue(undefined)
-vi.spyOn(Accessory.prototype, 'publish').mockImplementation(function () {
-    return true as never
-})
-vi.spyOn(Accessory.prototype, 'unpublish').mockResolvedValue(undefined)
+    vi.spyOn(Accessory.prototype, 'unpublish').mockResolvedValue(undefined)
+}
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -130,17 +137,19 @@ describe('Service Node', () => {
 
     beforeAll(async () => {
         cleanupUserDir = configureNodeRedTestSettings()
-        await new Promise<void>((resolve) => helper.startServer(resolve))
+        await helper.startServer()
     })
 
     afterAll(async () => {
-        await new Promise<void>((resolve) => helper.stopServer(resolve))
+        await helper.stopServer()
         cleanupUserDir?.()
     })
 
-    afterEach(() => {
-        vi.clearAllMocks()
-        return helper.unload()
+    beforeEach(stubPublication)
+
+    afterEach(async () => {
+        await helper.unload()
+        vi.restoreAllMocks()
     })
 
     describeCommonSwitchServiceBehavior({

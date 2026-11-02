@@ -470,7 +470,7 @@ const buildServiceUtils2 = (node: HAPService2NodeType) => {
         }
     }
 
-    const onClose = (removed: boolean, done: () => void) => {
+    const onClose = async (removed: boolean, done: () => void) => {
         node.nrchkbClosing = true
 
         if (node.waitForParentTimer) {
@@ -501,23 +501,29 @@ const buildServiceUtils2 = (node: HAPService2NodeType) => {
             node.accessory.removeListener('identify', node.onIdentify)
         }
 
-        if (removed && node.accessory) {
-            // This node has been deleted
-            if (node.config.isParent) {
-                // remove accessory from the bridge
-                node.hostNode.host.removeBridgedAccessories([node.accessory])
-                node.accessory.destroy()
-            } else if (node.service && node.parentService) {
-                // only remove the service if it is not a parent
-                node.accessory.removeService(node.service)
-                node.parentService.removeLinkedService(node.service)
+        try {
+            if (removed && node.accessory) {
+                // This node has been deleted
+                if (node.config.isParent) {
+                    // remove accessory from the bridge
+                    node.hostNode.host.removeBridgedAccessories([
+                        node.accessory,
+                    ])
+                    await node.accessory.destroy()
+                } else if (node.service && node.parentService) {
+                    // only remove the service if it is not a parent
+                    node.accessory.removeService(node.service)
+                    node.parentService.removeLinkedService(node.service)
+                }
             }
+        } catch (error) {
+            log.error(`Service cleanup failed: ${error}`)
+        } finally {
+            // Clean up any pending status timeouts
+            node.nodeStatusUtils.cleanup()
+
+            done()
         }
-
-        // Clean up any pending status timeouts
-        node.nodeStatusUtils.cleanup()
-
-        done()
     }
 
     const getOrCreate = async (

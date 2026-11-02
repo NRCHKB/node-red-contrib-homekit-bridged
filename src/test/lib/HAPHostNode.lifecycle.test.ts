@@ -1,5 +1,6 @@
 import { loggerSetup } from '@nrchkb/logger'
 import { describe, expect, it, vi } from 'vitest'
+import { switchServiceBridgeFlow } from '../test-utils/data'
 
 const HAPHostNodeFactory = require('../../../build/lib/HAPHostNode')
 const HostType = require('../../../build/lib/types/HostType').default
@@ -34,6 +35,75 @@ const createNode = () => {
 }
 
 describe('HAPHostNode lifecycle', () => {
+    const initializedHost = () => {
+        const { node, handlers } = createNode()
+        HAPHostNodeFactory(createRED(), HostType.BRIDGE).init.call(
+            node,
+            switchServiceBridgeFlow().flow[1]
+        )
+        return { node, handlers }
+    }
+
+    it('reports synchronous and asynchronous publication failure', async () => {
+        const { node } = initializedHost()
+        node.host.publish = vi.fn(() => {
+            throw new Error('publish failed')
+        })
+        expect(node.publish()).toBe(false)
+        expect(node.published).toBe(false)
+        expect(node.error).toHaveBeenCalledWith(
+            expect.stringContaining('publish failed')
+        )
+        node.host.publish = vi
+            .fn()
+            .mockRejectedValue(new Error('async publish failed'))
+        node.publish()
+        await new Promise<void>((resolve) => setImmediate(resolve))
+        expect(node.published).toBe(false)
+        expect(node.error).toHaveBeenCalledWith(
+            expect.stringContaining('async publish failed')
+        )
+    })
+
+    it.each([false, true])(
+        'waits for cleanup before close completion; removed=%s',
+        async (removed) => {
+            const { node, handlers } = initializedHost()
+            let finish!: () => void
+            const cleanup = new Promise<void>((resolve) => {
+                finish = resolve
+            })
+            node.host.unpublish = vi.fn(() => cleanup)
+            node.host.destroy = vi.fn(() => cleanup)
+            const done = vi.fn()
+            const closing = handlers.get('close')?.(removed, done)
+            expect(done).not.toHaveBeenCalled()
+            finish()
+            await closing
+            expect(done).toHaveBeenCalledTimes(1)
+        }
+    )
+
+    it.each([false, true])(
+        'reports cleanup rejection and completes close; removed=%s',
+        async (removed) => {
+            const { node, handlers } = initializedHost()
+            node.host.unpublish = vi
+                .fn()
+                .mockRejectedValue(new Error('cleanup failed'))
+            node.host.destroy = vi
+                .fn()
+                .mockRejectedValue(new Error('cleanup failed'))
+            const done = vi.fn()
+            await handlers.get('close')?.(removed, done)
+            expect(done).toHaveBeenCalledTimes(1)
+            expect(node.error).toHaveBeenCalledWith(
+                expect.stringContaining('cleanup failed')
+            )
+            expect(node.published).toBe(false)
+        }
+    )
+
     it('rejects invalid bridge names', () => {
         const RED = createRED()
         const { node } = createNode()
