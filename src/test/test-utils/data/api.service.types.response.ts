@@ -364,6 +364,17 @@ export const serviceTypesResponse = {
                 },
             },
             {
+                displayName: 'Selected Session Keep-alive Configuration List',
+                UUID: '00000275-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SelectedSessionKeepaliveConfigurationList',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['ev', 'pr', 'pw'],
+                },
+            },
+            {
                 displayName: 'Sleep Interval',
                 UUID: '0000023A-0000-1000-8000-0026BB765291',
                 eventOnlyCharacteristic: false,
@@ -374,6 +385,17 @@ export const serviceTypesResponse = {
                     perms: ['ev', 'pr'],
                     minValue: 0,
                     minStep: 1,
+                },
+            },
+            {
+                displayName: 'Supported Session Keep-alive Configuration List',
+                UUID: '00000274-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'SupportedSessionKeepaliveConfigurationList',
+                value: '',
+                props: {
+                    format: 'tlv8',
+                    perms: ['pr'],
                 },
             },
         ],
@@ -891,9 +913,9 @@ export const serviceTypesResponse = {
                 UUID: '0000021D-0000-1000-8000-0026BB765291',
                 eventOnlyCharacteristic: false,
                 constructorName: 'CameraOperatingModeIndicator',
-                value: false,
+                value: 0,
                 props: {
-                    format: 'bool',
+                    format: 'uint8',
                     perms: ['ev', 'pr', 'pw', 'tw'],
                 },
             },
@@ -902,9 +924,9 @@ export const serviceTypesResponse = {
                 UUID: '00000227-0000-1000-8000-0026BB765291',
                 eventOnlyCharacteristic: false,
                 constructorName: 'ManuallyDisabled',
-                value: false,
+                value: 0,
                 props: {
-                    format: 'bool',
+                    format: 'uint8',
                     perms: ['ev', 'pr'],
                 },
             },
@@ -981,6 +1003,20 @@ export const serviceTypesResponse = {
                     validValues: [0, 1],
                 },
             },
+        ],
+        optionalCharacteristics: [
+            {
+                displayName: 'Recording Audio Active',
+                UUID: '00000226-0000-1000-8000-0026BB765291',
+                eventOnlyCharacteristic: false,
+                constructorName: 'RecordingAudioActive',
+                value: 0,
+                props: {
+                    format: 'uint8',
+                    perms: ['ev', 'pr', 'pw', 'tw'],
+                    validValues: [0, 1],
+                },
+            },
             {
                 displayName: 'Selected Camera Recording Configuration',
                 UUID: '00000209-0000-1000-8000-0026BB765291',
@@ -1023,20 +1059,6 @@ export const serviceTypesResponse = {
                 props: {
                     format: 'tlv8',
                     perms: ['ev', 'pr'],
-                },
-            },
-        ],
-        optionalCharacteristics: [
-            {
-                displayName: 'Recording Audio Active',
-                UUID: '00000226-0000-1000-8000-0026BB765291',
-                eventOnlyCharacteristic: false,
-                constructorName: 'RecordingAudioActive',
-                value: 0,
-                props: {
-                    format: 'uint8',
-                    perms: ['ev', 'pr', 'pw', 'tw'],
-                    validValues: [0, 1],
                 },
             },
         ],
@@ -4114,9 +4136,9 @@ export const serviceTypesResponse = {
                 UUID: '00000227-0000-1000-8000-0026BB765291',
                 eventOnlyCharacteristic: false,
                 constructorName: 'ManuallyDisabled',
-                value: false,
+                value: 0,
                 props: {
-                    format: 'bool',
+                    format: 'uint8',
                     perms: ['ev', 'pr'],
                 },
             },

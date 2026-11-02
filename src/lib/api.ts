@@ -59,6 +59,10 @@ module.exports = (RED: NodeAPI) => {
         }
     }
 
+    const routeParameter = (
+        value: string | string[] | undefined
+    ): string | undefined => (typeof value === 'string' ? value : undefined)
+
     const detectAdvertiserRecommendation = (): AdvertiserRecommendation => {
         const platform = os.platform()
         const container =
@@ -263,8 +267,16 @@ module.exports = (RED: NodeAPI) => {
             '/nrchkb/unifi/controllers/:id/test',
             RED.auth.needsPermission('nrchkb.read'),
             async (req: express.Request, res: express.Response) => {
+                const controllerId = routeParameter(req.params.id)
+                if (!controllerId) {
+                    res.status(400).json({
+                        error: 'UniFi controller id is required.',
+                    })
+                    return
+                }
+
                 const controller = RED.nodes.getNode(
-                    req.params.id
+                    controllerId
                 ) as UniFiControllerConfigType & {
                     credentials?: UniFiControllerCredentials
                 }
@@ -301,8 +313,16 @@ module.exports = (RED: NodeAPI) => {
             '/nrchkb/unifi/controllers/:id/protect/cameras',
             RED.auth.needsPermission('nrchkb.read'),
             async (req: express.Request, res: express.Response) => {
+                const controllerId = routeParameter(req.params.id)
+                if (!controllerId) {
+                    res.status(400).json({
+                        error: 'UniFi controller id is required.',
+                    })
+                    return
+                }
+
                 const controller = RED.nodes.getNode(
-                    req.params.id
+                    controllerId
                 ) as UniFiControllerConfigType & {
                     credentials?: UniFiControllerCredentials
                 }
@@ -466,7 +486,7 @@ module.exports = (RED: NodeAPI) => {
             hostNode.paired = accessoryInfo.paired()
         }
 
-        return !!hostNode.paired
+        return hostNode.paired
     }
 
     const _initBridgePairingAPI = () => {
@@ -476,7 +496,13 @@ module.exports = (RED: NodeAPI) => {
             '/nrchkb/bridge/:id/pairing',
             RED.auth.needsPermission('nrchkb.read'),
             async (req: express.Request, res: express.Response) => {
-                const hostId = req.params.id
+                const hostId = routeParameter(req.params.id)
+                if (!hostId) {
+                    res.status(400).json({
+                        error: 'Bridge id is required.',
+                    })
+                    return
+                }
                 const node = RED.nodes.getNode(hostId) as
                     | HAPHostNodeType
                     | undefined

@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "target": "es6",
-        "module": "commonjs",
         "lib": ["ES2023"],
         "skipLibCheck": true,
         "allowJs": true,
@@ -10,7 +9,6 @@
         "outDir": "./build",
         "removeComments": true,
         "strict": true,
-        "ignoreDeprecations": "6.0",
         "noImplicitAny": true,
         "strictNullChecks": true,
         "strictFunctionTypes": true,
@@ -22,7 +20,8 @@
         "noUnusedParameters": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
+        "module": "preserve",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,

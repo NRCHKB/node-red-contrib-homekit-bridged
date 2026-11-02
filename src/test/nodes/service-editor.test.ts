@@ -83,41 +83,44 @@ describe('service node editor', () => {
     it.each([
         ['build/nodes/service.html', 'homekit-service'],
         ['build/nodes/service2.html', 'homekit-service2'],
-    ])('clears stale bridge and accessory values when saving a linked %s service', (filename, nodeType) => {
-        const { definition, getEditorValue, setEditorValues } =
-            loadEditorDefinition(filename, nodeType)
-        const node = {
-            accessoryId: 'old-accessory',
-            bridge: 'old-bridge',
-            hostType: '0',
-            isParent: true,
-            parentService: '',
-            serviceName: 'Switch',
+    ])(
+        'clears stale bridge and accessory values when saving a linked %s service',
+        (filename, nodeType) => {
+            const { definition, getEditorValue, setEditorValues } =
+                loadEditorDefinition(filename, nodeType)
+            const node = {
+                accessoryId: 'old-accessory',
+                bridge: 'old-bridge',
+                hostType: '0',
+                isParent: true,
+                parentService: '',
+                serviceName: 'Switch',
+            }
+
+            setEditorValues({
+                '#node-config-input-isParent': { val: 'false' },
+                '#node-config-input-hostType': { val: '0' },
+                '#node-input-accessoryId': { val: 'old-accessory' },
+                '#node-input-bridge': { val: 'old-bridge' },
+                '#node-input-parentService option:selected': {
+                    attr: { hostType: '0' },
+                    val: 'parent-service',
+                },
+                '#node-input-serviceName option:selected': { val: 'Lightbulb' },
+            })
+
+            definition.oneditsave.call(node)
+
+            expect(node).toMatchObject({
+                accessoryId: '',
+                bridge: '',
+                hostType: '0',
+                isParent: false,
+                parentService: 'parent-service',
+                serviceName: 'Lightbulb',
+            })
+            expect(getEditorValue('#node-input-accessoryId')).toBe('')
+            expect(getEditorValue('#node-input-bridge')).toBe('')
         }
-
-        setEditorValues({
-            '#node-config-input-isParent': { val: 'false' },
-            '#node-config-input-hostType': { val: '0' },
-            '#node-input-accessoryId': { val: 'old-accessory' },
-            '#node-input-bridge': { val: 'old-bridge' },
-            '#node-input-parentService option:selected': {
-                attr: { hostType: '0' },
-                val: 'parent-service',
-            },
-            '#node-input-serviceName option:selected': { val: 'Lightbulb' },
-        })
-
-        definition.oneditsave.call(node)
-
-        expect(node).toMatchObject({
-            accessoryId: '',
-            bridge: '',
-            hostType: '0',
-            isParent: false,
-            parentService: 'parent-service',
-            serviceName: 'Lightbulb',
-        })
-        expect(getEditorValue('#node-input-accessoryId')).toBe('')
-        expect(getEditorValue('#node-input-bridge')).toBe('')
-    })
+    )
 })

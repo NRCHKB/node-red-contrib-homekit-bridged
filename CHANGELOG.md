@@ -2,7 +2,7 @@
 
 ##### This project is now based on [Node-RED 5.0](https://nodered.org/blog/2026/06/09/version-5-0-released).
 
-##### Before upgrading, make sure that you are using Node-RED 5.x and Node.js 22.9.0 or newer.
+##### Before upgrading, make sure that you are using Node-RED 5.x and Node.js 22.20.0 or newer.
 
 ##### Node.js 24 is recommended for new installations and Docker-based deployments.
 
@@ -18,7 +18,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Backward compatibility was lost for custom mDNS configuration.
 Legacy `CameraControl` remains available only in `homekit-service` and is deprecated. New and migrated camera flows
 should use the `Camera` service in `homekit-service2` with the embedded Homebridge Camera FFmpeg plugin.
-Node-RED `5.0.0` or newer and Node.js `22.9.0` or newer are now required. Node.js `24` is recommended for new
+Node-RED `5.0.0` or newer and Node.js `22.20.0` or newer are now required. Node.js `24` is recommended for new
 installations and Docker-based deployments.
 
 ### Added
@@ -63,13 +63,18 @@ installations and Docker-based deployments.
 
 ### Changed
 
-- Upgraded to [`@homebridge/hap-nodejs` 2.1.7](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) for
-  new HomeKit protocol support and fixes.
+- Upgraded to [`@homebridge/hap-nodejs` 2.3.0](https://github.com/homebridge/HAP-NodeJS/releases/tag/v2.3.0).
+  Its new atomic HAP storage retains the existing pairing-data format.
+- Upgraded the embedded Homebridge UniFi Protect integration to `8.1.0`. HBUP 8 requires the Homebridge 2 API and
+  uses the timeshift buffer for live views by default. The dev-only integration accepts HBUP 8 feature options only:
+  `Video.Stream.UseApi` is removed, `Video.Stream.Only.*` is now `Video.Rtsp.Only.*`, and
+  `Video.HKSV.Record.Only.*` is now `Video.Timeshift.Only.*`. Node.js 22.20 or newer is required, matching HBUP 8's
+  engine requirement.
 - Replaced the legacy `hap-nodejs` dependency with `@homebridge/hap-nodejs` and added a local compatibility wrapper for
   HAP-NodeJS types.
 - Updated the package version to the `2.0.0-dev` release line.
 - Updated the Node-RED runtime baseline to `5.0.0` or newer.
-- Node.js `22.9.0` or newer is now required; Node.js `24` is recommended for new installations and Docker-based
+- Node.js `22.20.0` or newer is now required; Node.js `24` is recommended for new installations and Docker-based
   deployments [#578](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/578).
 - Deprecated legacy `CameraControl` for `homekit-service` and removed it from the `homekit-service2` service selector.
 - Replaced the `homekit-service2` camera path with the plugin-backed custom `Camera` service.
@@ -93,15 +98,19 @@ installations and Docker-based deployments.
 - Replaced the TypeScript compiler build path with an esbuild-based build and watch workflow.
 - Migrated formatting and linting from ESLint and Prettier to Biome.
 - Migrated the test runner from Mocha to Vitest.
-- Updated TypeScript, Node-RED, Node-RED registry/test helper, logger, semver, uuid, Husky, and related dependencies.
+- Updated TypeScript to 7.0, Node-RED and its registry to 5.0.9, Biome, ciao, concurrently, esbuild, Vitest,
+  semver, uuid, Husky, and related dependencies. TypeScript now has an explicit typecheck step; its removed legacy
+  module-resolution setting is replaced with bundler resolution to match the esbuild pipeline.
 - Updated `@nrchkb/logger` to `3.3.0` for scoped log-level support.
-- Updated CI to run on Node.js `22`, `24`, and `26` across Ubuntu, Windows, and macOS, with `test:ci`, linting, and
+- Updated CI to run on Node.js `22`, `24`, and `26` across Ubuntu, Windows, and macOS, with `test:ci`, linting, typechecking, and
   fail-fast disabled for the matrix.
 - Updated CodeQL, publish workflows, and security support documentation for the 2.x release line.
 - Refreshed example flows for the current node definitions and updated generated editor assets.
 
 ### Fixed
 
+- Fixed Node-RED plugin discovery to use the registry's `getByType` API.
+- Fixed Service 2 plugin attachment validation to reject multiple live-video plugins on a single service before attaching them.
 - Fixed invalid `bind` JSON handling so publishing fails cleanly instead of throwing during host publish.
 - Fixed host port normalization so empty or string port values are handled consistently and port `1880` remains
   blocked because it is reserved for Node-RED.

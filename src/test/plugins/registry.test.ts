@@ -7,6 +7,7 @@ import {
     registerNodeRedPlugins,
     registerPlugin,
     registerPluginFromPackage,
+    validatePluginAttachments,
 } from '../../plugins/registry'
 
 const factory = {
@@ -59,6 +60,38 @@ describe('plugin registry', () => {
         )
 
         expect(listPlugins()).toHaveLength(2)
+    })
+
+    it('rejects attaching two live-video plugins to one Camera service', () => {
+        registerPlugin(
+            {
+                ...metadata,
+                capabilities: {
+                    camera: true,
+                    liveVideo: true,
+                },
+            },
+            factory
+        )
+        registerPlugin(
+            {
+                ...metadata,
+                id: 'other-package:camera',
+                packageName: 'other-package',
+                capabilities: {
+                    camera: true,
+                    liveVideo: true,
+                },
+            },
+            factory
+        )
+
+        expect(() =>
+            validatePluginAttachments('Camera', [
+                'example-package:camera',
+                'other-package:camera',
+            ])
+        ).toThrow('only one live-video plugin')
     })
 
     it('fills package identity from package json', () => {
@@ -121,7 +154,7 @@ describe('plugin registry', () => {
     it('registers Node-RED NRCHKB plugin definitions', () => {
         registerNodeRedPlugins({
             plugins: {
-                getPluginsByType: (type) =>
+                getByType: (type) =>
                     type === NRCHKB_NODE_RED_PLUGIN_TYPE
                         ? [
                               {
@@ -151,7 +184,7 @@ describe('plugin registry', () => {
                 warn: (message) => warnings.push(message),
             },
             plugins: {
-                getPluginsByType: (type) =>
+                getByType: (type) =>
                     type === NRCHKB_NODE_RED_PLUGIN_TYPE
                         ? [
                               {

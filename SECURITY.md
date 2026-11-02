@@ -12,7 +12,7 @@ If vulnerability is a serious risk then please consider contacting us directly a
 ## Supported Versions
 
 | Version  | Supported          |
-|----------|--------------------|
+| -------- | ------------------ |
 | >= 2.x.y | :white_check_mark: |
 | >= 1.7.3 | :x: limited        |
 | < 1.x.y  | :x: no support     |
@@ -54,4 +54,3 @@ Since 1.7.0 they are forbidden programmatically.
 - 9999-9999
 - 1234-5678
 - 8765-4321
-

@@ -12,38 +12,38 @@
 name: "CodeQL"
 
 env:
-  HUSKY: 0
+    HUSKY: 0
 
 on:
-  push:
-    branches: [ master, dev ]
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ master ]
-  schedule:
-    - cron: '17 3 * * 4'
+    push:
+        branches: [ master, dev ]
+    pull_request:
+        # The branches below must be a subset of the branches above
+        branches: [ master ]
+    schedule:
+        - cron: "17 3 * * 4"
 
 jobs:
-  analyze:
-    name: Analyze
-    runs-on: ubuntu-latest
+    analyze:
+        name: Analyze
+        runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'javascript' ]
+        strategy:
+            fail-fast: false
+            matrix:
+                language: [ "javascript" ]
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
-        with:
-          languages: ${{ matrix.language }}
+            - name: Initialize CodeQL
+              uses: github/codeql-action/init@v4
+              with:
+                  languages: ${{ matrix.language }}
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v4
+            - name: Autobuild
+              uses: github/codeql-action/autobuild@v4
 
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4
+            - name: Perform CodeQL Analysis
+              uses: github/codeql-action/analyze@v4

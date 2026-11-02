@@ -100,6 +100,12 @@ type ProtectDevice = {
     modelKey?: string
 }
 
+type AccessoryWithContext = InstanceType<
+    typeof import('@homebridge/hap-nodejs').Accessory
+> & {
+    context?: Record<string, unknown>
+}
+
 const requirePackageJson = (packageName: string): PackageJson => {
     try {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -315,10 +321,11 @@ const configureSelectedCameraOnly = (
     platform: InstanceType<ProtectPlatformModule['ProtectPlatform']>
 ): void => {
     const selectedCamera = getSelectedCamera(context).toLowerCase()
+    const accessory = context.accessory as AccessoryWithContext
 
-    context.accessory.context ??= {}
-    ensureHomebridgePlatformAccessoryShape(context.accessory, true)
-    platform.accessories = [context.accessory]
+    accessory.context ??= {}
+    ensureHomebridgePlatformAccessoryShape(accessory, true)
+    platform.accessories = [accessory]
 
     platform.controllers.forEach((controller) => {
         controller.addHomeKitDevice = (device: ProtectDevice): boolean => {
@@ -332,15 +339,15 @@ const configureSelectedCameraOnly = (
                 return false
             }
 
-            context.accessory.context ??= {}
-            context.accessory.context.mac = device.mac
+            accessory.context ??= {}
+            accessory.context.mac = device.mac
             if (controller.ufp?.mac) {
-                context.accessory.context.nvr = controller.ufp.mac
+                accessory.context.nvr = controller.ufp.mac
             }
 
-            const accessoryUuid = context.accessory.UUID
+            const accessoryUuid = accessory.UUID
             if (!controller.configuredDevices.has(accessoryUuid)) {
-                controller.addProtectDevice(context.accessory, device)
+                controller.addProtectDevice(accessory, device)
                 return true
             }
 
@@ -606,7 +613,7 @@ export const homebridgeUniFiProtectPluginMetadata: NRCHKBPluginMetadata = {
                         type: 'textarea',
                         icon: 'fa-list',
                         placeholder:
-                            'One Homebridge UniFi Protect feature option per line',
+                            'HBUP 8 option per line (for example, Video.Timeshift.Livestream)',
                     },
                 ],
             },
@@ -620,7 +627,7 @@ export const attachHomebridgeUniFiProtectPlugin = async (
     getSelectedCamera(context)
     const controller = getControllerNode(context)
     const module = (await importEsm(
-        'homebridge-unifi-protect/dist/protect-platform.js'
+        'homebridge-unifi-protect/dist/platform.js'
     )) as ProtectPlatformModule
     const { api, emit } = await createHomebridgeApiShim(context)
 

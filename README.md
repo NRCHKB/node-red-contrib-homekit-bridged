@@ -1,5 +1,5 @@
 ### <img src="https://avatars.githubusercontent.com/u/48475009?s=200&v=4" alt="NRCHKB Logo" height="20"/> node-red-contrib-homekit-bridged
-  
+
 # HomeKit all the things!
 
 #### Do you need setup help? Have a great idea? Want to shoot the breeze with fellow users? [Join us on our Discord server!](https://discord.gg/uvYac5u)
@@ -19,7 +19,7 @@ You can also pull a [docker image](https://github.com/NRCHKB/node-red-contrib-ho
 
 ### Getting Started
 
-[**Example flows**](https://nrchkb.github.io/wiki/examples/) For a quick start, we recommend checking out the flows which are included with the plugin, they can be imported using the Node-RED hamburger menu after install. 
+[**Example flows**](https://nrchkb.github.io/wiki/examples/) For a quick start, we recommend checking out the flows which are included with the plugin, they can be imported using the Node-RED hamburger menu after install.
 
 [**Documentation home page**](https://nrchkb.github.io/wiki/introduction/quick-start/) For more instructions, information about how things work, and detailed examples (including various real life examples from the community).
 

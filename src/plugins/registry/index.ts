@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import type { NodeAPI } from 'node-red'
 import type {
     NRCHKBNodeRedPluginDefinition,
     NRCHKBPluginFactory,
@@ -223,27 +224,36 @@ export const getPlugin = (id: string): NRCHKBRegisteredPlugin | undefined =>
 export const listPlugins = (): NRCHKBRegisteredPlugin[] =>
     Array.from(registry.values())
 
-export const registerNodeRedPlugins = (RED?: {
-    log?: {
-        warn?: (message: string) => void
-    }
-    plugins?: {
-        getPluginsByType?: (
-            type: string
-        ) => Array<NRCHKBNodeRedPluginDefinition>
-    }
-}): void => {
-    const nodeRedPlugins = RED?.plugins?.getPluginsByType?.(
-        NRCHKB_NODE_RED_PLUGIN_TYPE
+export const validatePluginAttachments = (
+    serviceName: string,
+    pluginIds: readonly string[]
+): void => {
+    const liveVideoPlugins = pluginIds.filter(
+        (pluginId) => getPlugin(pluginId)?.metadata.capabilities.liveVideo
     )
 
+    if (liveVideoPlugins.length > 1) {
+        throw new Error(
+            `The ${serviceName} service can use only one live-video plugin.`
+        )
+    }
+}
+
+type NodeRedPluginSource = {
+    getByType: (
+        type: typeof NRCHKB_NODE_RED_PLUGIN_TYPE
+    ) => readonly NRCHKBNodeRedPluginDefinition[]
+}
+
+type NodeRedPluginHost = Pick<NodeAPI, 'log'> & {
+    plugins?: NodeRedPluginSource
+}
+
+export const registerNodeRedPlugins = (RED?: NodeRedPluginHost): void => {
+    const nodeRedPlugins = RED?.plugins?.getByType(NRCHKB_NODE_RED_PLUGIN_TYPE)
+
     nodeRedPlugins?.forEach((definition) => {
-        if (
-            definition.type !== NRCHKB_NODE_RED_PLUGIN_TYPE ||
-            !definition.metadata ||
-            !definition.factory ||
-            registry.has(definition.metadata.id)
-        ) {
+        if (!definition.factory || registry.has(definition.metadata.id)) {
             return
         }
 

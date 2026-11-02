@@ -16,6 +16,7 @@ import {
     getPlugin,
     NRCHKBPluginConfigEntry,
     registerNodeRedPlugins,
+    validatePluginAttachments,
 } from '../../plugins/registry'
 import type {
     HAPConnection,
@@ -532,6 +533,7 @@ const buildServiceUtils2 = (node: HAPService2NodeType) => {
         type NRCHKBPluginInstanceNode = {
             id?: string
             type?: string
+            pluginId?: string
             attachNRCHKBPlugin?: (context: {
                 accessory: Accessory
                 config: unknown
@@ -571,7 +573,6 @@ const buildServiceUtils2 = (node: HAPService2NodeType) => {
             },
         })
 
-        let pluginService: Service | undefined = undefined
         const pluginSlots = [
             serviceInformation.config.plugin1,
             serviceInformation.config.plugin2,
@@ -586,7 +587,7 @@ const buildServiceUtils2 = (node: HAPService2NodeType) => {
                 typeof pluginNodeId === 'string' && pluginNodeId.trim() !== ''
         )
 
-        for (const pluginNodeId of pluginSlots) {
+        const pluginNodes = pluginSlots.map((pluginNodeId) => {
             const pluginNode = node.RED.nodes.getNode(pluginNodeId) as
                 | NRCHKBPluginInstanceNode
                 | undefined
@@ -603,21 +604,30 @@ const buildServiceUtils2 = (node: HAPService2NodeType) => {
                 )
             }
 
-            const attachedService = await pluginNode.attachNRCHKBPlugin(
-                createAttachContext({})
-            )
-            pluginService ??= attachedService
-        }
+            return {
+                pluginId: pluginNode.pluginId,
+                attach: pluginNode.attachNRCHKBPlugin,
+            }
+        })
 
         const pluginEntries = parsePluginEntries(
             serviceInformation.config.plugins,
             log
         )
 
-        if (pluginEntries.length) {
-            const plugins = pluginEntries
+        validatePluginAttachments(serviceInformation.serviceName, [
+            ...pluginNodes.flatMap((pluginNode) =>
+                pluginNode.pluginId ? [pluginNode.pluginId] : []
+            ),
+            ...pluginEntries.map((pluginEntry) => pluginEntry.id),
+        ])
 
-            for (const pluginConfig of plugins) {
+        for (const pluginNode of pluginNodes) {
+            await pluginNode.attach(createAttachContext({}))
+        }
+
+        if (pluginEntries.length) {
+            for (const pluginConfig of pluginEntries) {
                 const pluginDefinition = getPlugin(pluginConfig.id)
                 if (!pluginDefinition) {
                     throw new NRCHKBError(
@@ -625,15 +635,10 @@ const buildServiceUtils2 = (node: HAPService2NodeType) => {
                     )
                 }
 
-                const attachedService = await pluginDefinition.factory.attach({
+                await pluginDefinition.factory.attach({
                     ...createAttachContext(pluginConfig.config),
                 })
-                pluginService ??= attachedService
             }
-        }
-
-        if (pluginService) {
-            return pluginService
         }
 
         const serviceName =

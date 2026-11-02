@@ -124,3 +124,20 @@ export type NRCHKBNodeRedPluginDefinition<TConfig = unknown> = {
     metadata: NRCHKBPluginMetadata
     factory?: NRCHKBPluginFactory<TConfig>
 }
+
+declare module '@node-red/registry' {
+    interface PluginDefinition<TPluginDef> {
+        metadata?: NRCHKBPluginMetadata
+        factory?: NRCHKBPluginFactory
+    }
+
+    interface NodeAPIPlugins {
+        getByType(
+            type: 'nrchkb-homekit-plugin'
+        ): NRCHKBNodeRedPluginDefinition[]
+        registerPlugin<TConfig>(
+            id: string,
+            definition: NRCHKBNodeRedPluginDefinition<TConfig>
+        ): void
+    }
+}

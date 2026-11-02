@@ -1,4 +1,4 @@
-import type { NodeDef } from 'node-red'
+import type { Node, NodeDef } from 'node-red'
 import type { NRCHKBLogLevel } from '../utils/LogUtils'
 
 export type UniFiApplicationType = 'protect'
@@ -16,5 +16,8 @@ export type UniFiControllerCredentials = {
     username?: string
     password?: string
 }
+
+export type UniFiControllerNodeType = Node<UniFiControllerCredentials> &
+    UniFiControllerConfigType
 
 export default UniFiControllerConfigType
