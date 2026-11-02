@@ -1,4 +1,8 @@
-import type { Accessory, Categories } from '@homebridge/hap-nodejs'
+import type {
+    Accessory,
+    AdaptiveLightingController,
+    Categories,
+} from '@homebridge/hap-nodejs'
 
 import type HAPHostConfigType from './HAPHostConfigType'
 import type HostType from './HostType'
@@ -13,6 +17,7 @@ type HAPHostNodeType = NodeType & {
     publish: () => boolean
     hostType: HostType
     host: Accessory
+    adaptiveLightingControllers: Set<AdaptiveLightingController>
 }
 
 export default HAPHostNodeType

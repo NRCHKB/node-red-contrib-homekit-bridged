@@ -192,6 +192,9 @@ describe('Lightbulb Service', () => {
         )
 
         expect(node.adaptiveLightingController).toBeDefined()
+        expect([...node.hostNode.adaptiveLightingControllers]).toContain(
+            node.adaptiveLightingController
+        )
 
         const helperOutput = helper.getNode('helper-output')
         const message = waitForInput<Record<string, any>>(helperOutput)

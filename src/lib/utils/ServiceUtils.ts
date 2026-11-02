@@ -619,6 +619,9 @@ const buildServiceUtils = (node: HAPServiceNodeType) => {
                 node.accessory.configureController(adaptiveLightingController)
 
                 node.adaptiveLightingController = adaptiveLightingController
+                node.hostNode.adaptiveLightingControllers?.add(
+                    adaptiveLightingController
+                )
             } catch (error) {
                 log.error(
                     `Failed to configure Adaptive Lightning due to ${error}`
