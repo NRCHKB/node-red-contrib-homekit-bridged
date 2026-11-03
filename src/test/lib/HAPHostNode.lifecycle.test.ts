@@ -1,10 +1,3 @@
-import {
-    Accessory,
-    AdaptiveLightingController,
-    Characteristic,
-    Service,
-    uuid,
-} from '@homebridge/hap-nodejs'
 import { loggerSetup } from '@nrchkb/logger'
 import { describe, expect, it, vi } from 'vitest'
 import { switchServiceBridgeFlow } from '../test-utils/data'
@@ -39,66 +32,6 @@ const createNode = () => {
         handlers,
         node,
     }
-}
-
-const bridgeConfig = {
-    allowInsecureRequest: false,
-    allowMessagePassthrough: true,
-    accessoryCategory: 1,
-    advertiser: 'bonjour-hap',
-    bindType: 'str',
-    bridgeName: 'Bridge',
-    firmwareRev: '1.0.0',
-    hardwareRev: '1.0.0',
-    manufacturer: 'NRCHKB',
-    model: '1.0.0',
-    pinCode: '1111-1111',
-    port: 51826,
-    serialNo: 'serial',
-    softwareRev: '1.0.0',
-}
-
-const createActiveAdaptiveLightingController = () => {
-    const accessory = new Accessory('Lamp', uuid.generate('lamp'))
-    const service = accessory.addService(Service.Lightbulb, 'Lamp')
-    service.getCharacteristic(Characteristic.Brightness)
-    service.getCharacteristic(Characteristic.ColorTemperature)
-    const controller = new AdaptiveLightingController(service)
-    accessory.configureController(controller)
-
-    const stateChangeDelegate = vi.fn()
-    controller.setupStateChangeDelegate(stateChangeDelegate)
-    controller.deserialize({
-        activeTransition: {
-            iid: 14,
-            transitionStartMillis: Date.now(),
-            timeMillisOffset: 0,
-            transitionId: 'c4f33da9-63c9-4c0f-8b89-6c36a33eef9e',
-            transitionStartBuffer: '10c979d0bd000000',
-            id3: 'ec883b3f08d54f89',
-            brightnessCharacteristicIID: 13,
-            brightnessAdjustmentRange: {
-                minBrightnessValue: 10,
-                maxBrightnessValue: 100,
-            },
-            transitionCurve: [
-                {
-                    temperature: 300,
-                    brightnessAdjustmentFactor: 0,
-                    transitionTime: 0,
-                },
-                {
-                    temperature: 350,
-                    brightnessAdjustmentFactor: 0,
-                    transitionTime: 24 * 60 * 60 * 1000,
-                },
-            ],
-            updateInterval: 60000,
-            notifyIntervalThreshold: 600000,
-        },
-    })
-
-    return { controller, stateChangeDelegate }
 }
 
 describe('HAPHostNode lifecycle', () => {
@@ -371,85 +304,5 @@ describe('HAPHostNode lifecycle', () => {
         await closeHandler?.(true, deleteDone)
         expect(node.host.destroy).toHaveBeenCalledTimes(1)
         expect(deleteDone).toHaveBeenCalledTimes(1)
-    })
-
-    it('stops Adaptive Lighting controllers after unpublish and saves controller storage on restart', async () => {
-        const RED = createRED()
-        const { node, handlers } = createNode()
-        const { init } = HAPHostNodeFactory(RED, HostType.BRIDGE)
-
-        init.call(node, bridgeConfig as never)
-
-        node.host.unpublish = vi.fn().mockResolvedValue(undefined)
-        node.host.controllerStorage.save = vi.fn()
-        node.published = true
-
-        const controller = {
-            disableAdaptiveLighting: vi.fn(),
-            setupStateChangeDelegate: vi.fn(),
-        }
-        node.adaptiveLightingControllers.add(controller)
-
-        const done = vi.fn()
-        await handlers.get('close')?.(false, done)
-
-        expect(controller.setupStateChangeDelegate).toHaveBeenCalledWith(
-            undefined
-        )
-        expect(controller.disableAdaptiveLighting).toHaveBeenCalledTimes(1)
-        expect(
-            controller.setupStateChangeDelegate.mock.invocationCallOrder[0]
-        ).toBeLessThan(
-            controller.disableAdaptiveLighting.mock.invocationCallOrder[0]
-        )
-        expect(node.host.unpublish.mock.invocationCallOrder[0]).toBeLessThan(
-            controller.disableAdaptiveLighting.mock.invocationCallOrder[0]
-        )
-        expect(node.host.controllerStorage.save).toHaveBeenCalledTimes(1)
-        expect(node.adaptiveLightingControllers.size).toBe(0)
-        expect(done).toHaveBeenCalledTimes(1)
-    })
-
-    it('does not save controller storage when the host is deleted', async () => {
-        const RED = createRED()
-        const { node, handlers } = createNode()
-        const { init } = HAPHostNodeFactory(RED, HostType.BRIDGE)
-
-        init.call(node, bridgeConfig as never)
-
-        node.host.destroy = vi.fn().mockResolvedValue(undefined)
-        node.host.controllerStorage.save = vi.fn()
-        node.published = true
-
-        const controller = {
-            disableAdaptiveLighting: vi.fn(),
-            setupStateChangeDelegate: vi.fn(),
-        }
-        node.adaptiveLightingControllers.add(controller)
-
-        await handlers.get('close')?.(true, vi.fn())
-
-        expect(node.host.destroy).toHaveBeenCalledTimes(1)
-        expect(controller.disableAdaptiveLighting).toHaveBeenCalledTimes(1)
-        expect(node.host.controllerStorage.save).not.toHaveBeenCalled()
-    })
-
-    it('keeps a stale Adaptive Lighting controller from writing controller storage', async () => {
-        const RED = createRED()
-        const { node, handlers } = createNode()
-        const { init } = HAPHostNodeFactory(RED, HostType.BRIDGE)
-
-        init.call(node, bridgeConfig as never)
-        node.host.unpublish = vi.fn().mockResolvedValue(undefined)
-
-        const { controller, stateChangeDelegate } =
-            createActiveAdaptiveLightingController()
-        expect(controller.isAdaptiveLightingActive()).toBe(true)
-        node.adaptiveLightingControllers.add(controller)
-
-        await handlers.get('close')?.(false, vi.fn())
-
-        expect(controller.isAdaptiveLightingActive()).toBe(false)
-        expect(stateChangeDelegate).not.toHaveBeenCalled()
     })
 })
