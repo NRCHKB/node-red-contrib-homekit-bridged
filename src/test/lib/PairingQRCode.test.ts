@@ -4,6 +4,15 @@ const PairingQRCode = require('../../../build/lib/PairingQRCode')
 
 describe('PairingQRCode', () => {
     describe('formatPinCodeForPairing', () => {
+        it.each(['03145154', '0314-5154', '031-45-154'])(
+            'preserves leading zeros in %s',
+            (pinCode) => {
+                expect(PairingQRCode.formatPinCodeForPairing(pinCode)).toEqual({
+                    bottom: '5154',
+                    top: '0314',
+                })
+            }
+        )
         it('formats the legacy HomeKit pin format', () => {
             expect(PairingQRCode.formatPinCodeForPairing('123-45-678')).toEqual(
                 {
@@ -23,7 +32,7 @@ describe('PairingQRCode', () => {
         it('rejects empty or malformed pin codes', () => {
             expect(() => PairingQRCode.formatPinCodeForPairing('')).toThrow()
             expect(() =>
-                PairingQRCode.formatPinCodeForPairing('12345678')
+                PairingQRCode.formatPinCodeForPairing('1234567')
             ).toThrow()
             expect(() =>
                 PairingQRCode.formatPinCodeForPairing('12<3-45-678')

@@ -12,6 +12,7 @@ import { SemVer } from 'semver'
 import semver from 'semver/preload'
 
 import NRCHKBError from './NRCHKBError'
+import { normalizePinCode } from './PinCode'
 import type HAPHostConfigType from './types/HAPHostConfigType'
 import type HAPHostNodeType from './types/HAPHostNodeType'
 import HostType from './types/HostType'
@@ -106,14 +107,6 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
                 return false
             }
 
-            // As HAP-Nodejs cannot understand new pin code format yet, we need to adjust new to old one
-            let oldPinCode = this.config.pinCode
-
-            if ((oldPinCode.match(/-/g) || []).length === 1) {
-                oldPinCode = oldPinCode.replace(/-/g, '')
-                oldPinCode = `${oldPinCode.slice(0, 3)}-${oldPinCode.slice(3, 5)}-${oldPinCode.slice(5, 8)}`
-            }
-
             let bind: string | string[] | undefined
             if (this.config.bind?.length && this.config.bindType) {
                 if (this.config.bindType === 'str') {
@@ -130,11 +123,12 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             }
 
             try {
+                const pinCode = normalizePinCode(this.config.pinCode)
                 const publishing = this.host.publish(
                     {
                         username: this.bridgeUsername,
                         port,
-                        pincode: oldPinCode,
+                        pincode: `${pinCode.slice(0, 3)}-${pinCode.slice(3, 5)}-${pinCode.slice(5)}`,
                         category: this.accessoryCategory,
                         bind,
                         advertiser:

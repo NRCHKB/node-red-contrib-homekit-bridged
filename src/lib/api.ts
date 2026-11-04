@@ -524,8 +524,20 @@ const buildAPI = (RED: NodeAPI) => {
 
                 const bridgeName = node.config.bridgeName
                 const pinCode = node.config.pinCode
-                const formattedPinCode = formatPinCodeForPairing(pinCode)
                 const paired = getHostPairedState(node)
+                let formattedPinCode: ReturnType<typeof formatPinCodeForPairing>
+                try {
+                    formattedPinCode = formatPinCodeForPairing(pinCode)
+                } catch (_) {
+                    res.status(400).json({
+                        bridgeName,
+                        error: 'Invalid HomeKit PIN. Use 8 digits, XXXX-XXXX, or XXX-XX-XXX.',
+                        paired,
+                        published: node.published,
+                        status: 'invalid-pin',
+                    })
+                    return
+                }
 
                 if (!node.published) {
                     res.status(409).json({

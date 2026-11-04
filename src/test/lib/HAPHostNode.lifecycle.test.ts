@@ -44,6 +44,30 @@ describe('HAPHostNode lifecycle', () => {
         return { node, handlers }
     }
 
+    it.each(['03145154', '0314-5154', '031-45-154'])(
+        'publishes %s using the HAP PIN format',
+        (pinCode) => {
+            const { node } = initializedHost()
+            node.config.pinCode = pinCode
+            node.host.publish = vi.fn()
+            expect(node.publish()).toBe(true)
+            expect(node.host.publish).toHaveBeenCalledWith(
+                expect.objectContaining({ pincode: '031-45-154' }),
+                expect.anything()
+            )
+        }
+    )
+
+    it('refuses to publish malformed PINs', () => {
+        const { node } = initializedHost()
+        node.config.pinCode = 'x0314-5154x'
+        node.host.publish = vi.fn()
+        expect(node.publish()).toBe(false)
+        expect(node.published).toBe(false)
+        expect(node.host.publish).not.toHaveBeenCalled()
+        expect(node.error).toHaveBeenCalled()
+    })
+
     it('reports synchronous and asynchronous publication failure', async () => {
         const { node } = initializedHost()
         node.host.publish = vi.fn(() => {

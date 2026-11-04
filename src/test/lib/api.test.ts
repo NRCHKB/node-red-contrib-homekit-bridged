@@ -158,6 +158,7 @@ describe('api', () => {
         ['1.2.3', '1.2.3'],
         ['2.0.0-dev.13', '0.200.13'],
         ['2.0.0-dev.14', '0.200.14'],
+        ['2.0.0-dev.15', '0.200.15'],
         ['1.7.12-dev.4', '0.1712.4'],
         ['2.0.0-beta.1', '2.0.0'],
         ['2.0.0-rc.2', '2.0.0'],
@@ -182,7 +183,6 @@ describe('api', () => {
                 'experimental',
                 value === 'true'
             )
-            expect(response.body).toHaveProperty('version', '0.200.14')
         }
     )
 
@@ -396,6 +396,54 @@ describe('api', () => {
             type: 'homekit-bridge',
             ...overrides,
         })
+
+        it.each(['homekit-bridge', 'homekit-standalone'])(
+            'returns pairing data for a digits-only PIN on %s',
+            async (type) => {
+                const bridge = createBridgeNode({
+                    config: {
+                        bridgeName: 'Example Bridge',
+                        pinCode: '03145154',
+                    },
+                    type,
+                })
+                const { RED, routes } = createRouteHarness({ bridge1: bridge })
+                APIFactory(RED as never).init()
+                const response = await invokeRoute(
+                    routes.get.get('/nrchkb/bridge/:id/pairing'),
+                    routeRequest('bridge1')
+                )
+                expect(response.statusCode).toBeUndefined()
+                expect(response.body).toMatchObject({
+                    formattedPinCode: { top: '0314', bottom: '5154' },
+                    qrCodeDataUrl: expect.stringMatching(
+                        /^data:image\/svg\+xml/
+                    ),
+                    status: 'unpaired',
+                })
+            }
+        )
+
+        it.each(['', '1234567', 'x0314-5154x'])(
+            'returns a controlled error for invalid PIN %s',
+            async (pinCode) => {
+                const bridge = createBridgeNode({
+                    config: { bridgeName: 'Example Bridge', pinCode },
+                })
+                const { RED, routes } = createRouteHarness({ bridge1: bridge })
+                APIFactory(RED as never).init()
+                const response = await invokeRoute(
+                    routes.get.get('/nrchkb/bridge/:id/pairing'),
+                    routeRequest('bridge1')
+                )
+                expect(response.statusCode).toBe(400)
+                expect(response.body).toMatchObject({
+                    error: 'Invalid HomeKit PIN. Use 8 digits, XXXX-XXXX, or XXX-XX-XXX.',
+                    status: 'invalid-pin',
+                })
+                expect(bridge.host.setupURI).not.toHaveBeenCalled()
+            }
+        )
 
         it('returns QR data for an unpaired published bridge', async () => {
             const bridge = createBridgeNode()

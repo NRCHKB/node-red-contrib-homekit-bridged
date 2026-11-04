@@ -96,6 +96,9 @@ installations and Docker-based deployments.
 
 ### Fixed
 
+- Accept HomeKit pairing PINs with or without hyphens for Bridge and Standalone Accessory nodes, preserving leading
+  zeros during publishing and QR generation. Reject malformed PINs consistently and return a clear pairing API error
+  [#585](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/585).
 - Fixed invalid `bind` JSON handling so publishing fails cleanly instead of throwing during host publish.
 - Fixed host port normalization so empty or string port values are handled consistently and port `1880` remains
   blocked because it is reserved for Node-RED.
