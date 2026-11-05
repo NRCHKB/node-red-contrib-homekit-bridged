@@ -119,8 +119,43 @@ mutations.push(
     [
         'lib/utils/ServiceUtils',
         'Adaptive Lighting controller not tracked by its host',
-        /node\.hostNode\.adaptiveLightingControllers\?\.add\(\s*adaptiveLightingController\s*\)/,
+        /node\.hostNode\.adaptiveLightingControllers\?\.set\(\s*node\.id,\s*adaptiveLightingController\s*\)/,
         'void node',
+        lightbulbTests,
+    ],
+    [
+        'lib/utils/ServiceUtils',
+        'deleted node keeps its Adaptive Lighting controller',
+        'removeAdaptiveLightingController()',
+        'void node',
+        lightbulbTests,
+    ],
+    [
+        'lib/utils/ServiceUtils2',
+        'deleted node keeps its Adaptive Lighting controller',
+        'ServiceUtilsLegacy.removeAdaptiveLightingController()',
+        'void ServiceUtilsLegacy',
+        lightbulbTests,
+    ],
+    [
+        'lib/utils/ServiceUtils',
+        'host keeps the controller of a deleted node',
+        'node.hostNode.adaptiveLightingControllers.delete(node.id)',
+        'void node',
+        lightbulbTests,
+    ],
+    [
+        'lib/utils/ServiceUtils',
+        'controller of a deleted node stays on the accessory',
+        'node.accessory.removeController(controller)',
+        'void controller',
+        lightbulbTests,
+    ],
+    [
+        'lib/utils/ServiceUtils',
+        'controller looked up by the closing node instead of its id',
+        /node\.hostNode\?\.adaptiveLightingControllers\?\.get\(\s*node\.id\s*\)/,
+        'node.adaptiveLightingController',
         lightbulbTests,
     ]
 )

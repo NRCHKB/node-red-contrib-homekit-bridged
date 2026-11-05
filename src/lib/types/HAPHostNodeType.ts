@@ -17,7 +17,8 @@ type HAPHostNodeType = NodeType & {
     publish: () => boolean
     hostType: HostType
     host: Accessory
-    adaptiveLightingControllers: Set<AdaptiveLightingController>
+    // Adaptive Lighting controllers of this host, by service node id
+    adaptiveLightingControllers: Map<string, AdaptiveLightingController>
 }
 
 export default HAPHostNodeType

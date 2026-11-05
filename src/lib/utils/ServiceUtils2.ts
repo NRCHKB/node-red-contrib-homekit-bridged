@@ -504,6 +504,8 @@ const buildServiceUtils2 = (node: HAPService2NodeType) => {
         try {
             if (removed && node.accessory) {
                 // This node has been deleted
+                ServiceUtilsLegacy.removeAdaptiveLightingController()
+
                 if (node.config.isParent) {
                     // remove accessory from the bridge
                     node.hostNode.host.removeBridgedAccessories([

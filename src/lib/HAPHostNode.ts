@@ -64,7 +64,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
 
         this.published = false
         this.paired = false
-        this.adaptiveLightingControllers = new Set()
+        this.adaptiveLightingControllers = new Map()
 
         try {
             this.bridgeUsername = macify(this.id)

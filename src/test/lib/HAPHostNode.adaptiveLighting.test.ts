@@ -109,7 +109,7 @@ const createHost = (id: string) => {
     const controller = new AdaptiveLightingController(service)
     node.host.addBridgedAccessory(accessory)
     accessory.configureController(controller)
-    node.adaptiveLightingControllers.add(controller)
+    node.adaptiveLightingControllers.set(`${id}:lamp`, controller)
 
     const storageKey = `ControllerStorage.${node.bridgeUsername.replace(/:/g, '')}.json`
 
