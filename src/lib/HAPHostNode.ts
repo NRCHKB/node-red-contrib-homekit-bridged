@@ -65,6 +65,7 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
 
         this.published = false
         this.paired = false
+        this.adaptiveLightingControllers = new Map()
 
         try {
             this.bridgeUsername = macify(this.id)
@@ -168,6 +169,36 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             } catch (error) {
                 log.error(`Host cleanup failed: ${error}`)
             } finally {
+                // The restarted host is replaced by a new Bridge/Accessory with the same
+                // username, while the old accessories stay in memory. Their Adaptive
+                // Lighting controllers would keep running and, at the end of their
+                // transition curve, overwrite the shared ControllerStorage file with
+                // stale data. Stop them only after unpublish, so HomeKit controllers are
+                // not notified that the transition was disabled.
+                this.adaptiveLightingControllers.forEach((controller) => {
+                    try {
+                        controller.setupStateChangeDelegate(undefined)
+                        controller.disableAdaptiveLighting()
+                    } catch (error) {
+                        log.debug(
+                            `Failed to dispose Adaptive Lighting controller due to ${error}`
+                        )
+                    }
+                })
+                this.adaptiveLightingControllers.clear()
+
+                if (!removed && this.published) {
+                    // ControllerStorage.load() consumes entries of the cached storage
+                    // object, so save once to let the replacing host restore from it.
+                    try {
+                        this.host.controllerStorage.save()
+                    } catch (error) {
+                        log.error(
+                            `Failed to save controller storage due to ${error}`
+                        )
+                    }
+                }
+
                 this.published = false
                 this.paired = false
 

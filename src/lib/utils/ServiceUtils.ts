@@ -326,6 +326,29 @@ const buildServiceUtils = (node: HAPServiceNodeType) => {
         }
     }
 
+    // A deleted node takes its Adaptive Lighting controller with it, otherwise a
+    // host that keeps running would hold the controller and this node until it
+    // restarts. removeController() also stops the transition and purges its data.
+    const removeAdaptiveLightingController = () => {
+        const controller = node.hostNode?.adaptiveLightingControllers?.get(
+            node.id
+        )
+
+        if (!controller) {
+            return
+        }
+
+        node.hostNode.adaptiveLightingControllers.delete(node.id)
+
+        try {
+            node.accessory.removeController(controller)
+        } catch (error) {
+            log.debug(
+                `Failed to remove Adaptive Lighting controller due to ${error}`
+            )
+        }
+    }
+
     const onClose = async (removed: boolean, done: () => void) => {
         if (node.waitForParentTimer) {
             clearTimeout(node.waitForParentTimer)
@@ -358,6 +381,8 @@ const buildServiceUtils = (node: HAPServiceNodeType) => {
         try {
             if (removed && node.accessory) {
                 // This node has been deleted
+                removeAdaptiveLightingController()
+
                 if (node.config.isParent) {
                     // remove accessory from the bridge
                     node.hostNode.host.removeBridgedAccessories([
@@ -619,6 +644,10 @@ const buildServiceUtils = (node: HAPServiceNodeType) => {
                 node.accessory.configureController(adaptiveLightingController)
 
                 node.adaptiveLightingController = adaptiveLightingController
+                node.hostNode.adaptiveLightingControllers?.set(
+                    node.id,
+                    adaptiveLightingController
+                )
             } catch (error) {
                 log.error(
                     `Failed to configure Adaptive Lightning due to ${error}`
@@ -634,6 +663,7 @@ const buildServiceUtils = (node: HAPServiceNodeType) => {
         onCharacteristicChange,
         onInput,
         onClose,
+        removeAdaptiveLightingController,
         waitForParent,
         handleWaitForSetup,
         configureAdaptiveLightning,

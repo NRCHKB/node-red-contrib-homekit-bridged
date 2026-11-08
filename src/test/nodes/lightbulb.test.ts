@@ -5,7 +5,16 @@ import {
     Perms,
 } from '@homebridge/hap-nodejs'
 import { loggerSetup } from '@nrchkb/logger'
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
+import {
+    afterAll,
+    afterEach,
+    beforeAll,
+    describe,
+    expect,
+    it,
+    vi,
+} from 'vitest'
+import type HAPHostNodeType from '../../lib/types/HAPHostNodeType'
 import type HAPServiceNodeType from '../../lib/types/HAPServiceNodeType'
 import { loadBuildNodes } from '../test-utils/build-node-loader'
 import {
@@ -20,6 +29,7 @@ const {
     bridge: homekitBridgeNode,
     nrchkb,
     service: homekitServiceNode,
+    service2: homekitService2Node,
 } = loadBuildNodes()
 
 loggerSetup({
@@ -28,7 +38,7 @@ loggerSetup({
     traceEnabled: false,
 })
 
-const buildLightbulbFlow = () => {
+const buildLightbulbFlow = (type = 'homekit-service') => {
     const serviceId = `lightbulb.${Date.now()}`
     const bridgeId = `bridge.${Date.now()}`
     const flowId = `flow.${Date.now()}`
@@ -37,7 +47,7 @@ const buildLightbulbFlow = () => {
         flow: [
             {
                 accessoryId: '',
-                type: 'homekit-service',
+                type,
                 bridge: bridgeId,
                 cameraConfigAdditionalCommandLine: '',
                 cameraConfigAudio: false,
@@ -131,6 +141,7 @@ const buildLightbulbFlow = () => {
             },
             { id: 'helper-output', type: 'helper' },
         ],
+        bridgeId,
         serviceId,
     }
 }
@@ -192,6 +203,9 @@ describe('Lightbulb Service', () => {
         )
 
         expect(node.adaptiveLightingController).toBeDefined()
+        expect(node.hostNode.adaptiveLightingControllers.get(serviceId)).toBe(
+            node.adaptiveLightingController
+        )
 
         const helperOutput = helper.getNode('helper-output')
         const message = waitForInput<Record<string, any>>(helperOutput)
@@ -210,5 +224,82 @@ describe('Lightbulb Service', () => {
         })
         expect(msg.hap.context).toEqual({ source: 'homekit' })
         expect(node.adaptiveLightingController).toBeDefined()
+    })
+
+    it.each([
+        ['homekit-service', homekitServiceNode],
+        ['homekit-service2', homekitService2Node],
+    ])(
+        'drops the Adaptive Lighting controller of a %s light deleted while its bridge keeps running',
+        async (type, serviceNode) => {
+            const { bridgeId, flow, serviceId } = buildLightbulbFlow(type)
+
+            await loadNodeRedFlow(
+                [nrchkb, homekitBridgeNode, serviceNode],
+                flow
+            )
+
+            const bridge = helper.getNode(bridgeId) as HAPHostNodeType
+            // homekit-service2 sets up its service asynchronously
+            await vi.waitFor(() =>
+                expect(bridge.adaptiveLightingControllers.size).toBe(1)
+            )
+            const { service } = helper.getNode(serviceId) as HAPServiceNodeType
+
+            // a modified-nodes deploy stops only the deleted light
+            await helper.setFlows(
+                flow.filter((node) => node.id !== serviceId),
+                'nodes'
+            )
+
+            expect(helper.getNode(bridgeId)).toBe(bridge)
+            expect(bridge.adaptiveLightingControllers.size).toBe(0)
+            // removed from the accessory as well, which also stops its transition
+            expect(
+                service.testCharacteristic(
+                    Characteristic.CharacteristicValueTransitionControl
+                )
+            ).toBe(false)
+        }
+    )
+
+    it('drops the Adaptive Lighting controller of a light modified and then deleted while its bridge keeps running', async () => {
+        const { bridgeId, flow, serviceId } = buildLightbulbFlow()
+
+        await loadNodeRedFlow(
+            [nrchkb, homekitBridgeNode, homekitServiceNode],
+            flow
+        )
+
+        const bridge = helper.getNode(bridgeId) as HAPHostNodeType
+        const original = helper.getNode(serviceId) as HAPServiceNodeType
+        const controller = original.adaptiveLightingController
+
+        // The modified light reuses the accessory, which keeps the controller of
+        // the original node, so that controller stays tracked for the node id.
+        await helper.setFlows(
+            flow.map((node) =>
+                node.id === serviceId ? { ...node, topic: 'modified' } : node
+            ),
+            'nodes'
+        )
+        const modified = helper.getNode(serviceId) as HAPServiceNodeType
+        expect(modified).not.toBe(original)
+        expect(helper.getNode(bridgeId)).toBe(bridge)
+        expect([...bridge.adaptiveLightingControllers.values()]).toEqual([
+            controller,
+        ])
+
+        await helper.setFlows(
+            flow.filter((node) => node.id !== serviceId),
+            'nodes'
+        )
+
+        expect(bridge.adaptiveLightingControllers.size).toBe(0)
+        expect(
+            modified.service.testCharacteristic(
+                Characteristic.CharacteristicValueTransitionControl
+            )
+        ).toBe(false)
     })
 })

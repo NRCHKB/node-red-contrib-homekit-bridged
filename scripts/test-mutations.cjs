@@ -13,6 +13,10 @@ const serviceTests = [
     'src/test/nodes/service2.test.ts',
 ]
 const storageTests = ['src/test/lib/Storage.test.ts']
+const adaptiveLightingTests = [
+    'src/test/lib/HAPHostNode.adaptiveLighting.test.ts',
+]
+const lightbulbTests = ['src/test/nodes/lightbulb.test.ts']
 /** @type {Array<[string, string, string | RegExp, string, string[]]>} */
 const mutations = []
 for (const name of ['ServiceUtils', 'ServiceUtils2']) {
@@ -83,6 +87,76 @@ mutations.push(
         'clearTimeout(entry.timeoutHandle)\n            Storage.memoryStorage.delete(key)',
         'void entry\n            void key',
         storageTests,
+    ],
+    [
+        'lib/HAPHostNode',
+        'replaced Adaptive Lighting controllers keep running',
+        'controller.disableAdaptiveLighting()',
+        'void controller',
+        adaptiveLightingTests,
+    ],
+    [
+        'lib/HAPHostNode',
+        'replaced Adaptive Lighting controllers keep writing storage',
+        'controller.setupStateChangeDelegate(undefined)',
+        'void controller',
+        adaptiveLightingTests,
+    ],
+    [
+        'lib/HAPHostNode',
+        'controller storage not saved on restart',
+        'this.host.controllerStorage.save()',
+        'void this.host',
+        adaptiveLightingTests,
+    ],
+    [
+        'lib/HAPHostNode',
+        'controller storage saved for a deleted host',
+        '!removed && this.published',
+        'this.published',
+        adaptiveLightingTests,
+    ],
+    [
+        'lib/utils/ServiceUtils',
+        'Adaptive Lighting controller not tracked by its host',
+        /node\.hostNode\.adaptiveLightingControllers\?\.set\(\s*node\.id,\s*adaptiveLightingController\s*\)/,
+        'void node',
+        lightbulbTests,
+    ],
+    [
+        'lib/utils/ServiceUtils',
+        'deleted node keeps its Adaptive Lighting controller',
+        'removeAdaptiveLightingController()',
+        'void node',
+        lightbulbTests,
+    ],
+    [
+        'lib/utils/ServiceUtils2',
+        'deleted node keeps its Adaptive Lighting controller',
+        'ServiceUtilsLegacy.removeAdaptiveLightingController()',
+        'void ServiceUtilsLegacy',
+        lightbulbTests,
+    ],
+    [
+        'lib/utils/ServiceUtils',
+        'host keeps the controller of a deleted node',
+        'node.hostNode.adaptiveLightingControllers.delete(node.id)',
+        'void node',
+        lightbulbTests,
+    ],
+    [
+        'lib/utils/ServiceUtils',
+        'controller of a deleted node stays on the accessory',
+        'node.accessory.removeController(controller)',
+        'void controller',
+        lightbulbTests,
+    ],
+    [
+        'lib/utils/ServiceUtils',
+        'controller looked up by the closing node instead of its id',
+        /node\.hostNode\?\.adaptiveLightingControllers\?\.get\(\s*node\.id\s*\)/,
+        'node.adaptiveLightingController',
+        lightbulbTests,
     ]
 )
 
@@ -112,7 +186,12 @@ const run = (tests) => {
         : undefined
     return { ...result, report }
 }
-const baseline = run([...serviceTests, ...storageTests])
+const baseline = run([
+    ...serviceTests,
+    ...storageTests,
+    ...adaptiveLightingTests,
+    ...lightbulbTests,
+])
 assert.equal(
     baseline.status,
     0,

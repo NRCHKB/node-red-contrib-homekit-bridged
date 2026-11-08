@@ -115,6 +115,10 @@ installations and Docker-based deployments.
   capacity.
 - Fixed setup-message handling so invalid setup messages detach the temporary listener and report a clear error.
 - Fixed custom characteristic refresh so removed definitions are deleted and existing listeners are not duplicated.
+- Fixed Adaptive Lighting being lost after a host restart (e.g. full deploy) followed by a Node-RED restart: Adaptive
+  Lighting controllers of the replaced host are stopped and detached from controller storage after unpublish, and the
+  storage is saved once so the new host restores complete data. A deleted Lightbulb node removes its Adaptive Lighting
+  controller from the accessory, so a host that keeps running does not hold it until the next restart.
 - Fixed Service 2 `NO_RESPONSE` handling to update reachability while writing a HomeKit-compatible characteristic
   value.
 - Fixed linked Service nodes retaining stale Bridge or Standalone Accessory references after switching from parent
