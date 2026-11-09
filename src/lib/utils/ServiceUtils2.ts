@@ -681,6 +681,7 @@ const buildServiceUtils2 = (node: HAPService2NodeType) => {
             // if the UUID and therefore the type changed, the whole service
             // will be replaced
             log.debug('... service type changed! Removing the old service.')
+            ServiceUtilsLegacy.removeAdaptiveLightingController()
             accessory.removeService(service)
             service = undefined
         }

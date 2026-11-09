@@ -326,9 +326,9 @@ const buildServiceUtils = (node: HAPServiceNodeType) => {
         }
     }
 
-    // A deleted node takes its Adaptive Lighting controller with it, otherwise a
-    // host that keeps running would hold the controller and this node until it
-    // restarts. removeController() also stops the transition and purges its data.
+    // A deleted or replaced service takes its Adaptive Lighting controller with
+    // it, otherwise a running host would hold the controller and this node until
+    // it restarts. removeController() stops the transition and purges its data.
     const removeAdaptiveLightingController = () => {
         const controller = node.hostNode?.adaptiveLightingControllers?.get(
             node.id
@@ -469,6 +469,7 @@ const buildServiceUtils = (node: HAPServiceNodeType) => {
             // if the UUID and therefore the type changed, the whole service
             // will be replaced
             log.debug('... service type changed! Removing the old service.')
+            removeAdaptiveLightingController()
             accessory.removeService(service)
             service = undefined
         }

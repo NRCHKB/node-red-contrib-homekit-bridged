@@ -32,7 +32,7 @@ for (const name of ['ServiceUtils', 'ServiceUtils2']) {
         [
             file,
             'removed sends',
-            /node\.send\((?:msg|\[null, msg\])\)/g,
+            /node\.send\((?:msg|\[null, msg])\)/g,
             'void node',
             serviceTests,
         ],
@@ -142,6 +142,20 @@ mutations.push(
         'host keeps the controller of a deleted node',
         'node.hostNode.adaptiveLightingControllers.delete(node.id)',
         'void node',
+        lightbulbTests,
+    ],
+    [
+        'lib/utils/ServiceUtils',
+        'replaced service keeps its Adaptive Lighting controller',
+        'removeAdaptiveLightingController()\n            accessory.removeService(service)',
+        'accessory.removeService(service)',
+        lightbulbTests,
+    ],
+    [
+        'lib/utils/ServiceUtils2',
+        'replaced service keeps its Adaptive Lighting controller',
+        'ServiceUtilsLegacy.removeAdaptiveLightingController()\n            accessory.removeService(service)',
+        'accessory.removeService(service)',
         lightbulbTests,
     ],
     [

@@ -10,6 +10,9 @@ This is a collection of nodes which can be used to imitate HomeKit devices insid
 
 ### Easy Install
 
+Requires Node-RED **5.0.0 or newer** and Node.js **22.20.0 or newer**.
+Node.js **24** is recommended for new installations and Docker deployments.
+
 If you have Node-RED already installed, the recommended install method is to use the editor. To do this, select `Manage palette` from the Node-RED menu (top right).
 Then select `Install` tab in the palette. Search for and install this node (`node-red-contrib-homekit-bridged`).
 

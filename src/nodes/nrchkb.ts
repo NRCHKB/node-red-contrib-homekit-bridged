@@ -14,7 +14,7 @@ if (process.env.NRCHKB_EXPERIMENTAL === 'true') {
 }
 
 module.exports = (RED: NodeAPI) => {
-    const minimalNodeVersion = '22.9.0'
+    const minimalNodeVersion = '22.20.0'
     const nodeVersion = process.version
 
     if (!semver.gte(nodeVersion, minimalNodeVersion)) {

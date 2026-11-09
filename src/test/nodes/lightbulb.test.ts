@@ -1,4 +1,5 @@
 import {
+    Accessory,
     ChangeReason,
     Characteristic,
     Formats,
@@ -21,6 +22,7 @@ import {
     configureNodeRedTestSettings,
     helper,
     loadNodeRedFlow,
+    type TestFlowNode,
     unloadNodeRedFlow,
     waitForInput,
 } from '../test-utils/vitest-helper'
@@ -31,6 +33,8 @@ const {
     service: homekitServiceNode,
     service2: homekitService2Node,
 } = loadBuildNodes()
+
+const homekitStandaloneNode = require('../../../build/nodes/standalone')
 
 loggerSetup({
     debugEnabled: true,
@@ -159,6 +163,7 @@ describe('Lightbulb Service', () => {
 
     afterEach(async () => {
         await unloadNodeRedFlow()
+        vi.restoreAllMocks()
     })
 
     it('routes Brightness values and preserves msg.hap.context', async () => {
@@ -260,6 +265,181 @@ describe('Lightbulb Service', () => {
                     Characteristic.CharacteristicValueTransitionControl
                 )
             ).toBe(false)
+        }
+    )
+
+    it.each(
+        [
+            {
+                type: 'homekit-service',
+                serviceNode: homekitServiceNode,
+                standalone: false,
+            },
+            {
+                type: 'homekit-service2',
+                serviceNode: homekitService2Node,
+                standalone: false,
+            },
+            {
+                type: 'homekit-service',
+                serviceNode: homekitServiceNode,
+                standalone: true,
+            },
+            {
+                type: 'homekit-service2',
+                serviceNode: homekitService2Node,
+                standalone: true,
+            },
+        ].flatMap((scenario) => [
+            { ...scenario, linked: false },
+            { ...scenario, linked: true },
+        ])
+    )(
+        'replaces the Adaptive Lighting controller when $type changes type (standalone: $standalone, linked: $linked)',
+        async ({ type, serviceNode, standalone, linked }) => {
+            vi.spyOn(Accessory.prototype, 'publish').mockResolvedValue()
+            const { bridgeId, flow, serviceId } = buildLightbulbFlow(type)
+            let configuredFlow: TestFlowNode[] = flow.map((node) => {
+                if (standalone && node.id === bridgeId) {
+                    return { ...node, type: 'homekit-standalone' }
+                }
+                if (standalone && node.id === serviceId) {
+                    return { ...node, hostType: '1', accessoryId: bridgeId }
+                }
+                return node
+            })
+            if (linked) {
+                const parentId = `parent.${serviceId}`
+                const parent = {
+                    ...configuredFlow.find((node) => node.id === serviceId),
+                    id: parentId,
+                    type,
+                    name: 'Parent Switch',
+                    serviceName: 'Switch',
+                    characteristicProperties: '{}',
+                    adaptiveLightingOptionsEnable: false,
+                }
+                configuredFlow = configuredFlow.map((node) =>
+                    node.id === serviceId
+                        ? { ...node, isParent: false, parentService: parentId }
+                        : node
+                )
+                configuredFlow.unshift(parent)
+            }
+
+            await loadNodeRedFlow(
+                [nrchkb, homekitBridgeNode, homekitStandaloneNode, serviceNode],
+                configuredFlow
+            )
+
+            const host = helper.getNode(bridgeId) as HAPHostNodeType
+            await vi.waitFor(
+                () => expect(host.adaptiveLightingControllers.size).toBe(1),
+                { timeout: 3000 }
+            )
+            const original = helper.getNode(serviceId) as HAPServiceNodeType
+            const originalController =
+                host.adaptiveLightingControllers.get(serviceId)!
+            const transitionStartMillis = Date.now() - 1000
+            originalController.deserialize({
+                activeTransition: {
+                    iid: 14,
+                    brightnessCharacteristicIID: 13,
+                    transitionStartMillis,
+                    timeMillisOffset: 0,
+                    transitionId: 'c4f33da9-63c9-4c0f-8b89-6c36a33eef9e',
+                    transitionStartBuffer: '10c979d0bd000000',
+                    id3: 'ec883b3f08d54f89',
+                    brightnessAdjustmentRange: {
+                        minBrightnessValue: 10,
+                        maxBrightnessValue: 100,
+                    },
+                    transitionCurve: [
+                        {
+                            temperature: 300,
+                            brightnessAdjustmentFactor: 0,
+                            transitionTime: 0,
+                        },
+                        {
+                            temperature: 350,
+                            brightnessAdjustmentFactor: 0,
+                            transitionTime: 86400000,
+                        },
+                    ],
+                    updateInterval: 60000,
+                    notifyIntervalThreshold: 600000,
+                },
+            })
+            expect(originalController.isAdaptiveLightingActive()).toBe(true)
+
+            // Editing a normal property must preserve the live controller and curve.
+            await helper.setFlows(
+                configuredFlow.map((node) =>
+                    node.id === serviceId
+                        ? { ...node, topic: 'modified' }
+                        : node
+                ),
+                'nodes'
+            )
+            await vi.waitFor(() => {
+                const modified = helper.getNode(serviceId) as HAPServiceNodeType
+                expect(modified.configured).toBe(true)
+                expect(modified.service).toBe(original.service)
+                expect(host.adaptiveLightingControllers.get(serviceId)).toBe(
+                    originalController
+                )
+                expect(originalController.isAdaptiveLightingActive()).toBe(true)
+                expect(
+                    originalController.getAdaptiveLightingStartTimeOfTransition()
+                ).toBe(transitionStartMillis)
+            })
+
+            await helper.setFlows(
+                configuredFlow.map((node) =>
+                    node.id === serviceId
+                        ? {
+                              ...node,
+                              serviceName: 'Switch',
+                              characteristicProperties: '{}',
+                          }
+                        : node
+                ),
+                'nodes'
+            )
+
+            await vi.waitFor(() => {
+                const changed = helper.getNode(serviceId) as HAPServiceNodeType
+                expect(changed.service.UUID).not.toBe(original.service.UUID)
+                expect(host.adaptiveLightingControllers.size).toBe(0)
+                expect(originalController.isAdaptiveLightingActive()).toBe(
+                    false
+                )
+                expect(
+                    original.service.testCharacteristic(
+                        Characteristic.CharacteristicValueTransitionControl
+                    )
+                ).toBe(false)
+            })
+
+            await helper.setFlows(configuredFlow, 'nodes')
+
+            await vi.waitFor(() => {
+                const restored = helper.getNode(serviceId) as HAPServiceNodeType
+                expect(restored.service).not.toBe(original.service)
+                expect(
+                    restored.service.testCharacteristic(
+                        Characteristic.CharacteristicValueTransitionControl
+                    )
+                ).toBe(true)
+                expect(host.adaptiveLightingControllers.size).toBe(1)
+                expect(host.adaptiveLightingControllers.get(serviceId)).toBe(
+                    restored.adaptiveLightingController
+                )
+                expect(restored.adaptiveLightingController).not.toBe(
+                    originalController
+                )
+            })
+            expect(helper.getNode(bridgeId)).toBe(host)
         }
     )
 

@@ -118,7 +118,11 @@ installations and Docker-based deployments.
 - Fixed Adaptive Lighting being lost after a host restart (e.g. full deploy) followed by a Node-RED restart: Adaptive
   Lighting controllers of the replaced host are stopped and detached from controller storage after unpublish, and the
   storage is saved once so the new host restores complete data. A deleted Lightbulb node removes its Adaptive Lighting
-  controller from the accessory, so a host that keeps running does not hold it until the next restart.
+  controller from the accessory, so a host that keeps running does not hold it until the next restart
+  [#584](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/584). Thanks to
+  [@fduch2k](https://github.com/fduch2k) for the fix and regression tests.
+- Remove the old Adaptive Lighting controller when a service changes type, allowing a Lightbulb changed to another
+  service type and back to regain Adaptive Lighting without restarting its Bridge or Standalone Accessory.
 - Fixed Service 2 `NO_RESPONSE` handling to update reachability while writing a HomeKit-compatible characteristic
   value.
 - Fixed linked Service nodes retaining stale Bridge or Standalone Accessory references after switching from parent
