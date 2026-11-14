@@ -19,6 +19,11 @@ npm run test:ci
 Build before running tests: several suites exercise the generated CommonJS
 modules under `build/`. Vitest does not rebuild them automatically.
 
+Run mutation checks separately from builds, watch processes, other tests and
+package smoke tests. Mutations temporarily replace files under `build/`, while
+`test:package` rebuilds them. Running these commands concurrently invalidates the
+results. CI runs them sequentially.
+
 | Command                 | Purpose                                                                                                                                            |
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `npm run lint`          | Check formatting, imports, and lint rules with Biome.                                                                                              |

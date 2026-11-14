@@ -665,6 +665,34 @@ describe('api', () => {
         )
     })
 
+    it('contains corrupt stored custom characteristic definitions', async () => {
+        vi.spyOn(
+            buildStorage.Storage,
+            'loadCustomCharacteristics'
+        ).mockResolvedValue([null])
+        const { RED, routes } = createRouteHarness()
+        APIFactory(RED as never).init()
+        await new Promise((resolve) => setImmediate(resolve))
+        expect(routes.get.has('/nrchkb/config')).toBe(true)
+    })
+
+    it('sends only an error response when custom characteristic refresh fails', async () => {
+        vi.spyOn(
+            buildStorage.Storage,
+            'saveCustomCharacteristics'
+        ).mockResolvedValue(undefined)
+        const { RED, routes } = createRouteHarness()
+        APIFactory(RED as never).init()
+        const response = createResponse()
+        const send = vi.spyOn(response, 'sendStatus')
+        await routes.post.get('/nrchkb/config')?.(
+            { body: { customCharacteristics: [null] } },
+            response
+        )
+        await new Promise((resolve) => setImmediate(resolve))
+        expect(send.mock.calls).toEqual([[500]])
+    })
+
     it('saves custom characteristics through the POST config route', async () => {
         const saveSpy = vi
             .spyOn(buildStorage.Storage, 'saveCustomCharacteristics')

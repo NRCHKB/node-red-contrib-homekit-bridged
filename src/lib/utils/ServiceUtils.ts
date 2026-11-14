@@ -368,9 +368,18 @@ const buildServiceUtils = (node: HAPServiceNodeType) => {
 
         characteristics.forEach((characteristic) => {
             // cleanup all node specific listeners
-            characteristic.removeListener('get', node.onCharacteristicGet)
-            characteristic.removeListener('set', node.onCharacteristicSet)
-            characteristic.removeListener('change', node.onCharacteristicChange)
+            if (node.onCharacteristicGet) {
+                characteristic.removeListener('get', node.onCharacteristicGet)
+            }
+            if (node.onCharacteristicSet) {
+                characteristic.removeListener('set', node.onCharacteristicSet)
+            }
+            if (node.onCharacteristicChange) {
+                characteristic.removeListener(
+                    'change',
+                    node.onCharacteristicChange
+                )
+            }
         })
 
         if (node.config.isParent && node.accessory && node.onIdentify) {

@@ -203,7 +203,7 @@ module.exports = (RED: NodeAPI) => {
         if (
             Object.hasOwn(this, '_flow') &&
             Object.hasOwn(this, '_alias') &&
-            (this._flow ? Object(this._flow).hasOwn('TYPE') : false) &&
+            (this._flow ? Object.hasOwn(this._flow, 'TYPE') : false) &&
             this._flow?.TYPE === 'subflow'
         ) {
             // For subflows, use the service node identifier from the subflow template

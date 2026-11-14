@@ -783,49 +783,65 @@ const buildAPI = (RED: NodeAPI) => {
                 }
 
                 isRedInitialized()
-            }).then(() => {
-                RED.nodes.eachNode((node) => {
-                    if (
-                        node.type === 'homekit-service' ||
-                        node.type === 'homekit-service2'
-                    ) {
-                        const serviceNodeConfig = node as HAPServiceConfigType
-
-                        const serviceNode = RED.nodes.getNode(
-                            serviceNodeConfig.id
-                        ) as HAPServiceNodeType
-
+            })
+                .then(() => {
+                    RED.nodes.eachNode((node) => {
                         if (
-                            serviceNode?.characteristicProperties &&
-                            serviceNode.service
+                            node.type === 'homekit-service' ||
+                            node.type === 'homekit-service2'
                         ) {
-                            for (const key in serviceNode.characteristicProperties) {
-                                if (customCharacteristicKeys.has(key)) {
-                                    const characteristic = serviceNode.service
-                                        // @ts-expect-error
-                                        .getCharacteristic(Characteristic[key])
-                                        .setProps(
+                            const serviceNodeConfig =
+                                node as HAPServiceConfigType
+
+                            const serviceNode = RED.nodes.getNode(
+                                serviceNodeConfig.id
+                            ) as HAPServiceNodeType
+
+                            if (
+                                serviceNode?.characteristicProperties &&
+                                serviceNode.service
+                            ) {
+                                for (const key in serviceNode.characteristicProperties) {
+                                    if (customCharacteristicKeys.has(key)) {
+                                        const characteristic =
+                                            serviceNode.service
+                                                .getCharacteristic(
+                                                    // @ts-expect-error Custom constructors are registered dynamically.
+                                                    Characteristic[key]
+                                                )
+                                                .setProps(
+                                                    serviceNode
+                                                        .characteristicProperties[
+                                                        key
+                                                    ]
+                                                )
+                                        serviceNode.supported.add(key)
+                                        rebindCharacteristicListeners(
+                                            characteristic,
                                             serviceNode
-                                                .characteristicProperties[key]
                                         )
-                                    serviceNode.supported.add(key)
-                                    rebindCharacteristicListeners(
-                                        characteristic,
-                                        serviceNode
-                                    )
+                                    }
                                 }
                             }
                         }
-                    }
+                    })
                 })
-            })
+                .catch((error) => {
+                    log.error(
+                        `Custom characteristic listener refresh failed: ${error}`
+                    )
+                })
         }
 
         log.debug('Initialize NRCHKBCustomCharacteristicsAPI')
 
-        getCustomCharacteristics().then((value) =>
-            refreshCustomCharacteristics(value)
-        )
+        getCustomCharacteristics()
+            .then((value) => refreshCustomCharacteristics(value))
+            .catch((error) => {
+                log.error(
+                    `Custom characteristic initialization failed: ${error}`
+                )
+            })
 
         // Retrieve NRCHKB version
         RED.httpAdmin.get(
@@ -849,8 +865,8 @@ const buildAPI = (RED: NodeAPI) => {
 
                 Storage.saveCustomCharacteristics(customCharacteristics)
                     .then(() => {
-                        res.sendStatus(200)
                         refreshCustomCharacteristics(customCharacteristics)
+                        res.sendStatus(200)
                     })
                     .catch((error) => {
                         log.error(error)
@@ -896,7 +912,11 @@ const buildAPI = (RED: NodeAPI) => {
         _initBridgePairingAPI()
         _initAccessoryAPI()
 
-        _initNRCHKBCustomCharacteristicsAPI().then()
+        _initNRCHKBCustomCharacteristicsAPI().catch((error) => {
+            log.error(
+                `Custom characteristic API initialization failed: ${error}`
+            )
+        })
     }
 
     return {

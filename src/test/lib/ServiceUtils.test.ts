@@ -25,6 +25,18 @@ describe.each([
     ['ServiceUtils', buildServiceUtils],
     ['ServiceUtils2', buildServiceUtils2],
 ])('%s', (_label, build) => {
+    it('completes close after initialization stopped before listener registration', async () => {
+        const node = {
+            ...createNode(),
+            service: new Service.Switch('Partial'),
+            publishTimers: {},
+            nodeStatusUtils: { cleanup: vi.fn() },
+        }
+        const done = vi.fn()
+        await expect(build(node).onClose(false, done)).resolves.toBeUndefined()
+        expect(done).toHaveBeenCalledTimes(1)
+        expect(node.nodeStatusUtils.cleanup).toHaveBeenCalledTimes(1)
+    })
     it('reports accessory cleanup failure and still completes close exactly once', async () => {
         const accessory = new Accessory(
             'Switch',

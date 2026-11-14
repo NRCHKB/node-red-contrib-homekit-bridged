@@ -93,7 +93,13 @@ const buildAccessoryUtils = (node: HAPServiceNodeType) => {
 
                 // Remove old Accessory
                 host.removeBridgedAccessories([accessory])
-                accessory.destroy()
+                try {
+                    Promise.resolve(accessory.destroy()).catch((error) => {
+                        log.error(`Replaced accessory cleanup failed: ${error}`)
+                    })
+                } catch (error) {
+                    log.error(`Replaced accessory cleanup failed: ${error}`)
+                }
                 hostCache.delete(subtypeUUID) // Invalidate cache for this subtype
                 accessory = undefined
             } else {

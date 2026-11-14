@@ -96,7 +96,11 @@ export class Storage {
             if (entry) {
                 Storage.log.debug(`Callback ${callbackID} timeout`)
                 Storage.memoryStorage.delete(callbackID)
-                entry.eventCallback.callback()
+                try {
+                    entry.eventCallback.callback()
+                } catch (error) {
+                    Storage.log.error(`Callback ${callbackID} failed: ${error}`)
+                }
             }
         }, ttl)
 

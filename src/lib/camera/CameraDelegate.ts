@@ -176,6 +176,16 @@ export class CameraDelegate
         })
 
         const snapshotBuffers: Buffer[] = []
+        let completed = false
+        const finish: SnapshotRequestCallback = (error, buffer) => {
+            if (completed) return
+            completed = true
+            callback(error, buffer)
+        }
+        ffmpeg.on('error', (error) => {
+            this.log.error(`Snapshot process failed: ${error}`)
+            finish(error)
+        })
 
         ffmpeg.stdout.on('data', (data) => snapshotBuffers.push(data))
         ffmpeg.stderr.on('data', (data) => {
@@ -189,15 +199,15 @@ export class CameraDelegate
                 this.log.error(
                     `Snapshot process was killed with signal: ${signal}`
                 )
-                callback(new Error(`killed with signal ${signal}`))
+                finish(new Error(`killed with signal ${signal}`))
             } else if (code === 0) {
                 this.log.debug(
                     `Successfully captured snapshot at ${request.width}x${request.height}`
                 )
-                callback(undefined, Buffer.concat(snapshotBuffers))
+                finish(undefined, Buffer.concat(snapshotBuffers))
             } else {
                 this.log.error(`Snapshot process exited with code ${code}`)
-                callback(new Error(`Snapshot process exited with code ${code}`))
+                finish(new Error(`Snapshot process exited with code ${code}`))
             }
         })
     }

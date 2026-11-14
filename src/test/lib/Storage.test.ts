@@ -14,6 +14,20 @@ const { Storage } = require('../../../build/lib/Storage')
 const execFileAsync = promisify(execFile)
 
 describe('Storage callback handling', () => {
+    it('contains a throwing timeout callback and expires its entry', () => {
+        vi.useFakeTimers()
+        const id = Storage.saveCallback(
+            {
+                event: CharacteristicEventTypes.GET,
+                callback: () => {
+                    throw new Error('callback failed')
+                },
+            },
+            1
+        )
+        expect(() => vi.advanceTimersByTime(1)).not.toThrow()
+        expect(Storage.loadCallback(id)).toBeUndefined()
+    })
     afterEach(() => {
         vi.restoreAllMocks()
         vi.useRealTimers()

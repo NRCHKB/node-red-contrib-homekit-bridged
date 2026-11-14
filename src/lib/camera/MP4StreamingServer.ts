@@ -48,6 +48,10 @@ export class MP4StreamingServer {
         })
 
         this.server = createServer(this.handleConnection.bind(this))
+        this.server.on('error', (error) => {
+            log.error(`Recording server failed: ${error}`)
+            this.destroy()
+        })
         this.ffmpegPath = ffmpegPath
         this.args = []
 
@@ -66,7 +70,7 @@ export class MP4StreamingServer {
 
     async start() {
         const promise = once(this.server, 'listening')
-        this.server.listen() // listen on random port
+        this.server.listen(0, '127.0.0.1')
         await promise
 
         if (this.destroyed) {
@@ -82,9 +86,11 @@ export class MP4StreamingServer {
             env: process.env,
             stdio: this.debugMode ? 'pipe' : 'ignore',
         })
-        if (!this.childProcess) {
-            log.error('ChildProcess is undefined directly after the init!')
-        }
+        this.childProcess.on('error', (error) => {
+            log.error(`Recording process failed: ${error}`)
+            this.destroy()
+        })
+        this.childProcess.on('exit', () => this.destroy())
         if (this.debugMode) {
             this.childProcess.stdout?.on('data', (data) =>
                 log.debug(data.toString())
@@ -93,18 +99,36 @@ export class MP4StreamingServer {
                 log.debug(data.toString())
             )
         }
+        await once(this.childProcess, 'spawn')
     }
 
     destroy() {
+        if (this.destroyed) return
+        this.destroyed = true
         this.socket?.destroy()
-        this.childProcess?.kill()
+        if (this.childProcess?.pid && this.childProcess.exitCode === null) {
+            try {
+                this.childProcess.kill()
+            } catch (error) {
+                log.error(`Recording process cleanup failed: ${error}`)
+            }
+        }
+        this.server.close()
+        this.connectResolve?.()
 
         this.socket = undefined
         this.childProcess = undefined
-        this.destroyed = true
     }
 
     handleConnection(socket: Socket): void {
+        socket.on('error', (error) => {
+            log.error(`Recording socket failed: ${error}`)
+            this.destroy()
+        })
+        if (this.destroyed) {
+            socket.destroy()
+            return
+        }
         this.server.close() // don't accept any further clients
         this.socket = socket
         this.connectResolve?.()

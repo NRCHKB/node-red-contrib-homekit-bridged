@@ -51,6 +51,51 @@ export function describeCommonSwitchServiceBehavior({
     }
 
     describe(expectedType + ': ' + title, () => {
+        it.each(['bridge', 'standalone'])(
+            'preserves template identity when initializing a subflow service on %s',
+            async (host) => {
+                const existing = buildFlow()
+                const config = existing.flow.find(
+                    (item) => item.id === existing.serviceId
+                )!
+                config.waitForSetupMsg = true
+                if (host === 'standalone') {
+                    const bridge = existing.flow.find(
+                        (item) => item.type === 'homekit-bridge'
+                    )!
+                    bridge.type = 'homekit-standalone'
+                    config.hostType = '1'
+                    config.accessoryId = bridge.id
+                    config.bridge = ''
+                }
+                await helper.load(
+                    [
+                        ...nodes,
+                        require('../../../build/nodes/standalone'),
+                    ] as never,
+                    existing.flow
+                )
+                const node = helper.getNode(existing.serviceId) as any
+                // Supply the metadata Node-RED attaches to a subflow instance before setup.
+                node._alias = 'template-service'
+                node._flow = Object.assign(Object.create(node._flow), {
+                    TYPE: 'subflow',
+                    path: 'flow/instance',
+                })
+                node.receive({ payload: { nrchkb: { setup: {} } } })
+                await vi.waitFor(() => expect(node.configured).toBe(true), {
+                    timeout: 1000,
+                })
+                expect(node.uniqueIdentifier).toBe(
+                    'template-service/flow/instance'
+                )
+                node.receive({ payload: { On: true } })
+                await drainMessages()
+                expect(
+                    node.service.getCharacteristic(Characteristic.On).value
+                ).toBe(true)
+            }
+        )
         it('loads a real HAP Switch', async () => {
             const { node, on } = await load()
             expect(node.type).toBe(expectedType)
