@@ -1,13 +1,13 @@
-import { MDNSAdvertiser } from 'hap-nodejs'
-import { NodeDef } from 'node-red'
-import { SemVer } from 'semver'
-
-import HapCategories from './hap-nodejs/HapCategories'
+import type { MDNSAdvertiser } from '@homebridge/hap-nodejs'
+import type { NodeDef } from 'node-red'
+import type { SemVer } from 'semver'
+import type { NRCHKBLogLevel } from '../utils/LogUtils'
+import type HapCategories from './hap-nodejs/HapCategories'
 
 type HAPHostConfigType = NodeDef & {
     bridgeName: string
     pinCode: string
-    port?: number
+    port?: number | string
     allowInsecureRequest: boolean
     manufacturer: string
     model: string
@@ -17,39 +17,16 @@ type HAPHostConfigType = NodeDef & {
     softwareRev: SemVer
     bind?: string
     bindType?: 'json' | 'str'
-    /**
-     * @deprecated use bind instead
-     */
-    customMdnsConfig: boolean
-    /**
-     * @deprecated use bind instead
-     */
-    mdnsMulticast: boolean
-    /**
-     * @deprecated use bind instead
-     */
-    mdnsInterface: string
-    /**
-     * @deprecated use bind instead
-     */
-    mdnsPort: number
-    /**
-     * @deprecated use bind instead
-     */
-    mdnsIp: string
-    /**
-     * @deprecated use bind instead
-     */
-    mdnsTtl: number
-    /**
-     * @deprecated use bind instead
-     */
-    mdnsLoopback: boolean
-    /**
-     * @deprecated use bind instead
-     */
-    mdnsReuseAddr: boolean
+    customMdnsConfig?: boolean
+    mdnsInterface?: string
+    mdnsIp?: string
+    mdnsLoopback?: boolean
+    mdnsMulticast?: boolean
+    mdnsPort?: string
+    mdnsReuseAddr?: boolean
+    mdnsTtl?: string
     allowMessagePassthrough: boolean
+    logLevel?: NRCHKBLogLevel
     accessoryCategory: HapCategories
     advertiser: MDNSAdvertiser
 }

@@ -1,4 +1,4 @@
-import {
+import type {
     Accessory,
     AdaptiveLightingController,
     Characteristic,
@@ -8,16 +8,16 @@ import {
     CharacteristicSetCallback,
     CharacteristicValue,
     Service,
-} from 'hap-nodejs'
-import { HAPConnection } from 'hap-nodejs/dist/lib/util/eventedhttp'
-import { NodeAPI } from 'node-red'
+} from '@homebridge/hap-nodejs'
+import type { NodeAPI } from 'node-red'
 
-import { NodeStatusUtils } from '../utils/NodeStatusUtils'
-import HAPHostNodeType from './HAPHostNodeType'
-import HAPService2NodeType from './HAPService2NodeType'
-import HAPServiceConfigType from './HAPServiceConfigType'
-import NodeType from './NodeType'
-import PublishTimersType from './PublishTimersType'
+import type { CharacteristicContext, HAPConnection } from '../hap/hap-nodejs'
+import type { NodeStatusUtils } from '../utils/NodeStatusUtils'
+import type HAPHostNodeType from './HAPHostNodeType'
+import type HAPService2NodeType from './HAPService2NodeType'
+import type HAPServiceConfigType from './HAPServiceConfigType'
+import type NodeType from './NodeType'
+import type PublishTimersType from './PublishTimersType'
 
 type HAPServiceNodeType = NodeType & {
     config: HAPServiceConfigType
@@ -33,20 +33,21 @@ type HAPServiceNodeType = NodeType & {
     parentNode?: HAPService2NodeType | HAPServiceNodeType
     accessory: Accessory
     characteristicProperties: { [key: string]: CharacteristicProps }
-    supported: string[]
+    supported: Set<string>
     publishTimers: PublishTimersType
+    waitForParentTimer?: NodeJS.Timeout
     topic_in: string
     onCharacteristicGet: (
         this: Characteristic,
         callback: CharacteristicGetCallback,
-        context: any,
+        context: CharacteristicContext,
         connection?: HAPConnection
     ) => void
     onCharacteristicSet: (
         this: Characteristic,
-        newValue: CharacteristicValue,
+        value: CharacteristicValue,
         callback: CharacteristicSetCallback,
-        context: any,
+        context: CharacteristicContext,
         connection?: HAPConnection
     ) => void
     onCharacteristicChange: (

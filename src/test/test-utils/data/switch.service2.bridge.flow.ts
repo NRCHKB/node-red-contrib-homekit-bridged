@@ -1,4 +1,4 @@
-import helper from 'node-red-node-test-helper'
+import type { TestFlowNode } from '../vitest-helper'
 
 export const switchService2BridgeFlow = () => {
     const serviceId = `s1.${Date.now()}`
@@ -56,7 +56,7 @@ export const switchService2BridgeFlow = () => {
                 outputs: 1,
                 x: 1290,
                 y: 340,
-                wires: [['h1'], ['h1']],
+                wires: [['h1'], ['h2']],
             },
             {
                 id: bridgeId,
@@ -82,6 +82,7 @@ export const switchService2BridgeFlow = () => {
                 allowMessagePassthrough: true,
             },
             { id: 'h1', type: 'helper' },
-        ] as helper.TestFlows,
+            { id: 'h2', type: 'helper' },
+        ] as TestFlowNode[],
     }
 }

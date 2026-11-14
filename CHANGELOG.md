@@ -1,6 +1,10 @@
 #### ⚠️ CAUTION ⚠️
 
-##### Before upgrading make sure that you are using the latest version of [Node-RED](https://nodered.org/docs/getting-started/local) and latest LTS version of [Node.js](https://nodejs.org/en/download/)
+##### This project is now based on [Node-RED 5.0](https://nodered.org/blog/2026/06/09/version-5-0-released).
+
+##### Before upgrading, make sure that you are using Node-RED 5.x and Node.js 22.20.0 or newer.
+
+##### Node.js 24 is recommended for new installations and Docker-based deployments.
 
 # Changelog
 
@@ -9,11 +13,179 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-11-14
+
+Backward compatibility was lost for custom mDNS configuration.
+Legacy `CameraControl` remains available only in `homekit-service` and is deprecated. New and migrated camera flows
+should use the `Camera` service in `homekit-service2` with the embedded Homebridge Camera FFmpeg plugin.
+Node-RED `5.0.0` or newer and Node.js `22.20.0` or newer are now required. Node.js `24` is recommended for new
+installations and Docker-based deployments.
+
+### Added
+
+- New camera controller API with snapshots, live streaming, and fragmented MP4 recording infrastructure.
+  The legacy delegate omits live audio and records a test source; use the plugin-backed camera path and see
+  the [README upgrade notes](README.md#upgrading-from-1x-to-20) for compatibility limitations.
+- Service node migration support for converting legacy `homekit-service` nodes to `homekit-service2` nodes,
+  including conversion of `CameraControl` to the plugin-backed `Camera` service.
+- Node migration API endpoints for editor-driven and script-driven migrations:
+  `POST /nrchkb/migration/node` and `POST /nrchkb/migration/flow`.
+- `npm run migrate:service2` helper for migrating exported Node-RED flow files.
+- Legacy output mode for migrated Service 2 nodes, preserving the previous two-output behavior and the
+  three-output behavior used by `CameraControl`.
+- `homekit-service2` is registered as a standard node type instead of being gated by `NRCHKB_EXPERIMENTAL`.
+- Plugin registry for embedded NRCHKB integrations and future external plugins, including metadata validation,
+  duplicate stable ID protection, package-scoped plugin IDs, capability flags, prerequisites, single-instance flags,
+  upstream attribution metadata, and a shared editor schema for plugin-provided configuration fields.
+- New `homekit-plugin-instance` config node for plugin-backed HomeKit integrations.
+- Embedded `Homebridge Camera FFmpeg` plugin integration backed by
+  `@homebridge-plugins/homebridge-camera-ffmpeg`, with upstream authors credited separately from the NRCHKB
+  integration author.
+- Embedded `Homebridge UniFi Protect` plugin integration backed by `homebridge-unifi-protect` 8.1.0, with UniFi Protect
+  controller configuration and camera discovery.
+  Two-way audio and HomeKit Secure Video capabilities are marked experimental in plugin metadata.
+- New `homekit-unifi-controller` config node with username/password credentials, controller address, application,
+  self-signed certificate, and override address settings.
+- Custom `Camera` service for `homekit-service2`; selecting it automatically attaches the embedded Homebridge Camera
+  FFmpeg plugin while the editor renders plugin metadata and configuration from the generic plugin metadata API.
+- Plugin management UI for `homekit-service2`, with an Add plugin dialog, compatibility filtering, compact plugin
+  overview, and plugin-specific editor sections rendered from registered plugin metadata.
+- Advertiser recommendation API for Bridge and Standalone Accessory editors.
+- Pairing QR code support for unpaired Bridge and Standalone Accessory editors
+  [#67](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/67).
+- Pairing state tracking for Bridge and Standalone Accessory nodes so the editor can show pairing help only when it is
+  still useful.
+- Node-RED editor translations for en-US, German, French, and Spanish, using per-node i18n catalogs
+  [#85](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/85).
+- Per-node **Log Level** settings for standard and config nodes, with scoped `inherit`, `error`, `debug`, `trace`, and
+  `disabled` behavior backed by `@nrchkb/logger` [#479](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/479).
+- Additional unit and integration coverage for camera delegates, custom characteristics, lightbulb flows, Service 2
+  migration, plugin metadata/registry behavior, host lifecycle cleanup, service utilities, storage callbacks, HAP
+  compatibility, and performance.
+
+### Changed
+
+- Replaced `hap-nodejs` 0.12.3 with
+  [`@homebridge/hap-nodejs` 2.3.0](https://github.com/homebridge/HAP-NodeJS/releases/tag/v2.3.0) and added a local
+  compatibility wrapper for HAP-NodeJS types.
+- Updated the Node-RED runtime baseline to `5.0.0` or newer.
+- Node.js `22.20.0` or newer is now required; Node.js `24` is recommended for new installations and Docker-based
+  deployments [#578](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/578).
+- Deprecated legacy `CameraControl` for `homekit-service` and removed it from the `homekit-service2` service selector.
+- Made the existing custom characteristic API available without `NRCHKB_EXPERIMENTAL`
+  [#52](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/52).
+- Removed custom mDNS publish settings from host publishing; `bind` and the standard HAP advertiser options are now
+  used instead. Legacy custom mDNS fields may still be present in old flows but are ignored by HAP-NodeJS 2.x.
+- Reworked Bridge, Standalone Accessory, Service, Service 2, Status, and NRCHKB editor screens into compact
+  inspector-style sections with responsive disclosure groups.
+- Improved Service 2 event output to include HomeKit context data when present and to send context-originated updates.
+- Changed supported characteristic tracking to use sets and shared characteristic utility behavior between Service and
+  Service 2 nodes.
+- Added per-host accessory lookup caching, reduced repeated characteristic traversal, and made status IDs unique
+  across same-millisecond updates so one update cannot clear a newer status.
+- Improved host/service lifecycle handling, including synchronous `nrchkb` registration, cleaner close/unpublish
+  behavior, and node status timeout cleanup
+  [#477](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/477).
+- Replaced the TypeScript compiler build path with an esbuild-based build and watch workflow.
+- Migrated formatting and linting from ESLint and Prettier to Biome.
+- Migrated the test runner from Mocha to Vitest.
+- Updated TypeScript to 7.0, Node-RED and its registry to 5.0.9, Biome, ciao, concurrently, esbuild, Vitest,
+  semver, uuid, Husky, and related dependencies. TypeScript now has an explicit typecheck step; its removed legacy
+  module-resolution setting is replaced with bundler resolution to match the esbuild pipeline.
+- Updated `@nrchkb/logger` to `3.3.0` for scoped log-level support.
+- Updated CI to run on Node.js `22`, `24`, and `26` across Ubuntu, Windows, and macOS, with `test:ci`, linting, typechecking, and
+  fail-fast disabled for the matrix.
+- Added coverage reporting, targeted mutation checks, packaged-install smoke tests, and testing documentation.
+- Updated CodeQL, publish workflows, and security support documentation for the 2.x release line.
+- Refreshed example flows for the current node definitions and updated generated editor assets.
+- Updated issue templates, release-note configuration, code of conduct formatting, Git attributes/ignores
+  and Husky hooks; pinned npm 10.9.4 with an explicit `lockfile:sync` helper for reproducible installs.
+- Documented the upgrade procedure and compatibility changes in the README, including Service 2 context
+  events and upstream camera characteristic metadata changes from boolean to `uint8`.
+- Added a local release audit record and documented why mutation, build and package checks must run sequentially.
+
+### Fixed
+
+- Restore Service and Service 2 initialization inside subflows by correcting the subflow metadata ownership
+  check, preserving the template-based accessory identity in both Bridge and Standalone Accessory modes.
+- Contain FFmpeg snapshot/recording process errors, recording socket errors, throwing callback timeouts,
+  rejected accessory replacement cleanup and custom-characteristic refresh failures so these failures do not
+  terminate Node-RED. Close the recording listener on cleanup and bind it only to loopback; avoid sending
+  a second HTTP response after a failed custom-characteristic refresh.
+- Complete service shutdown safely when initialization failed before characteristic listeners were registered.
+- Preserve an explicitly configured zero Adaptive Lighting temperature adjustment and improve controller logging.
+- Accept HomeKit pairing PINs with or without hyphens for Bridge and Standalone Accessory nodes, preserving leading
+  zeros during publishing and QR generation. Reject malformed PINs consistently and return a clear pairing API error
+  [#585](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/585).
+- Fixed invalid `bind` JSON handling so publishing fails cleanly instead of throwing during host publish.
+- Fixed host port normalization so empty or string port values are handled consistently and port `1880` remains
+  blocked because it is reserved for Node-RED.
+- Fixed pending wait-for-parent timers, publish timers, characteristic listeners, identify listeners, and status
+  timeouts being left behind after node close/redeploy, including nodes still waiting for a parent service or setup message.
+- Wait for accessory destruction before completing service close callbacks, and complete host/service cleanup
+  callbacks even when HAP unpublication or destruction fails.
+- Handle synchronous and asynchronous HAP publication failures, log the error, and clear the published state.
+- Return the NRCHKB storage initialization promise so startup can wait for storage and API initialization.
+- Initialize HAP storage before async NRCHKB storage setup to avoid late storage-path registration.
+- Fixed Bridge publishing so delayed `wait for setup` services are included before publish, preserving stable HomeKit
+  identity for those services [#482](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/482).
+- Fixed callback storage growth by expiring callbacks, clearing timeout handles, and pruning old callback entries at
+  capacity.
+- Fixed setup-message handling so malformed messages report a clear error while the node keeps waiting;
+  a valid setup message removes the temporary listener and initializes the service.
+- Fixed custom characteristic refresh so removed definitions are deleted and existing listeners are not duplicated.
+- Fixed Adaptive Lighting being lost after a host restart (e.g. full deploy) followed by a Node-RED restart: Adaptive
+  Lighting controllers of the replaced host are stopped and detached from controller storage after unpublish, and the
+  storage is saved once so the new host restores complete data. A deleted Lightbulb node removes its Adaptive Lighting
+  controller from the accessory, so a host that keeps running does not hold it until the next restart
+  [#584](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/584). Thanks to
+  [@fduch2k](https://github.com/fduch2k) for the fix and regression tests.
+- Remove the old Adaptive Lighting controller when a service changes type, allowing a Lightbulb changed to another
+  service type and back to regain Adaptive Lighting without restarting its Bridge or Standalone Accessory.
+- Fixed Service 2 `NO_RESPONSE` handling to update reachability while writing a HomeKit-compatible characteristic
+  value.
+- Fixed linked Service nodes retaining stale Bridge or Standalone Accessory references after switching from parent
+  service mode [#503](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/503).
+
+### Removed
+
+- Removed the custom mDNS utility and `BonjourMulticastOptions` type.
+- Removed the legacy bundled `cameraSource` implementation in favor of the new camera controller and embedded
+  Homebridge Camera FFmpeg integration.
+- Removed ESLint and Prettier configuration in favor of Biome.
+
+### Contributors and community reports
+
+- [@Shaquu](https://github.com/Shaquu) implemented and maintained the 2.0 upgrade, integrations, editor, compatibility fixes and release tooling. See the [complete master-to-dev comparison](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/compare/master...dev) for individual commits.
+- [@GogoVega](https://github.com/GogoVega) contributed synchronous node registration and macOS/async test fixes in [PR #580](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/580); [@fduch2k](https://github.com/fduch2k) reported and fixed Adaptive Lighting persistence and cleanup with real-storage regression tests in [PR #584](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/pull/584).
+- Pairing PIN report and verification: [@NorthernMan54](https://github.com/NorthernMan54) ([#585](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/585)).
+- Delayed setup report: [@sjorge](https://github.com/sjorge) ([#482](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/482)).
+- Linked-service reference report: [@AarneAarebye](https://github.com/AarneAarebye) ([#503](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/503)).
+- Redeploy/discovery report: [@lilyball](https://github.com/lilyball) ([#477](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/477)).
+- Per-node logging request: [@crxporter](https://github.com/crxporter) ([#479](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/479)).
+- Node.js 24 compatibility request: [@Ma5terQ](https://github.com/Ma5terQ) ([#578](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/578)).
+- Custom characteristics request: [@faronov](https://github.com/faronov) ([#52](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/52)).
+- Pairing QR code proposal: [@Shaquu](https://github.com/Shaquu) ([#67](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/67)).
+- Internationalisation proposal: [@Shaquu](https://github.com/Shaquu) ([#85](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/85)).
+
+Thanks also to the people who supplied discussion, diagnostics, testing or suggestions in these linked feature threads (including their earlier development):
+
+- [#67](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/67): [@crxporter](https://github.com/crxporter), [@djiwondee](https://github.com/djiwondee), [@radokristof](https://github.com/radokristof), [@sjorge](https://github.com/sjorge), [@TheNON75](https://github.com/TheNON75).
+- [#85](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/85): [@ptath](https://github.com/ptath), [@radokristof](https://github.com/radokristof), [@andreypopov](https://github.com/andreypopov).
+- [#578](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/578): [@sentivfan](https://github.com/sentivfan), [@CyberChris79](https://github.com/CyberChris79), [@mrobbetts](https://github.com/mrobbetts), [@ALPF5555](https://github.com/ALPF5555), [@RK392](https://github.com/RK392), [@hsugene](https://github.com/hsugene), [@NorthernMan54](https://github.com/NorthernMan54), [@structure7](https://github.com/structure7), [@jackc94](https://github.com/jackc94), [@blackflash73](https://github.com/blackflash73).
+- [#52](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/52): [@faronov](https://github.com/faronov), [@fschaefer](https://github.com/fschaefer), [@sjorge](https://github.com/sjorge), [@lslomczynski](https://github.com/lslomczynski), [@crxporter](https://github.com/crxporter), [@CaseyRo](https://github.com/CaseyRo), [@Tyraenor](https://github.com/Tyraenor), [@rufusgor](https://github.com/rufusgor), [@foorschtbar](https://github.com/foorschtbar), [@GogoVega](https://github.com/GogoVega), [@djiwondee](https://github.com/djiwondee).
+- [#503](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/503): [@AarneAarebye](https://github.com/AarneAarebye), [@GogoVega](https://github.com/GogoVega).
+- [#477](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/477): [@lilyball](https://github.com/lilyball).
+- [#482](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/482): [@caitken-com](https://github.com/caitken-com), [@sjorge](https://github.com/sjorge).
+
+Upstream credit remains with the authors and contributors of [HAP-NodeJS](https://github.com/homebridge/HAP-NodeJS/graphs/contributors), [Homebridge Camera FFmpeg](https://github.com/homebridge-plugins/homebridge-camera-ffmpeg/graphs/contributors) and [Homebridge UniFi Protect](https://github.com/hjdhjd/homebridge-unifi-protect/graphs/contributors). The embedded plugin metadata also exposes authors, contributors, version and license from the installed upstream packages.
+
 ## [1.7.3] - 2025-01-16
 
 ### Changed
 
-- Updated hap-nodejs [0.12.3-beta.18 to 0.12.3](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (features
+- Updated hap-nodejs [0.12.3-beta.18 to 0.12.3](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (
+  features
   and bug fixes)
 - Dependencies upgrade
 
@@ -31,7 +203,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-- Fix bad listeners detachment for characteristics [#563](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/563)
+- Fix bad listeners detachment for
+  characteristics [#563](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/563)
 
 ## [1.7.0] - 2024-09-19
 
@@ -43,11 +216,13 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Adaptive Lighting support [#335](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/335)
-- By default, registered Eve.app Characteristics for power management - for existing setup, requires old custom characteristics file to be removed
+- By default, registered Eve.app Characteristics for power management - for existing setup, requires old custom
+  characteristics file to be removed
 
 ### Changed
 
-- Updated hap-nodejs [0.11.1 to 0.12.3-beta.18](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (features
+- Updated hap-nodejs [0.11.1 to 0.12.3-beta.18](https://github.com/homebridge/HAP-NodeJS/blob/latest/CHANGELOG.md) (
+  features
   and bug fixes)
 - Dependencies upgrade
 - Node `10`, `12` and `16` no longer supported, use Node 20! Or at least 18

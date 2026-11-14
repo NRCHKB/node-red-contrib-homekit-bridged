@@ -1,0 +1,521 @@
+﻿<style>
+    .nrchkb-editor .nrchkb-plugin-instance-about {
+        margin-bottom: 10px;
+        padding: 7px 9px;
+        border: 1px solid var(--red-ui-secondary-border-color, #d8d8d8);
+        border-radius: 6px;
+        background: var(--red-ui-tertiary-background, #f7f7f7);
+        color: var(--red-ui-secondary-text-color, #666);
+        font-size: 12px;
+        line-height: 1.35;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-instance-fields {
+        display: grid;
+        gap: 4px;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-instance-section {
+        margin-top: 8px;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-instance-section:first-of-type {
+        margin-top: 0;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-instance-section summary {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-instance-section-title {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-instance-check {
+        min-width: 0;
+        max-width: 100%;
+        color: var(--red-ui-primary-text-color, #333);
+        cursor: pointer;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-instance-check input {
+        flex: 0 0 auto;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-instance-check span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-instance-check-row {
+        margin-bottom: 5px;
+        min-height: 24px;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-instance-textarea,
+    .nrchkb-editor .nrchkb-plugin-instance-select {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .nrchkb-editor .form-row > .nrchkb-plugin-instance-textarea {
+        flex: 1 1 auto;
+        width: auto !important;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-instance-textarea-row {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-instance-textarea {
+        min-height: 92px;
+        padding: 6px 8px;
+        resize: vertical;
+        font-family: var(--red-ui-monospace-font, monospace);
+        line-height: 1.35;
+    }
+
+    .nrchkb-editor .nrchkb-plugin-instance-help {
+        flex: 1 1 100%;
+        margin: -3px 0 3px 160px;
+        color: var(--red-ui-secondary-text-color, #666);
+        font-size: 12px;
+        line-height: 1.35;
+    }
+
+    @media (max-width: 420px) {
+        .nrchkb-editor .nrchkb-plugin-instance-help {
+            margin-left: 0;
+        }
+    }
+</style>
+
+<script data-template-name="homekit-plugin-instance" type="text/x-red">
+    <div class="nrchkb-editor">
+        <input type="hidden" id="node-config-input-pluginId">
+        <input type="hidden" id="node-config-input-pluginConfig">
+
+        <div id="node-config-input-logLevel-container"></div>
+        <div id="node-config-input-plugin-instance-editor"></div>
+    </div>
+</script>
+
+<script data-help-name="homekit-plugin-instance" type="text/markdown">
+# HomeKit Plugin Instance
+
+Generic NRCHKB plugin instance used by service nodes to track plugin dependencies.
+
+> [!NOTE]
+> Plugin instances are created and managed from plugin-aware service editors.
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('homekit-plugin-instance', {
+        category: 'config',
+        defaults: {
+            pluginId: {value: ''},
+            pluginConfig: {value: '{}'},
+            controller: {
+                value: '',
+                type: 'homekit-unifi-controller',
+                required: false,
+                validate: function () { return true }
+            },
+            logLevel: {
+                value: 'inherit',
+                required: false,
+            },
+        },
+        label: function () {
+            const plugin = (window.NRCHKBAvailablePlugins || []).find(function (entry) {
+                return entry.id === this.pluginId
+            }, this)
+            return plugin ? plugin.displayName : 'HomeKit Plugin Instance'
+        },
+        onadd: function () {
+            applyDefaultNodeDocumentation(this, 'homekit-plugin-instance')
+        },
+        oneditprepare: function () {
+            const node = this
+            appendNRCHKBLogLevelRow(
+                '#node-config-input-logLevel-container',
+                'node-config-input-logLevel',
+                node.logLevel,
+            )
+
+            const draft = window.NRCHKBPluginInstanceDraft || {}
+            const pluginId = node.pluginId || draft.pluginId || ''
+            const pluginConfig = $.extend(true, {}, draft.pluginConfig || {}, parsePluginConfig(node.pluginConfig))
+            if (node.controller && !pluginConfig.controller) {
+                pluginConfig.controller = node.controller
+            }
+
+            $('#node-config-input-pluginId').val(pluginId)
+            $('#node-config-input-pluginConfig').val(JSON.stringify(pluginConfig))
+
+            $.getJSON('nrchkb/plugins', function (plugins) {
+                window.NRCHKBAvailablePlugins = plugins || []
+                const plugin = (plugins || []).find(function (entry) {
+                    return entry.id === pluginId
+                })
+                renderPluginEditor(plugin, pluginConfig)
+            }).fail(function () {
+                RED.notify(nrchkbText('plugins.metadataLoadFailed', 'Unable to load NRCHKB plugin metadata.'), 'warning')
+                renderPluginEditor(undefined, pluginConfig)
+            })
+        },
+        oneditsave: function () {
+            const config = {}
+
+            $('[data-plugin-config-path]').each(function () {
+                const input = $(this)
+                const field = input.data('pluginField') || {}
+                const path = input.attr('data-plugin-config-path')
+
+                if (!path) {
+                    return
+                }
+
+                if (field.type === 'checkbox') {
+                    setConfigValue(config, path, input.is(':checked'))
+                } else if (field.type === 'number') {
+                    const value = input.val()
+                    setConfigValue(config, path, value === '' || value === undefined ? undefined : Number(value))
+                } else if (field.type === 'dynamic-select') {
+                    setConfigValue(config, path, input.val() || input.data('pluginDynamicValue') || '')
+                } else {
+                    setConfigValue(config, path, input.val())
+                }
+            })
+
+            const pluginId = $('#node-config-input-pluginId').val()
+            const controller = config.controller || $('#node-config-input-controller').val() || ''
+            if (controller) {
+                setConfigValue(config, 'controller', controller)
+            }
+            const pluginConfig = JSON.stringify(config)
+
+            $('#node-config-input-pluginId').val(pluginId)
+            $('#node-config-input-pluginConfig').val(pluginConfig)
+            $('#node-config-input-controller').val(controller)
+
+            this.pluginId = pluginId
+            this.pluginConfig = pluginConfig
+            this.controller = controller
+            delete window.NRCHKBPluginInstanceDraft
+        },
+        oneditcancel: function () {
+            delete window.NRCHKBPluginInstanceDraft
+        },
+    })
+
+    function parsePluginConfig(value) {
+        if (!value) {
+            return {}
+        }
+
+        try {
+            return JSON.parse(value)
+        } catch (_) {
+            return {}
+        }
+    }
+
+    function getPathParts(path) {
+        return typeof path === 'string' && path.length
+            ? path.split('.').filter(function (part) {
+                return part.length > 0
+            })
+            : []
+    }
+
+    function getConfigValue(config, path, defaultValue) {
+        const parts = getPathParts(path)
+        let current = config
+
+        for (let index = 0; index < parts.length; index += 1) {
+            if (!current || typeof current !== 'object' || !Object.prototype.hasOwnProperty.call(current, parts[index])) {
+                return defaultValue
+            }
+
+            current = current[parts[index]]
+        }
+
+        return current === undefined ? defaultValue : current
+    }
+
+    function setConfigValue(config, path, value) {
+        const parts = getPathParts(path)
+        let current = config
+
+        parts.forEach(function (part, index) {
+            if (index === parts.length - 1) {
+                current[part] = value
+                return
+            }
+
+            if (!current[part] || typeof current[part] !== 'object') {
+                current[part] = {}
+            }
+
+            current = current[part]
+        })
+    }
+
+    function createFieldId(field) {
+        if (field.type === 'config-node' && field.path === 'controller' && field.configNodeType === 'homekit-unifi-controller') {
+            return 'node-config-input-controller'
+        }
+
+        return 'node-config-input-plugin-' + (field.path || 'field').replace(/[^a-zA-Z0-9_-]/g, '-')
+    }
+
+    function appendFieldHelp(row, input, fieldId, field) {
+        const helpText = field.description || field.placeholder || ''
+
+        if (!helpText) {
+            return
+        }
+
+        const helpId = fieldId + '-help'
+        input.attr('aria-describedby', helpId)
+        $('<div/>', {
+            id: helpId,
+            class: 'nrchkb-plugin-instance-help'
+        }).text(helpText).appendTo(row)
+    }
+
+    function renderPluginEditor(plugin, config) {
+        const editorContainer = $('#node-config-input-plugin-instance-editor').empty()
+
+        if (!plugin) {
+            $('<div/>', {class: 'nrchkb-plugin-instance-about'})
+                .text(nrchkbText('plugins.metadataUnavailable', 'Plugin metadata is not available.'))
+                .appendTo(editorContainer)
+            return
+        }
+
+        $('<div/>', {class: 'nrchkb-plugin-instance-about'})
+            .text(plugin.displayName + ' v' + plugin.version + '. ' + plugin.description)
+            .appendTo(editorContainer)
+
+        const sections = plugin.editor && Array.isArray(plugin.editor.sections)
+            ? plugin.editor.sections
+            : []
+
+        if (!sections.length) {
+            $('<div/>', {class: 'nrchkb-plugin-instance-about'})
+                .text(nrchkbText('plugins.noEditorFields', 'This plugin does not provide editor fields.'))
+                .appendTo(editorContainer)
+            return
+        }
+
+        sections.forEach(function (section, index) {
+            const details = $('<details/>', {
+                class: 'nrchkb-section nrchkb-plugin-instance-section'
+            }).appendTo(editorContainer)
+
+            if (section.collapsed !== true) {
+                details.prop('open', true)
+            }
+
+            const summary = $('<summary/>').appendTo(details)
+            $('<i/>', {class: 'fa ' + (section.icon || 'fa-sliders')}).appendTo(summary)
+            $('<span/>', {class: 'nrchkb-plugin-instance-section-title'})
+                .text(section.title || nrchkbText('plugins.settings', 'Settings') + ' ' + (index + 1))
+                .appendTo(summary)
+
+            const body = $('<div/>', {class: 'nrchkb-section-body'}).appendTo(details)
+
+            if (section.description) {
+                $('<div/>', {class: 'nrchkb-plugin-instance-about'})
+                    .text(section.description)
+                    .appendTo(body)
+            }
+
+            const fields = $('<div/>', {class: 'nrchkb-plugin-instance-fields'}).appendTo(body)
+            ;(section.fields || []).forEach(function (field) {
+                renderPluginField(fields, field, config)
+            })
+        })
+
+        editorContainer.find('[data-plugin-dynamic-select="true"]').each(function () {
+            loadDynamicPluginSelect(editorContainer, $(this))
+        })
+
+        editorContainer.on('change', '[data-plugin-config-path]', function (event) {
+            const changedInput = $(event.target)
+            const changedPath = $(event.target).attr('data-plugin-config-path') || ''
+            const changedField = changedInput.data('pluginField') || {}
+
+            if (changedField.type === 'dynamic-select') {
+                changedInput.data('pluginDynamicValue', changedInput.val() || '')
+            }
+
+            editorContainer.find('[data-plugin-dynamic-select="true"]').each(function () {
+                const dynamicInput = $(this)
+                const dynamicField = dynamicInput.data('pluginField') || {}
+
+                if (dynamicField.optionsDependsOn === changedPath) {
+                    dynamicInput.data(
+                        'pluginDynamicValue',
+                        dynamicInput.val() || dynamicInput.data('pluginDynamicValue') || ''
+                    )
+                    loadDynamicPluginSelect(editorContainer, dynamicInput)
+                }
+            })
+        })
+    }
+
+    function renderPluginField(container, field, config) {
+        const fieldId = createFieldId(field)
+        const value = getConfigValue(config, field.path, field.default)
+        if (fieldId === 'node-config-input-controller') {
+            $('#' + fieldId).remove()
+        }
+        const row = $('<div/>', {
+            class: 'form-row' + (field.type === 'checkbox'
+                ? ' nrchkb-checkbox-row nrchkb-plugin-instance-check-row'
+                : field.type === 'textarea'
+                    ? ' nrchkb-plugin-instance-textarea-row'
+                    : '')
+        }).appendTo(container)
+
+        if (field.type === 'checkbox') {
+            const label = $('<label/>', {
+                class: 'nrchkb-checkbox-label nrchkb-plugin-instance-check',
+                for: fieldId
+            }).appendTo(row)
+            const input = $('<input/>', {type: 'checkbox', id: fieldId}).appendTo(label)
+            $('<span/>')
+                .append(field.icon ? $('<i/>', {class: 'fa ' + field.icon}) : $())
+                .append(field.icon ? ' ' : '')
+                .append(document.createTextNode(field.label || field.path))
+                .appendTo(label)
+            input.prop('checked', !!value)
+            attachFieldMetadata(input, field)
+            appendFieldHelp(row, input, fieldId, field)
+            return
+        }
+
+        const label = $('<label/>', {for: fieldId}).appendTo(row)
+        if (field.icon) {
+            $('<i/>', {class: 'fa ' + field.icon}).appendTo(label)
+            label.append(' ')
+        }
+        label.append(document.createTextNode(field.label || field.path))
+
+        let input
+        if (field.type === 'select' || field.type === 'dynamic-select') {
+            input = $('<select/>', {id: fieldId, class: 'nrchkb-plugin-instance-select'}).appendTo(row)
+            ;(field.options || []).forEach(function (option) {
+                $('<option/>').val(option.value).text(option.label).appendTo(input)
+            })
+            input.val(value === undefined ? '' : value)
+        } else if (field.type === 'textarea') {
+            input = $('<textarea/>', {
+                id: fieldId,
+                class: 'nrchkb-plugin-instance-textarea',
+                rows: 4
+            }).appendTo(row)
+            input.val(value === undefined ? '' : value)
+        } else {
+            input = $('<input/>', {
+                type: field.type === 'number' ? 'number' : field.type === 'password' ? 'password' : 'text',
+                id: fieldId,
+                placeholder: field.placeholder || ''
+            }).appendTo(row)
+            input.val(value === undefined ? '' : value)
+        }
+
+        attachFieldMetadata(input, field)
+
+        if (field.type === 'config-node' && field.configNodeType && RED.editor && RED.editor.prepareConfigNodeSelect) {
+            const property = fieldId.replace(/^node-config-input-/, '')
+            const configNode = {}
+            configNode[property] = value === undefined ? '' : value
+
+            RED.editor.prepareConfigNodeSelect(
+                configNode,
+                property,
+                field.configNodeType,
+                'node-config-input'
+            )
+
+            attachFieldMetadata($('#' + fieldId), field)
+        }
+
+        if (field.type === 'dynamic-select') {
+            input.attr('data-plugin-dynamic-select', 'true')
+            input.data('pluginDynamicValue', value === undefined ? '' : value)
+        }
+
+        appendFieldHelp(row, input, fieldId, field)
+    }
+
+    function attachFieldMetadata(input, field) {
+        input
+            .attr('data-plugin-config-path', field.path)
+            .data('pluginField', field)
+    }
+
+    function loadDynamicPluginSelect(container, input) {
+        const field = input.data('pluginField') || {}
+        const selectedValue = input.val() || input.data('pluginDynamicValue') || ''
+
+        if (!field.optionsUrl) {
+            return
+        }
+
+        let url = field.optionsUrl
+        if (field.optionsDependsOn) {
+            const dependsInput = container.find('[data-plugin-config-path="' + field.optionsDependsOn + '"]')
+            const dependsValue = dependsInput.val()
+
+            if (!dependsValue) {
+                input.empty()
+                $('<option/>').val('').text(nrchkbText('plugins.chooseDependencyFirst', 'Choose a dependency first')).appendTo(input)
+                input.val('')
+                return
+            }
+
+            url = url.replace('{' + field.optionsDependsOn + '}', encodeURIComponent(dependsValue))
+        }
+
+        input.empty()
+        $('<option/>').val('').text(nrchkbText('common.loading', 'Loading...')).appendTo(input)
+
+        $.getJSON(url, function (options) {
+            input.empty()
+            $('<option/>').val('').text(nrchkbText('common.choose', 'Choose...')).appendTo(input)
+            ;(options || []).forEach(function (option) {
+                $('<option/>').val(option.value).text(option.label).appendTo(input)
+            })
+            if (selectedValue && input.find('option').filter(function () {
+                return $(this).val() === selectedValue
+            }).length === 0) {
+                $('<option/>').val(selectedValue).text(nrchkbText('plugins.savedValue', 'Saved value') + ' (' + selectedValue + ')').appendTo(input)
+            }
+            input.val(selectedValue)
+            input.data('pluginDynamicValue', input.val() || selectedValue)
+        }).fail(function () {
+            input.empty()
+            $('<option/>').val('').text(nrchkbText('plugins.optionsLoadFailed', 'Unable to load options')).appendTo(input)
+            if (selectedValue) {
+                $('<option/>').val(selectedValue).text(nrchkbText('plugins.savedValue', 'Saved value') + ' (' + selectedValue + ')').appendTo(input)
+                input.val(selectedValue)
+            }
+            input.data('pluginDynamicValue', input.val() || selectedValue)
+        })
+    }
+</script>
+

@@ -1,6 +1,6 @@
-import { NodeStatus } from '@node-red/registry'
+import type { NodeStatus } from '@node-red/registry'
 
-import NodeType from '../types/NodeType'
+import type NodeType from '../types/NodeType'
 
 /**
  * NO_RESPONSE for NO_RESPONSE
@@ -8,6 +8,7 @@ import NodeType from '../types/NodeType'
  */
 type StatusType = 'NO_RESPONSE' | 'MSG'
 const DEFAULT_STATUS_TYPE: StatusType = 'MSG'
+let nextStatusId = 0
 
 type NodeStatusWithType = NodeStatus & {
     type?: StatusType
@@ -20,6 +21,7 @@ type Status = string | NodeStatusWithType
 export class NodeStatusUtils {
     protected lastStatusId?: number
     protected lastStatusType?: StatusType
+    protected pendingTimeouts = new Set<NodeJS.Timeout>()
 
     constructor(private node: Pick<NodeType, 'status'>) {}
 
@@ -31,7 +33,8 @@ export class NodeStatusUtils {
     setStatus(status: Status, timeout?: number): number {
         this.node.status(status)
 
-        const newStatusId = new Date().getTime()
+        nextStatusId += 1
+        const newStatusId = nextStatusId
         this.lastStatusId = newStatusId
 
         if (typeof status !== 'string') {
@@ -66,13 +69,16 @@ export class NodeStatusUtils {
         if (statusId !== undefined) {
             if (statusId === this.lastStatusId) {
                 if (timeout) {
-                    setTimeout(
-                        function (nodeStatusUtil: NodeStatusUtils) {
+                    const timeoutHandle = setTimeout(
+                        (nodeStatusUtil: NodeStatusUtils) => {
+                            nodeStatusUtil.pendingTimeouts.delete(timeoutHandle)
                             nodeStatusUtil.clearStatus(statusId)
                         },
                         timeout,
                         this
                     )
+                    // Track timeout for cleanup on node close
+                    this.pendingTimeouts.add(timeoutHandle)
                 } else {
                     this.setStatus('')
                 }
@@ -80,5 +86,13 @@ export class NodeStatusUtils {
         } else {
             this.setStatus('')
         }
+    }
+
+    /**
+     * Clean up all pending timeouts (call on node close)
+     */
+    cleanup(): void {
+        this.pendingTimeouts.forEach((timeout) => clearTimeout(timeout))
+        this.pendingTimeouts.clear()
     }
 }

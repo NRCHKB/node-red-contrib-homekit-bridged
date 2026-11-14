@@ -1,7 +1,6 @@
-import { Formats, Perms } from 'hap-nodejs/dist/lib/Characteristic'
-
-import CustomCharacteristicType from '../../types/CustomCharacteristicType'
+import type CustomCharacteristicType from '../../types/CustomCharacteristicType'
 import HAPCharacteristic from '../HAPCharacteristic'
+import { Formats, Perms } from '../hap-nodejs'
 
 /**
  * Based upon
