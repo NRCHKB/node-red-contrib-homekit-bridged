@@ -6,7 +6,6 @@ import {
     type SerializedService,
     Service,
 } from '@homebridge/hap-nodejs'
-import { logger } from '@nrchkb/logger'
 import type express from 'express'
 import type { NodeAPI } from 'node-red'
 import { registerEmbeddedPlugins } from '../plugins/embedded'
@@ -30,6 +29,7 @@ import {
     assertProtectControllerConfig,
     discoverProtectCameras,
 } from './unifi/ProtectDiscovery'
+import { scopedLoggerForLevel } from './utils/LogUtils'
 
 const version = require('../../package.json').version.trim()
 
@@ -48,7 +48,10 @@ type AdvertiserRecommendation = {
 }
 
 const buildAPI = (RED: NodeAPI) => {
-    const log = logger('NRCHKB', 'API')
+    let log = scopedLoggerForLevel('NRCHKB', 'API')
+    const setLogLevel = (level?: string) => {
+        log = scopedLoggerForLevel('NRCHKB', 'API', undefined, undefined, level)
+    }
     const registeredCustomCharacteristicKeys = new Set<string>()
 
     const pathExists = (path: string) => {
@@ -922,6 +925,7 @@ const buildAPI = (RED: NodeAPI) => {
     return {
         detectAdvertiserRecommendation,
         init,
+        setLogLevel,
         stringifyVersion,
     }
 }

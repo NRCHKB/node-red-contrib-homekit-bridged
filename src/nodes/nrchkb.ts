@@ -1,10 +1,11 @@
 import * as path from 'node:path'
 import { HAPStorage } from '@homebridge/hap-nodejs'
 import { logger, loggerSetup } from '@nrchkb/logger'
-import type { NodeAPI } from 'node-red'
+import type { Node, NodeAPI, NodeDef } from 'node-red'
 import semver from 'semver'
 
 import { Storage } from '../lib/Storage'
+import { scopedLoggerForLevel, setDefaultLogLevel } from '../lib/utils/LogUtils'
 
 loggerSetup({ timestampEnabled: 'NRCHKB' })
 const log = logger('NRCHKB')
@@ -14,6 +15,7 @@ if (process.env.NRCHKB_EXPERIMENTAL === 'true') {
 }
 
 module.exports = (RED: NodeAPI) => {
+    let log = logger('NRCHKB')
     const minimalNodeVersion = '22.20.0'
     const nodeVersion = process.version
 
@@ -50,6 +52,20 @@ module.exports = (RED: NodeAPI) => {
     }
 
     const API = require('../lib/api')(RED)
+    const logLevels = new Map<Node, string | undefined>()
+    const refreshLogLevel = () => {
+        // The most recently deployed NRCHKB node controls shared core/API logs.
+        const level = Array.from(logLevels.values()).at(-1)
+        setDefaultLogLevel(level)
+        log = scopedLoggerForLevel(
+            'NRCHKB',
+            undefined,
+            undefined,
+            undefined,
+            level
+        )
+        API.setLogLevel(level)
+    }
 
     const initialization = Storage.init(rootFolder, 'nrchkb').then(() => {
         log.debug(`nrchkb storage path set to ${Storage.storagePath()}`)
@@ -58,9 +74,18 @@ module.exports = (RED: NodeAPI) => {
 
     log.debug('Registering nrchkb type')
 
-    RED.nodes.registerType('nrchkb', function (this: any, config) {
-        RED.nodes.createNode(this, config)
-    })
+    RED.nodes.registerType(
+        'nrchkb',
+        function (this: Node, config: NodeDef & { logLevel?: string }) {
+            RED.nodes.createNode(this, config)
+            logLevels.set(this, config.logLevel)
+            refreshLogLevel()
+            this.on('close', () => {
+                logLevels.delete(this)
+                refreshLogLevel()
+            })
+        }
+    )
 
     return initialization
 }

@@ -1134,7 +1134,7 @@
                 }
             },
             oneditresize: function (size) {
-                const rows = $('#dialog-form .nrchkb-section > summary, #dialog-form .nrchkb-section-body > .form-row:not(.node-input-customCharacteristics-container-row)')
+                const rows = $('#dialog-form #node-input-logLevel-container > .form-row, #dialog-form .nrchkb-section > summary, #dialog-form .nrchkb-section-body > .form-row:not(.node-input-customCharacteristics-container-row)')
                 let height = size.height
                 for (let i = 0; i < rows.length; i++) {
                     height -= $(rows[i]).outerHeight(true)
@@ -2191,10 +2191,10 @@
 
 <script data-template-name="nrchkb" type="text/x-red">
     <div class="nrchkb-editor">
+        <div id="node-input-logLevel-container"></div>
         <details class="nrchkb-section" open>
             <summary><i class="fa fa-list-alt"></i> <span data-i18n="nrchkb.customCharacteristics.title">Custom Characteristics</span></summary>
             <div class="nrchkb-section-body">
-                <div id="node-input-logLevel-container"></div>
                 <div class="form-row node-input-customCharacteristics-container-row">
                     <ol id="node-input-customCharacteristics-container"></ol>
                 </div>
@@ -2207,6 +2207,8 @@
 # NRCHKB Custom Characteristics
 
 Defines custom HAP characteristics that can be attached to HomeKit services when the standard HAP catalog does not contain the value you need.
+
+**Log Level** controls shared NRCHKB core and editor API logging after deployment, and supplies the default for bridges, standalone accessories, and services set to Inherit. Explicit host and service levels override this default. Inherit on the NRCHKB node uses the logger's environment/default settings. Changes also apply to existing inherited loggers. If multiple NRCHKB nodes exist, the most recently deployed one takes precedence; removing it restores the previous node's setting.
 
 > [!CAUTION]
 > Prefer standard HAP characteristics whenever possible. Custom characteristics may not be shown or interpreted consistently by every HomeKit client.

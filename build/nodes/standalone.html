@@ -174,7 +174,7 @@ Defines a HomeKit accessory that is paired directly in the Apple Home app. Use i
 - **Port**: Optional HAP server port. Leave blank to auto-assign. Do not use `1880`, which is reserved for Node-RED.
 - **Advertiser**: Selects the mDNS/DNS-SD backend used to announce this accessory to HomeKit.
 - **Bind**: Restricts the network interfaces or IP addresses used by the HAP server and mDNS advertisement.
-- **Log Level**: Controls logging for this standalone accessory unless a service overrides it. `Inherit` keeps the global logger and `DEBUG` behavior.
+- **Log Level**: Controls logging for this standalone accessory unless a service overrides it. `Inherit` uses the NRCHKB node's log level, falling back to the logger's environment/default settings when no explicit NRCHKB level is selected.
 
 <p class="nrchkb-advertiser-dynamic">Recommendation unavailable.</p>
 

@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2026-11-14
+## [2.0.0] - 2026-11-15
 
 Backward compatibility was lost for custom mDNS configuration.
 Legacy `CameraControl` remains available only in `homekit-service` and is deprecated. New and migrated camera flows
@@ -59,6 +59,10 @@ installations and Docker-based deployments.
   [#85](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/85).
 - Per-node **Log Level** settings for standard and config nodes, with scoped `inherit`, `error`, `debug`, `trace`, and
   `disabled` behavior backed by `@nrchkb/logger` [#479](https://github.com/NRCHKB/node-red-contrib-homekit-bridged/issues/479).
+  The NRCHKB node controls core/API logging and supplies the default for bridges and standalone accessories;
+  services inherit through their host or parent accessory, with explicit levels taking precedence.
+  Redeploying the NRCHKB level updates existing inherited loggers. `Inherit` on the NRCHKB node uses the logger's
+  environment/default settings.
 - Additional unit and integration coverage for camera delegates, custom characteristics, lightbulb flows, Service 2
   migration, plugin metadata/registry behavior, host lifecycle cleanup, service utilities, storage callbacks, HAP
   compatibility, and performance.

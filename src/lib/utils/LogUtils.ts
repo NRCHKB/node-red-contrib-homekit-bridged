@@ -40,6 +40,17 @@ export const normalizeLogLevel = (level?: string | null): NRCHKBLogLevel => {
         : 'inherit'
 }
 
+let defaultLogLevel: NRCHKBLogLevel = 'inherit'
+
+export const setDefaultLogLevel = (level?: string | null) => {
+    defaultLogLevel = normalizeLogLevel(level)
+}
+
+const inheritedLevel = (level?: string | null): NRCHKBLogLevel => {
+    const normalized = normalizeLogLevel(level)
+    return normalized === 'inherit' ? defaultLogLevel : normalized
+}
+
 const explicitLevel = (node?: LogScopedNode): NRCHKBLogLevel | undefined => {
     const level = normalizeLogLevel(node?.config?.logLevel)
 
@@ -51,8 +62,42 @@ export const resolveLogLevel = (node?: LogScopedNode): NRCHKBLogLevel => {
         explicitLevel(node?.parentNode) ??
         explicitLevel(node) ??
         explicitLevel(node?.hostNode) ??
-        'inherit'
+        defaultLogLevel
     )
+}
+
+// Resolve on use: hosts and services can outlive a deployment of the NRCHKB node.
+// Cache the underlying logger until its effective level changes.
+const dynamicLogger = (
+    namespacePrefix: string,
+    namespace: string | undefined,
+    messagePrefix: string | undefined,
+    node: Node | undefined,
+    resolveLevel: () => NRCHKBLogLevel
+): ReturnType<typeof logger> => {
+    let currentLevel: NRCHKBLogLevel | undefined
+    let currentLogger: ReturnType<typeof logger>
+    const getLogger = () => {
+        const level = resolveLevel()
+        if (!currentLogger || currentLevel !== level) {
+            currentLevel = level
+            currentLogger = (logger as ScopedLoggerFactory)(
+                namespacePrefix,
+                namespace,
+                messagePrefix,
+                node,
+                { level }
+            )
+        }
+        return currentLogger
+    }
+    return {
+        debug: (...args) => getLogger().debug(...args),
+        error: (message: string, nodeError?: boolean, injectedNode?: Node) =>
+            getLogger().error(message, nodeError, injectedNode),
+        trace: (...args) => getLogger().trace(...args),
+        level: (...args) => getLogger().level(...args),
+    }
 }
 
 export const scopedLogger = (
@@ -61,14 +106,8 @@ export const scopedLogger = (
     messagePrefix?: string,
     node?: LogScopedNode
 ) =>
-    (logger as ScopedLoggerFactory)(
-        namespacePrefix,
-        namespace,
-        messagePrefix,
-        node,
-        {
-            level: resolveLogLevel(node),
-        }
+    dynamicLogger(namespacePrefix, namespace, messagePrefix, node, () =>
+        resolveLogLevel(node)
     )
 
 export const scopedLoggerForLevel = (
@@ -78,12 +117,6 @@ export const scopedLoggerForLevel = (
     node?: Node,
     level?: string | null
 ) =>
-    (logger as ScopedLoggerFactory)(
-        namespacePrefix,
-        namespace,
-        messagePrefix,
-        node,
-        {
-            level: normalizeLogLevel(level),
-        }
+    dynamicLogger(namespacePrefix, namespace, messagePrefix, node, () =>
+        inheritedLevel(level)
     )
