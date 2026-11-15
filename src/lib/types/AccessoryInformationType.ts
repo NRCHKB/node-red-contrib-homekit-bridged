@@ -4,7 +4,7 @@ type AccessoryInformationType = {
     manufacturer: string
     serialNo: string
     model: string
-    firmwareRev: string
+    firmwareRev?: string
     hardwareRev?: string
     softwareRev?: string
 }

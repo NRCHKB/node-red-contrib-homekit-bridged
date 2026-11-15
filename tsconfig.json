@@ -1,39 +1,42 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "lib": [
-      "es2020.string"
+    "compilerOptions": {
+        "target": "es6",
+        "lib": ["ES2023"],
+        "skipLibCheck": true,
+        "allowJs": true,
+        "checkJs": true,
+        "rootDir": ".",
+        "outDir": "./build",
+        "removeComments": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictBindCallApply": true,
+        "strictPropertyInitialization": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "bundler",
+        "module": "preserve",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "declaration": true,
+        "types": ["node"]
+    },
+    "include": [
+        "src",
+        "scripts",
+        "*.js",
+        "*.cjs",
+        "*.mjs",
+        "*.mts",
+        "*.cts",
+        "*.ts"
     ],
-    "skipLibCheck": true,
-    "allowJs": true,
-    "checkJs": false,
-    "outDir": "./build",
-    "removeComments": true,
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "declaration": true
-  },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/test/*",
-    "build"
-  ]
+    "exclude": ["node_modules", "build", "coverage"]
 }

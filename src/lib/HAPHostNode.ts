@@ -1,36 +1,48 @@
-import { logger } from '@nrchkb/logger'
 import {
     Accessory,
     Bridge,
-    Categories,
+    type Categories,
     Characteristic,
     MDNSAdvertiser,
     Service,
     uuid,
-} from 'hap-nodejs'
-import { NodeAPI } from 'node-red'
+} from '@homebridge/hap-nodejs'
+import type { NodeAPI } from 'node-red'
 import { SemVer } from 'semver'
 import semver from 'semver/preload'
 
 import NRCHKBError from './NRCHKBError'
-import BonjourMulticastOptions from './types/hap-nodejs/BonjourMulticastOptions'
-import HapCategories from './types/hap-nodejs/HapCategories'
-import HAPHostConfigType from './types/HAPHostConfigType'
-import HAPHostNodeType from './types/HAPHostNodeType'
+import { normalizePinCode } from './PinCode'
+import type HAPHostConfigType from './types/HAPHostConfigType'
+import type HAPHostNodeType from './types/HAPHostNodeType'
 import HostType from './types/HostType'
+import HapCategories from './types/hap-nodejs/HapCategories'
+import { scopedLoggerForLevel } from './utils/LogUtils'
 
 module.exports = (RED: NodeAPI, hostType: HostType) => {
-    const MdnsUtils = require('./utils/MdnsUtils')()
+    const normalizePort = (port: HAPHostConfigType['port']): number => {
+        if (port === undefined || port === null || port === '') {
+            return 0
+        }
+
+        const normalizedPort = Number(port)
+        return Number.isNaN(normalizedPort) ? 0 : normalizedPort
+    }
 
     const init = function (this: HAPHostNodeType, config: HAPHostConfigType) {
-        const self = this
-        const log = logger('NRCHKB', 'HAPHostNode', config.bridgeName, self)
+        const log = scopedLoggerForLevel(
+            'NRCHKB',
+            'HAPHostNode',
+            config.bridgeName,
+            this,
+            config.logLevel
+        )
 
-        self.hostType = hostType
-        RED.nodes.createNode(self, config)
+        this.hostType = hostType
+        RED.nodes.createNode(this, config)
 
-        self.config = config
-        self.name = config.bridgeName
+        this.config = config
+        this.name = config.bridgeName
 
         if (!hostNameValidator(config.bridgeName)) {
             log.error('Host name is incorrect', false)
@@ -42,141 +54,159 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
         }
 
         if (!config.bind?.length && config.customMdnsConfig) {
-            log.error('Custom mdns config is deprecated, use bind instead!')
-
-            self.mdnsConfig = {} as BonjourMulticastOptions
-
-            if (MdnsUtils.checkMulticast(config.mdnsMulticast)) {
-                self.mdnsConfig.multicast = config.mdnsMulticast
-            }
-
-            if (MdnsUtils.checkInterface(config.mdnsInterface)) {
-                self.mdnsConfig.interface = config.mdnsInterface
-            }
-
-            if (MdnsUtils.checkPort(config.mdnsPort)) {
-                self.mdnsConfig.port = parseInt(config.mdnsPort?.toString())
-            }
-
-            if (MdnsUtils.checkIp(config.mdnsIp)) {
-                self.mdnsConfig.ip = config.mdnsIp
-            }
-
-            if (MdnsUtils.checkTtl(config.mdnsTtl)) {
-                self.mdnsConfig.ttl = parseInt(config.mdnsTtl?.toString())
-            }
-
-            if (MdnsUtils.checkLoopback(config.mdnsLoopback)) {
-                self.mdnsConfig.loopback = config.mdnsLoopback
-            }
-
-            if (MdnsUtils.checkReuseAddr(config.mdnsReuseAddr)) {
-                self.mdnsConfig.reuseAddr = config.mdnsReuseAddr
-            }
+            log.error(
+                'Custom mDNS configuration is deprecated and ignored by HAP-NodeJS 2.x. Use Bind and Advertiser instead.'
+            )
         }
 
-        self.accessoryCategory = (self.hostType == HostType.BRIDGE
+        this.accessoryCategory = (this.hostType == HostType.BRIDGE
             ? HapCategories.BRIDGE
-            : self.config.accessoryCategory) as unknown as Categories
+            : this.config.accessoryCategory) as unknown as Categories
 
-        self.published = false
+        this.published = false
+        this.paired = false
+        this.adaptiveLightingControllers = new Map()
 
         try {
-            self.bridgeUsername = macify(self.id)
+            this.bridgeUsername = macify(this.id)
         } catch (error: any) {
             log.error(error)
             return error
         }
 
-        const hostUUID = uuid.generate(self.id)
+        const hostUUID = uuid.generate(this.id)
 
         const hostTypeName =
-            self.hostType == HostType.BRIDGE ? 'Bridge' : 'Standalone Accessory'
+            this.hostType == HostType.BRIDGE ? 'Bridge' : 'Standalone Accessory'
 
         log.debug(`Creating ${hostTypeName} with UUID ${hostUUID}`)
 
-        if (self.hostType == HostType.BRIDGE) {
-            self.host = new Bridge(self.name, hostUUID)
+        if (this.hostType == HostType.BRIDGE) {
+            this.host = new Bridge(this.name, hostUUID)
         } else {
-            self.host = new Accessory(self.name, hostUUID)
+            this.host = new Accessory(this.name, hostUUID)
         }
 
-        self.publish = function () {
-            if (self.hostType == HostType.BRIDGE) {
+        this.publish = () => {
+            if (this.hostType == HostType.BRIDGE) {
                 log.debug(
-                    `Publishing ${hostTypeName} with pin code ${self.config.pinCode} and ${self.host.bridgedAccessories.length} accessories`
+                    `Publishing ${hostTypeName} with pin code ${this.config.pinCode} and ${this.host.bridgedAccessories.length} accessories`
                 )
             } else {
                 log.debug(
-                    `Publishing ${hostTypeName} with pin code ${self.config.pinCode}`
+                    `Publishing ${hostTypeName} with pin code ${this.config.pinCode}`
                 )
             }
 
-            if (
-                (self.config.port && self.config.port == 1880) ||
-                (self.mdnsConfig?.port && self.mdnsConfig?.port == 1880)
-            ) {
+            const port = normalizePort(this.config.port)
+
+            if (port === 1880) {
                 log.error(
                     `Cannot publish on ${hostTypeName} port 1880 as it is reserved for node-red`
                 )
-                self.published = false
+                this.published = false
                 return false
             }
 
-            // As HAP-Nodejs cannot understand new pin code format yet, we need to adjust new to old one
-            let oldPinCode = self.config.pinCode
-
-            if ((oldPinCode.match(/-/g) || []).length == 1) {
-                oldPinCode = oldPinCode.replace(/-/g, '')
-                oldPinCode = `${oldPinCode.slice(0, 3)}-${oldPinCode.slice(3, 5)}-${oldPinCode.slice(5, 8)}`
-            }
-
-            let bind
-            if (self.config.bind?.length && self.config.bindType) {
-                if (self.config.bindType == 'str') {
-                    bind = self.config.bind
-                } else if (self.config.bindType == 'json') {
-                    bind = JSON.parse(self.config.bind)
+            let bind: string | string[] | undefined
+            if (this.config.bind?.length && this.config.bindType) {
+                if (this.config.bindType === 'str') {
+                    bind = this.config.bind
+                } else if (this.config.bindType === 'json') {
+                    try {
+                        bind = JSON.parse(this.config.bind)
+                    } catch (error) {
+                        log.error(`Invalid bind JSON: ${error}`)
+                        this.published = false
+                        return false
+                    }
                 }
             }
 
-            self.host.publish(
-                {
-                    username: self.bridgeUsername,
-                    port:
-                        self.config.port && !isNaN(self.config.port)
-                            ? self.config.port
-                            : 0,
-                    pincode: oldPinCode,
-                    category: self.accessoryCategory,
-                    mdns: self.mdnsConfig,
-                    bind: bind,
-                    advertiser:
-                        self.config.advertiser ?? MDNSAdvertiser.BONJOUR,
-                },
-                self.config.allowInsecureRequest
-            )
+            try {
+                const pinCode = normalizePinCode(this.config.pinCode)
+                const publishing = this.host.publish(
+                    {
+                        username: this.bridgeUsername,
+                        port,
+                        pincode: `${pinCode.slice(0, 3)}-${pinCode.slice(3, 5)}-${pinCode.slice(5)}`,
+                        category: this.accessoryCategory,
+                        bind,
+                        advertiser:
+                            this.config.advertiser ?? MDNSAdvertiser.BONJOUR,
+                    },
+                    this.config.allowInsecureRequest
+                )
+                Promise.resolve(publishing).catch((error) => {
+                    this.published = false
+                    log.error(`Publication failed: ${error}`)
+                })
+            } catch (error) {
+                this.published = false
+                log.error(`Publication failed: ${error}`)
+                return false
+            }
 
-            self.published = true
+            this.published = true
+            this.paired = !!(
+                this.host as unknown as {
+                    _accessoryInfo?: { paired: () => boolean }
+                }
+            )._accessoryInfo?.paired()
 
             return true
         }
 
-        self.on('close', async function (removed: any, done: () => any) {
-            if (removed) {
-                log.debug('This node has been deleted')
-                await self.host.destroy()
-            } else {
-                log.debug('This node is being restarted')
-                await self.host.unpublish()
+        this.on('close', async (removed: any, done: () => any) => {
+            try {
+                if (removed) {
+                    log.debug('This node has been deleted')
+                    await this.host.destroy()
+                } else {
+                    log.debug('This node is being restarted')
+                    await this.host.unpublish()
+                }
+            } catch (error) {
+                log.error(`Host cleanup failed: ${error}`)
+            } finally {
+                // The restarted host is replaced by a new Bridge/Accessory with the same
+                // username, while the old accessories stay in memory. Their Adaptive
+                // Lighting controllers would keep running and, at the end of their
+                // transition curve, overwrite the shared ControllerStorage file with
+                // stale data. Stop them only after unpublish, so HomeKit controllers are
+                // not notified that the transition was disabled.
+                this.adaptiveLightingControllers.forEach((controller) => {
+                    try {
+                        controller.setupStateChangeDelegate(undefined)
+                        controller.disableAdaptiveLighting()
+                    } catch (error) {
+                        log.debug(
+                            `Failed to dispose Adaptive Lighting controller due to ${error}`
+                        )
+                    }
+                })
+                this.adaptiveLightingControllers.clear()
+
+                if (!removed && this.published) {
+                    // ControllerStorage.load() consumes entries of the cached storage
+                    // object, so save once to let the replacing host restore from it.
+                    try {
+                        this.host.controllerStorage.save()
+                    } catch (error) {
+                        log.error(
+                            `Failed to save controller storage due to ${error}`
+                        )
+                    }
+                }
+
+                this.published = false
+                this.paired = false
+
+                done()
             }
-
-            self.published = false
-
-            done()
         })
 
-        self.host.on('identify', function (paired: any, callback: () => any) {
+        this.host.on('identify', (paired: any, callback: () => any) => {
             if (paired) {
                 log.debug(`Identify called on paired ${hostTypeName}`)
             } else {
@@ -186,44 +216,52 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
             callback()
         })
 
+        this.host.on('paired', () => {
+            this.paired = true
+        })
+
+        this.host.on('unpaired', () => {
+            this.paired = false
+        })
+
         // Service.AccessoryInformation created on Host creation
         const accessoryInformationService =
-            self.host.getService(Service.AccessoryInformation) ||
-            self.host.addService(Service.AccessoryInformation)
+            this.host.getService(Service.AccessoryInformation) ||
+            this.host.addService(Service.AccessoryInformation)
 
         accessoryInformationService
             .setCharacteristic(
                 Characteristic.Manufacturer,
-                self.config.manufacturer
+                this.config.manufacturer
             )
             .setCharacteristic(
                 Characteristic.SerialNumber,
-                self.config.serialNo
+                this.config.serialNo
             )
-            .setCharacteristic(Characteristic.Model, self.config.model)
+            .setCharacteristic(Characteristic.Model, this.config.model)
             .setCharacteristic(
                 Characteristic.FirmwareRevision,
-                self.config.firmwareRev?.toString()
+                this.config.firmwareRev?.toString()
             )
             .setCharacteristic(
                 Characteristic.HardwareRevision,
-                self.config.hardwareRev?.toString()
+                this.config.hardwareRev?.toString()
             )
             .setCharacteristic(
                 Characteristic.SoftwareRevision,
-                self.config.softwareRev?.toString()
+                this.config.softwareRev?.toString()
             )
     }
 
     const macify = (nodeId: string): string => {
         if (nodeId) {
-            const noDecimalStr = nodeId.replace('.', '')
+            const noDecimalStr = nodeId.replace(/\./g, '')
             const paddedStr = noDecimalStr.padEnd(12, '0')
 
             const match = paddedStr.match(/.{1,2}/g)
 
             if (match) {
-                return match.join(':').substr(0, 17).toUpperCase()
+                return match.join(':').slice(0, 17).toUpperCase()
             } else {
                 throw new NRCHKBError(
                     `match failed in macify process for padded string ${paddedStr}`
@@ -234,9 +272,8 @@ module.exports = (RED: NodeAPI, hostType: HostType) => {
         }
     }
 
-    const hostNameValidator = function (hostName: string) {
-        return hostName ? /^[^.]{1,64}$/.test(hostName) : false
-    }
+    const hostNameValidator = (hostName: string) =>
+        hostName ? /^[^.]{1,64}$/.test(hostName) : false
 
     return {
         init,

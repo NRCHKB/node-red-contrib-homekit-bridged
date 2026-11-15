@@ -1,10 +1,11 @@
+import * as path from 'node:path'
+import { HAPStorage } from '@homebridge/hap-nodejs'
 import { logger, loggerSetup } from '@nrchkb/logger'
-import { HAPStorage } from 'hap-nodejs'
-import { NodeAPI } from 'node-red'
-import * as path from 'path'
+import type { Node, NodeAPI, NodeDef } from 'node-red'
 import semver from 'semver'
 
 import { Storage } from '../lib/Storage'
+import { scopedLoggerForLevel, setDefaultLogLevel } from '../lib/utils/LogUtils'
 
 loggerSetup({ timestampEnabled: 'NRCHKB' })
 const log = logger('NRCHKB')
@@ -14,29 +15,19 @@ if (process.env.NRCHKB_EXPERIMENTAL === 'true') {
 }
 
 module.exports = (RED: NodeAPI) => {
-    const deprecatedMinimalNodeVersion = '10.22.1'
-    const minimalNodeVersion = '12.0.0'
+    let log = logger('NRCHKB')
+    const minimalNodeVersion = '22.20.0'
     const nodeVersion = process.version
 
-    if (semver.gte(nodeVersion, deprecatedMinimalNodeVersion)) {
-        log.debug(
-            `Node.js version requirement met. Required >=${deprecatedMinimalNodeVersion}. Installed ${nodeVersion}`
-        )
-        if (semver.lt(nodeVersion, minimalNodeVersion)) {
-            log.error(
-                'Node.js version requirement met but will be deprecated in Node-RED 2.0.0'
-            )
-            log.error(
-                `Recommended >=${minimalNodeVersion}. Installed ${nodeVersion}. Consider upgrading.`
-            )
-        }
-    } else {
+    if (!semver.gte(nodeVersion, minimalNodeVersion)) {
         throw RangeError(
-            `Node.js version requirement not met. Required >=${deprecatedMinimalNodeVersion}. Installed ${nodeVersion}`
+            `Node.js version requirement not met. Required >=${minimalNodeVersion}. Installed ${nodeVersion}`
         )
     }
 
-    const API = require('../lib/api')(RED)
+    log.debug(
+        `Node.js version requirement met. Required >=${minimalNodeVersion}. Installed ${nodeVersion}`
+    )
 
     let rootFolder: string
 
@@ -46,31 +37,55 @@ module.exports = (RED: NodeAPI) => {
         rootFolder = RED.settings.userDir
     } else {
         log.error('RED settings not available')
-        rootFolder = path.join(require('os').homedir(), '.node-red')
+        rootFolder = path.join(require('node:os').homedir(), '.node-red')
     }
 
-    Storage.init(rootFolder, 'nrchkb').then(() => {
+    const hapStoragePath = path.resolve(rootFolder, 'homekit-persist')
+
+    try {
+        HAPStorage.setCustomStoragePath(hapStoragePath)
+        log.debug(`HAPStorage path set to ${hapStoragePath}`)
+    } catch (error: any) {
+        log.debug('HAPStorage already initialized')
+        log.error('node-red restart highly recommended')
+        log.trace(error)
+    }
+
+    const API = require('../lib/api')(RED)
+    const logLevels = new Map<Node, string | undefined>()
+    const refreshLogLevel = () => {
+        // The most recently deployed NRCHKB node controls shared core/API logs.
+        const level = Array.from(logLevels.values()).at(-1)
+        setDefaultLogLevel(level)
+        log = scopedLoggerForLevel(
+            'NRCHKB',
+            undefined,
+            undefined,
+            undefined,
+            level
+        )
+        API.setLogLevel(level)
+    }
+
+    const initialization = Storage.init(rootFolder, 'nrchkb').then(() => {
         log.debug(`nrchkb storage path set to ${Storage.storagePath()}`)
         API.init()
+    })
 
-        const hapStoragePath = path.resolve(rootFolder, 'homekit-persist')
+    log.debug('Registering nrchkb type')
 
-        try {
-            HAPStorage.setCustomStoragePath(hapStoragePath)
-            log.debug(`HAPStorage path set to ${hapStoragePath}`)
-        } catch (error: any) {
-            log.debug('HAPStorage already initialized')
-            log.error('node-red restart highly recommended')
-            log.trace(error)
-        }
-
-        // Experimental feature
-        if (process.env.NRCHKB_EXPERIMENTAL === 'true') {
-            log.debug('Registering nrchkb type')
-
-            RED.nodes.registerType('nrchkb', function (this: any, config) {
-                RED.nodes.createNode(this, config)
+    RED.nodes.registerType(
+        'nrchkb',
+        function (this: Node, config: NodeDef & { logLevel?: string }) {
+            RED.nodes.createNode(this, config)
+            logLevels.set(this, config.logLevel)
+            refreshLogLevel()
+            this.on('close', () => {
+                logLevels.delete(this)
+                refreshLogLevel()
             })
         }
-    })
+    )
+
+    return initialization
 }
